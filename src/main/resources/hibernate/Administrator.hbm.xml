@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 2015-07-14 17:41:40 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="hibernate.Administrator" table="administrator" schema="public">
+        <id name="idAccessLevel" type="long">
+            <column name="id_access_level" />
+            <generator class="foreign">
+                <param name="property">accessLevel</param>
+            </generator>
+        </id>
+        <version name="version" type="long">
+            <column name="version" not-null="true" />
+        </version>
+        <one-to-one name="accessLevel" class="hibernate.AccessLevel" constrained="true"></one-to-one>
+    </class>
+</hibernate-mapping>

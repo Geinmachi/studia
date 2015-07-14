@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 2015-07-14 17:41:40 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="hibernate.PersonalInfo" table="personal_info" schema="public">
+        <id name="idPersonalInfo" type="long">
+            <column name="id_personal_info" />
+            <generator class="assigned" />
+        </id>
+        <version name="version" type="long">
+            <column name="version" not-null="true" />
+        </version>
+        <many-to-one name="account" class="hibernate.Account" fetch="select">
+            <column name="id_account" not-null="true" />
+        </many-to-one>
+        <property name="firstName" type="string">
+            <column name="first_name" length="50" not-null="true" />
+        </property>
+        <property name="lastName" type="string">
+            <column name="last_name" length="50" not-null="true" />
+        </property>
+        <property name="email" type="string">
+            <column name="email" length="50" not-null="true" unique="true" />
+        </property>
+        <set name="competitors" table="competitor" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="id_personal_info" not-null="true" unique="true" />
+            </key>
+            <one-to-many class="hibernate.Competitor" />
+        </set>
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 2015-07-14 17:41:40 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="hibernate.Competition" table="competition" schema="public">
+        <id name="idCompetition" type="long">
+            <column name="id_competition" />
+            <generator class="assigned" />
+        </id>
+        <version name="version" type="long">
+            <column name="version" not-null="true" />
+        </version>
+        <many-to-one name="accessLevel" class="hibernate.AccessLevel" fetch="select">
+            <column name="id_organizer" not-null="true" />
+        </many-to-one>
+        <many-to-one name="competitionType" class="hibernate.CompetitionType" fetch="select">
+            <column name="id_competition_type" not-null="true" />
+        </many-to-one>
+        <property name="competitionName" type="string">
+            <column name="competition_name" length="100" unique="true" />
+        </property>
+        <property name="creationDate" type="timestamp">
+            <column name="creation_date" length="29" not-null="true" />
+        </property>
+        <property name="startDate" type="timestamp">
+            <column name="start_date" length="29" not-null="true" />
+        </property>
+        <property name="endDate" type="timestamp">
+            <column name="end_date" length="29" not-null="true" />
+        </property>
+        <set name="groupCompetitions" table="group_competition" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="id_competition" not-null="true" />
+            </key>
+            <one-to-many class="hibernate.GroupCompetition" />
+        </set>
+        <set name="scores" table="score" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="id_competition" not-null="true" />
+            </key>
+            <one-to-many class="hibernate.Score" />
+        </set>
+    </class>
+</hibernate-mapping>

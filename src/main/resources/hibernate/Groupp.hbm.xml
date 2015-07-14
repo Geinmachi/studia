@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 2015-07-14 17:41:40 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="hibernate.Groupp" table="groupp" schema="public">
+        <id name="idGroup" type="long">
+            <column name="id_group" />
+            <generator class="assigned" />
+        </id>
+        <version name="version" type="long">
+            <column name="version" not-null="true" />
+        </version>
+        <property name="groupName" type="char">
+            <column name="group_name" length="1" not-null="true" />
+        </property>
+        <property name="startDate" type="timestamp">
+            <column name="start_date" length="29" />
+        </property>
+        <property name="endDate" type="timestamp">
+            <column name="end_date" length="29" />
+        </property>
+        <set name="competitorMatchGroups" table="competitor_match_group" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="id_group" not-null="true" />
+            </key>
+            <one-to-many class="hibernate.CompetitorMatchGroup" />
+        </set>
+        <set name="groupCompetitions" table="group_competition" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="id_group" not-null="true" />
+            </key>
+            <one-to-many class="hibernate.GroupCompetition" />
+        </set>
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 2015-07-14 17:41:40 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="hibernate.AccessLevel" table="access_level" schema="public">
+        <id name="idAccessLevel" type="long">
+            <column name="id_access_level" />
+            <generator class="assigned" />
+        </id>
+        <version name="version" type="long">
+            <column name="version" not-null="true" />
+        </version>
+        <many-to-one name="account" class="hibernate.Account" fetch="select">
+            <column name="id_account" not-null="true" />
+        </many-to-one>
+        <property name="accessLevel" type="string">
+            <column name="access_level" length="50" not-null="true" />
+        </property>
+        <property name="isActive" type="boolean">
+            <column name="is_active" not-null="true" />
+        </property>
+        <set name="competitions" table="competition" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="id_organizer" not-null="true" />
+            </key>
+            <one-to-many class="hibernate.Competition" />
+        </set>
+        <one-to-one name="administrator" class="hibernate.Administrator"></one-to-one>
+        <one-to-one name="organizer" class="hibernate.Organizer"></one-to-one>
+    </class>
+</hibernate-mapping>

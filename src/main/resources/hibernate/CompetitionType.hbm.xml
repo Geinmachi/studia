@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 2015-07-14 17:41:40 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="hibernate.CompetitionType" table="competition_type" schema="public" optimistic-lock="version">
+        <id name="idCompetitionType" type="long">
+            <column name="id_competition_type" />
+            <generator class="assigned" />
+        </id>
+        <property name="competitionTypeName" type="string">
+            <column name="competition_type_name" length="50" not-null="true" unique="true" />
+        </property>
+        <set name="competitions" table="competition" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="id_competition_type" not-null="true" />
+            </key>
+            <one-to-many class="hibernate.Competition" />
+        </set>
+    </class>
+</hibernate-mapping>

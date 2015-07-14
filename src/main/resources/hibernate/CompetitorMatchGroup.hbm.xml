@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 2015-07-14 17:41:40 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="hibernate.CompetitorMatchGroup" table="competitor_match_group" schema="public">
+        <id name="idCompetitorMatchGroup" type="long">
+            <column name="id_competitor_match_group" />
+            <generator class="assigned" />
+        </id>
+        <version name="version" type="long">
+            <column name="version" not-null="true" />
+        </version>
+        <many-to-one name="competitor" class="hibernate.Competitor" fetch="select">
+            <column name="id_competitor" not-null="true" />
+        </many-to-one>
+        <many-to-one name="groupp" class="hibernate.Groupp" fetch="select">
+            <column name="id_group" not-null="true" />
+        </many-to-one>
+        <many-to-one name="matchh" class="hibernate.Matchh" fetch="select">
+            <column name="id_match" not-null="true" />
+        </many-to-one>
+        <property name="competitorMatchScore" type="java.lang.Short">
+            <column name="competitor_match_score" />
+        </property>
+    </class>
+</hibernate-mapping>

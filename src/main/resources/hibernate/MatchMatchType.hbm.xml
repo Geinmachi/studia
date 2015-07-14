@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 2015-07-14 17:41:40 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="hibernate.MatchMatchType" table="match_match_type" schema="public" optimistic-lock="version">
+        <id name="idMatchMatchType" type="long">
+            <column name="id_match_match_type" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="matchType" class="hibernate.MatchType" fetch="select">
+            <column name="id_match_type" not-null="true" />
+        </many-to-one>
+        <many-to-one name="matchh" class="hibernate.Matchh" fetch="select">
+            <column name="id_match" not-null="true" />
+        </many-to-one>
+    </class>
+</hibernate-mapping>

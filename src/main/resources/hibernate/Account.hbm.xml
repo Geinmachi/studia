@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 2015-07-14 17:41:40 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="hibernate.Account" table="account" schema="public">
+        <id name="idAccount" type="long">
+            <column name="id_account" />
+            <generator class="assigned" />
+        </id>
+        <version name="version" type="long">
+            <column name="version" not-null="true" />
+        </version>
+        <property name="login" type="string">
+            <column name="login" length="50" not-null="true" unique="true" />
+        </property>
+        <property name="password" type="string">
+            <column name="password" length="128" not-null="true" />
+        </property>
+        <property name="isActive" type="boolean">
+            <column name="is_active" not-null="true" />
+        </property>
+        <property name="isConfirmed" type="boolean">
+            <column name="is_confirmed" not-null="true" />
+        </property>
+        <set name="accessLevels" table="access_level" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="id_account" not-null="true" />
+            </key>
+            <one-to-many class="hibernate.AccessLevel" />
+        </set>
+        <set name="personalInfos" table="personal_info" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="id_account" not-null="true" />
+            </key>
+            <one-to-many class="hibernate.PersonalInfo" />
+        </set>
+    </class>
+</hibernate-mapping>
