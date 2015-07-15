@@ -1,53 +1,47 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
-  <persistence-unit name="mok_persistence_unit" transaction-type="JTA">
-    <provider>org.hibernate.ejb.HibernatePersistence</provider>
-    <jta-data-source>jdbc/mok</jta-data-source>
-    <class>entities.AccessLevel</class>
-    <class>entities.Account</class>
-    <class>entities.Administrator</class>
-    <class>entities.Competition</class>
-    <class>entities.CompetitionType</class>
-    <class>entities.Competitor</class>
-    <class>entities.CompetitorMatchGroup</class>
-    <class>entities.GroupCompetition</class>
-    <class>entities.Groupp</class>
-    <class>entities.MatchMatchType</class>
-    <class>entities.MatchType</class>
-    <class>entities.Matchh</class>
-    <class>entities.Organizer</class>
-    <class>entities.PersonalInfo</class>
-    <class>entities.Score</class>
-    <class>entities.Team</class>
-    <exclude-unlisted-classes>true</exclude-unlisted-classes>
-    <shared-cache-mode>NONE</shared-cache-mode>
-    <properties>
-      <property name="javax.persistence.schema-generation.database.action" value="create"/>
-    </properties>
-  </persistence-unit>
-  <persistence-unit name="mot_persistence_unit" transaction-type="JTA">
-    <provider>org.hibernate.ejb.HibernatePersistence</provider>
-    <jta-data-source>jdbc/mot</jta-data-source>
-    <class>entities.AccessLevel</class>
-    <class>entities.Account</class>
-    <class>entities.Administrator</class>
-    <class>entities.Competition</class>
-    <class>entities.CompetitionType</class>
-    <class>entities.Competitor</class>
-    <class>entities.CompetitorMatchGroup</class>
-    <class>entities.GroupCompetition</class>
-    <class>entities.Groupp</class>
-    <class>entities.MatchMatchType</class>
-    <class>entities.MatchType</class>
-    <class>entities.Matchh</class>
-    <class>entities.Organizer</class>
-    <class>entities.PersonalInfo</class>
-    <class>entities.Score</class>
-    <class>entities.Team</class>
-    <exclude-unlisted-classes>true</exclude-unlisted-classes>
-    <shared-cache-mode>NONE</shared-cache-mode>
-    <properties>
-      <property name="javax.persistence.schema-generation.database.action" value="create"/>
-    </properties>
-  </persistence-unit>
+    <persistence-unit name="mok_persistence_unit" transaction-type="JTA">
+        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+        <jta-data-source>jdbc/mok</jta-data-source>
+        <class>entities.AccessLevel</class>
+        <class>entities.Account</class>
+        <class>entities.Administrator</class>
+        <class>entities.Competition</class>
+        <class>entities.CompetitionType</class>
+        <class>entities.Competitor</class>
+        <class>entities.CompetitorMatchGroup</class>
+        <class>entities.GroupCompetition</class>
+        <class>entities.Groupp</class>
+        <class>entities.MatchMatchType</class>
+        <class>entities.MatchType</class>
+        <class>entities.Matchh</class>
+        <class>entities.Organizer</class>
+        <class>entities.PersonalInfo</class>
+        <class>entities.Score</class>
+        <class>entities.Team</class>
+        <exclude-unlisted-classes>true</exclude-unlisted-classes>
+        <shared-cache-mode>NONE</shared-cache-mode>
+    </persistence-unit>
+    <persistence-unit name="mok_persistence_unit" transaction-type="JTA">
+        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+        <jta-data-source>jdbc/mot</jta-data-source>
+        <class>entities.AccessLevel</class>
+        <class>entities.Account</class>
+        <class>entities.Administrator</class>
+        <class>entities.Competition</class>
+        <class>entities.CompetitionType</class>
+        <class>entities.Competitor</class>
+        <class>entities.CompetitorMatchGroup</class>
+        <class>entities.GroupCompetition</class>
+        <class>entities.Groupp</class>
+        <class>entities.MatchMatchType</class>
+        <class>entities.MatchType</class>
+        <class>entities.Matchh</class>
+        <class>entities.Organizer</class>
+        <class>entities.PersonalInfo</class>
+        <class>entities.Score</class>
+        <class>entities.Team</class>
+        <exclude-unlisted-classes>true</exclude-unlisted-classes>
+        <shared-cache-mode>NONE</shared-cache-mode>
+    </persistence-unit>
 </persistence>
