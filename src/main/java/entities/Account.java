@@ -11,7 +11,10 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -40,10 +43,10 @@ import javax.xml.bind.annotation.XmlTransient;
 public class Account implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @NotNull
     @Column(name = "id_account")
-    private Long idAccount;
+    private Integer idAccount;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 50)
@@ -68,17 +71,18 @@ public class Account implements Serializable {
     private long version;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idAccount")
     private List<AccessLevel> accessLevelList;
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "idAccount")
-    private PersonalInfo personalInfo;
+    @JoinColumn(name = "id_personal_info", referencedColumnName = "id_personal_info")
+    @OneToOne(optional = false, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    private PersonalInfo idPersonalInfo;
 
     public Account() {
     }
 
-    public Account(Long idAccount) {
+    public Account(Integer idAccount) {
         this.idAccount = idAccount;
     }
 
-    public Account(Long idAccount, String login, String password, boolean isActive, boolean isConfirmed, long version) {
+    public Account(Integer idAccount, String login, String password, boolean isActive, boolean isConfirmed, long version) {
         this.idAccount = idAccount;
         this.login = login;
         this.password = password;
@@ -87,11 +91,11 @@ public class Account implements Serializable {
         this.version = version;
     }
 
-    public Long getIdAccount() {
+    public Integer getIdAccount() {
         return idAccount;
     }
 
-    public void setIdAccount(Long idAccount) {
+    public void setIdAccount(Integer idAccount) {
         this.idAccount = idAccount;
     }
 
@@ -144,14 +148,13 @@ public class Account implements Serializable {
         this.accessLevelList = accessLevelList;
     }
 
-    public PersonalInfo getPersonalInfo() {
-        return personalInfo;
+    public PersonalInfo getIdPersonalInfo() {
+        return idPersonalInfo;
     }
 
-    public void setPersonalInfo(PersonalInfo personalInfo) {
-        this.personalInfo = personalInfo;
+    public void setIdPersonalInfo(PersonalInfo idPersonalInfo) {
+        this.idPersonalInfo = idPersonalInfo;
     }
-    
 
     @Override
     public int hashCode() {

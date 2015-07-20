@@ -5,9 +5,15 @@
  */
 package web.controllers;
 
+import entities.Competitor;
+import entities.Team;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
+import java.util.List;
+import javax.ejb.EJB;
+import mot.services.CompetitionService;
+import mot.services.CompetitionServiceLocal;
 
 /**
  *
@@ -17,10 +23,19 @@ import java.io.Serializable;
 @SessionScoped
 public class CompetitionController implements Serializable {
 
-    /**
-     * Creates a new instance of CompetitionController
-     */
+    @EJB
+    private CompetitionServiceLocal service;
+    
     public CompetitionController() {
     }
     
+    public List<Team> findAllTeams() {
+        
+        return service.findAllTeams();
+    }
+    
+    public void addCompetitor(Competitor competitor) {
+        
+        service.addCompetitor(competitor);
+    }
 }

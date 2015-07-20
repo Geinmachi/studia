@@ -10,15 +10,16 @@
                     <p:submenu label="#{request.remoteUser}">
                         <p:menuitem value="#{msg.mainPage}" icon="ui-icon-home" url="/index.xhtml?faces-redirect=true"/>
                         <p:menuitem value="#{msg.profile}" icon="ui-icon-person" url="/authenticatedUsers/showUserData.xhtml?faces-redirect=true"/>
+                        <p:menuitem value="#{msg.addCompetitor}" icon="ui-icon-person" url="/organizer/addCompetitor.xhtml"/>
                         <p:menuitem value="#{msg.logout}" icon="ui-icon-locked" action="#{loginBackingBean.logout()}"  />
                     </p:submenu>
 
                 </c:when>
                 <c:otherwise>
                     <p:submenu label="#{msg.notlogged}">
-                        <p:menuitem value="#{msg.mainPage}" icon="ui-icon-home" url="/index.xhtml?faces-redirect=true"/>
+                        <p:menuitem value="#{msg.mainPage}" icon="ui-icon-home" url="/index.xhtml"/>
                         <p:menuitem value="#{msg.register}" icon="ui-icon-plusthick" url="/register.xhtml?faces-redirect=true" />
-                        <p:menuitem value="#{msg.login}" icon="ui-icon-key" url="/login/login.xhtml?faces-redirect=true"/>
+                        <p:menuitem value="#{msg.login}" icon="ui-icon-key" url="/login/login.xhtml"/>
                     </p:submenu>
                 </c:otherwise>  
             </c:choose>

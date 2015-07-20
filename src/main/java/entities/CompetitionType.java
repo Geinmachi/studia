@@ -11,6 +11,8 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -35,10 +37,10 @@ import javax.xml.bind.annotation.XmlTransient;
 public class CompetitionType implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @NotNull
     @Column(name = "id_competition_type")
-    private Long idCompetitionType;
+    private Integer idCompetitionType;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 50)
@@ -50,20 +52,20 @@ public class CompetitionType implements Serializable {
     public CompetitionType() {
     }
 
-    public CompetitionType(Long idCompetitionType) {
+    public CompetitionType(Integer idCompetitionType) {
         this.idCompetitionType = idCompetitionType;
     }
 
-    public CompetitionType(Long idCompetitionType, String competitionTypeName) {
+    public CompetitionType(Integer idCompetitionType, String competitionTypeName) {
         this.idCompetitionType = idCompetitionType;
         this.competitionTypeName = competitionTypeName;
     }
 
-    public Long getIdCompetitionType() {
+    public Integer getIdCompetitionType() {
         return idCompetitionType;
     }
 
-    public void setIdCompetitionType(Long idCompetitionType) {
+    public void setIdCompetitionType(Integer idCompetitionType) {
         this.idCompetitionType = idCompetitionType;
     }
 

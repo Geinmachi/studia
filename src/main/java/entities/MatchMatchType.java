@@ -9,13 +9,14 @@ import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -31,10 +32,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class MatchMatchType implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @NotNull
     @Column(name = "id_match_match_type")
-    private Long idMatchMatchType;
+    private Integer idMatchMatchType;
     @JoinColumn(name = "id_match_type", referencedColumnName = "id_match_type")
     @ManyToOne(optional = false)
     private MatchType idMatchType;
@@ -45,15 +46,15 @@ public class MatchMatchType implements Serializable {
     public MatchMatchType() {
     }
 
-    public MatchMatchType(Long idMatchMatchType) {
+    public MatchMatchType(Integer idMatchMatchType) {
         this.idMatchMatchType = idMatchMatchType;
     }
 
-    public Long getIdMatchMatchType() {
+    public Integer getIdMatchMatchType() {
         return idMatchMatchType;
     }
 
-    public void setIdMatchMatchType(Long idMatchMatchType) {
+    public void setIdMatchMatchType(Integer idMatchMatchType) {
         this.idMatchMatchType = idMatchMatchType;
     }
 

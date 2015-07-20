@@ -12,6 +12,8 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -40,10 +42,10 @@ import javax.xml.bind.annotation.XmlTransient;
 public class Groupp implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @NotNull
     @Column(name = "id_group")
-    private Long idGroup;
+    private Integer idGroup;
     @Basic(optional = false)
     @NotNull
     @Column(name = "group_name")
@@ -66,21 +68,21 @@ public class Groupp implements Serializable {
     public Groupp() {
     }
 
-    public Groupp(Long idGroup) {
+    public Groupp(Integer idGroup) {
         this.idGroup = idGroup;
     }
 
-    public Groupp(Long idGroup, Character groupName, long version) {
+    public Groupp(Integer idGroup, Character groupName, long version) {
         this.idGroup = idGroup;
         this.groupName = groupName;
         this.version = version;
     }
 
-    public Long getIdGroup() {
+    public Integer getIdGroup() {
         return idGroup;
     }
 
-    public void setIdGroup(Long idGroup) {
+    public void setIdGroup(Integer idGroup) {
         this.idGroup = idGroup;
     }
 

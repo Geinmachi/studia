@@ -10,15 +10,14 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -39,10 +38,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class PersonalInfo implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @NotNull
     @Column(name = "id_personal_info")
-    private Long idPersonalInfo;
+    private Integer idPersonalInfo;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 50)
@@ -53,42 +52,38 @@ public class PersonalInfo implements Serializable {
     @Size(min = 1, max = 50)
     @Column(name = "last_name")
     private String lastName;
-    @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="Invalid email")//if the field contains email address consider using this annotation to enforce field validation
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 50)
+    // @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="Invalid email")//if the field contains email address consider using this annotation to enforce field validation
+    @Size(max = 50)
     @Column(name = "email")
     private String email;
     @Basic(optional = false)
     @NotNull
     @Column(name = "version")
     private long version;
-    @JoinColumn(name = "id_account", referencedColumnName = "id_account")
-    @OneToOne(optional = true)
-    private Account idAccount;
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "idPersonalInfo")
-    private Competitor competitor;
+//    @OneToOne(cascade = CascadeType.ALL, mappedBy = "idPersonalInfo")
+//    private Competitor competitor;
+//    @OneToOne(cascade = CascadeType.ALL, mappedBy = "idPersonalInfo")
+//    private Account account;
 
     public PersonalInfo() {
     }
 
-    public PersonalInfo(Long idPersonalInfo) {
+    public PersonalInfo(Integer idPersonalInfo) {
         this.idPersonalInfo = idPersonalInfo;
     }
 
-    public PersonalInfo(Long idPersonalInfo, String firstName, String lastName, String email, long version) {
+    public PersonalInfo(Integer idPersonalInfo, String firstName, String lastName, long version) {
         this.idPersonalInfo = idPersonalInfo;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.email = email;
         this.version = version;
     }
 
-    public Long getIdPersonalInfo() {
+    public Integer getIdPersonalInfo() {
         return idPersonalInfo;
     }
 
-    public void setIdPersonalInfo(Long idPersonalInfo) {
+    public void setIdPersonalInfo(Integer idPersonalInfo) {
         this.idPersonalInfo = idPersonalInfo;
     }
 
@@ -124,21 +119,21 @@ public class PersonalInfo implements Serializable {
         this.version = version;
     }
 
-    public Account getIdAccount() {
-        return idAccount;
-    }
-
-    public void setIdAccount(Account idAccount) {
-        this.idAccount = idAccount;
-    }
-
-    public Competitor getCompetitor() {
-        return competitor;
-    }
-
-    public void setCompetitor(Competitor competitor) {
-        this.competitor = competitor;
-    }
+//    public Competitor getCompetitor() {
+//        return competitor;
+//    }
+//
+//    public void setCompetitor(Competitor competitor) {
+//        this.competitor = competitor;
+//    }
+//
+//    public Account getAccount() {
+//        return account;
+//    }
+//
+//    public void setAccount(Account account) {
+//        this.account = account;
+//    }
 
     @Override
     public int hashCode() {

@@ -12,6 +12,8 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
@@ -43,15 +45,14 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "AccessLevel.findByIsActive", query = "SELECT a FROM AccessLevel a WHERE a.isActive = :isActive"),
     @NamedQuery(name = "AccessLevel.findByVersion", query = "SELECT a FROM AccessLevel a WHERE a.version = :version")})
 public class AccessLevel implements Serializable {
-
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "id_access_level")
+    private Integer idAccessLevel;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "id_access_level")
-    private Long idAccessLevel;
-    @Basic(optional = false)
-//    @NotNull
     @Size(min = 1, max = 50)
     @Column(name = "access_level")
     private String accessLevel;
@@ -72,22 +73,22 @@ public class AccessLevel implements Serializable {
     public AccessLevel() {
     }
 
-    public AccessLevel(Long idAccessLevel) {
+    public AccessLevel(Integer idAccessLevel) {
         this.idAccessLevel = idAccessLevel;
     }
 
-    public AccessLevel(Long idAccessLevel, String accessLevel, boolean isActive, long version) {
+    public AccessLevel(Integer idAccessLevel, String accessLevel, boolean isActive, long version) {
         this.idAccessLevel = idAccessLevel;
         this.accessLevel = accessLevel;
         this.isActive = isActive;
         this.version = version;
     }
 
-    public Long getIdAccessLevel() {
+    public Integer getIdAccessLevel() {
         return idAccessLevel;
     }
 
-    public void setIdAccessLevel(Long idAccessLevel) {
+    public void setIdAccessLevel(Integer idAccessLevel) {
         this.idAccessLevel = idAccessLevel;
     }
 
@@ -156,5 +157,5 @@ public class AccessLevel implements Serializable {
     public String toString() {
         return "entities.AccessLevel[ idAccessLevel=" + idAccessLevel + " ]";
     }
-
+    
 }

@@ -11,6 +11,8 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -35,10 +37,10 @@ import javax.xml.bind.annotation.XmlTransient;
 public class MatchType implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @NotNull
     @Column(name = "id_match_type")
-    private Long idMatchType;
+    private Integer idMatchType;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 50)
@@ -50,20 +52,20 @@ public class MatchType implements Serializable {
     public MatchType() {
     }
 
-    public MatchType(Long idMatchType) {
+    public MatchType(Integer idMatchType) {
         this.idMatchType = idMatchType;
     }
 
-    public MatchType(Long idMatchType, String matchTypeName) {
+    public MatchType(Integer idMatchType, String matchTypeName) {
         this.idMatchType = idMatchType;
         this.matchTypeName = matchTypeName;
     }
 
-    public Long getIdMatchType() {
+    public Integer getIdMatchType() {
         return idMatchType;
     }
 
-    public void setIdMatchType(Long idMatchType) {
+    public void setIdMatchType(Integer idMatchType) {
         this.idMatchType = idMatchType;
     }
 

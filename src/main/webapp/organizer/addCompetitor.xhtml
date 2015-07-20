@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/templates/main.xhtml"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:define name="title">#{msg.addCompetitorTitle}</ui:define>
+    <ui:define name="content">
+        
+        <h:form>
+            <p:panelGrid>
+                <p:row>
+                    <p:column>
+                        <p:outputLabel for="firstName" value="#{msg.firstName}"/>
+                    </p:column>
+                    <p:column>
+                        <p:inputText id="firstName" value="#{addCompetitorBackingBean.personalInfo.firstName}"/>
+                    </p:column>
+                    <p:column>
+                        <p:message for="firstName"/>
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column>
+                        <p:outputLabel for="lastName" value="#{msg.lastName}"/>
+                    </p:column>
+                    <p:column>
+                        <p:inputText id="lastName" value="#{addCompetitorBackingBean.personalInfo.lastName}"/>
+                    </p:column>
+                    <p:column>
+                        <p:message for="lastName"/>
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column>
+                        <p:outputLabel for="teamListbox" value="#{msg.team}"/>
+                    </p:column>
+                    <p:column>
+                        <p:selectOneMenu id="teamListbox" value="#{addCompetitorBackingBean.selectedTeam}">
+                            <f:selectItem itemValue="#{null}" itemLabel="#{msg.none}" />
+                            <f:selectItems value="#{addCompetitorBackingBean.teamList}" var="team" itemLabel="#{team.teamName}"/>
+                        </p:selectOneMenu>
+                    </p:column>
+                    <p:column>
+                        <p:message for="teamListbox"/>
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column colspan="3">
+                        <p:commandButton value="#{msg.add}" action="#{addCompetitorBackingBean.addCompetitor()}"/>
+                    </p:column>
+                </p:row>
+            </p:panelGrid>
+        </h:form>
+        
+    </ui:define>
+</ui:composition>

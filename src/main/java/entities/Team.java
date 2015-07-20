@@ -8,9 +8,10 @@ package entities;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -36,10 +37,10 @@ import javax.xml.bind.annotation.XmlTransient;
 public class Team implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @NotNull
     @Column(name = "id_team")
-    private Long idTeam;
+    private Integer idTeam;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 50)
@@ -49,27 +50,27 @@ public class Team implements Serializable {
     @NotNull
     @Column(name = "version")
     private long version;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idTeam")
+    @OneToMany(mappedBy = "idTeam")
     private List<Competitor> competitorList;
 
     public Team() {
     }
 
-    public Team(Long idTeam) {
+    public Team(Integer idTeam) {
         this.idTeam = idTeam;
     }
 
-    public Team(Long idTeam, String teamName, long version) {
+    public Team(Integer idTeam, String teamName, long version) {
         this.idTeam = idTeam;
         this.teamName = teamName;
         this.version = version;
     }
 
-    public Long getIdTeam() {
+    public Integer getIdTeam() {
         return idTeam;
     }
 
-    public void setIdTeam(Long idTeam) {
+    public void setIdTeam(Integer idTeam) {
         this.idTeam = idTeam;
     }
 
