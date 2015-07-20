@@ -15,6 +15,7 @@ import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -67,8 +68,8 @@ public class Account implements Serializable {
     private long version;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idAccount")
     private List<AccessLevel> accessLevelList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idAccount")
-    private List<PersonalInfo> personalInfoList;
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "idAccount")
+    private PersonalInfo personalInfo;
 
     public Account() {
     }
@@ -143,14 +144,14 @@ public class Account implements Serializable {
         this.accessLevelList = accessLevelList;
     }
 
-    @XmlTransient
-    public List<PersonalInfo> getPersonalInfoList() {
-        return personalInfoList;
+    public PersonalInfo getPersonalInfo() {
+        return personalInfo;
     }
 
-    public void setPersonalInfoList(List<PersonalInfo> personalInfoList) {
-        this.personalInfoList = personalInfoList;
+    public void setPersonalInfo(PersonalInfo personalInfo) {
+        this.personalInfo = personalInfo;
     }
+    
 
     @Override
     public int hashCode() {
