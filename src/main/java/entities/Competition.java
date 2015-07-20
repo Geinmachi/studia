@@ -12,6 +12,8 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -44,11 +46,13 @@ import javax.xml.bind.annotation.XmlTransient;
 public class Competition implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "id_competition")
+    private Integer idCompetition;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "id_competition")
-    private Long idCompetition;
-    @Size(max = 100)
+    @Size(min = 1, max = 100)
     @Column(name = "competition_name")
     private String competitionName;
     @Basic(optional = false)
@@ -84,23 +88,24 @@ public class Competition implements Serializable {
     public Competition() {
     }
 
-    public Competition(Long idCompetition) {
+    public Competition(Integer idCompetition) {
         this.idCompetition = idCompetition;
     }
 
-    public Competition(Long idCompetition, Date creationDate, Date startDate, Date endDate, long version) {
+    public Competition(Integer idCompetition, String competitionName, Date creationDate, Date startDate, Date endDate, long version) {
         this.idCompetition = idCompetition;
+        this.competitionName = competitionName;
         this.creationDate = creationDate;
         this.startDate = startDate;
         this.endDate = endDate;
         this.version = version;
     }
 
-    public Long getIdCompetition() {
+    public Integer getIdCompetition() {
         return idCompetition;
     }
 
-    public void setIdCompetition(Long idCompetition) {
+    public void setIdCompetition(Integer idCompetition) {
         this.idCompetition = idCompetition;
     }
 

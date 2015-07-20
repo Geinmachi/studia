@@ -12,6 +12,8 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -39,10 +41,10 @@ import javax.xml.bind.annotation.XmlTransient;
 public class Matchh implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @NotNull
     @Column(name = "id_match")
-    private Long idMatch;
+    private Integer idMatch;
     @Basic(optional = false)
     @NotNull
     @Column(name = "match_date")
@@ -64,22 +66,22 @@ public class Matchh implements Serializable {
     public Matchh() {
     }
 
-    public Matchh(Long idMatch) {
+    public Matchh(Integer idMatch) {
         this.idMatch = idMatch;
     }
 
-    public Matchh(Long idMatch, Date matchDate, short roundd, long version) {
+    public Matchh(Integer idMatch, Date matchDate, short roundd, long version) {
         this.idMatch = idMatch;
         this.matchDate = matchDate;
         this.roundd = roundd;
         this.version = version;
     }
 
-    public Long getIdMatch() {
+    public Integer getIdMatch() {
         return idMatch;
     }
 
-    public void setIdMatch(Long idMatch) {
+    public void setIdMatch(Integer idMatch) {
         this.idMatch = idMatch;
     }
 

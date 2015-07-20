@@ -11,6 +11,8 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -19,7 +21,6 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -36,33 +37,33 @@ import javax.xml.bind.annotation.XmlTransient;
 public class Competitor implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @NotNull
     @Column(name = "id_competitor")
-    private Long idCompetitor;
+    private Integer idCompetitor;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idCompetitor")
     private List<CompetitorMatchGroup> competitorMatchGroupList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idCompetitor")
     private List<Score> scoreList;
     @JoinColumn(name = "id_personal_info", referencedColumnName = "id_personal_info")
-    @OneToOne(optional = false)
+    @OneToOne(optional = false, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private PersonalInfo idPersonalInfo;
     @JoinColumn(name = "id_team", referencedColumnName = "id_team")
-    @ManyToOne(optional = false)
+    @ManyToOne
     private Team idTeam;
 
     public Competitor() {
     }
 
-    public Competitor(Long idCompetitor) {
+    public Competitor(Integer idCompetitor) {
         this.idCompetitor = idCompetitor;
     }
 
-    public Long getIdCompetitor() {
+    public Integer getIdCompetitor() {
         return idCompetitor;
     }
 
-    public void setIdCompetitor(Long idCompetitor) {
+    public void setIdCompetitor(Integer idCompetitor) {
         this.idCompetitor = idCompetitor;
     }
 

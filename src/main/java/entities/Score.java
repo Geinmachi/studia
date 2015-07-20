@@ -9,13 +9,14 @@ import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -32,10 +33,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class Score implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @NotNull
     @Column(name = "id_score")
-    private Long idScore;
+    private Integer idScore;
     @Column(name = "score")
     private Short score;
     @JoinColumn(name = "id_competition", referencedColumnName = "id_competition")
@@ -48,15 +49,15 @@ public class Score implements Serializable {
     public Score() {
     }
 
-    public Score(Long idScore) {
+    public Score(Integer idScore) {
         this.idScore = idScore;
     }
 
-    public Long getIdScore() {
+    public Integer getIdScore() {
         return idScore;
     }
 
-    public void setIdScore(Long idScore) {
+    public void setIdScore(Integer idScore) {
         this.idScore = idScore;
     }
 
