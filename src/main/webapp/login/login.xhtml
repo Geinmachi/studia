@@ -7,11 +7,11 @@
                 template="/WEB-INF/templates/main.xhtml">
     <ui:define name="title">#{msg.loginTitle}</ui:define>
     <ui:define name="content">
-        <form action="j_security_check" method="post">
-            #{msg.login}: <input type="text" name="j_username"/><br />
-            #{msg.passord} <input type="password" name="j_password"/><br />
-            <input type="submit" value="#{msg.signIn}"/>
-        </form>
+        <h:form>
+            #{msg.login}: <p:inputText value="#{loginBackingBean.username}"/><br />
+            #{msg.password} <p:password value="#{loginBackingBean.password}"/><br />
+            <p:commandButton value="#{msg.signIn}" action="#{loginBackingBean.login()}"/>
+        </h:form>
     </ui:define>
 </ui:composition>
 

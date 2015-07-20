@@ -10,7 +10,7 @@
                     <p:submenu label="#{request.remoteUser}">
                         <p:menuitem value="#{msg.mainPage}" icon="ui-icon-home" url="/index.xhtml?faces-redirect=true"/>
                         <p:menuitem value="#{msg.profile}" icon="ui-icon-person" url="/authenticatedUsers/showUserData.xhtml?faces-redirect=true"/>
-                        <p:menuitem value="#{msg.logout}" icon="ui-icon-locked" action="#{accountSession.closeSession}"  />
+                        <p:menuitem value="#{msg.logout}" icon="ui-icon-locked" action="#{loginBackingBean.logout()}"  />
                     </p:submenu>
 
                 </c:when>
