@@ -10,8 +10,11 @@ import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.DiscriminatorColumn;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
@@ -30,6 +33,8 @@ import javax.xml.bind.annotation.XmlTransient;
  */
 @Entity
 @Table(name = "access_level")
+@Inheritance(strategy = InheritanceType.JOINED)
+@DiscriminatorColumn(name = "access_level")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "AccessLevel.findAll", query = "SELECT a FROM AccessLevel a"),
@@ -38,6 +43,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "AccessLevel.findByIsActive", query = "SELECT a FROM AccessLevel a WHERE a.isActive = :isActive"),
     @NamedQuery(name = "AccessLevel.findByVersion", query = "SELECT a FROM AccessLevel a WHERE a.version = :version")})
 public class AccessLevel implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -45,7 +51,7 @@ public class AccessLevel implements Serializable {
     @Column(name = "id_access_level")
     private Long idAccessLevel;
     @Basic(optional = false)
-    @NotNull
+//    @NotNull
     @Size(min = 1, max = 50)
     @Column(name = "access_level")
     private String accessLevel;
@@ -62,10 +68,6 @@ public class AccessLevel implements Serializable {
     @JoinColumn(name = "id_account", referencedColumnName = "id_account")
     @ManyToOne(optional = false)
     private Account idAccount;
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "accessLevel")
-    private Administrator administrator;
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "accessLevel")
-    private Organizer organizer;
 
     public AccessLevel() {
     }
@@ -130,22 +132,6 @@ public class AccessLevel implements Serializable {
         this.idAccount = idAccount;
     }
 
-    public Administrator getAdministrator() {
-        return administrator;
-    }
-
-    public void setAdministrator(Administrator administrator) {
-        this.administrator = administrator;
-    }
-
-    public Organizer getOrganizer() {
-        return organizer;
-    }
-
-    public void setOrganizer(Organizer organizer) {
-        this.organizer = organizer;
-    }
-
     @Override
     public int hashCode() {
         int hash = 0;
@@ -170,5 +156,5 @@ public class AccessLevel implements Serializable {
     public String toString() {
         return "entities.AccessLevel[ idAccessLevel=" + idAccessLevel + " ]";
     }
-    
+
 }
