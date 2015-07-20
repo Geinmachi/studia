@@ -19,6 +19,64 @@
         </session-timeout>
     </session-config>
     <welcome-file-list>
-        <welcome-file>test.xhtml</welcome-file>
+        <welcome-file>index.xhtml</welcome-file>
     </welcome-file-list>
+    <security-role>
+        <role-name>Administrator</role-name>
+    </security-role>
+    <security-role>
+        <role-name>Organizer</role-name>
+    </security-role>
+    <security-constraint>
+        <display-name>Administrator-constraint</display-name>
+        <web-resource-collection>
+            <web-resource-name>Admin pages</web-resource-name>
+            <description/>
+            <url-pattern>/admin/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <description/>
+            <role-name>Administrator</role-name>
+        </auth-constraint>
+        <user-data-constraint>
+            <description/>
+            <transport-guarantee>CONFIDENTIAL</transport-guarantee>
+        </user-data-constraint>
+    </security-constraint>
+    <security-constraint>
+        <display-name>Organizer-constraint</display-name>
+        <web-resource-collection>
+            <web-resource-name>Organizer pages</web-resource-name>
+            <description/>
+            <url-pattern>/organizer/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <description/>
+            <role-name>Organizer</role-name>
+        </auth-constraint>
+        <user-data-constraint>
+            <description/>
+            <transport-guarantee>CONFIDENTIAL</transport-guarantee>
+        </user-data-constraint>
+    </security-constraint>
+    <security-constraint>
+        <display-name>secure-connection</display-name>
+        <web-resource-collection>
+            <web-resource-name>App-scope ssl</web-resource-name>
+            <description/>
+            <url-pattern>/*</url-pattern>
+        </web-resource-collection>
+        <user-data-constraint>
+            <description/>
+            <transport-guarantee>CONFIDENTIAL</transport-guarantee>
+        </user-data-constraint>
+    </security-constraint>
+    <login-config>
+        <auth-method>FORM</auth-method>
+        <realm-name>praca-realm</realm-name>
+        <form-login-config>
+            <form-login-page>/login/login.xhtml</form-login-page>
+            <form-error-page>/login/fail.xhtml</form-error-page>
+        </form-login-config>
+    </login-config>
 </web-app>
