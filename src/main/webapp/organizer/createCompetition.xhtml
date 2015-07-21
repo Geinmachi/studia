@@ -5,12 +5,94 @@ To change this template file, choose Tools | Templates
 and open the template in the editor.
 -->
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
-    <head>
-        <title>TODO supply a title</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    </head>
-    <body>
-        <div>TODO write content</div>
-    </body>
-</html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/templates/main.xhtml"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:define name="title">#{msg.createCompetitionTitle}</ui:define>
+    <ui:define name="content">
+        <h:form>
+            <p:panelGrid>
+                <p:row>
+                    <p:column>
+                        <p:outputLabel for="competitionName" value="#{msg.competitionName}"/>
+                    </p:column>
+                    <p:column>
+                        <p:inputText id="competitionName" value="#{createCompetitionBackingBean.competition.competitionName}"/>
+                    </p:column>
+                    <p:column>
+                        <p:message for="competitionName"/>
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column>
+                        <p:outputLabel for="competitionType" value="#{msg.competitionType}"/>
+                    </p:column>
+                    <p:column>
+                        <p:selectOneMenu id="competitionType" value="#{createCompetitionBackingBean.selectedCompetitionType}">
+                            <f:selectItems value="#{createCompetitionBackingBean.competitionTypes}" var="competitionType" itemLabel="#{competitionType.competitionTypeName}"/>
+                        </p:selectOneMenu>
+                    </p:column>
+                    <p:column>
+                        <p:message for="competitionType"/>
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column>
+                        <p:outputLabel for="startDate" value="#{msg.startDate}"/>
+                    </p:column>
+                    <p:column>
+                        <p:calendar id="startDate" value="#{createCompetitionBackingBean.competition.startDate}" pattern="MM/dd/yyyy HH:mm:ss" />
+                    </p:column>
+                    <p:column>
+                        <p:message for="startDate"/>
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column>
+                        <p:outputLabel for="endDate" value="#{msg.startDate}"/>
+                    </p:column>
+                    <p:column>
+                        <p:calendar id="endDate" value="#{createCompetitionBackingBean.competition.endDate}" pattern="MM/dd/yyyy HH:mm:ss" />
+                    </p:column>
+                    <p:column>
+                        <p:message for="endDate"/>
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column>
+                        <p:outputLabel for="assignedCompetitors" value="#{msg.assignedCompetitors}"/><br/>
+                        <p:selectOneListbox scrollHeight="100"  id="assignedCompetitors" 
+                                            value="#{createCompetitionBackingBean.selectedToRemove}"
+                                            var="selectedToRemove" converter="competitorConverter">
+                            <f:selectItems value="#{createCompetitionBackingBean.selectedCompetitors}"/>
+                            <p:column>#{selectedToRemove.idPersonalInfo.firstName} 
+                            #{selectedToRemove.idPersonalInfo.lastName}</p:column>
+                        </p:selectOneListbox>
+                    </p:column>
+                    <p:column>
+                        <p:commandButton value="&lt;&lt;&lt;" action="#{createCompetitionBackingBean.addCompetitor()}"
+                                         update="allCompetitors, assignedCompetitors, msgs"
+                                         process="@this, assignedCompetitors, allCompetitors"/><br/>
+                        <p:commandButton value="&gt;&gt;&gt;" action="#{createCompetitionBackingBean.removeCompetitor()}"
+                                         update="allCompetitors, assignedCompetitors, msgs"
+                                         process="@this, assignedCompetitors, allCompetitors"/><br/>
+                    </p:column>
+                    <p:column>
+                        <p:outputLabel for="allCompetitors" value="#{msg.allCompetitors}"/><br/>
+                        <p:selectOneListbox scrollHeight="100" id="allCompetitors" 
+                                            value="#{createCompetitionBackingBean.selectedToAdd}"
+                                            var="selectedToAdd" converter="competitorConverter">
+                            <f:selectItems value="#{createCompetitionBackingBean.competitorList}"  />
+                            <p:column>#{selectedToAdd.idPersonalInfo.firstName} 
+                            #{selectedToAdd.idPersonalInfo.lastName}</p:column>
+                        </p:selectOneListbox>
+                    </p:column>
+                </p:row>
+            </p:panelGrid>
+            <p:messages id="msgs"/>
+        </h:form>
+    </ui:define>
+</ui:composition>
