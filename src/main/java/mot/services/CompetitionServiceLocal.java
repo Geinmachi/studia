@@ -5,6 +5,7 @@
  */
 package mot.services;
 
+import entities.CompetitionType;
 import entities.Competitor;
 import entities.Team;
 import java.util.List;
@@ -20,4 +21,10 @@ public interface CompetitionServiceLocal {
     public List<Team> findAllTeams();
     
     public void addCompetitor(Competitor competitor);
+    
+    public List<Competitor> getAllCompetitors();
+    
+    public List<CompetitionType> getAllCompetitionTypes();
+    
+    public Competitor findCopetitorById(Integer id);
 }

@@ -5,6 +5,7 @@
  */
 package mot.services;
 
+import entities.CompetitionType;
 import entities.Competitor;
 import entities.Team;
 import java.util.List;
@@ -12,6 +13,7 @@ import javax.ejb.EJB;
 import javax.ejb.Stateful;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
+import mot.facades.CompetitionTypeFacadeLocal;
 import mot.facades.CompetitorFacadeLocal;
 import mot.facades.TeamFacadeLocal;
 
@@ -25,10 +27,13 @@ public class CompetitionService implements CompetitionServiceLocal {
 
     @EJB
     private TeamFacadeLocal teamFacade;
-    
+
     @EJB
     private CompetitorFacadeLocal competitorFacade;
     
+    @EJB
+    private CompetitionTypeFacadeLocal competitionTypeFacade;
+
     @Override
     public List<Team> findAllTeams() {
         return teamFacade.findAll();
@@ -36,7 +41,21 @@ public class CompetitionService implements CompetitionServiceLocal {
 
     @Override
     public void addCompetitor(Competitor competitor) {
-
         competitorFacade.create(competitor);
+    }
+
+    @Override
+    public List<Competitor> getAllCompetitors() {
+        return competitorFacade.findAll();
+    }
+
+    @Override
+    public List<CompetitionType> getAllCompetitionTypes() {
+        return competitionTypeFacade.findAll();
+    }
+
+    @Override
+    public Competitor findCopetitorById(Integer id) {
+        return competitorFacade.find(id);
     }
 }

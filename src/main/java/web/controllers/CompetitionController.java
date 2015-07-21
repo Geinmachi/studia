@@ -5,6 +5,7 @@
  */
 package web.controllers;
 
+import entities.CompetitionType;
 import entities.Competitor;
 import entities.Team;
 import javax.inject.Named;
@@ -35,7 +36,18 @@ public class CompetitionController implements Serializable {
     }
     
     public void addCompetitor(Competitor competitor) {
-        
         service.addCompetitor(competitor);
+    }
+    
+    public List<Competitor> getAllCompetitors() {
+        return service.getAllCompetitors();
+    }
+    
+    public List<CompetitionType> getAllCompetitionTypes() {
+        return service.getAllCompetitionTypes();
+    }
+    
+    public Competitor findCompetitorById(Integer id) {
+        return service.findCopetitorById(id);
     }
 }
