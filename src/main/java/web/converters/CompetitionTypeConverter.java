@@ -5,6 +5,7 @@
  */
 package web.converters;
 
+import entities.CompetitionType;
 import entities.Competitor;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
@@ -19,17 +20,17 @@ import web.controllers.CompetitionController;
  *
  * @author java
  */
-@FacesConverter("competitorConverter")
-public class CompetitorConverter implements Converter {
+@FacesConverter("competitionTypeConverter")
+public class CompetitionTypeConverter implements Converter {
 
     @Inject
     private CompetitionController controller;
 
     @Override
-    public Object getAsObject(FacesContext fc, UIComponent uic, String value) {
+    public Object getAsObject(FacesContext context, UIComponent component, String value) {
         try {
 //            System.out.println("ID wybranego z convertera " + controller.findCompetitorById(Integer.parseInt(value)).getIdCompetitor());
-            return controller.findCompetitorById(Integer.parseInt(value));
+            return controller.findCompetitionTypeById(Integer.parseInt(value));
         } catch (Exception e) {
             System.out.println("WYjatekgetAsObject");
             throw new ConverterException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Conversion Error", ""));
@@ -40,10 +41,11 @@ public class CompetitorConverter implements Converter {
     public String getAsString(FacesContext context, UIComponent component, Object value) {
         try {
 //            System.out.println("ID z konwertera " + String.valueOf(((Competitor) value).getIdCompetitor()));
-            return String.valueOf(((Competitor) value).getIdCompetitor());
+            return String.valueOf(((CompetitionType) value).getIdCompetitionType());
         } catch (Exception e) {
             System.out.println("WYjatekgetAsString");
             throw new ConverterException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Conversion Error", ""));
         }
     }
+
 }

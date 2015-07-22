@@ -5,6 +5,7 @@
  */
 package mot.services;
 
+import entities.Competition;
 import entities.CompetitionType;
 import entities.Competitor;
 import entities.Team;
@@ -16,6 +17,7 @@ import javax.ejb.TransactionAttributeType;
 import mot.facades.CompetitionTypeFacadeLocal;
 import mot.facades.CompetitorFacadeLocal;
 import mot.facades.TeamFacadeLocal;
+import mot.managers.CreateCompetitionManagerLocal;
 
 /**
  *
@@ -25,6 +27,9 @@ import mot.facades.TeamFacadeLocal;
 @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 public class CompetitionService implements CompetitionServiceLocal {
 
+    @EJB
+    private CreateCompetitionManagerLocal createCompetitionManager;
+    
     @EJB
     private TeamFacadeLocal teamFacade;
 
@@ -57,5 +62,20 @@ public class CompetitionService implements CompetitionServiceLocal {
     @Override
     public Competitor findCopetitorById(Integer id) {
         return competitorFacade.find(id);
+    }
+
+    @Override
+    public boolean validateCompetitorsAmount(int amount) {
+        return createCompetitionManager.validateCompetitorsAmount(amount);
+    }
+
+    @Override
+    public void createCompetition(Competition competition) {
+        createCompetitionManager.createCompetition(competition);
+    }
+
+    @Override
+    public CompetitionType findCompetitionTypeById(int id) {
+        return competitionTypeFacade.find(id);
     }
 }

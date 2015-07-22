@@ -11,6 +11,8 @@ import entities.Competitor;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
@@ -43,6 +45,8 @@ public class CreateCompetitionBackingBean implements Serializable {
     private Competitor selectedToRemove;
 
     private Competitor selectedToAdd;
+
+    private boolean isCompetitorsAmountValid;
 
     public CreateCompetitionBackingBean() {
     }
@@ -87,6 +91,10 @@ public class CreateCompetitionBackingBean implements Serializable {
         this.selectedToAdd = selectedToAdd;
     }
 
+    public boolean getIsCompetitorsAmountValid() {
+        return isCompetitorsAmountValid;
+    }
+
     @PostConstruct
     private void init() {
         competitorList = controller.getAllCompetitors();
@@ -97,6 +105,7 @@ public class CreateCompetitionBackingBean implements Serializable {
         if (selectedToAdd != null) {
             selectedCompetitors.add(selectedToAdd);
             competitorList.remove(selectedToAdd);
+            isCompetitorsAmountValid = controller.validateCompetitorsAmount(selectedCompetitors.size());
             selectedToAdd = null;
         }
     }
@@ -105,7 +114,21 @@ public class CreateCompetitionBackingBean implements Serializable {
         if (selectedToRemove != null) {
             competitorList.add(selectedToRemove);
             selectedCompetitors.remove(selectedToRemove);
+            isCompetitorsAmountValid = controller.validateCompetitorsAmount(selectedCompetitors.size());
             selectedToRemove = null;
         }
+    }
+
+    public String createCompetition() {
+        try {
+            competition.setIdCompetitionType(selectedCompetitionType);
+            controller.createCompetition(competition);
+            return "/index.xhtml?faces-redirect=true";
+        } catch (Exception e) {
+            System.out.println("Wyjatek przy twrzoeniu");
+            Logger.getLogger(CreateCompetitionBackingBean.class.getName()).log(Level.SEVERE, null, e);
+            return null;
+        }
+
     }
 }
