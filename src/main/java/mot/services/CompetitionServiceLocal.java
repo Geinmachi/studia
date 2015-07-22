@@ -31,7 +31,7 @@ public interface CompetitionServiceLocal {
     
     public boolean validateCompetitorsAmount(int amount);
     
-    public void createCompetition(Competition competition);
+    public void createCompetition(Competition competition, List<Competitor> competitors);
     
     public CompetitionType findCompetitionTypeById(int id);
 }

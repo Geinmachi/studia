@@ -56,8 +56,8 @@ public class CompetitionController implements Serializable {
         return service.validateCompetitorsAmount(amount);
     }
     
-    public void createCompetition(Competition competition) {
-        service.createCompetition(competition);
+    public void createCompetition(Competition competition, List<Competitor> competitors) {
+        service.createCompetition(competition, competitors);
     }
     
     public CompetitionType findCompetitionTypeById(int id) {

@@ -122,7 +122,7 @@ public class CreateCompetitionBackingBean implements Serializable {
     public String createCompetition() {
         try {
             competition.setIdCompetitionType(selectedCompetitionType);
-            controller.createCompetition(competition);
+            controller.createCompetition(competition, selectedCompetitors);
             return "/index.xhtml?faces-redirect=true";
         } catch (Exception e) {
             System.out.println("Wyjatek przy twrzoeniu");
