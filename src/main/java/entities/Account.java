@@ -6,11 +6,13 @@
 package entities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -69,8 +71,8 @@ public class Account implements Serializable {
     @NotNull
     @Column(name = "version")
     private long version;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idAccount")
-    private List<AccessLevel> accessLevelList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idAccount", fetch = FetchType.EAGER)
+    private List<AccessLevel> accessLevelList = new ArrayList<>();
     @JoinColumn(name = "id_personal_info", referencedColumnName = "id_personal_info")
     @OneToOne(optional = false, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private PersonalInfo idPersonalInfo;

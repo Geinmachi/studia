@@ -6,6 +6,7 @@
 package entities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -65,7 +66,7 @@ public class AccessLevel implements Serializable {
     @Column(name = "version")
     private long version;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idOrganizer")
-    private List<Competition> competitionList;
+    private List<Competition> competitionList = new ArrayList<>();
     @JoinColumn(name = "id_account", referencedColumnName = "id_account")
     @ManyToOne(optional = false)
     private Account idAccount;

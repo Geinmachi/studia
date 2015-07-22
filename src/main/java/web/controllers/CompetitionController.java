@@ -5,6 +5,7 @@
  */
 package web.controllers;
 
+import entities.Competition;
 import entities.CompetitionType;
 import entities.Competitor;
 import entities.Team;
@@ -49,5 +50,17 @@ public class CompetitionController implements Serializable {
     
     public Competitor findCompetitorById(Integer id) {
         return service.findCopetitorById(id);
+    }
+    
+    public boolean validateCompetitorsAmount(int amount) {
+        return service.validateCompetitorsAmount(amount);
+    }
+    
+    public void createCompetition(Competition competition) {
+        service.createCompetition(competition);
+    }
+    
+    public CompetitionType findCompetitionTypeById(int id) {
+        return service.findCompetitionTypeById(id);
     }
 }
