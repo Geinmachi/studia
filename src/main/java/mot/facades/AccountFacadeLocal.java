@@ -7,13 +7,13 @@ package mot.facades;
 
 import entities.Account;
 import java.util.List;
-import javax.ejb.Local;
+import javax.ejb.Local; import javax.ejb.Remote;
 
 /**
  *
  * @author java
  */
-@Local
+@Remote
 public interface AccountFacadeLocal {
 
     void create(Account account);

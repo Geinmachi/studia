@@ -7,13 +7,13 @@ package mot.facades;
 
 import entities.Competitor;
 import java.util.List;
-import javax.ejb.Local;
+import javax.ejb.Local; import javax.ejb.Remote;
 
 /**
  *
  * @author java
  */
-@Local
+@Remote
 public interface CompetitorFacadeLocal {
 
     void create(Competitor competitor);
