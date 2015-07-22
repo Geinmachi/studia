@@ -70,8 +70,8 @@ public class CompetitionService implements CompetitionServiceLocal {
     }
 
     @Override
-    public void createCompetition(Competition competition) {
-        createCompetitionManager.createCompetition(competition);
+    public void createCompetition(Competition competition, List<Competitor> competitors) {
+        createCompetitionManager.createCompetition(competition, competitors);
     }
 
     @Override
