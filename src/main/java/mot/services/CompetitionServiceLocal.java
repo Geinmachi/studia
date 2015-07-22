@@ -10,13 +10,13 @@ import entities.CompetitionType;
 import entities.Competitor;
 import entities.Team;
 import java.util.List;
-import javax.ejb.Local;
+import javax.ejb.Local; import javax.ejb.Remote;
 
 /**
  *
  * @author java
  */
-@Local
+@Remote
 public interface CompetitionServiceLocal {
     
     public List<Team> findAllTeams();

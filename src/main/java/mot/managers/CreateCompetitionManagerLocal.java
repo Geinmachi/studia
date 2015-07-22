@@ -6,13 +6,14 @@
 package mot.managers;
 
 import entities.Competition;
-import javax.ejb.Local;
+import javax.ejb.Local; import javax.ejb.Remote;
+import javax.ejb.Remote;
 
 /**
  *
  * @author java
  */
-@Local
+@Remote
 public interface CreateCompetitionManagerLocal {
     
     public boolean validateCompetitorsAmount(int amount);
