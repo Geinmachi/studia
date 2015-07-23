@@ -10,6 +10,7 @@ import entities.CompetitionType;
 import entities.Competitor;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -19,6 +20,7 @@ import javax.enterprise.context.RequestScoped;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import mot.services.CompetitionService;
+import org.primefaces.event.FlowEvent;
 import web.controllers.CompetitionController;
 
 /**
@@ -99,8 +101,20 @@ public class CreateCompetitionBackingBean implements Serializable {
     private void init() {
         competitorList = controller.getAllCompetitors();
         competitionTypes = controller.getAllCompetitionTypes();
+        for (int i = 0; i <8; i++) {
+            selectedCompetitors.add(competitorList.get(i));
+        }
+        competition.setCompetitionName("ddd");
+        competition.setEndDate(new Date());
+        competition.setStartDate(new Date());
     }
 
+    public void onFlowProcess(FlowEvent event) {
+            if (event.getNewStep().equals("secondStep")) {
+                
+        }
+    }
+    
     public void addCompetitor() {
         if (selectedToAdd != null) {
             selectedCompetitors.add(selectedToAdd);

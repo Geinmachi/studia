@@ -6,6 +6,7 @@
 package entities;
 
 import java.io.Serializable;
+import java.util.Objects;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -117,23 +118,39 @@ public class CompetitorMatchGroup implements Serializable {
 
     @Override
     public int hashCode() {
-        int hash = 0;
-        hash += (idCompetitorMatchGroup != null ? idCompetitorMatchGroup.hashCode() : 0);
+        int hash = 5;
+        hash = 29 * hash + Objects.hashCode(this.idCompetitorMatchGroup);
+        hash = 29 * hash + Objects.hashCode(this.idCompetitor);
+        hash = 29 * hash + Objects.hashCode(this.idGroup);
+        hash = 29 * hash + Objects.hashCode(this.idMatch);
         return hash;
     }
 
     @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof CompetitorMatchGroup)) {
+    public boolean equals(Object obj) {
+        if (obj == null) {
             return false;
         }
-        CompetitorMatchGroup other = (CompetitorMatchGroup) object;
-        if ((this.idCompetitorMatchGroup == null && other.idCompetitorMatchGroup != null) || (this.idCompetitorMatchGroup != null && !this.idCompetitorMatchGroup.equals(other.idCompetitorMatchGroup))) {
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final CompetitorMatchGroup other = (CompetitorMatchGroup) obj;
+        if (!Objects.equals(this.idCompetitorMatchGroup, other.idCompetitorMatchGroup)) {
+            return false;
+        }
+        if (!Objects.equals(this.idCompetitor, other.idCompetitor)) {
+            return false;
+        }
+        if (!Objects.equals(this.idGroup, other.idGroup)) {
+            return false;
+        }
+        if (!Objects.equals(this.idMatch, other.idMatch)) {
             return false;
         }
         return true;
     }
+
+    
 
     @Override
     public String toString() {

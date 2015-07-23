@@ -6,8 +6,10 @@
 package entities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -59,9 +61,9 @@ public class Matchh implements Serializable {
     @Column(name = "version")
     private long version;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idMatch")
-    private List<MatchMatchType> matchMatchTypeList;
+    private List<MatchMatchType> matchMatchTypeList = new ArrayList<>();
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idMatch")
-    private List<CompetitorMatchGroup> competitorMatchGroupList;
+    private List<CompetitorMatchGroup> competitorMatchGroupList = new ArrayList<>();
 
     public Matchh() {
     }
@@ -129,23 +131,31 @@ public class Matchh implements Serializable {
 
     @Override
     public int hashCode() {
-        int hash = 0;
-        hash += (idMatch != null ? idMatch.hashCode() : 0);
+        int hash = 7;
+        hash = 67 * hash + Objects.hashCode(this.idMatch);
+        hash = 67 * hash + this.roundd;
         return hash;
     }
 
     @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Matchh)) {
+    public boolean equals(Object obj) {
+        if (obj == null) {
             return false;
         }
-        Matchh other = (Matchh) object;
-        if ((this.idMatch == null && other.idMatch != null) || (this.idMatch != null && !this.idMatch.equals(other.idMatch))) {
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Matchh other = (Matchh) obj;
+        if (!Objects.equals(this.idMatch, other.idMatch)) {
+            return false;
+        }
+        if (this.roundd != other.roundd) {
             return false;
         }
         return true;
     }
+
+    
 
     @Override
     public String toString() {
