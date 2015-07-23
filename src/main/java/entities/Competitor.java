@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -23,6 +24,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -37,7 +39,12 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Competitor.findAll", query = "SELECT c FROM Competitor c"),
     @NamedQuery(name = "Competitor.findByIdCompetitor", query = "SELECT c FROM Competitor c WHERE c.idCompetitor = :idCompetitor")})
 public class Competitor implements Serializable {
+
     private static final long serialVersionUID = 1L;
+
+    @Transient
+    private UUID uuid;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
@@ -55,6 +62,10 @@ public class Competitor implements Serializable {
     private Team idTeam;
 
     public Competitor() {
+    }
+
+    public Competitor(UUID uuid) {
+        this.uuid = uuid;
     }
 
     public Competitor(Integer idCompetitor) {
@@ -105,9 +116,9 @@ public class Competitor implements Serializable {
 
     @Override
     public int hashCode() {
-        int hash = 3;
-        hash = 37 * hash + Objects.hashCode(this.idCompetitor);
-        hash = 37 * hash + Objects.hashCode(this.idPersonalInfo);
+        int hash = 5;
+        hash = 89 * hash + Objects.hashCode(this.uuid);
+        hash = 89 * hash + Objects.hashCode(this.idCompetitor);
         return hash;
     }
 
@@ -120,20 +131,22 @@ public class Competitor implements Serializable {
             return false;
         }
         final Competitor other = (Competitor) obj;
-        if (!Objects.equals(this.idCompetitor, other.idCompetitor)) {
-            return false;
+
+        if (this.uuid != null && other.uuid != null) {
+            if (Objects.equals(this.uuid, other.uuid)) {
+                return true;
+            }
         }
-        if (!Objects.equals(this.idPersonalInfo, other.idPersonalInfo)) {
+
+        if (!Objects.equals(this.idCompetitor, other.idCompetitor)) {
             return false;
         }
         return true;
     }
 
-    
-
     @Override
     public String toString() {
         return "entities.Competitor[ idCompetitor=" + idCompetitor + " ]";
     }
-    
+
 }

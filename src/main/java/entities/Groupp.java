@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -23,6 +24,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -43,6 +45,10 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Groupp.findByVersion", query = "SELECT g FROM Groupp g WHERE g.version = :version")})
 public class Groupp implements Serializable {
     private static final long serialVersionUID = 1L;
+    
+    @Transient
+    private UUID uuid;
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
@@ -70,6 +76,9 @@ public class Groupp implements Serializable {
     public Groupp() {
     }
 
+    public Groupp(UUID uuid) {
+        this.uuid = uuid;
+    }
     public Groupp(Integer idGroup) {
         this.idGroup = idGroup;
     }
@@ -141,6 +150,7 @@ public class Groupp implements Serializable {
     @Override
     public int hashCode() {
         int hash = 5;
+        hash = 11 * hash + Objects.hashCode(this.uuid);
         hash = 11 * hash + Objects.hashCode(this.idGroup);
         hash = 11 * hash + Objects.hashCode(this.groupName);
         return hash;
@@ -155,6 +165,13 @@ public class Groupp implements Serializable {
             return false;
         }
         final Groupp other = (Groupp) obj;
+        
+        if (this.uuid != null && other.uuid != null) {
+            if (Objects.equals(this.uuid, other.uuid)) {
+                return true;
+            }
+        }
+        
         if (!Objects.equals(this.idGroup, other.idGroup)) {
             return false;
         }

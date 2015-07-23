@@ -9,6 +9,7 @@ import entities.Competition;
 import entities.CompetitionType;
 import entities.Competitor;
 import entities.Team;
+import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateful;
@@ -51,6 +52,9 @@ public class CompetitionService implements CompetitionServiceLocal {
 
     @Override
     public List<Competitor> getAllCompetitors() {
+//        return new ArrayList<Competitor>(){{
+//           add(new Competitor());     
+//        }};
         return competitorFacade.findAll();
     }
 
