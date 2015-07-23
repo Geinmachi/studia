@@ -8,6 +8,8 @@ package entities;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
+import java.util.UUID;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -23,6 +25,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -45,6 +48,10 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Competition.findByVersion", query = "SELECT c FROM Competition c WHERE c.version = :version")})
 public class Competition implements Serializable {
     private static final long serialVersionUID = 1L;
+    
+    @Transient
+    private UUID uuid;
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
@@ -88,6 +95,10 @@ public class Competition implements Serializable {
     public Competition() {
     }
 
+    public Competition(UUID uuid) {
+        this.uuid = uuid;
+    }
+    
     public Competition(Integer idCompetition) {
         this.idCompetition = idCompetition;
     }
@@ -185,23 +196,35 @@ public class Competition implements Serializable {
 
     @Override
     public int hashCode() {
-        int hash = 0;
-        hash += (idCompetition != null ? idCompetition.hashCode() : 0);
+        int hash = 3;
+        hash = 43 * hash + Objects.hashCode(this.uuid);
+        hash = 43 * hash + Objects.hashCode(this.idCompetition);
         return hash;
     }
 
     @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Competition)) {
+    public boolean equals(Object obj) {
+        if (obj == null) {
             return false;
         }
-        Competition other = (Competition) object;
-        if ((this.idCompetition == null && other.idCompetition != null) || (this.idCompetition != null && !this.idCompetition.equals(other.idCompetition))) {
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Competition other = (Competition) obj;
+        
+        if (this.uuid != null && other.uuid != null) {
+            if (Objects.equals(this.uuid, other.uuid)) {
+                return true;
+            }
+        }
+        
+        if (!Objects.equals(this.idCompetition, other.idCompetition)) {
             return false;
         }
         return true;
     }
+
+    
 
     @Override
     public String toString() {

@@ -7,6 +7,7 @@ package entities;
 
 import java.io.Serializable;
 import java.util.Objects;
+import java.util.UUID;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -18,6 +19,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -35,6 +37,10 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "CompetitorMatchGroup.findByVersion", query = "SELECT c FROM CompetitorMatchGroup c WHERE c.version = :version")})
 public class CompetitorMatchGroup implements Serializable {
     private static final long serialVersionUID = 1L;
+    
+    @Transient
+    private UUID uuid;
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
@@ -59,13 +65,11 @@ public class CompetitorMatchGroup implements Serializable {
     public CompetitorMatchGroup() {
     }
 
+    public CompetitorMatchGroup(UUID uuid) {
+        this.uuid = uuid;
+    }
     public CompetitorMatchGroup(Integer idCompetitorMatchGroup) {
         this.idCompetitorMatchGroup = idCompetitorMatchGroup;
-    }
-
-    public CompetitorMatchGroup(Integer idCompetitorMatchGroup, long version) {
-        this.idCompetitorMatchGroup = idCompetitorMatchGroup;
-        this.version = version;
     }
 
     public Integer getIdCompetitorMatchGroup() {
@@ -118,11 +122,9 @@ public class CompetitorMatchGroup implements Serializable {
 
     @Override
     public int hashCode() {
-        int hash = 5;
-        hash = 29 * hash + Objects.hashCode(this.idCompetitorMatchGroup);
-        hash = 29 * hash + Objects.hashCode(this.idCompetitor);
-        hash = 29 * hash + Objects.hashCode(this.idGroup);
-        hash = 29 * hash + Objects.hashCode(this.idMatch);
+        int hash = 3;
+        hash = 59 * hash + Objects.hashCode(this.uuid);
+        hash = 59 * hash + Objects.hashCode(this.idCompetitorMatchGroup);
         return hash;
     }
 
@@ -135,20 +137,20 @@ public class CompetitorMatchGroup implements Serializable {
             return false;
         }
         final CompetitorMatchGroup other = (CompetitorMatchGroup) obj;
+        
+        if (this.uuid != null && other.uuid != null) {
+            if (Objects.equals(this.uuid, other.uuid)) {
+                return true;
+            }
+        }
+        
         if (!Objects.equals(this.idCompetitorMatchGroup, other.idCompetitorMatchGroup)) {
-            return false;
-        }
-        if (!Objects.equals(this.idCompetitor, other.idCompetitor)) {
-            return false;
-        }
-        if (!Objects.equals(this.idGroup, other.idGroup)) {
-            return false;
-        }
-        if (!Objects.equals(this.idMatch, other.idMatch)) {
             return false;
         }
         return true;
     }
+
+    
 
     
 

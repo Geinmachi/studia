@@ -21,6 +21,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.UUID;
 import javax.annotation.Resource;
 import javax.ejb.EJB;
 import javax.ejb.SessionContext;
@@ -100,7 +101,7 @@ public class CreateCompetitionManager implements CreateCompetitionManagerLocal {
         List<Groupp> groups = new ArrayList<>();
 
         for (int i = 0; i < numberOfGroups; i++) {
-            Groupp group = new Groupp();
+            Groupp group = new Groupp(UUID.randomUUID());
             group.setGroupName((char) (asciiValue + i));
             groups.add(group);
         }
@@ -159,37 +160,41 @@ public class CreateCompetitionManager implements CreateCompetitionManagerLocal {
             for (int i = 0; i < entry.getValue().size(); i = i + 2) {
 
                 System.out.println("Competitor" + entry.getValue().get(i) + " w matchu, i = " + i);
-                Matchh match = new Matchh();
+                Matchh match = new Matchh(UUID.randomUUID());
                 match.setRoundd((short) 1);
-                match.setVersion(i);
 
-                CompetitorMatchGroup cmg1 = new CompetitorMatchGroup();
+                CompetitorMatchGroup cmg1 = new CompetitorMatchGroup(UUID.randomUUID());
 
                 cmg1.setIdCompetitor(entry.getValue().get(i));
                 cmg1.setIdGroup(entry.getKey());
                 cmg1.setIdMatch(match);
-                match.getCompetitorMatchGroupList().add(cmg1);
-                entry.getKey().getCompetitorMatchGroupList().add(cmg1);
+//                match.getCompetitorMatchGroupList().add(cmg1);
+//                entry.getKey().getCompetitorMatchGroupList().add(cmg1);
 
-                CompetitorMatchGroup cmg2 = new CompetitorMatchGroup();
+                CompetitorMatchGroup cmg2 = new CompetitorMatchGroup(UUID.randomUUID());
 
                 System.out.println("2222Competitor" + entry.getValue().get(i+1) + " w matchu, i + 1 = " + (i+1));
                 
                 cmg2.setIdCompetitor(entry.getValue().get(i + 1));
                 cmg2.setIdGroup(entry.getKey());
                 cmg2.setIdMatch(match);
-                match.getCompetitorMatchGroupList().add(cmg2);
-                entry.getKey().getCompetitorMatchGroupList().add(cmg2);
+//                match.getCompetitorMatchGroupList().add(cmg2);
+//                entry.getKey().getCompetitorMatchGroupList().add(cmg2);
 
                 competitorMatchGroupList.add(cmg1);
                 competitorMatchGroupList.add(cmg2);
+                
+                System.out.println("Hashe: " );
+                System.out.println("cmg1.match = " + cmg1.getIdMatch().hashCode());
+                System.out.println("cmg2.match = " + cmg2.getIdMatch().hashCode());
+                System.out.println("Czy sa rowne? " + cmg1.getIdMatch().equals(cmg2.getIdMatch()));
             }
         }
 
         for (CompetitorMatchGroup cmg : competitorMatchGroupList) {
             System.out.println("Kto: " + cmg.getIdCompetitor());
             System.out.println("Jego grupa: " + cmg.getIdGroup().getGroupName());
-            System.out.println("Jego mecz: " + cmg.getIdMatch().getVersion());
+            System.out.println("Jego mecz: " + cmg.getIdMatch().getVersion() + " hash " + cmg.getIdMatch().hashCode());
 //            for (CompetitorMatchGroup cmg2 : cmg.getIdMatch().getCompetitorMatchGroupList()) {
 //                if (cmg2.getIdCompetitor().equals(cmg.getIdCompetitor())) {
 //                    System.out.println(cmg2.getIdMatch().hashCode() + " version: " + cmg2.getVersion());
