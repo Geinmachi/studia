@@ -8,6 +8,7 @@ package mot.services;
 import entities.Competition;
 import entities.CompetitionType;
 import entities.Competitor;
+import entities.CompetitorMatchGroup;
 import entities.Team;
 import java.util.List;
 import javax.ejb.Local; import javax.ejb.Remote;
@@ -34,4 +35,6 @@ public interface CompetitionServiceLocal {
     public void createCompetition(Competition competition, List<Competitor> competitors);
     
     public CompetitionType findCompetitionTypeById(int id);
+    
+    public List<CompetitorMatchGroup> generateEmptyBracket(List<Competitor> competitors);
 }
