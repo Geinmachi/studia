@@ -6,6 +6,7 @@
 package entities;
 
 import java.io.Serializable;
+import java.util.Objects;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -137,23 +138,39 @@ public class PersonalInfo implements Serializable {
 
     @Override
     public int hashCode() {
-        int hash = 0;
-        hash += (idPersonalInfo != null ? idPersonalInfo.hashCode() : 0);
+        int hash = 7;
+        hash = 37 * hash + Objects.hashCode(this.idPersonalInfo);
+        hash = 37 * hash + Objects.hashCode(this.firstName);
+        hash = 37 * hash + Objects.hashCode(this.lastName);
+        hash = 37 * hash + Objects.hashCode(this.email);
         return hash;
     }
 
     @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof PersonalInfo)) {
+    public boolean equals(Object obj) {
+        if (obj == null) {
             return false;
         }
-        PersonalInfo other = (PersonalInfo) object;
-        if ((this.idPersonalInfo == null && other.idPersonalInfo != null) || (this.idPersonalInfo != null && !this.idPersonalInfo.equals(other.idPersonalInfo))) {
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final PersonalInfo other = (PersonalInfo) obj;
+        if (!Objects.equals(this.idPersonalInfo, other.idPersonalInfo)) {
+            return false;
+        }
+        if (!Objects.equals(this.firstName, other.firstName)) {
+            return false;
+        }
+        if (!Objects.equals(this.lastName, other.lastName)) {
+            return false;
+        }
+        if (!Objects.equals(this.email, other.email)) {
             return false;
         }
         return true;
     }
+
+    
 
     @Override
     public String toString() {

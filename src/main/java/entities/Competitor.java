@@ -6,7 +6,9 @@
 package entities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -42,9 +44,9 @@ public class Competitor implements Serializable {
     @Column(name = "id_competitor")
     private Integer idCompetitor;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idCompetitor")
-    private List<CompetitorMatchGroup> competitorMatchGroupList;
+    private List<CompetitorMatchGroup> competitorMatchGroupList = new ArrayList<>();
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idCompetitor")
-    private List<Score> scoreList;
+    private List<Score> scoreList = new ArrayList<>();
     @JoinColumn(name = "id_personal_info", referencedColumnName = "id_personal_info")
     @OneToOne(optional = false, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private PersonalInfo idPersonalInfo;
@@ -103,23 +105,31 @@ public class Competitor implements Serializable {
 
     @Override
     public int hashCode() {
-        int hash = 0;
-        hash += (idCompetitor != null ? idCompetitor.hashCode() : 0);
+        int hash = 3;
+        hash = 37 * hash + Objects.hashCode(this.idCompetitor);
+        hash = 37 * hash + Objects.hashCode(this.idPersonalInfo);
         return hash;
     }
 
     @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Competitor)) {
+    public boolean equals(Object obj) {
+        if (obj == null) {
             return false;
         }
-        Competitor other = (Competitor) object;
-        if ((this.idCompetitor == null && other.idCompetitor != null) || (this.idCompetitor != null && !this.idCompetitor.equals(other.idCompetitor))) {
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Competitor other = (Competitor) obj;
+        if (!Objects.equals(this.idCompetitor, other.idCompetitor)) {
+            return false;
+        }
+        if (!Objects.equals(this.idPersonalInfo, other.idPersonalInfo)) {
             return false;
         }
         return true;
     }
+
+    
 
     @Override
     public String toString() {
