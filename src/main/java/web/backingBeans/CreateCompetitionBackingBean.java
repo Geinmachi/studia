@@ -8,15 +8,23 @@ package web.backingBeans;
 import entities.Competition;
 import entities.CompetitionType;
 import entities.Competitor;
+import entities.CompetitorMatchGroup;
+import entities.Groupp;
+import entities.Matchh;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
+import javax.enterprise.context.SessionScoped;
+import javax.faces.bean.RequestScoped;
 import javax.inject.Named;
-import javax.enterprise.context.RequestScoped;
+//import javax.enterprise.context.RequestScoped;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import mot.services.CompetitionService;
@@ -33,6 +41,9 @@ public class CreateCompetitionBackingBean implements Serializable {
 
     @Inject
     private CompetitionController controller;
+
+    @Inject
+    private BracketCreationBackingBean bracketCreator;
 
     private final Competition competition = new Competition();
 
@@ -97,11 +108,16 @@ public class CreateCompetitionBackingBean implements Serializable {
         return isCompetitorsAmountValid;
     }
 
+    public BracketCreationBackingBean getBracketCreator() {
+        return bracketCreator;
+    }
+
+    
     @PostConstruct
     private void init() {
         competitorList = controller.getAllCompetitors();
         competitionTypes = controller.getAllCompetitionTypes();
-        for (int i = 0; i <16; i++) {
+        for (int i = 0; i < 16; i++) {
             selectedCompetitors.add(competitorList.get(i));
         }
         competition.setCompetitionName("ddd");
@@ -109,12 +125,16 @@ public class CreateCompetitionBackingBean implements Serializable {
         competition.setStartDate(new Date());
     }
 
-    public void onFlowProcess(FlowEvent event) {
-            if (event.getNewStep().equals("secondStep")) {
-                
+    public String onFlowProcess(FlowEvent event) {
+        if (event.getOldStep().equals("firstStep")) {
+            bracketCreator.createBracket(selectedCompetitors);
+
+        } else if (event.getNewStep().equals("firstStep")) {
+            bracketCreator.clearLists();
         }
+        return event.getNewStep();
     }
-    
+
     public void addCompetitor() {
         if (selectedToAdd != null) {
             selectedCompetitors.add(selectedToAdd);
@@ -143,6 +163,5 @@ public class CreateCompetitionBackingBean implements Serializable {
             Logger.getLogger(CreateCompetitionBackingBean.class.getName()).log(Level.SEVERE, null, e);
             return null;
         }
-
     }
 }

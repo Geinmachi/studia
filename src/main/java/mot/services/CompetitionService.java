@@ -8,6 +8,7 @@ package mot.services;
 import entities.Competition;
 import entities.CompetitionType;
 import entities.Competitor;
+import entities.CompetitorMatchGroup;
 import entities.Team;
 import java.util.ArrayList;
 import java.util.List;
@@ -81,5 +82,10 @@ public class CompetitionService implements CompetitionServiceLocal {
     @Override
     public CompetitionType findCompetitionTypeById(int id) {
         return competitionTypeFacade.find(id);
+    }
+
+    @Override
+    public List<CompetitorMatchGroup> generateEmptyBracket(List<Competitor> competitors) {
+        return createCompetitionManager.generateEmptyBracket(competitors);
     }
 }

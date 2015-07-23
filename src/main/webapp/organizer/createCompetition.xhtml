@@ -105,6 +105,23 @@ and open the template in the editor.
                     </p:panelGrid>
                 </p:tab>
                 <p:tab id="secondStep" title="#{msg.bracket}">
+                    <p:outputPanel id="groupsHolder">
+                        <ui:repeat value="#{createCompetitionBackingBean.bracketCreator.groups}" var="group">
+                            <p:panel header="#{group.groupName}" 
+                                     style="width: #{(100/createCompetitionBackingBean.bracketCreator.groups.size())-1}%; display: inline-block;">
+                                <ui:repeat value="#{createCompetitionBackingBean.bracketCreator.competitorMatchGroupList}"
+                                           var="cmg">
+                                    <p:outputLabel rendered="#{cmg.idGroup eq group}">
+                                        #{cmg.idCompetitor.idPersonalInfo.firstName} 
+                                        #{cmg.idCompetitor.idPersonalInfo.lastName} 
+                                        <br/>
+                                    </p:outputLabel>
+                                </ui:repeat>
+                            </p:panel>
+                        </ui:repeat>
+                    </p:outputPanel>
+                </p:tab>
+                <p:tab id="thirdStep" title="#{msg.bracket}">
                     <p:outputLabel value="Test"/>
                 </p:tab>
             </p:wizard>

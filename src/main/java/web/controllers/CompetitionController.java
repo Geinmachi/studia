@@ -8,6 +8,7 @@ package web.controllers;
 import entities.Competition;
 import entities.CompetitionType;
 import entities.Competitor;
+import entities.CompetitorMatchGroup;
 import entities.Team;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
@@ -63,4 +64,9 @@ public class CompetitionController implements Serializable {
     public CompetitionType findCompetitionTypeById(int id) {
         return service.findCompetitionTypeById(id);
     }
+    
+    public List<CompetitorMatchGroup> generateEmptyBracket(List<Competitor> competitors){
+        return service.generateEmptyBracket(competitors);
+    }
+
 }

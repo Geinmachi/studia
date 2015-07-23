@@ -77,11 +77,12 @@ public class CreateCompetitionManager implements CreateCompetitionManagerLocal {
 
         competition.setIdOrganizer(organizer);
         competition.setCreationDate(new Date());
-        createBracket(competitors);
+        generateEmptyBracket(competitors);
         //    competitionFacade.create(competition);
     }
 
-    private GroupCompetition createBracket(List<Competitor> competitors) {
+    @Override
+    public List<CompetitorMatchGroup> generateEmptyBracket(List<Competitor> competitors) {
         Collections.shuffle(competitors);
 
         List<Groupp> groups = createGroups(competitors.size());
@@ -90,10 +91,12 @@ public class CreateCompetitionManager implements CreateCompetitionManagerLocal {
         
         Map<Competitor, Groupp> assignedCompetitorsToGroups = assignCompetitorsToGroups(competitors, groups);
 
-        createMatches(assignedCompetitorsToGroups);
+        return createMatches(assignedCompetitorsToGroups);
 
-        return null;
     }
+//    private GroupCompetition createBracket(List<Competitor> competitors) {
+//        
+//    }
 
     private List<Groupp> createGroups(int competitorsAmount) {
         int asciiValue = 65;
@@ -141,7 +144,7 @@ public class CreateCompetitionManager implements CreateCompetitionManagerLocal {
         return result;
     }
 
-    private void createMatches(Map<Competitor, Groupp> assignedCompetitors) {
+    private List<CompetitorMatchGroup> createMatches(Map<Competitor, Groupp> assignedCompetitors) {
         Map<Groupp, List<Competitor>> groups = transformAssignedCompetitorsToLists(assignedCompetitors);
 
 //        System.out.println("ile grup " + groups.size());
@@ -163,6 +166,7 @@ public class CreateCompetitionManager implements CreateCompetitionManagerLocal {
 //            System.out.println("Match = " + competitorMatchGroupList.get(i).getIdMatch().getRoundd());
 //
 //        }
+        return competitorMatchGroupList;
     }
 
     private Map<Groupp, List<Competitor>> transformAssignedCompetitorsToLists(Map<Competitor, Groupp> assignedCompetitors) {
