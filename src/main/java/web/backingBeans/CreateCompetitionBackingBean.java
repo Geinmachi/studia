@@ -101,7 +101,7 @@ public class CreateCompetitionBackingBean implements Serializable {
     private void init() {
         competitorList = controller.getAllCompetitors();
         competitionTypes = controller.getAllCompetitionTypes();
-        for (int i = 0; i <8; i++) {
+        for (int i = 0; i <16; i++) {
             selectedCompetitors.add(competitorList.get(i));
         }
         competition.setCompetitionName("ddd");
