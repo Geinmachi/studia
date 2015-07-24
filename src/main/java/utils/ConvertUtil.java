@@ -5,6 +5,8 @@
  */
 package utils;
 
+import entities.AccessLevel;
+import entities.Account;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -30,5 +32,25 @@ public class ConvertUtil {
         }
         System.out.println(DatatypeConverter.printHexBinary(input));
         return DatatypeConverter.printHexBinary(input);
+    }
+    
+    public static <T extends AccessLevel> T getSpecAccessLevelFromAccount(Account account, Class<T> type) {
+        if (account == null) {
+            throw new ArrayIndexOutOfBoundsException("warunek 1");
+        }
+        T specAccessLevel = null;
+        System.out.println("Konto : " + account);
+        System.out.println("accessLevel rozmiar " + account.getAccessLevelList().size());
+        for(AccessLevel al: account.getAccessLevelList()) {
+            System.out.println("AccessLevel: " + al + " klasa: " + al.getClass().getName() + " czy aktywny " + al.getIsActive());
+            if (type.isAssignableFrom(al.getClass()) && al.getIsActive()) {
+                specAccessLevel = type.cast(al);
+                break;
+            }
+        }
+        if (specAccessLevel == null) {
+            throw new ArrayIndexOutOfBoundsException("warunek 2");
+        }
+        return specAccessLevel;
     }
 }

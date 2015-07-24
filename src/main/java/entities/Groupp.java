@@ -6,8 +6,11 @@
 package entities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
+import java.util.UUID;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -21,6 +24,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -41,6 +45,10 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Groupp.findByVersion", query = "SELECT g FROM Groupp g WHERE g.version = :version")})
 public class Groupp implements Serializable {
     private static final long serialVersionUID = 1L;
+    
+    @Transient
+    private UUID uuid;
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
@@ -61,13 +69,16 @@ public class Groupp implements Serializable {
     @Column(name = "version")
     private long version;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idGroup")
-    private List<CompetitorMatchGroup> competitorMatchGroupList;
+    private List<CompetitorMatchGroup> competitorMatchGroupList = new ArrayList<>();
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idGroup")
-    private List<GroupCompetition> groupCompetitionList;
+    private List<GroupCompetition> groupCompetitionList = new ArrayList<>();
 
     public Groupp() {
     }
 
+    public Groupp(UUID uuid) {
+        this.uuid = uuid;
+    }
     public Groupp(Integer idGroup) {
         this.idGroup = idGroup;
     }
@@ -138,23 +149,39 @@ public class Groupp implements Serializable {
 
     @Override
     public int hashCode() {
-        int hash = 0;
-        hash += (idGroup != null ? idGroup.hashCode() : 0);
+        int hash = 5;
+        hash = 11 * hash + Objects.hashCode(this.uuid);
+        hash = 11 * hash + Objects.hashCode(this.idGroup);
+        hash = 11 * hash + Objects.hashCode(this.groupName);
         return hash;
     }
 
     @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Groupp)) {
+    public boolean equals(Object obj) {
+        if (obj == null) {
             return false;
         }
-        Groupp other = (Groupp) object;
-        if ((this.idGroup == null && other.idGroup != null) || (this.idGroup != null && !this.idGroup.equals(other.idGroup))) {
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Groupp other = (Groupp) obj;
+        
+        if (this.uuid != null && other.uuid != null) {
+            if (Objects.equals(this.uuid, other.uuid)) {
+                return true;
+            }
+        }
+        
+        if (!Objects.equals(this.idGroup, other.idGroup)) {
+            return false;
+        }
+        if (!Objects.equals(this.groupName, other.groupName)) {
             return false;
         }
         return true;
     }
+
+    
 
     @Override
     public String toString() {

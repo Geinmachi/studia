@@ -5,7 +5,7 @@
  */
 package mot.facades;
 
-import entities.Competitor;
+import entities.Account;
 import java.util.List;
 import javax.ejb.Local; import javax.ejb.Remote;
 
@@ -14,20 +14,21 @@ import javax.ejb.Local; import javax.ejb.Remote;
  * @author java
  */
 @Remote
-public interface CompetitorFacadeLocal {
+public interface AccountFacadeLocal {
 
-    void create(Competitor competitor);
+    void create(Account account);
 
-    void edit(Competitor competitor);
+    void edit(Account account);
 
-    void remove(Competitor competitor);
+    void remove(Account account);
 
-    Competitor find(Object id);
+    Account find(Object id);
 
-    List<Competitor> findAll();
+    List<Account> findAll();
 
-    List<Competitor> findRange(int[] range);
+    List<Account> findRange(int[] range);
 
     int count();
     
+    Account findByLogin(String login);
 }

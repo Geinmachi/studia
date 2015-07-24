@@ -5,7 +5,10 @@
  */
 package web.controllers;
 
+import entities.Competition;
+import entities.CompetitionType;
 import entities.Competitor;
+import entities.CompetitorMatchGroup;
 import entities.Team;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
@@ -35,7 +38,35 @@ public class CompetitionController implements Serializable {
     }
     
     public void addCompetitor(Competitor competitor) {
-        
         service.addCompetitor(competitor);
     }
+    
+    public List<Competitor> getAllCompetitors() {
+        return service.getAllCompetitors();
+    }
+    
+    public List<CompetitionType> getAllCompetitionTypes() {
+        return service.getAllCompetitionTypes();
+    }
+    
+    public Competitor findCompetitorById(Integer id) {
+        return service.findCopetitorById(id);
+    }
+    
+    public boolean validateCompetitorsAmount(int amount) {
+        return service.validateCompetitorsAmount(amount);
+    }
+    
+    public void createCompetition(Competition competition, List<Competitor> competitors) {
+        service.createCompetition(competition, competitors);
+    }
+    
+    public CompetitionType findCompetitionTypeById(int id) {
+        return service.findCompetitionTypeById(id);
+    }
+    
+    public List<CompetitorMatchGroup> generateEmptyBracket(List<Competitor> competitors){
+        return service.generateEmptyBracket(competitors);
+    }
+
 }

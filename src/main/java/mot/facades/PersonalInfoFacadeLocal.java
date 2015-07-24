@@ -7,13 +7,13 @@ package mot.facades;
 
 import entities.PersonalInfo;
 import java.util.List;
-import javax.ejb.Local;
+import javax.ejb.Local; import javax.ejb.Remote;
 
 /**
  *
  * @author java
  */
-@Local
+@Remote
 public interface PersonalInfoFacadeLocal {
 
     void create(PersonalInfo personalInfo);

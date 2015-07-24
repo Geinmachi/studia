@@ -7,6 +7,8 @@ package entities;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Objects;
+import java.util.UUID;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,6 +19,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -36,6 +39,10 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Team.findByVersion", query = "SELECT t FROM Team t WHERE t.version = :version")})
 public class Team implements Serializable {
     private static final long serialVersionUID = 1L;
+    
+    @Transient
+    private UUID uuid;
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
@@ -56,6 +63,10 @@ public class Team implements Serializable {
     public Team() {
     }
 
+    public Team(UUID uuid) {
+        this.uuid = uuid;
+    }
+    
     public Team(Integer idTeam) {
         this.idTeam = idTeam;
     }
@@ -101,23 +112,35 @@ public class Team implements Serializable {
 
     @Override
     public int hashCode() {
-        int hash = 0;
-        hash += (idTeam != null ? idTeam.hashCode() : 0);
+        int hash = 3;
+        hash = 97 * hash + Objects.hashCode(this.uuid);
+        hash = 97 * hash + Objects.hashCode(this.idTeam);
         return hash;
     }
 
     @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Team)) {
+    public boolean equals(Object obj) {
+        if (obj == null) {
             return false;
         }
-        Team other = (Team) object;
-        if ((this.idTeam == null && other.idTeam != null) || (this.idTeam != null && !this.idTeam.equals(other.idTeam))) {
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Team other = (Team) obj;
+        
+        if (this.uuid != null && other.uuid != null) {
+            if (Objects.equals(this.uuid, other.uuid)) {
+                return true;
+            }
+        }
+        
+        if (!Objects.equals(this.idTeam, other.idTeam)) {
             return false;
         }
         return true;
     }
+
+    
 
     @Override
     public String toString() {
