@@ -77,6 +77,10 @@ public class Matchh implements Serializable {
     public Matchh(UUID uuid) {
         this.uuid = uuid;
     }
+
+    public UUID getUuid() {
+        return uuid;
+    }
     
     public Matchh(Integer idMatch) {
         this.idMatch = idMatch;
@@ -161,6 +165,8 @@ public class Matchh implements Serializable {
         if (this.uuid != null && other.uuid != null) {
             if (Objects.equals(this.uuid, other.uuid)) {
                 return true;
+            } else {
+                return false;
             }
         }
         if (!Objects.equals(this.idMatch, other.idMatch)) {

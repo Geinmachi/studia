@@ -141,6 +141,8 @@ public class CompetitorMatchGroup implements Serializable {
         if (this.uuid != null && other.uuid != null) {
             if (Objects.equals(this.uuid, other.uuid)) {
                 return true;
+            } else {
+                return false;
             }
         }
         

@@ -30,6 +30,7 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import mot.facades.AccountFacadeLocal;
 import mot.facades.CompetitionFacadeLocal;
+import utils.BracketUtil;
 import utils.ConvertUtil;
 
 /**
@@ -131,19 +132,6 @@ public class CreateCompetitionManager implements CreateCompetitionManagerLocal {
         return assignedCompetitors;
     }
 
-    private int numberOfRounds(int competitorsAmount) {
-        byte result = 1;
-
-        while (Math.pow(2, (double) result) != competitorsAmount) {
-            if (result == Byte.MAX_VALUE) {
-                return 0;
-            }
-            result++;
-        }
-
-        return result;
-    }
-
     private List<CompetitorMatchGroup> createMatches(Map<Competitor, Groupp> assignedCompetitors) {
         Map<Groupp, List<Competitor>> groups = transformAssignedCompetitorsToLists(assignedCompetitors);
 
@@ -229,7 +217,7 @@ public class CreateCompetitionManager implements CreateCompetitionManagerLocal {
     }
 
     private void generateRestRounds(List<CompetitorMatchGroup> competitorMatchGroupList, int competitorsAmount) {
-        int numberOfRounds = numberOfRounds(competitorsAmount);
+        int numberOfRounds = BracketUtil.numberOfRounds(competitorsAmount);
         int matchesInRound = 0;
         
         for (int i = 0; i < numberOfRounds - 1; i++) {

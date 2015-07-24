@@ -13,7 +13,7 @@ and open the template in the editor.
                 xmlns:f="http://xmlns.jcp.org/jsf/core">
     <ui:define name="title">#{msg.createCompetitionTitle}</ui:define>
     <ui:define name="content">
-        <h:form>
+        <h:form id="createCompetitionForm">
             <p:wizard flowListener="#{createCompetitionBackingBean.onFlowProcess}">
                 <p:tab id="firstStep" title="#{msg.generalTab}">
                     <p:panelGrid>
@@ -120,6 +120,12 @@ and open the template in the editor.
                             </p:panel>
                         </ui:repeat>
                     </p:outputPanel>
+                    <p:outputPanel id="ss">
+                        <p:panel header="cos"/>
+                    </p:outputPanel>
+                    <p:dashboard id="dashboard" model="#{createCompetitionBackingBean.bracketCreator.dashboardModel}">
+                        <p:panel/>
+                    </p:dashboard>
                 </p:tab>
                 <p:tab id="thirdStep" title="#{msg.bracket}">
                     <p:outputLabel value="Test"/>
