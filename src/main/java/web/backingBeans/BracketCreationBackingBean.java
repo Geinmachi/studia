@@ -12,8 +12,11 @@ import entities.Matchh;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.Dependent;
@@ -37,6 +40,7 @@ import org.primefaces.model.DefaultDashboardColumn;
 import org.primefaces.model.DefaultDashboardModel;
 import utils.BracketUtil;
 import web.controllers.CompetitionController;
+import web.models.DashboardPanel;
 
 /**
  *
@@ -64,6 +68,8 @@ public class BracketCreationBackingBean implements Serializable {
 
     private List<Competitor> competitorsWithGroups = new ArrayList<>();
 
+    private List<DashboardPanel> panelList = new ArrayList<>();
+
     public DashboardModel getDashboardModel() {
         return dashboardModel;
     }
@@ -86,6 +92,10 @@ public class BracketCreationBackingBean implements Serializable {
 
     public List<CompetitorMatchGroup> getCompetitorMatchGroupList() {
         return competitorMatchGroupList;
+    }
+
+    public List<DashboardPanel> getPanelList() {
+        return panelList;
     }
 
     public BracketCreationBackingBean() {
@@ -147,96 +157,114 @@ public class BracketCreationBackingBean implements Serializable {
         dashboardModel = new DefaultDashboardModel();
 
         DashboardColumn firstRoundColumn = createFirstRoundColumn();
-        
+
         dashboardModel.addColumn(firstRoundColumn);
 
-        List<DashboardColumn> otherColumns = creatOtherRoundsColumns();
-        
-        for (DashboardColumn dc : otherColumns) {
-            dashboardModel.addColumn(dc);
+        List<DashboardColumn> otherColumns = createOtherRoundsColumns();
+
+        for (int i = 0; i < otherColumns.size(); i++) {
+            dashboardModel.addColumn(createFillers(i));
+            dashboardModel.addColumn(otherColumns.get(i));
         }
-        
-//        for (int i = 1; i <= rounds; i++) {
-//            DashboardColumn column = new DefaultDashboardColumn();
-//            for (int j = 0; j < competitorMatchGroupList.size(); j++) {
-//                Panel panel = new Panel();
-//                panel.setHeader("id" + i + "-" + j);
-//                panel.setId("id" + i + "-" + j);
-//                if (competitorMatchGroupList.get(j).getIdMatch().getRoundd() == i) {
-//                    panel.getChildren().add(panelContent(competitorMatchGroupList.get(j).getIdCompetitor()));
-//
-//                    column.addWidget("id" + i + "-" + j);
-//                    dashboard.getChildren().add(panel);
-//                }
-//            }
-//            dashboardModel.addColumn(column);
-//        }
     }
 
-    private List<DashboardColumn> creatOtherRoundsColumns() {
-        UIComponent dashboard = FacesContext.getCurrentInstance().getViewRoot().findComponent("createCompetitionForm:dashboard");
+    private DashboardColumn createFillers(int columnNumber) {
+        DashboardColumn column = new DefaultDashboardColumn();
 
+        for (int i = 0; i < 20; i++) {
+            Panel panel = new Panel();
+            panel.setId("filler" + columnNumber + i);
+
+            DashboardPanel dashboardPanel = new DashboardPanel();
+            dashboardPanel.setFiller(true);
+            dashboardPanel.setPanel(panel);
+            column.addWidget("filler" + columnNumber + i);
+            panelList.add(dashboardPanel);
+        }
+
+        return column;
+    }
+
+    private List<DashboardColumn> createOtherRoundsColumns() {
         int rounds = BracketUtil.numberOfRounds(competitorsWithGroups.size());
 
         List<DashboardColumn> columns = new ArrayList<>();
 
-        for (int i = 0; i < rounds; i++) {
+        for (int i = 0; i < rounds - 1; i++) {
             columns.add(new DefaultDashboardColumn());
         }
+
 
         for (int i = 0; i < otherMatches.size(); i++) {
             Panel panel = new Panel();
             panel.setHeader("other" + i);
             panel.setId("other" + i);
 
-            columns.get(otherMatches.get(i).getRoundd()-1).addWidget("other" + i);
-            dashboard.getChildren().add(panel);
+            columns.get(otherMatches.get(i).getRoundd() - 2).addWidget("other" + i);
+//            dashboard.getChildren().add(panel);
+
+            DashboardPanel dashboardPanel = new DashboardPanel();
+            dashboardPanel.setPanel(panel);
+            if (otherMatches.get(i).getRoundd() == 3) {
+                dashboardPanel.setMargin(580);
+            }
+            if (otherMatches.get(i).getRoundd() == 2) {
+                dashboardPanel.setMargin(255);
+            }
+            if (otherMatches.get(i).getRoundd() == 4) {
+                dashboardPanel.setMargin(650);
+            }//590
+            dashboardPanel.setMatch(otherMatches.get(i));
+            panelList.add(dashboardPanel);
         }
-        
+
         return columns;
     }
 
     private DashboardColumn createFirstRoundColumn() {
-        UIComponent dashboard = FacesContext.getCurrentInstance().getViewRoot().findComponent("createCompetitionForm:dashboard");
         DashboardColumn firstRoundColumn = new DefaultDashboardColumn();
 
-        boolean isFirstCompetitor;
-
         for (int i = 0; i < firstRoundMatches.size(); i++) {
-            isFirstCompetitor = true;
             Panel panel = new Panel();
             panel.setHeader("first" + i);
             panel.setId("first" + i);
+
+            DashboardPanel dashboardPanel = new DashboardPanel();
 
             for (int j = 0; j < competitorMatchGroupList.size(); j++) {
                 if (firstRoundMatches.get(i).equals(competitorMatchGroupList.get(j).getIdMatch())) {
 //                    System.out.println("firstRoundMatch = " + firstRoundMatches.get(i).getUuid() 
 //                            + " competitorMatchGroup-match = " + competitorMatchGroupList.get(j).getIdMatch().getUuid());
-                    panel.getChildren().add(panelContent(competitorMatchGroupList.get(j).getIdCompetitor(), isFirstCompetitor));
-                    isFirstCompetitor = false;
+//                    panel.getChildren().add(panelContent(competitorMatchGroupList.get(j).getIdCompetitor(), isFirstCompetitor));
+                    dashboardPanel.getCompetitorList().add(competitorMatchGroupList.get(j).getIdCompetitor());
                 }
             }
 
             firstRoundColumn.addWidget("first" + i);
-            dashboard.getChildren().add(panel);
+//            dashboard.getChildren().add(panel);
+            dashboardPanel.setMargin(50);
+            dashboardPanel.setPanel(panel);
+            dashboardPanel.setMatch(firstRoundMatches.get(i));
+            panelList.add(dashboardPanel);
+
         }
         return firstRoundColumn;
     }
 
-    private OutputLabel panelContent(Competitor competitor, boolean newLine) {
-
-        OutputLabel content = new OutputLabel();
-        if (competitor != null) {
-            content.setValue(competitor.getIdPersonalInfo().getFirstName() + " "
-                    + competitor.getIdPersonalInfo().getLastName());
-        }
-        if (newLine) {
-            HtmlOutputText linebreak = new HtmlOutputText();
-            linebreak.setValue("<br/>");
-            linebreak.setEscape(false);
-            content.getChildren().add(linebreak);
-        }
-
-        return content;
-    }
+//    private OutputLabel panelContent(Competitor competitor, boolean newLine) {
+//
+//        OutputLabel content = new OutputLabel();
+//        if (competitor != null) {
+//            content.setValue(competitor.getIdPersonalInfo().getFirstName() + " "
+//                    + competitor.getIdPersonalInfo().getLastName());
+//        }
+//        if (newLine) {
+//            HtmlOutputText linebreak = new HtmlOutputText();
+//            linebreak.setValue("<br/>");
+//            linebreak.setEscape(false);
+//            content.getChildren().add(linebreak);
+//        }
+//
+//        return content;
+//    }
 }
