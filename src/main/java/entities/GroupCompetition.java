@@ -7,6 +7,7 @@ package entities;
 
 import java.io.Serializable;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -37,7 +38,7 @@ public class GroupCompetition implements Serializable {
     @Column(name = "id_group_competition")
     private Integer idGroupCompetition;
     @JoinColumn(name = "id_competition", referencedColumnName = "id_competition")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, cascade = CascadeType.PERSIST)
     private Competition idCompetition;
     @JoinColumn(name = "id_group", referencedColumnName = "id_group")
     @ManyToOne(optional = false)

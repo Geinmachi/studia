@@ -21,16 +21,14 @@ import org.primefaces.component.panel.Panel;
 public class DashboardPanel {
     
     private Panel panel;
-    
-    private Date matchDate;
-    
+        
     private Matchh match;
     
     private int margin;
     
     boolean filler = false;
     
-    private List<MatchType> matchTypeList= new ArrayList<>();
+    private MatchType matchType;
     
     private List<Competitor> competitorList = new ArrayList<>();
 
@@ -40,14 +38,6 @@ public class DashboardPanel {
 
     public void setPanel(Panel panel) {
         this.panel = panel;
-    }
-
-    public Date getMatchDate() {
-        return matchDate;
-    }
-
-    public void setMatchDate(Date matchDate) {
-        this.matchDate = matchDate;
     }
 
     public Matchh getMatch() {
@@ -74,12 +64,12 @@ public class DashboardPanel {
         this.filler = filler;
     }
 
-    public List<MatchType> getMatchTypeList() {
-        return matchTypeList;
+    public MatchType getMatchType() {
+        return matchType;
     }
 
-    public void setMatchTypeList(List<MatchType> matchTypeList) {
-        this.matchTypeList = matchTypeList;
+    public void setMatchType(MatchType matchType) {
+        this.matchType = matchType;
     }
 
     public List<Competitor> getCompetitorList() {

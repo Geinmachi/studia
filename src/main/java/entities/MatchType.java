@@ -7,6 +7,7 @@ package entities;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Objects;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -33,6 +34,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "MatchType.findAll", query = "SELECT m FROM MatchType m"),
     @NamedQuery(name = "MatchType.findByIdMatchType", query = "SELECT m FROM MatchType m WHERE m.idMatchType = :idMatchType"),
+    @NamedQuery(name = "MatchType.findByEndUser", query = "SELECT m FROM MatchType m WHERE m.endUser = :endUser"),
     @NamedQuery(name = "MatchType.findByMatchTypeName", query = "SELECT m FROM MatchType m WHERE m.matchTypeName = :matchTypeName")})
 public class MatchType implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -46,6 +48,8 @@ public class MatchType implements Serializable {
     @Size(min = 1, max = 50)
     @Column(name = "match_type_name")
     private String matchTypeName;
+    @Column(name = "end_user")
+    private boolean endUser;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idMatchType")
     private List<MatchMatchType> matchMatchTypeList;
 
@@ -77,6 +81,14 @@ public class MatchType implements Serializable {
         this.matchTypeName = matchTypeName;
     }
 
+    public boolean isEndUser() {
+        return endUser;
+    }
+
+    public void setEndUser(boolean endUser) {
+        this.endUser = endUser;
+    }
+    
     @XmlTransient
     public List<MatchMatchType> getMatchMatchTypeList() {
         return matchMatchTypeList;
@@ -88,23 +100,31 @@ public class MatchType implements Serializable {
 
     @Override
     public int hashCode() {
-        int hash = 0;
-        hash += (idMatchType != null ? idMatchType.hashCode() : 0);
+        int hash = 3;
+        hash = 29 * hash + Objects.hashCode(this.idMatchType);
+        hash = 29 * hash + Objects.hashCode(this.matchTypeName);
         return hash;
     }
 
     @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof MatchType)) {
+    public boolean equals(Object obj) {
+        if (obj == null) {
             return false;
         }
-        MatchType other = (MatchType) object;
-        if ((this.idMatchType == null && other.idMatchType != null) || (this.idMatchType != null && !this.idMatchType.equals(other.idMatchType))) {
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final MatchType other = (MatchType) obj;
+        if (!Objects.equals(this.idMatchType, other.idMatchType)) {
+            return false;
+        }
+        if (!Objects.equals(this.matchTypeName, other.matchTypeName)) {
             return false;
         }
         return true;
     }
+
+   
 
     @Override
     public String toString() {

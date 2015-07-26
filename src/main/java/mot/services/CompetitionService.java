@@ -9,6 +9,7 @@ import entities.Competition;
 import entities.CompetitionType;
 import entities.Competitor;
 import entities.CompetitorMatchGroup;
+import entities.MatchType;
 import entities.Team;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +19,7 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import mot.facades.CompetitionTypeFacadeLocal;
 import mot.facades.CompetitorFacadeLocal;
+import mot.facades.MatchTypeFacadeLocal;
 import mot.facades.TeamFacadeLocal;
 import mot.managers.CreateCompetitionManagerLocal;
 
@@ -40,6 +42,9 @@ public class CompetitionService implements CompetitionServiceLocal {
     
     @EJB
     private CompetitionTypeFacadeLocal competitionTypeFacade;
+    
+    @EJB
+    private MatchTypeFacadeLocal matchTypeFacade;
 
     @Override
     public List<Team> findAllTeams() {
@@ -75,8 +80,8 @@ public class CompetitionService implements CompetitionServiceLocal {
     }
 
     @Override
-    public void createCompetition(Competition competition, List<Competitor> competitors) {
-        createCompetitionManager.createCompetition(competition, competitors);
+    public void createCompetition(Competition competition, List<CompetitorMatchGroup> competitorMatchGroupList) {
+        createCompetitionManager.createCompetition(competition, competitorMatchGroupList);
     }
 
     @Override
@@ -87,5 +92,10 @@ public class CompetitionService implements CompetitionServiceLocal {
     @Override
     public List<CompetitorMatchGroup> generateEmptyBracket(List<Competitor> competitors) {
         return createCompetitionManager.generateEmptyBracket(competitors);
+    }
+
+    @Override
+    public List<MatchType> getEndUserMatchTypes() {
+        return matchTypeFacade.findEndUserMatchTypes();
     }
 }

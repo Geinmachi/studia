@@ -8,9 +8,12 @@ package web.backingBeans;
 import entities.Competitor;
 import entities.CompetitorMatchGroup;
 import entities.Groupp;
+import entities.MatchMatchType;
+import entities.MatchType;
 import entities.Matchh;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
@@ -70,6 +73,8 @@ public class BracketCreationBackingBean implements Serializable {
 
     private List<DashboardPanel> panelList = new ArrayList<>();
 
+    private List<MatchType> matchTypeList = new ArrayList<>();
+
     public DashboardModel getDashboardModel() {
         return dashboardModel;
     }
@@ -98,11 +103,16 @@ public class BracketCreationBackingBean implements Serializable {
         return panelList;
     }
 
+    public List<MatchType> getMatchTypeList() {
+        return matchTypeList;
+    }
+
     public BracketCreationBackingBean() {
     }
 
     @PostConstruct
     private void init() {
+        matchTypeList = controller.getEndUserMatchTypes();
     }
 
     public void createBracket(List<Competitor> competitors) {
@@ -110,9 +120,73 @@ public class BracketCreationBackingBean implements Serializable {
         createModel();
     }
 
+    public void updateBracket() {
+        assignMatchTypes();
+        verifyEverything();
+    }
+
+    public void verifyEverything() {
+        System.out.println("DO persistowania:");
+
+        for (CompetitorMatchGroup cmg : competitorMatchGroupList) {
+            System.out.println("Competitor " + cmg.getIdCompetitor());
+            if (cmg.getIdGroup() != null) {
+                System.out.println("Grupa " + cmg.getIdGroup().getGroupName());
+            } else {
+                System.out.println("Grupa null");
+            }
+            if (cmg.getIdMatch() != null) {
+                System.out.println("Match " + cmg.getIdMatch().getUuid() + " nr " + cmg.getIdMatch().getMatchNumber());
+                System.out.println("Data " + cmg.getIdMatch().getMatchDate());
+                System.out.println("typy ");
+                for (MatchMatchType mmt : cmg.getIdMatch().getMatchMatchTypeList()) {
+                    System.out.println(mmt.getIdMatchType().getMatchTypeName());
+                }
+            } else {
+                System.out.print("Match null");
+            }
+        }
+    }
+
+    public void assignMatchTypes() {
+        for (CompetitorMatchGroup cmg : competitorMatchGroupList) {
+            for (DashboardPanel dp : panelList) {
+                if (cmg.getIdMatch().equals(dp.getMatch())) {
+                    MatchMatchType mmt = new MatchMatchType();
+                    mmt.setIdMatchType(dp.getMatchType());
+                    mmt.setIdMatch(cmg.getIdMatch());
+                    if (!cmg.getIdMatch().getMatchMatchTypeList().contains(mmt)) {
+                        cmg.getIdMatch().getMatchMatchTypeList().add(mmt);
+                    }
+                    break;
+                }
+            }
+        }
+    }
+
     private void initializeLists(List<Competitor> competitors) {
         competitorMatchGroupList = controller.generateEmptyBracket(competitors);
 
+//        Collections.shuffle(competitorMatchGroupList);
+        competitorMatchGroupList.sort(new Comparator<CompetitorMatchGroup>() {
+
+            @Override
+            public int compare(CompetitorMatchGroup o1, CompetitorMatchGroup o2) {
+                return Short.compare(o1.getIdMatch().getMatchNumber(), o2.getIdMatch().getMatchNumber());
+            }
+
+        });
+
+        for (CompetitorMatchGroup cmg : competitorMatchGroupList) {
+//            if (cmg.getIdGroup() != null) {
+//                System.out.println("Grupa " + cmg.getIdGroup().getGroupName());
+//                if (cmg.getIdCompetitor() != null) {
+//                    System.out.println("Competitor " + cmg.getIdCompetitor().getIdCompetitor());
+            System.out.println("Match " + cmg.getIdMatch().getUuid() + " numer " + cmg.getIdMatch().getMatchNumber());
+            System.out.println("Runda " + cmg.getIdMatch().getRoundd());
+//                '}
+//            }
+        }
         Set<Groupp> uniqueGroups = new HashSet();
         Set<Matchh> uniqueFirstRoundMatches = new HashSet();
         Set<Matchh> uniqueOtherMatches = new HashSet();
@@ -129,19 +203,20 @@ public class BracketCreationBackingBean implements Serializable {
             }
         }
 
+        for (CompetitorMatchGroup cmg : competitorMatchGroupList) {
+            if (cmg.getIdGroup() != null) {
+                System.out.println("Grupa " + cmg.getIdGroup().getGroupName());
+            }
+        }
         groups.addAll(uniqueGroups);
         groups.remove(null);
-        groups.sort(new Comparator() {
+        Collections.sort(groups);
 
-            @Override
-            public int compare(Object o1, Object o2) {
-                return ((Groupp) o1).getGroupName().compareTo(((Groupp) o2).getGroupName());
-            }
-
-        });
         firstRoundMatches.addAll(uniqueFirstRoundMatches);
-        otherMatches.addAll(uniqueOtherMatches);
+        Collections.sort(firstRoundMatches);
 
+        otherMatches.addAll(uniqueOtherMatches);
+        Collections.sort(otherMatches);
         System.out.println("GRoups size is: " + groups.size());
     }
 
@@ -150,6 +225,7 @@ public class BracketCreationBackingBean implements Serializable {
         firstRoundMatches.removeAll(firstRoundMatches);
         otherMatches.removeAll(otherMatches);
         competitorsWithGroups.removeAll(competitorsWithGroups);
+        panelList.removeAll(panelList);
     }
 
     private void createModel() {
@@ -194,7 +270,6 @@ public class BracketCreationBackingBean implements Serializable {
             columns.add(new DefaultDashboardColumn());
         }
 
-
         for (int i = 0; i < otherMatches.size(); i++) {
             Panel panel = new Panel();
             panel.setHeader("other" + i);
@@ -215,6 +290,7 @@ public class BracketCreationBackingBean implements Serializable {
                 dashboardPanel.setMargin(650);
             }//590
             dashboardPanel.setMatch(otherMatches.get(i));
+            dashboardPanel.getMatch().setMatchDate(new Date());
             panelList.add(dashboardPanel);
         }
 
@@ -245,26 +321,19 @@ public class BracketCreationBackingBean implements Serializable {
             dashboardPanel.setMargin(50);
             dashboardPanel.setPanel(panel);
             dashboardPanel.setMatch(firstRoundMatches.get(i));
+            dashboardPanel.getMatch().setMatchDate(new Date());
             panelList.add(dashboardPanel);
 
         }
+
+//        panelList.sort(new Comparator() {
+//
+//            @Override
+//            public int compare(Object o1, Object o2) {
+//                return ((DashboardPanel) o1).ge
+//            }
+//
+//        });
         return firstRoundColumn;
     }
-
-//    private OutputLabel panelContent(Competitor competitor, boolean newLine) {
-//
-//        OutputLabel content = new OutputLabel();
-//        if (competitor != null) {
-//            content.setValue(competitor.getIdPersonalInfo().getFirstName() + " "
-//                    + competitor.getIdPersonalInfo().getLastName());
-//        }
-//        if (newLine) {
-//            HtmlOutputText linebreak = new HtmlOutputText();
-//            linebreak.setValue("<br/>");
-//            linebreak.setEscape(false);
-//            content.getChildren().add(linebreak);
-//        }
-//
-//        return content;
-//    }
 }

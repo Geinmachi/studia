@@ -42,7 +42,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Matchh.findByMatchDate", query = "SELECT m FROM Matchh m WHERE m.matchDate = :matchDate"),
     @NamedQuery(name = "Matchh.findByRoundd", query = "SELECT m FROM Matchh m WHERE m.roundd = :roundd"),
     @NamedQuery(name = "Matchh.findByVersion", query = "SELECT m FROM Matchh m WHERE m.version = :version")})
-public class Matchh implements Serializable {
+public class Matchh implements Serializable, Comparable<Matchh> {
     private static final long serialVersionUID = 1L;  
     
     @Transient
@@ -64,12 +64,16 @@ public class Matchh implements Serializable {
     private short roundd;
     @Basic(optional = false)
     @NotNull
+    @Column(name = "match_number")
+    private short matchNumber;
+    @Basic(optional = false)
+    @NotNull
     @Column(name = "version")
     private long version;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idMatch")
+    @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "idMatch")
     private List<MatchMatchType> matchMatchTypeList = new ArrayList<>();
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idMatch")
-    private List<CompetitorMatchGroup> competitorMatchGroupList = new ArrayList<>();
+//    @OneToMany(mappedBy = "idMatch")
+//    private List<CompetitorMatchGroup> competitorMatchGroupList = new ArrayList<>();
 
     public Matchh() {
     }
@@ -117,6 +121,14 @@ public class Matchh implements Serializable {
         this.roundd = roundd;
     }
 
+    public short getMatchNumber() {
+        return matchNumber;
+    }
+
+    public void setMatchNumber(short matchNumber) {
+        this.matchNumber = matchNumber;
+    }
+
     public long getVersion() {
         return version;
     }
@@ -134,14 +146,14 @@ public class Matchh implements Serializable {
         this.matchMatchTypeList = matchMatchTypeList;
     }
 
-    @XmlTransient
-    public List<CompetitorMatchGroup> getCompetitorMatchGroupList() {
-        return competitorMatchGroupList;
-    }
-
-    public void setCompetitorMatchGroupList(List<CompetitorMatchGroup> competitorMatchGroupList) {
-        this.competitorMatchGroupList = competitorMatchGroupList;
-    }
+//    @XmlTransient
+//    public List<CompetitorMatchGroup> getCompetitorMatchGroupList() {
+//        return competitorMatchGroupList;
+//    }
+//
+//    public void setCompetitorMatchGroupList(List<CompetitorMatchGroup> competitorMatchGroupList) {
+//        this.competitorMatchGroupList = competitorMatchGroupList;
+//    }
 
     @Override
     public int hashCode() {
@@ -183,6 +195,11 @@ public class Matchh implements Serializable {
     @Override
     public String toString() {
         return "entities.Matchh[ idMatch=" + idMatch + " ]";
+    }
+
+    @Override
+    public int compareTo(Matchh o) {
+        return Short.compare(this.matchNumber, o.getMatchNumber());
     }
     
 }

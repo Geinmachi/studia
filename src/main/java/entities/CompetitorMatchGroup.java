@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.util.Objects;
 import java.util.UUID;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -53,10 +54,10 @@ public class CompetitorMatchGroup implements Serializable {
     @Column(name = "version")
     private long version;
     @JoinColumn(name = "id_competitor", referencedColumnName = "id_competitor")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = true)
     private Competitor idCompetitor;
     @JoinColumn(name = "id_group", referencedColumnName = "id_group")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = true)
     private Groupp idGroup;
     @JoinColumn(name = "id_match", referencedColumnName = "id_match")
     @ManyToOne(optional = false)

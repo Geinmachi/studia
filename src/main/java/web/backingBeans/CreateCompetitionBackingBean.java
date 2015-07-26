@@ -156,7 +156,8 @@ public class CreateCompetitionBackingBean implements Serializable {
     public String createCompetition() {
         try {
             competition.setIdCompetitionType(selectedCompetitionType);
-            controller.createCompetition(competition, selectedCompetitors);
+            bracketCreator.updateBracket();
+            controller.createCompetition(competition, bracketCreator.getCompetitorMatchGroupList());
             return "/index.xhtml?faces-redirect=true";
         } catch (Exception e) {
             System.out.println("Wyjatek przy twrzoeniu");

@@ -21,7 +21,7 @@ public interface CreateCompetitionManagerLocal {
     
     public boolean validateCompetitorsAmount(int amount);
     
-    public void createCompetition(Competition competition, List<Competitor> competitors);
+    public void createCompetition(Competition competition, List<CompetitorMatchGroup> competitorMatchGroupList);
     
     public List<CompetitorMatchGroup> generateEmptyBracket(List<Competitor> competitors);
 }
