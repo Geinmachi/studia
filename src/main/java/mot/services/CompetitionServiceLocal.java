@@ -9,6 +9,7 @@ import entities.Competition;
 import entities.CompetitionType;
 import entities.Competitor;
 import entities.CompetitorMatchGroup;
+import entities.MatchType;
 import entities.Team;
 import java.util.List;
 import javax.ejb.Local; import javax.ejb.Remote;
@@ -32,9 +33,11 @@ public interface CompetitionServiceLocal {
     
     public boolean validateCompetitorsAmount(int amount);
     
-    public void createCompetition(Competition competition, List<Competitor> competitors);
+    public void createCompetition(Competition competition, List<CompetitorMatchGroup> competitorMatchGroupList);
     
     public CompetitionType findCompetitionTypeById(int id);
     
     public List<CompetitorMatchGroup> generateEmptyBracket(List<Competitor> competitors);
+
+    public List<MatchType> getEndUserMatchTypes();
 }

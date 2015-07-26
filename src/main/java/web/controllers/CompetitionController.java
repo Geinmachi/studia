@@ -9,6 +9,7 @@ import entities.Competition;
 import entities.CompetitionType;
 import entities.Competitor;
 import entities.CompetitorMatchGroup;
+import entities.MatchType;
 import entities.Team;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
@@ -57,8 +58,8 @@ public class CompetitionController implements Serializable {
         return service.validateCompetitorsAmount(amount);
     }
     
-    public void createCompetition(Competition competition, List<Competitor> competitors) {
-        service.createCompetition(competition, competitors);
+    public void createCompetition(Competition competition, List<CompetitorMatchGroup> competitorMatchGroupList) {
+        service.createCompetition(competition, competitorMatchGroupList);
     }
     
     public CompetitionType findCompetitionTypeById(int id) {
@@ -67,6 +68,10 @@ public class CompetitionController implements Serializable {
     
     public List<CompetitorMatchGroup> generateEmptyBracket(List<Competitor> competitors){
         return service.generateEmptyBracket(competitors);
+    }
+
+    public List<MatchType> getEndUserMatchTypes() {
+        return service.getEndUserMatchTypes();
     }
 
 }

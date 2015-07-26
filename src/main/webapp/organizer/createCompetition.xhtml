@@ -138,8 +138,15 @@ and open the template in the editor.
                                         </p:outputLabel>
                                     </c:forEach>
                                     <p:outputLabel value="#{msg.date}:"/><br/>
-                                    <p:calendar pattern="MM/dd/yyyy HH:mm:ss" showOn="button" 
-                                                value="#{dashboardPanel.matchDate}"/>
+                                    <p:calendar id="matchDate" pattern="MM/dd/yyyy HH:mm:ss" showOn="button" 
+                                                value="#{dashboardPanel.match.matchDate}"/>
+                                    <p:outputLabel for="matchType" value="#{msg.matchType}:"/><br/>
+                                    <p:selectOneMenu id="matchType" value="#{dashboardPanel.matchType}"
+                                                     converter="matchTypeConverter">
+                                        <f:selectItems value="#{createCompetitionBackingBean.bracketCreator.matchTypeList}"
+                                                       var="matchType" itemLabel="#{matchType.matchTypeName}"
+                                                       />
+                                    </p:selectOneMenu>
                                 </c:if>
                             </p:panel>
                         </c:forEach>

@@ -6,7 +6,9 @@
 package entities;
 
 import java.io.Serializable;
+import java.util.Objects;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -40,7 +42,7 @@ public class MatchMatchType implements Serializable {
     @ManyToOne(optional = false)
     private MatchType idMatchType;
     @JoinColumn(name = "id_match", referencedColumnName = "id_match")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, cascade = CascadeType.PERSIST)
     private Matchh idMatch;
 
     public MatchMatchType() {
@@ -76,23 +78,35 @@ public class MatchMatchType implements Serializable {
 
     @Override
     public int hashCode() {
-        int hash = 0;
-        hash += (idMatchMatchType != null ? idMatchMatchType.hashCode() : 0);
+        int hash = 3;
+        hash = 83 * hash + Objects.hashCode(this.idMatchMatchType);
+        hash = 83 * hash + Objects.hashCode(this.idMatchType);
+        hash = 83 * hash + Objects.hashCode(this.idMatch);
         return hash;
     }
 
     @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof MatchMatchType)) {
+    public boolean equals(Object obj) {
+        if (obj == null) {
             return false;
         }
-        MatchMatchType other = (MatchMatchType) object;
-        if ((this.idMatchMatchType == null && other.idMatchMatchType != null) || (this.idMatchMatchType != null && !this.idMatchMatchType.equals(other.idMatchMatchType))) {
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final MatchMatchType other = (MatchMatchType) obj;
+        if (!Objects.equals(this.idMatchMatchType, other.idMatchMatchType)) {
+            return false;
+        }
+        if (!Objects.equals(this.idMatchType, other.idMatchType)) {
+            return false;
+        }
+        if (!Objects.equals(this.idMatch, other.idMatch)) {
             return false;
         }
         return true;
     }
+
+    
 
     @Override
     public String toString() {

@@ -6,6 +6,7 @@
 package entities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -88,9 +89,9 @@ public class Competition implements Serializable {
     @ManyToOne(optional = false)
     private CompetitionType idCompetitionType;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idCompetition")
-    private List<Score> scoreList;
+    private List<Score> scoreList = new ArrayList<>();
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idCompetition")
-    private List<GroupCompetition> groupCompetitionList;
+    private List<GroupCompetition> groupCompetitionList = new ArrayList<>();
 
     public Competition() {
     }

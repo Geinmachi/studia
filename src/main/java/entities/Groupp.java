@@ -43,7 +43,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Groupp.findByStartDate", query = "SELECT g FROM Groupp g WHERE g.startDate = :startDate"),
     @NamedQuery(name = "Groupp.findByEndDate", query = "SELECT g FROM Groupp g WHERE g.endDate = :endDate"),
     @NamedQuery(name = "Groupp.findByVersion", query = "SELECT g FROM Groupp g WHERE g.version = :version")})
-public class Groupp implements Serializable {
+public class Groupp implements Serializable, Comparable<Groupp> {
     private static final long serialVersionUID = 1L;
     
     @Transient
@@ -68,10 +68,10 @@ public class Groupp implements Serializable {
     @NotNull
     @Column(name = "version")
     private long version;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idGroup")
-    private List<CompetitorMatchGroup> competitorMatchGroupList = new ArrayList<>();
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idGroup")
-    private List<GroupCompetition> groupCompetitionList = new ArrayList<>();
+//    @OneToMany(mappedBy = "idGroup")
+//    private List<CompetitorMatchGroup> competitorMatchGroupList = new ArrayList<>();
+//    @OneToMany(mappedBy = "idGroup")
+//    private List<GroupCompetition> groupCompetitionList = new ArrayList<>();
 
     public Groupp() {
     }
@@ -129,23 +129,23 @@ public class Groupp implements Serializable {
         this.version = version;
     }
 
-    @XmlTransient
-    public List<CompetitorMatchGroup> getCompetitorMatchGroupList() {
-        return competitorMatchGroupList;
-    }
-
-    public void setCompetitorMatchGroupList(List<CompetitorMatchGroup> competitorMatchGroupList) {
-        this.competitorMatchGroupList = competitorMatchGroupList;
-    }
-
-    @XmlTransient
-    public List<GroupCompetition> getGroupCompetitionList() {
-        return groupCompetitionList;
-    }
-
-    public void setGroupCompetitionList(List<GroupCompetition> groupCompetitionList) {
-        this.groupCompetitionList = groupCompetitionList;
-    }
+//    @XmlTransient
+//    public List<CompetitorMatchGroup> getCompetitorMatchGroupList() {
+//        return competitorMatchGroupList;
+//    }
+//
+//    public void setCompetitorMatchGroupList(List<CompetitorMatchGroup> competitorMatchGroupList) {
+//        this.competitorMatchGroupList = competitorMatchGroupList;
+//    }
+//
+//    @XmlTransient
+//    public List<GroupCompetition> getGroupCompetitionList() {
+//        return groupCompetitionList;
+//    }
+//
+//    public void setGroupCompetitionList(List<GroupCompetition> groupCompetitionList) {
+//        this.groupCompetitionList = groupCompetitionList;
+//    }
 
     @Override
     public int hashCode() {
@@ -188,6 +188,11 @@ public class Groupp implements Serializable {
     @Override
     public String toString() {
         return "entities.Groupp[ idGroup=" + idGroup + " ]";
+    }
+
+    @Override
+    public int compareTo(Groupp o) {
+        return this.groupName.compareTo(o.getGroupName());
     }
     
 }
