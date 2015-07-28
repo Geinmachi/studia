@@ -166,7 +166,7 @@ public class CreateCompetitionManager implements CreateCompetitionManagerLocal {
 
         groups.remove(null);
 
-        if (BracketUtil.numberOfRounds(competitorCount) != groups.size()) {
+        if (competitorCount / GROUP_SIZE != groups.size()) {
             System.out.println("Number Of Rounds = " + BracketUtil.numberOfRounds(competitorCount) + " group size " + groups.size());
             throw new IllegalArgumentException("Liczba grup nie odpowiada liczbie uczesnitkow");
         }

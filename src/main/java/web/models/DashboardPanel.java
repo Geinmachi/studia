@@ -23,9 +23,7 @@ public class DashboardPanel {
     private Panel panel;
         
     private Matchh match;
-    
-    private int margin;
-    
+        
     boolean filler = false;
     
     private MatchType matchType;
@@ -46,14 +44,6 @@ public class DashboardPanel {
 
     public void setMatch(Matchh match) {
         this.match = match;
-    }
-
-    public int getMargin() {
-        return margin;
-    }
-
-    public void setMargin(int margin) {
-        this.margin = margin;
     }
 
     public boolean isFiller() {

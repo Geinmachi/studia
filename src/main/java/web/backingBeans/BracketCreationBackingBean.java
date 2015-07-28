@@ -276,22 +276,23 @@ public class BracketCreationBackingBean implements Serializable {
             System.out.println("MAAATTTTTTHCHCHCHCCHCHCHHCHC ++++ " + otherMatches.get(i).getRoundd() 
             + " number " + otherMatches.get(i).getMatchNumber());
             Panel panel = new Panel();
-            panel.setId("other" + i);
+            panel.setId("other" + (otherMatches.get(i).getRoundd()) + i);
 
-            columns.get(otherMatches.get(i).getRoundd() - 2).addWidget("other" + i);
+            columns.get(otherMatches.get(i).getRoundd() - 2)
+                    .addWidget("other" + (otherMatches.get(i).getRoundd()) + i);
 //            dashboard.getChildren().add(panel);
 
             DashboardPanel dashboardPanel = new DashboardPanel();
             dashboardPanel.setPanel(panel);
-            if (otherMatches.get(i).getRoundd() == 3) {
-                dashboardPanel.setMargin(580);
-            }
-            if (otherMatches.get(i).getRoundd() == 2) {
-                dashboardPanel.setMargin(255);
-            }
-            if (otherMatches.get(i).getRoundd() == 4) {
-                dashboardPanel.setMargin(650);
-            }//590
+//            if (otherMatches.get(i).getRoundd() == 3) {
+//                dashboardPanel.setMargin(580);
+//            }
+//            if (otherMatches.get(i).getRoundd() == 2) {
+//                dashboardPanel.setMargin(255);
+//            }
+//            if (otherMatches.get(i).getRoundd() == 4) {
+//                dashboardPanel.setMargin(650);
+//            }//590
             dashboardPanel.setMatch(otherMatches.get(i));
             dashboardPanel.getMatch().setMatchDate(new Date());
             panelList.add(dashboardPanel);
@@ -320,7 +321,7 @@ public class BracketCreationBackingBean implements Serializable {
 
             firstRoundColumn.addWidget("first" + i);
 //            dashboard.getChildren().add(panel);
-            dashboardPanel.setMargin(50);
+//            dashboardPanel.setMargin(50);
             dashboardPanel.setPanel(panel);
             dashboardPanel.setMatch(firstRoundMatches.get(i));
             dashboardPanel.getMatch().setMatchDate(new Date());

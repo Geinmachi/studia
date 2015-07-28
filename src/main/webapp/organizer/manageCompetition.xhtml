@@ -41,7 +41,7 @@ and open the template in the editor.
                     <c:choose>
                         <c:when test="#{not dashboardPanel.filler}">
                             <p:panel id="#{dashboardPanel.panel.id}" binding="#{dashboardPanel.panel}"
-                                     header="#{msg.matchNumber} #{dashboardPanel.match.matchNumber}" style="margin-top: #{dashboardPanel.margin}%;">
+                                     header="#{msg.matchNumber} #{dashboardPanel.match.matchNumber}">
                                 <c:forEach items="#{dashboardPanel.competitorList}" var="competitorr" varStatus="competitorIndex">
                                     <p:outputLabel>
                                         #{competitorr.idPersonalInfo.firstName} 
@@ -63,10 +63,10 @@ and open the template in the editor.
                                         #{msg.TBD}<br/>
                                     </p:outputLabel>
                                 </c:if>
-                                <p:outputLabel value="#{msg.date}:"/><br/>
+                                <p:outputLabel value="#{msg.date}:"/>
                                 <p:calendar id="matchDate" pattern="MM/dd/yyyy HH:mm:ss" showOn="button" 
-                                            value="#{dashboardPanel.match.matchDate}"/>
-                                <p:outputLabel for="matchType" value="#{msg.matchType}:"/><br/>
+                                            value="#{dashboardPanel.match.matchDate}"/><br/>
+                                <p:outputLabel for="matchType" value="#{msg.matchType}:"/>
                                 <p:selectOneMenu id="matchType" value="#{dashboardPanel.matchType}"
                                                  converter="matchTypeConverter">
                                     <f:selectItems value="#{manageCompetitionBackingBean.bracketCreator.matchTypeList}"
@@ -76,8 +76,7 @@ and open the template in the editor.
                             </p:panel>
                         </c:when>
                         <c:otherwise>
-                            <p:panel id="#{dashboardPanel.panel.id}" binding="#{dashboardPanel.panel}"
-                                     style="margin-top: #{dashboardPanel.margin}%;"/>
+                            <p:panel id="#{dashboardPanel.panel.id}" binding="#{dashboardPanel.panel}"/>
                         </c:otherwise>
                     </c:choose>
                 </c:forEach>
