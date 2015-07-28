@@ -40,4 +40,10 @@ public interface CompetitionServiceLocal {
     public List<CompetitorMatchGroup> generateEmptyBracket(List<Competitor> competitors);
 
     public List<MatchType> getEndUserMatchTypes();
+
+    public List<Competition> getLoggedUserCompetitions();
+
+    public Competition storeCompetition(Competition competition);
+
+    public List<CompetitorMatchGroup> getCompetitionCMGMappings(Competition competition);
 }

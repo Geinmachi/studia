@@ -29,5 +29,10 @@ public interface CompetitionFacadeLocal {
     List<Competition> findRange(int[] range);
 
     int count();
+
+    public List<Competition> findUserCompetitionsByIdAccessLevel(Object id);
     
+    Competition findAndInitializeGCLists(Object id);
+    
+    Competition createWithReturn(Competition entity);
 }

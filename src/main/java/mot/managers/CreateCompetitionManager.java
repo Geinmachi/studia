@@ -116,15 +116,18 @@ public class CreateCompetitionManager implements CreateCompetitionManagerLocal {
             GroupCompetition groupCompetition = new GroupCompetition();
             groupCompetition.setIdCompetition(competition);
             groupCompetition.setIdGroup(managedGroup);
-            
+
             competition.getGroupCompetitionList().add(groupCompetition);
         }
+
+        competition = competitionFacade.createWithReturn(competition);
 
         List<Matchh> matchWithIdentityList = new ArrayList<>();
 
         for (Matchh m : matchList) {
+            m.setCompetition(competition);
             matchWithIdentityList.add(matchFacade.createWithReturn(m));
-            System.out.println("MMAMAMAMAMAMAM " + m + "  number " + m.getMatchNumber());
+//            System.out.println("MMAMAMAMAMAMAM " + m + "  number " + m.getMatchNumber());
         }
 
         assignSameMatchesToCompetitors(competitorMatchGroupList, matchWithIdentityList);
@@ -132,15 +135,18 @@ public class CreateCompetitionManager implements CreateCompetitionManagerLocal {
 
         for (CompetitorMatchGroup cmg : competitorMatchGroupList) {
             if (cmg.getIdMatch() != null) {
-                System.out.println("MAAAAAAAAAAAAAAAATCHHHHHHH " + cmg.getIdMatch());
-                System.out.println("MAtch UUID " + cmg.getIdMatch().getUuid() + " number " + cmg.getIdMatch().getMatchNumber());
-                cmg = cmgFacade.createWithReturn(cmg);
+//                System.out.println("MAAAAAAAAAAAAAAAATCHHHHHHH " + cmg.getIdMatch());
+//                System.out.println("MAtch UUID " + cmg.getIdMatch().getUuid() + " number " + cmg.getIdMatch().getMatchNumber());
+                if (cmg.getIdMatch().getRoundd() == 1) {
+                    cmg.setCompetitorMatchScore((short) 0);
+                }
+                cmgFacade.create(cmg);
             } else {
-                System.out.println("MATTTTTTTTTTTTTTTTTTTTTCH NULLLLLLLLLLLLL");
+//                System.out.println("MATTTTTTTTTTTTTTTTTTTTTCH NULLLLLLLLLLLLL");
             }
         }
-
-        competitionFacade.create(competition);
+//
+//        competitionFacade.create(competition);
         System.out.println(
                 "PRZESZLO SZYSTKO");
 //        throw new NullPointerException();
@@ -183,7 +189,7 @@ public class CreateCompetitionManager implements CreateCompetitionManagerLocal {
     private void assignSameMatchesToCompetitors(List<CompetitorMatchGroup> competitorMatchGroupList, List<Matchh> uniqueMatchList) {
         for (CompetitorMatchGroup cmg : competitorMatchGroupList) {
             for (Matchh m : uniqueMatchList) {
-                if (cmg.getIdMatch().equals(m) ) {
+                if (cmg.getIdMatch().equals(m)) {
                     System.out.println("ASSIGNING " + m.getMatchNumber());
                     cmg.setIdMatch(m);
                     break;

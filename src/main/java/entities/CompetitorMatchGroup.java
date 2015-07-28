@@ -32,6 +32,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "competitor_match_group")
 @XmlRootElement
 @NamedQueries({
+    @NamedQuery(name = "CompetitorMatchGroup.findByCompetitionId", query = "SELECT c FROM CompetitorMatchGroup c WHERE c.idMatch.competition.idCompetition = :idCompetition"),
     @NamedQuery(name = "CompetitorMatchGroup.findAll", query = "SELECT c FROM CompetitorMatchGroup c"),
     @NamedQuery(name = "CompetitorMatchGroup.findByIdCompetitorMatchGroup", query = "SELECT c FROM CompetitorMatchGroup c WHERE c.idCompetitorMatchGroup = :idCompetitorMatchGroup"),
     @NamedQuery(name = "CompetitorMatchGroup.findByCompetitorMatchScore", query = "SELECT c FROM CompetitorMatchGroup c WHERE c.competitorMatchScore = :competitorMatchScore"),

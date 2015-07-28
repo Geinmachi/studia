@@ -127,7 +127,7 @@ public class CreateCompetitionBackingBean implements Serializable {
 
     public String onFlowProcess(FlowEvent event) {
         if (event.getOldStep().equals("firstStep")) {
-            bracketCreator.createBracket(selectedCompetitors);
+            bracketCreator.createEmptyBracket(selectedCompetitors);
 
         } else if (event.getNewStep().equals("firstStep")) {
             bracketCreator.clearLists();

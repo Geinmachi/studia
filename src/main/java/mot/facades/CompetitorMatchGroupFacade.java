@@ -5,10 +5,13 @@
  */
 package mot.facades;
 
+import entities.Account;
 import entities.CompetitorMatchGroup;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -33,6 +36,13 @@ public class CompetitorMatchGroupFacade extends AbstractFacade<CompetitorMatchGr
         em.persist(entity);
         em.flush();
         return entity;
+    }
+
+    @Override
+    public List<CompetitorMatchGroup> getCompetitionCMGMappingsByCompetitionId(Integer idCompetition) {
+        Query q = em.createNamedQuery("CompetitorMatchGroup.findByCompetitionId");
+        q.setParameter("idCompetition", idCompetition);
+        return (List<CompetitorMatchGroup>) q.getResultList();
     }
     
 }

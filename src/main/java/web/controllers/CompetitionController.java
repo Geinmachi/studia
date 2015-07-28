@@ -23,14 +23,19 @@ import mot.services.CompetitionServiceLocal;
  *
  * @author java
  */
-@Named(value = "competitionController")
 @SessionScoped
 public class CompetitionController implements Serializable {
 
     @EJB
     private CompetitionServiceLocal service;
     
+    private Competition editingCompetition;
+    
     public CompetitionController() {
+    }
+
+    public Competition getEditingCompetition() {
+        return editingCompetition;
     }
     
     public List<Team> findAllTeams() {
@@ -72,6 +77,18 @@ public class CompetitionController implements Serializable {
 
     public List<MatchType> getEndUserMatchTypes() {
         return service.getEndUserMatchTypes();
+    }
+
+    public List<Competition> getLoggedUserCompetitions() {
+        return service.getLoggedUserCompetitions();
+    }
+
+    public void storeCompetition(Competition competition) {
+        editingCompetition = service.storeCompetition(competition);
+    }
+
+    public List<CompetitorMatchGroup> getCompetitionCMGMappings(Competition competition) {
+        return service.getCompetitionCMGMappings(competition);
     }
 
 }

@@ -22,6 +22,7 @@ import mot.facades.CompetitorFacadeLocal;
 import mot.facades.MatchTypeFacadeLocal;
 import mot.facades.TeamFacadeLocal;
 import mot.managers.CreateCompetitionManagerLocal;
+import mot.managers.ManageCompetitionManagerLocal;
 
 /**
  *
@@ -35,6 +36,9 @@ public class CompetitionService implements CompetitionServiceLocal {
     private CreateCompetitionManagerLocal createCompetitionManager;
     
     @EJB
+    private ManageCompetitionManagerLocal manageCompetitionManager;
+    
+    @EJB
     private TeamFacadeLocal teamFacade;
 
     @EJB
@@ -45,6 +49,8 @@ public class CompetitionService implements CompetitionServiceLocal {
     
     @EJB
     private MatchTypeFacadeLocal matchTypeFacade;
+    
+    private Competition editingCompetition;
 
     @Override
     public List<Team> findAllTeams() {
@@ -97,5 +103,21 @@ public class CompetitionService implements CompetitionServiceLocal {
     @Override
     public List<MatchType> getEndUserMatchTypes() {
         return matchTypeFacade.findEndUserMatchTypes();
+    }
+
+    @Override
+    public List<Competition> getLoggedUserCompetitions() {
+        return manageCompetitionManager.getLoggedUserCompetition();
+    }
+
+    @Override
+    public Competition storeCompetition(Competition competition) {
+        editingCompetition = manageCompetitionManager.storeCompetition(competition);
+        return editingCompetition;
+    }
+
+    @Override
+    public List<CompetitorMatchGroup> getCompetitionCMGMappings(Competition competition) {
+        return manageCompetitionManager.getCompetitionCMGMappings(competition);
     }
 }

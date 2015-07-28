@@ -115,8 +115,15 @@ public class BracketCreationBackingBean implements Serializable {
         matchTypeList = controller.getEndUserMatchTypes();
     }
 
-    public void createBracket(List<Competitor> competitors) {
-        initializeLists(competitors);
+    public void createEmptyBracket(List<Competitor> competitors) {
+        competitorMatchGroupList = controller.generateEmptyBracket(competitors);
+        initializeLists();
+        createModel();
+    }
+
+    public void recreateBracket(List<CompetitorMatchGroup> competitorMatchGroupList) {
+        this.competitorMatchGroupList = competitorMatchGroupList;
+        initializeLists();
         createModel();
     }
 
@@ -164,9 +171,7 @@ public class BracketCreationBackingBean implements Serializable {
         }
     }
 
-    private void initializeLists(List<Competitor> competitors) {
-        competitorMatchGroupList = controller.generateEmptyBracket(competitors);
-
+    private void initializeLists() {
 //        Collections.shuffle(competitorMatchGroupList);
         competitorMatchGroupList.sort(new Comparator<CompetitorMatchGroup>() {
 
@@ -177,21 +182,13 @@ public class BracketCreationBackingBean implements Serializable {
 
         });
 
-        for (CompetitorMatchGroup cmg : competitorMatchGroupList) {
-//            if (cmg.getIdGroup() != null) {
-//                System.out.println("Grupa " + cmg.getIdGroup().getGroupName());
-//                if (cmg.getIdCompetitor() != null) {
-//                    System.out.println("Competitor " + cmg.getIdCompetitor().getIdCompetitor());
-            System.out.println("Match " + cmg.getIdMatch().getUuid() + " numer " + cmg.getIdMatch().getMatchNumber());
-            System.out.println("Runda " + cmg.getIdMatch().getRoundd());
-//                '}
-//            }
-        }
         Set<Groupp> uniqueGroups = new HashSet();
         Set<Matchh> uniqueFirstRoundMatches = new HashSet();
         Set<Matchh> uniqueOtherMatches = new HashSet();
 
         for (CompetitorMatchGroup cmg : competitorMatchGroupList) {
+            System.out.println("CMMMMGGG " + cmg.getIdMatch().getMatchNumber() + " round " 
+                    + cmg.getIdMatch().getRoundd());
             if (cmg.getIdCompetitor() != null) {
                 competitorsWithGroups.add(cmg.getIdCompetitor());
             }
@@ -199,6 +196,7 @@ public class BracketCreationBackingBean implements Serializable {
             if (cmg.getIdMatch().getRoundd() == 1) {
                 uniqueFirstRoundMatches.add(cmg.getIdMatch());
             } else {
+                System.out.println("OTHER MATCH " + cmg.getIdMatch().getMatchNumber());
                 uniqueOtherMatches.add(cmg.getIdMatch());
             }
         }
@@ -264,6 +262,9 @@ public class BracketCreationBackingBean implements Serializable {
     private List<DashboardColumn> createOtherRoundsColumns() {
         int rounds = BracketUtil.numberOfRounds(competitorsWithGroups.size());
 
+        System.out.println("competitorsWithGroups " + competitorsWithGroups.size());
+        System.out.println("otherMatches " + otherMatches.size());
+        
         List<DashboardColumn> columns = new ArrayList<>();
 
         for (int i = 0; i < rounds - 1; i++) {
@@ -271,8 +272,10 @@ public class BracketCreationBackingBean implements Serializable {
         }
 
         for (int i = 0; i < otherMatches.size(); i++) {
+            
+            System.out.println("MAAATTTTTTHCHCHCHCCHCHCHHCHC ++++ " + otherMatches.get(i).getRoundd() 
+            + " number " + otherMatches.get(i).getMatchNumber());
             Panel panel = new Panel();
-            panel.setHeader("other" + i);
             panel.setId("other" + i);
 
             columns.get(otherMatches.get(i).getRoundd() - 2).addWidget("other" + i);
@@ -302,7 +305,6 @@ public class BracketCreationBackingBean implements Serializable {
 
         for (int i = 0; i < firstRoundMatches.size(); i++) {
             Panel panel = new Panel();
-            panel.setHeader("first" + i);
             panel.setId("first" + i);
 
             DashboardPanel dashboardPanel = new DashboardPanel();
@@ -326,14 +328,6 @@ public class BracketCreationBackingBean implements Serializable {
 
         }
 
-//        panelList.sort(new Comparator() {
-//
-//            @Override
-//            public int compare(Object o1, Object o2) {
-//                return ((DashboardPanel) o1).ge
-//            }
-//
-//        });
         return firstRoundColumn;
     }
 }

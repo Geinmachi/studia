@@ -4,19 +4,19 @@
 .ui-dashboard-column:nth-child(2n) {
     width: 101px;
 }
-[id^="createCompetitionForm:filler0"] {
+[id*="CompetitionForm:filler0"] {
     height: 7.4em;
     padding: 0 !important;
 }
-[id^="createCompetitionForm:filler0"]:nth-child(1) {
+[id*="CompetitionForm:filler0"]:nth-child(1) {
     height: 8.9em !important;
 }
-[id^="createCompetitionForm:filler0"]:nth-child(3n+1) {
+[id*="CompetitionForm:filler0"]:nth-child(3n+1) {
     height: 12.2em;
     border: 0;
 }
 
-[id^="createCompetitionForm:filler0"]:nth-child(3n+3) > div{
+[id*="CompetitionForm:filler0"]:nth-child(3n+3) > div{
     position: absolute;
     width: 100px;
     background-color: #fff;
@@ -24,20 +24,20 @@
     top: -26px;
 }
 
-[id^="createCompetitionForm:filler1"] {
+[id^="CompetitionForm:filler1"] {
     height: 14em;
     padding: 0 !important;
 }
 
-[id^="createCompetitionForm:filler1"]:nth-child(1) {
+[id*="CompetitionForm:filler1"]:nth-child(1) {
     height: 16em !important;
 }
 
-[id^="createCompetitionForm:filler1"]:nth-child(3n+1) {
+[id*="CompetitionForm:filler1"]:nth-child(3n+1) {
     height: 27em;
 }
 
-[id^="createCompetitionForm:filler1"]:nth-child(3n+3) > div{
+[id*="CompetitionForm:filler1"]:nth-child(3n+3) > div{
     position: absolute;
     width: 100px;
     background-color: #fff;
@@ -45,17 +45,17 @@
     top: -35px;
 }
 
-[id^="createCompetitionForm:filler2"] {
+[id*="CompetitionForm:filler2"] {
     height: 27em;
     padding: 0 !important;
 }
-/*[id^="createCompetitionForm:filler2"]:nth-child(7n+1) {
+/*[id*="CompetitionForm:filler2"]:nth-child(7n+1) {
     height: 12em;
 }*/
-[id^="createCompetitionForm:filler2"]:nth-child(1) {
+[id*="CompetitionForm:filler2"]:nth-child(1) {
     height: 30em !important;
 }
-[id^="createCompetitionForm:filler2"]:nth-child(3n+3) > div{
+[id*="CompetitionForm:filler2"]:nth-child(3n+3) > div{
     position: absolute;
     width: 100px;
     background-color: #fff;
@@ -73,11 +73,11 @@
     position: relative;
 }
 
-[id^="createCompetitionForm:filler"]:nth-child(3n+1) {
+[id*="CompetitionForm:filler"]:nth-child(3n+1) {
     border: 0;
 }
 
-[id^="createCompetitionForm:filler"]:nth-child(3n+2) > div{
+[id*="CompetitionForm:filler"]:nth-child(3n+2) > div{
     position: absolute;
     width: 100px;
     background-color: #fff;
@@ -85,6 +85,6 @@
 }
 
 
-[id^="createCompetitionForm:filler"]:nth-child(1) {
+[id*="CompetitionForm:filler"]:nth-child(1) {
     border: 0 !important;
 }
