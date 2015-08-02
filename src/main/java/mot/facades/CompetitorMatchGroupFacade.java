@@ -19,6 +19,7 @@ import javax.persistence.Query;
  */
 @Stateless
 public class CompetitorMatchGroupFacade extends AbstractFacade<CompetitorMatchGroup> implements CompetitorMatchGroupFacadeLocal {
+
     @PersistenceContext(unitName = "mot_persistence_unit")
     private EntityManager em;
 
@@ -44,5 +45,13 @@ public class CompetitorMatchGroupFacade extends AbstractFacade<CompetitorMatchGr
         q.setParameter("idCompetition", idCompetition);
         return (List<CompetitorMatchGroup>) q.getResultList();
     }
-    
+
+    @Override
+    public CompetitorMatchGroup findByMatchNumberAndIdCompetition(short matchNumber, int idCompetition) {
+        Query q = em.createNamedQuery("CompetitorMatchGroup.findByMatchNumberAndIdCompetition");
+        q.setParameter("matchNumber", matchNumber);
+        q.setParameter("idCompetition", idCompetition);
+        return (CompetitorMatchGroup) q.getSingleResult();
+    }
+
 }

@@ -91,4 +91,8 @@ public class CompetitionController implements Serializable {
         return service.getCompetitionCMGMappings(competition);
     }
 
+    public CompetitorMatchGroup saveCompetitorScore(CompetitorMatchGroup cmg) {
+        return service.saveCompetitorScore(cmg);
+    }
+
 }

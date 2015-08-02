@@ -42,27 +42,54 @@ and open the template in the editor.
                         <c:when test="#{not dashboardPanel.filler}">
                             <p:panel id="#{dashboardPanel.panel.id}" binding="#{dashboardPanel.panel}"
                                      header="#{msg.matchNumber} #{dashboardPanel.match.matchNumber}">
-                                <c:forEach items="#{dashboardPanel.competitorList}" var="competitorr" varStatus="competitorIndex">
-                                    <p:outputLabel>
-                                        #{competitorr.idPersonalInfo.firstName} 
-                                        #{competitorr.idPersonalInfo.lastName} 
-                                    </p:outputLabel>
-                                    <c:forEach items="#{dashboardPanel.match.competitorMatchGroupList}"
-                                               var="cmgFromMatch">
-                                        <c:if test="#{cmgFromMatch.idCompetitor eq competitorr}">
+<!--                                <c:forEach items="#{dashboardPanel.competitorList}" var="competitorr" varStatus="competitorIndex">
+                                    <c:choose>
+                                        <c:when test="#{not empty competitorr}">
+                                            <p:outputLabel>
+                                #{competitorr.idPersonalInfo.firstName}
+                                #{competitorr.idPersonalInfo.lastName} 
+                            </p:outputLabel>-->
+                                <ui:repeat value="#{dashboardPanel.match.competitorMatchGroupList}" var="cmgFromMatch">
+                                
+<!--                                </ui:repeat>
+                                <c:forEach items="#{dashboardPanel.match.competitorMatchGroupList}"
+                                           var="cmgFromMatch">
+                                    <c:choose>
+                                        <c:when test="#{not empty cmgFromMatch.idCompetitor}">-->
+                                            <!--<c:if test="#{cmgFromMatch.idCompetitor eq competitorr}">-->
+                                            LOL2 
+                                            <p:outputLabel>
+                                                #{cmgFromMatch.idCompetitor.idPersonalInfo.firstName}
+                                                #{cmgFromMatch.idCompetitor.idPersonalInfo.lastName} 
+                                                #{cmgFromMatch.idCompetitor.idCompetitor} 
+                                            </p:outputLabel>
+                                            LOL 
                                             <p:inplace editor="true">
-                                                <p:inputText value="#{cmgFromMatch.competitorMatchScore}"/>
+                                                <p:ajax event="save" listener="#{manageCompetitionBackingBean.saveScore(cmgFromMatch)}"
+                                                        update=":manageCompetitionForm:dashboard" partialSubmit="true" process="@this"/>
+                                                <p:inputText value="#{cmgFromMatch.competitorMatchScore}">
+                                                    <p:ajax event="blur" listener="#{manageCompetitionBackingBean.saveScore2(cmgFromMatch)}"
+                                                            />
+                                                </p:inputText>
                                             </p:inplace>
-                                        </c:if>
-                                    </c:forEach>
-                                    <br/>
-                                </c:forEach>
-                                <c:if test="#{empty dashboardPanel.competitorList}">
-                                    <p:outputLabel>
-                                        #{msg.TBD}<br/>
-                                        #{msg.TBD}<br/>
-                                    </p:outputLabel>
-                                </c:if>
+                                            <br/>
+                                            <!--</c:if>-->
+<!--                                        </c:when>
+                                        <c:otherwise>
+                                            #{msg.TBD}
+                                            <br/>
+                                        </c:otherwise>
+                                    </c:choose>
+                                </c:forEach>-->
+                                </ui:repeat>
+                                <!--                                        </c:when>
+                                                                        <c:otherwise>
+                                #{msg.TBD}
+                            </c:otherwise>
+                        </c:choose>-->
+                                <!--
+                                                                    <br/>
+                                                                </c:forEach>-->
                                 <p:outputLabel value="#{msg.date}:"/>
                                 <p:calendar id="matchDate" pattern="MM/dd/yyyy HH:mm:ss" showOn="button" 
                                             value="#{dashboardPanel.match.matchDate}"/><br/>

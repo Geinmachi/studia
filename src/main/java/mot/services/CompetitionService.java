@@ -120,4 +120,9 @@ public class CompetitionService implements CompetitionServiceLocal {
     public List<CompetitorMatchGroup> getCompetitionCMGMappings(Competition competition) {
         return manageCompetitionManager.getCompetitionCMGMappings(competition);
     }
+
+    @Override
+    public CompetitorMatchGroup saveCompetitorScore(CompetitorMatchGroup cmg) {
+        return manageCompetitionManager.saveCompetitorScore(editingCompetition, cmg);
+    }
 }

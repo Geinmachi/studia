@@ -40,6 +40,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "matchh")
 @XmlRootElement
 @NamedQueries({
+    @NamedQuery(name = "Matchh.findByMatchNumberAndIdCompetition", query = "SELECT m FROM Matchh m WHERE m.matchNumber = :matchNumber AND m.competition.idCompetition = :idCompetition"),
     @NamedQuery(name = "Matchh.findAll", query = "SELECT m FROM Matchh m"),
     @NamedQuery(name = "Matchh.findByIdMatch", query = "SELECT m FROM Matchh m WHERE m.idMatch = :idMatch"),
     @NamedQuery(name = "Matchh.findByMatchDate", query = "SELECT m FROM Matchh m WHERE m.matchDate = :matchDate"),
@@ -78,7 +79,7 @@ public class Matchh implements Serializable, Comparable<Matchh> {
     @JoinColumn(name = "id_competition", referencedColumnName = "id_competition")
     @ManyToOne(optional = false)
     private Competition competition;
-    @OneToMany(mappedBy = "idMatch", fetch = FetchType.EAGER) // list size is exactly 2
+    @OneToMany(mappedBy = "idMatch", fetch = FetchType.EAGER, cascade = CascadeType.PERSIST) // list size is at most 2
     private List<CompetitorMatchGroup> competitorMatchGroupList = new ArrayList<>();
 
     public Matchh() {

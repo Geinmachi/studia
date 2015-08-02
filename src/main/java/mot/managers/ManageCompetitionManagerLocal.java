@@ -23,5 +23,7 @@ public interface ManageCompetitionManagerLocal {
     public Competition storeCompetition(Competition competition);
 
     public List<CompetitorMatchGroup> getCompetitionCMGMappings(Competition competition);
+
+    public CompetitorMatchGroup saveCompetitorScore(Competition editingCompetition, CompetitorMatchGroup cmg);
     
 }

@@ -46,4 +46,6 @@ public interface CompetitionServiceLocal {
     public Competition storeCompetition(Competition competition);
 
     public List<CompetitorMatchGroup> getCompetitionCMGMappings(Competition competition);
+
+    public CompetitorMatchGroup saveCompetitorScore(CompetitorMatchGroup cmg);
 }

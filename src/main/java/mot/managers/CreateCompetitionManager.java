@@ -75,7 +75,7 @@ public class CreateCompetitionManager implements CreateCompetitionManagerLocal {
     @EJB
     private CompetitorMatchGroupFacadeLocal cmgFacade;
 
-    private final int GROUP_SIZE = 4;
+    final static int GROUP_SIZE = 4;
 
     @Override
     public boolean validateCompetitorsAmount(int amount) {
@@ -123,28 +123,40 @@ public class CreateCompetitionManager implements CreateCompetitionManagerLocal {
         competition = competitionFacade.createWithReturn(competition);
 
         List<Matchh> matchWithIdentityList = new ArrayList<>();
+        
+        assignSameGroupsToCompetitors(competitorMatchGroupList, groupWithIdentityList);
 
         for (Matchh m : matchList) {
             m.setCompetition(competition);
+            for (CompetitorMatchGroup cmg : m.getCompetitorMatchGroupList()) {
+                if (cmg.getIdMatch().getRoundd() == 1) {
+                    cmg.setCompetitorMatchScore((short) 0);
+                } else {
+                    System.out.println("RUNDA TOTOOOOOOOOOOOOO " + cmg.getIdMatch().getRoundd());
+                }
+            }
+            if (m.getCompetitorMatchGroupList().isEmpty()) {
+                System.out.println("CMG JEsT PUSTEEEE dla meczu nr " + m.getMatchNumber());
+            }
             matchWithIdentityList.add(matchFacade.createWithReturn(m));
 //            System.out.println("MMAMAMAMAMAMAM " + m + "  number " + m.getMatchNumber());
         }
 
-        assignSameMatchesToCompetitors(competitorMatchGroupList, matchWithIdentityList);
-        assignSameGroupsToCompetitors(competitorMatchGroupList, groupWithIdentityList);
-
-        for (CompetitorMatchGroup cmg : competitorMatchGroupList) {
-            if (cmg.getIdMatch() != null) {
-//                System.out.println("MAAAAAAAAAAAAAAAATCHHHHHHH " + cmg.getIdMatch());
-//                System.out.println("MAtch UUID " + cmg.getIdMatch().getUuid() + " number " + cmg.getIdMatch().getMatchNumber());
-                if (cmg.getIdMatch().getRoundd() == 1) {
-                    cmg.setCompetitorMatchScore((short) 0);
-                }
-                cmgFacade.create(cmg);
-            } else {
-//                System.out.println("MATTTTTTTTTTTTTTTTTTTTTCH NULLLLLLLLLLLLL");
-            }
-        }
+        System.out.println("competitorMatchGroupList sizeeee " + competitorMatchGroupList.size());
+//        assignSameMatchesToCompetitors(competitorMatchGroupList, matchWithIdentityList);
+//
+//        for (CompetitorMatchGroup cmg : competitorMatchGroupList) {
+//            if (cmg.getIdMatch() != null) {
+////                System.out.println("MAAAAAAAAAAAAAAAATCHHHHHHH " + cmg.getIdMatch());
+////                System.out.println("MAtch UUID " + cmg.getIdMatch().getUuid() + " number " + cmg.getIdMatch().getMatchNumber());
+//                if (cmg.getIdMatch().getRoundd() == 1) {
+//                    cmg.setCompetitorMatchScore((short) 0);
+//                }
+//                cmgFacade.create(cmg);
+//            } else {
+////                System.out.println("MATTTTTTTTTTTTTTTTTTTTTCH NULLLLLLLLLLLLL");
+//            }
+//        }
 //
 //        competitionFacade.create(competition);
         System.out.println(
@@ -271,7 +283,7 @@ public class CreateCompetitionManager implements CreateCompetitionManagerLocal {
 
         List<CompetitorMatchGroup> competitorMatchGroupList = generateFirstRoundMatches(groups);
 
-        generateRestRounds(competitorMatchGroupList, assignedCompetitors.keySet().size());
+        generateOtherRounds(competitorMatchGroupList, assignedCompetitors.keySet().size());
 
 //        for (int i = 0; i < competitorMatchGroupList.size(); i++) {
 //            System.out.println("iiiiiiiiiiiiii = " + i);
@@ -314,19 +326,23 @@ public class CreateCompetitionManager implements CreateCompetitionManagerLocal {
                 match.setMatchNumber(matchCounter++);
 
                 CompetitorMatchGroup cmg1 = new CompetitorMatchGroup(UUID.randomUUID());
+                match.getCompetitorMatchGroupList().add(cmg1);
 
                 cmg1.setIdCompetitor(entry.getValue().get(i));
                 cmg1.setIdGroup(entry.getKey());
                 cmg1.setIdMatch(match);
+                cmg1.setPlacer((short)1);
 //                match.getCompetitorMatchGroupList().add(cmg1);
 //                entry.getKey().getCompetitorMatchGroupList().add(cmg1);
 
                 CompetitorMatchGroup cmg2 = new CompetitorMatchGroup(UUID.randomUUID());
+                match.getCompetitorMatchGroupList().add(cmg2);
 
 //                System.out.println("2222Competitor" + entry.getValue().get(i + 1) + " w matchu, i + 1 = " + (i + 1));
                 cmg2.setIdCompetitor(entry.getValue().get(i + 1));
                 cmg2.setIdGroup(entry.getKey());
                 cmg2.setIdMatch(match);
+                cmg2.setPlacer((short)2);
 //                match.getCompetitorMatchGroupList().add(cmg2);
 //                entry.getKey().getCompetitorMatchGroupList().add(cmg2);
 
@@ -343,7 +359,7 @@ public class CreateCompetitionManager implements CreateCompetitionManagerLocal {
         return competitorMatchGroupList;
     }
 
-    private void generateRestRounds(List<CompetitorMatchGroup> competitorMatchGroupList, int competitorsAmount) {
+    private void generateOtherRounds(List<CompetitorMatchGroup> competitorMatchGroupList, int competitorsAmount) {
         int numberOfRounds = BracketUtil.numberOfRounds(competitorsAmount);
         int matchesInRound = 0;
         short matchCounter = (short) (competitorsAmount / 2);
@@ -356,12 +372,18 @@ public class CreateCompetitionManager implements CreateCompetitionManagerLocal {
                 match.setRoundd((short) (i + 2));
                 match.setMatchNumber(++matchCounter);
 
-                CompetitorMatchGroup cmg = new CompetitorMatchGroup(UUID.randomUUID());
+                CompetitorMatchGroup cmg1 = new CompetitorMatchGroup(UUID.randomUUID());
+                match.getCompetitorMatchGroupList().add(cmg1);
+                
+                CompetitorMatchGroup cmg2 = new CompetitorMatchGroup(UUID.randomUUID());
+                match.getCompetitorMatchGroupList().add(cmg2);
 
-                cmg.setIdMatch(match);
+                cmg1.setIdMatch(match);
+                cmg2.setIdMatch(match);
 //                match.getCompetitorMatchGroupList().add(cmg);
 
-                competitorMatchGroupList.add(cmg);
+                competitorMatchGroupList.add(cmg1);
+                competitorMatchGroupList.add(cmg2);
             }
         }
     }

@@ -34,4 +34,6 @@ public interface CompetitorMatchGroupFacadeLocal {
     CompetitorMatchGroup createWithReturn(CompetitorMatchGroup entity);
 
     public List<CompetitorMatchGroup> getCompetitionCMGMappingsByCompetitionId(Integer idCompetition);
+
+    public CompetitorMatchGroup findByMatchNumberAndIdCompetition(short matchNumber, int idCompetition);
 }
