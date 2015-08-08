@@ -48,4 +48,6 @@ public interface CompetitionServiceLocal {
     public List<CompetitorMatchGroup> getCompetitionCMGMappings(Competition competition);
 
     public CompetitorMatchGroup saveCompetitorScore(CompetitorMatchGroup cmg);
+
+    public List<CompetitorMatchGroup> findCMGByIdMatch(Integer idMatch);
 }

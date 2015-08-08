@@ -47,11 +47,18 @@ public class CompetitorMatchGroupFacade extends AbstractFacade<CompetitorMatchGr
     }
 
     @Override
-    public CompetitorMatchGroup findByMatchNumberAndIdCompetition(short matchNumber, int idCompetition) {
+    public List<CompetitorMatchGroup> findByMatchNumberAndIdCompetition(short matchNumber, int idCompetition) {
         Query q = em.createNamedQuery("CompetitorMatchGroup.findByMatchNumberAndIdCompetition");
         q.setParameter("matchNumber", matchNumber);
         q.setParameter("idCompetition", idCompetition);
-        return (CompetitorMatchGroup) q.getSingleResult();
+        return (List<CompetitorMatchGroup>) q.getResultList();
+    }
+
+    @Override
+    public List<CompetitorMatchGroup> findCMGByIdMatch(Integer idMatch) {
+        Query q = em.createNamedQuery("CompetitorMatchGroup.findByIdMatch");
+        q.setParameter("idMatch", idMatch);
+        return (List<CompetitorMatchGroup>) q.getResultList();
     }
 
 }

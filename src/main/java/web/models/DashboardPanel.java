@@ -71,7 +71,7 @@ public class DashboardPanel {
     /**
      *
      * @return New List with competitors. To add competitors use method
-     * addCompetitorToList
+ updateCMGwithAdvanced
      */
     public List<Competitor> getCompetitorList() {
         return new ArrayList<>(competitorList);
@@ -87,16 +87,24 @@ public class DashboardPanel {
      * @param competitor
      * @param index
      */
-    public void addCompetitorToList(Competitor competitor, int index) {
+    public void updateCMGwithAdvanced(CompetitorMatchGroup cmg) {
         List<CompetitorMatchGroup> cmgList = this.match.getCompetitorMatchGroupList();
 
         for (CompetitorMatchGroup c : cmgList) {
+            if (cmg.equals(c)) {
+                
+            }
             System.out.println("Przed insertem: " + c.getIdCompetitor());
         }
 //        competitorList.add(competitor);
 
-
-        cmgList.get(index).setIdCompetitor(competitor);
+        for (CompetitorMatchGroup c : cmgList) {
+            if (cmg.equals(c)) {
+                c.setIdCompetitor(cmg.getIdCompetitor());
+                System.err.println("JAKI PLACER " + c.getPlacer());
+            }
+        }
+//        cmgList.get(index).setIdCompetitor(competitor);
 
 //        competitorList.remove(null);
 //
@@ -111,7 +119,7 @@ public class DashboardPanel {
 //     *
 //     * @param competitor
 //     */
-//    public void addCompetitorToList(Competitor competitor) {
+//    public void updateCMGwithAdvanced(Competitor competitor) {
 //
 //        List<CompetitorMatchGroup> cmgList = this.match.getCompetitorMatchGroupList();
 //

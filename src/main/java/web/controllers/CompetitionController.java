@@ -95,4 +95,8 @@ public class CompetitionController implements Serializable {
         return service.saveCompetitorScore(cmg);
     }
 
+    public List<CompetitorMatchGroup> findCMGByIdMatch(Integer idMatch) {
+        return service.findCMGByIdMatch(idMatch);
+    }
+
 }

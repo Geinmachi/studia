@@ -35,5 +35,7 @@ public interface CompetitorMatchGroupFacadeLocal {
 
     public List<CompetitorMatchGroup> getCompetitionCMGMappingsByCompetitionId(Integer idCompetition);
 
-    public CompetitorMatchGroup findByMatchNumberAndIdCompetition(short matchNumber, int idCompetition);
+    public List<CompetitorMatchGroup> findByMatchNumberAndIdCompetition(short matchNumber, int idCompetition);
+
+    public List<CompetitorMatchGroup> findCMGByIdMatch(Integer idMatch);
 }

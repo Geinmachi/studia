@@ -125,4 +125,9 @@ public class CompetitionService implements CompetitionServiceLocal {
     public CompetitorMatchGroup saveCompetitorScore(CompetitorMatchGroup cmg) {
         return manageCompetitionManager.saveCompetitorScore(editingCompetition, cmg);
     }
+
+    @Override
+    public List<CompetitorMatchGroup> findCMGByIdMatch(Integer idMatch) {
+        return manageCompetitionManager.findCMGByIdMatch(idMatch);
+    }
 }

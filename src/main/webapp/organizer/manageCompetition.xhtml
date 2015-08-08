@@ -49,39 +49,43 @@ and open the template in the editor.
                                 #{competitorr.idPersonalInfo.firstName}
                                 #{competitorr.idPersonalInfo.lastName} 
                             </p:outputLabel>-->
-                                <ui:repeat value="#{dashboardPanel.match.competitorMatchGroupList}" var="cmgFromMatch">
-                                
-<!--                                </ui:repeat>
+                                <!--<ui:repeat value="#{dashboardPanel.match.competitorMatchGroupList}" var="cmgFromMatch">-->
+
+                                <!--                                </ui:repeat>
+                                -->                                                                
+                                idMatch = #{dashboardPanel.match}
+                                <br/>
                                 <c:forEach items="#{dashboardPanel.match.competitorMatchGroupList}"
                                            var="cmgFromMatch">
                                     <c:choose>
-                                        <c:when test="#{not empty cmgFromMatch.idCompetitor}">-->
+                                        <c:when test="#{not empty cmgFromMatch.idCompetitor}">
                                             <!--<c:if test="#{cmgFromMatch.idCompetitor eq competitorr}">-->
-                                            LOL2 
                                             <p:outputLabel>
                                                 #{cmgFromMatch.idCompetitor.idPersonalInfo.firstName}
                                                 #{cmgFromMatch.idCompetitor.idPersonalInfo.lastName} 
                                                 #{cmgFromMatch.idCompetitor.idCompetitor} 
                                             </p:outputLabel>
-                                            LOL 
                                             <p:inplace editor="true">
                                                 <p:ajax event="save" listener="#{manageCompetitionBackingBean.saveScore(cmgFromMatch)}"
                                                         update=":manageCompetitionForm:dashboard" partialSubmit="true" process="@this"/>
-                                                <p:inputText value="#{cmgFromMatch.competitorMatchScore}">
+                                                <p:inputText value="#{cmgFromMatch.competitorMatchScore}" >
                                                     <p:ajax event="blur" listener="#{manageCompetitionBackingBean.saveScore2(cmgFromMatch)}"
                                                             />
+                                                    <!--<p:remoteCommand name="updateInplace" update="@this" actionListener="#{manageCompetitionBackingBean.remoteC(cmgFromMatch)}"/>-->
+
                                                 </p:inputText>
                                             </p:inplace>
+                                            <p:inputText value="#{cmgFromMatch.competitorMatchScore}"/>
                                             <br/>
                                             <!--</c:if>-->
-<!--                                        </c:when>
+                                        </c:when>
                                         <c:otherwise>
                                             #{msg.TBD}
                                             <br/>
                                         </c:otherwise>
                                     </c:choose>
-                                </c:forEach>-->
-                                </ui:repeat>
+                                </c:forEach>
+                                <!--</ui:repeat>-->
                                 <!--                                        </c:when>
                                                                         <c:otherwise>
                                 #{msg.TBD}

@@ -14,4 +14,7 @@
         </resource-bundle>
         <!--<message-bundle>JSFvalidation.Messages</message-bundle>-->
     </application>
+    <lifecycle>
+        <phase-listener>LifeCycleListener</phase-listener>
+    </lifecycle>
 </faces-config>
