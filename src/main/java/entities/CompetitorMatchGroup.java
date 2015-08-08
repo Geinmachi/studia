@@ -32,6 +32,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "competitor_match_group")
 @XmlRootElement
 @NamedQueries({
+    @NamedQuery(name = "CompetitorMatchGroup.findByIdMatch", query = "SELECT c FROM CompetitorMatchGroup c WHERE c.idMatch.idMatch = :idMatch"),
+    @NamedQuery(name = "CompetitorMatchGroup.findByMatchNumberAndIdCompetition", query = "SELECT c FROM CompetitorMatchGroup c WHERE c.idMatch.matchNumber = :matchNumber AND c.idMatch.competition.idCompetition = :idCompetition"),
+    @NamedQuery(name = "CompetitorMatchGroup.findByMatchNumber", query = "SELECT c FROM CompetitorMatchGroup c WHERE c.idMatch.matchNumber = :matchNumber"),
+    @NamedQuery(name = "CompetitorMatchGroup.findByCompetitionId", query = "SELECT c FROM CompetitorMatchGroup c WHERE c.idMatch.competition.idCompetition = :idCompetition"),
     @NamedQuery(name = "CompetitorMatchGroup.findAll", query = "SELECT c FROM CompetitorMatchGroup c"),
     @NamedQuery(name = "CompetitorMatchGroup.findByIdCompetitorMatchGroup", query = "SELECT c FROM CompetitorMatchGroup c WHERE c.idCompetitorMatchGroup = :idCompetitorMatchGroup"),
     @NamedQuery(name = "CompetitorMatchGroup.findByCompetitorMatchScore", query = "SELECT c FROM CompetitorMatchGroup c WHERE c.competitorMatchScore = :competitorMatchScore"),
@@ -49,6 +53,8 @@ public class CompetitorMatchGroup implements Serializable {
     private Integer idCompetitorMatchGroup;
     @Column(name = "competitor_match_score")
     private Short competitorMatchScore;
+    @Column(name = "placer")
+    private Short placer;
     @Basic(optional = false)
     @NotNull
     @Column(name = "version")
@@ -87,6 +93,14 @@ public class CompetitorMatchGroup implements Serializable {
 
     public void setCompetitorMatchScore(Short competitorMatchScore) {
         this.competitorMatchScore = competitorMatchScore;
+    }
+
+    public Short getPlacer() {
+        return placer;
+    }
+
+    public void setPlacer(Short placer) {
+        this.placer = placer;
     }
 
     public long getVersion() {

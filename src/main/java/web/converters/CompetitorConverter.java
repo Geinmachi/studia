@@ -43,7 +43,7 @@ public class CompetitorConverter implements Converter {
             throw new IllegalArgumentException("Nie ma takiego competitionType");
         } catch (Exception e) {
             System.out.println("WYjatekgetAsObject");
-            throw new ConverterException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Conversion Error", ""));
+            throw new ConverterException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Conversion Error", "Conversion Error"));
         }
     }
 
@@ -54,7 +54,7 @@ public class CompetitorConverter implements Converter {
             return String.valueOf(((Competitor) value).getIdCompetitor());
         } catch (Exception e) {
             System.out.println("WYjatekgetAsString");
-            throw new ConverterException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Conversion Error", ""));
+            throw new ConverterException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Conversion Error", "Conversion Error"));
         }
     }
 }

@@ -125,30 +125,76 @@ and open the template in the editor.
                     <p:outputPanel id="ss">
                         <p:panel header="cos"/>
                     </p:outputPanel>
+<!--                    <p:dashboard id="dashboard" model="#{createCompetitionBackingBean.bracketCreator.dashboardModel}">
+        <c:forEach items="#{createCompetitionBackingBean.bracketCreator.panelList}" var="dashboardPanel">
+            <p:panel id="#{dashboardPanel.panel.id}" binding="#{dashboardPanel.panel}"
+                     style="margin-top: #{dashboardPanel.margin}%;">
+                <c:if test="#{not dashboardPanel.filler}">
+                    <c:forEach items="#{dashboardPanel.competitorList}" var="competitorr">
+                        <p:outputLabel>
+                    #{competitorr.idPersonalInfo.firstName} 
+                    #{competitorr.idPersonalInfo.lastName}
+    <br/>
+</p:outputLabel>
+</c:forEach>
+<p:outputLabel value="#{msg.date}:"/><br/>
+<p:calendar id="matchDate" pattern="MM/dd/yyyy HH:mm:ss" showOn="button" 
+        value="#{dashboardPanel.match.matchDate}"/>
+<p:outputLabel for="matchType" value="#{msg.matchType}:"/><br/>
+<p:selectOneMenu id="matchType" value="#{dashboardPanel.matchType}"
+             converter="matchTypeConverter">
+<f:selectItems value="#{createCompetitionBackingBean.bracketCreator.matchTypeList}"
+               var="matchType" itemLabel="#{matchType.matchTypeName}"
+               />
+</p:selectOneMenu>
+</c:if>
+</p:panel>
+</c:forEach>
+</p:dashboard>-->
+
                     <p:dashboard id="dashboard" model="#{createCompetitionBackingBean.bracketCreator.dashboardModel}">
-                        <c:forEach items="#{createCompetitionBackingBean.bracketCreator.panelList}" var="dashboardPanel">
-                            <p:panel id="#{dashboardPanel.panel.id}" binding="#{dashboardPanel.panel}"
-                                     style="margin-top: #{dashboardPanel.margin}%;">
-                                <c:if test="#{not dashboardPanel.filler}">
-                                    <c:forEach items="#{dashboardPanel.competitorList}" var="competitorr">
-                                        <p:outputLabel>
-                                            #{competitorr.idPersonalInfo.firstName} 
-                                            #{competitorr.idPersonalInfo.lastName}
+                        <c:forEach items="#{createCompetitionBackingBean.bracketCreator.panelList}" var="dashboardPanel" varStatus="panelIndex">
+                            <c:choose>
+                                <c:when test="#{not dashboardPanel.filler}">
+                                    <p:panel id="#{dashboardPanel.panel.id}" binding="#{dashboardPanel.panel}"
+                                             header="#{msg.matchNumber} #{dashboardPanel.match.matchNumber}">
+                                        <c:forEach items="#{dashboardPanel.competitorList}" var="competitorr" varStatus="competitorIndex">
+                                            <p:outputLabel>
+                                                #{competitorr.idPersonalInfo.firstName} 
+                                                #{competitorr.idPersonalInfo.lastName} 
+                                            </p:outputLabel>
+                                            <c:forEach items="#{dashboardPanel.match.competitorMatchGroupList}"
+                                                       var="cmgFromMatch">
+                                                <c:if test="#{cmgFromMatch.idCompetitor eq competitorr}">
+                                                    <p:inplace editor="true">
+                                                        <p:inputText value="#{cmgFromMatch.competitorMatchScore}"/>
+                                                    </p:inplace>
+                                                </c:if>
+                                            </c:forEach>
                                             <br/>
-                                        </p:outputLabel>
-                                    </c:forEach>
-                                    <p:outputLabel value="#{msg.date}:"/><br/>
-                                    <p:calendar id="matchDate" pattern="MM/dd/yyyy HH:mm:ss" showOn="button" 
-                                                value="#{dashboardPanel.match.matchDate}"/>
-                                    <p:outputLabel for="matchType" value="#{msg.matchType}:"/><br/>
-                                    <p:selectOneMenu id="matchType" value="#{dashboardPanel.matchType}"
-                                                     converter="matchTypeConverter">
-                                        <f:selectItems value="#{createCompetitionBackingBean.bracketCreator.matchTypeList}"
-                                                       var="matchType" itemLabel="#{matchType.matchTypeName}"
-                                                       />
-                                    </p:selectOneMenu>
-                                </c:if>
-                            </p:panel>
+                                        </c:forEach>
+                                        <c:if test="#{empty dashboardPanel.competitorList}">
+                                            <p:outputLabel>
+                                                #{msg.TBD}<br/>
+                                                #{msg.TBD}<br/>
+                                            </p:outputLabel>
+                                        </c:if>
+                                        <p:outputLabel value="#{msg.date}:"/>
+                                        <p:calendar id="matchDate" pattern="MM/dd/yyyy HH:mm:ss" showOn="button" 
+                                                    value="#{dashboardPanel.match.matchDate}"/><br/>
+                                        <p:outputLabel for="matchType" value="#{msg.matchType}:"/>
+                                        <p:selectOneMenu id="matchType" value="#{dashboardPanel.matchType}"
+                                                         converter="matchTypeConverter">
+                                            <f:selectItems value="#{createCompetitionBackingBean.bracketCreator.matchTypeList}"
+                                                           var="matchType" itemLabel="#{matchType.matchTypeName}"
+                                                           />
+                                        </p:selectOneMenu>
+                                    </p:panel>
+                                </c:when>
+                                <c:otherwise>
+                                    <p:panel id="#{dashboardPanel.panel.id}" binding="#{dashboardPanel.panel}"/>
+                                </c:otherwise>
+                            </c:choose>
                         </c:forEach>
                     </p:dashboard>
                 </p:tab>

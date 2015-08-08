@@ -68,10 +68,10 @@ public class Groupp implements Serializable, Comparable<Groupp> {
     @NotNull
     @Column(name = "version")
     private long version;
-//    @OneToMany(mappedBy = "idGroup")
-//    private List<CompetitorMatchGroup> competitorMatchGroupList = new ArrayList<>();
-//    @OneToMany(mappedBy = "idGroup")
-//    private List<GroupCompetition> groupCompetitionList = new ArrayList<>();
+    @OneToMany(mappedBy = "idGroup")
+    private List<CompetitorMatchGroup> competitorMatchGroupList = new ArrayList<>();
+    @OneToMany(mappedBy = "idGroup")
+    private List<GroupCompetition> groupCompetitionList = new ArrayList<>();
 
     public Groupp() {
     }
@@ -129,23 +129,23 @@ public class Groupp implements Serializable, Comparable<Groupp> {
         this.version = version;
     }
 
-//    @XmlTransient
-//    public List<CompetitorMatchGroup> getCompetitorMatchGroupList() {
-//        return competitorMatchGroupList;
-//    }
-//
-//    public void setCompetitorMatchGroupList(List<CompetitorMatchGroup> competitorMatchGroupList) {
-//        this.competitorMatchGroupList = competitorMatchGroupList;
-//    }
-//
-//    @XmlTransient
-//    public List<GroupCompetition> getGroupCompetitionList() {
-//        return groupCompetitionList;
-//    }
-//
-//    public void setGroupCompetitionList(List<GroupCompetition> groupCompetitionList) {
-//        this.groupCompetitionList = groupCompetitionList;
-//    }
+    @XmlTransient
+    public List<CompetitorMatchGroup> getCompetitorMatchGroupList() {
+        return competitorMatchGroupList;
+    }
+
+    public void setCompetitorMatchGroupList(List<CompetitorMatchGroup> competitorMatchGroupList) {
+        this.competitorMatchGroupList = competitorMatchGroupList;
+    }
+
+    @XmlTransient
+    public List<GroupCompetition> getGroupCompetitionList() {
+        return groupCompetitionList;
+    }
+
+    public void setGroupCompetitionList(List<GroupCompetition> groupCompetitionList) {
+        this.groupCompetitionList = groupCompetitionList;
+    }
 
     @Override
     public int hashCode() {

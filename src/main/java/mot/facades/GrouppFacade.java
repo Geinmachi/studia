@@ -32,8 +32,6 @@ public class GrouppFacade extends AbstractFacade<Groupp> implements GrouppFacade
     public Groupp createWithReturn(Groupp entity) {
         em.persist(entity);
         em.flush();
-//        em.refresh(entity);
-        System.out.println("PO FLUUUSH " + entity);
         return entity;
     }
     

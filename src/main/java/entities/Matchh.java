@@ -15,9 +15,12 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -37,6 +40,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "matchh")
 @XmlRootElement
 @NamedQueries({
+    @NamedQuery(name = "Matchh.findByMatchNumberAndIdCompetition", query = "SELECT m FROM Matchh m WHERE m.matchNumber = :matchNumber AND m.competition.idCompetition = :idCompetition"),
     @NamedQuery(name = "Matchh.findAll", query = "SELECT m FROM Matchh m"),
     @NamedQuery(name = "Matchh.findByIdMatch", query = "SELECT m FROM Matchh m WHERE m.idMatch = :idMatch"),
     @NamedQuery(name = "Matchh.findByMatchDate", query = "SELECT m FROM Matchh m WHERE m.matchDate = :matchDate"),
@@ -72,8 +76,11 @@ public class Matchh implements Serializable, Comparable<Matchh> {
     private long version;
     @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "idMatch")
     private List<MatchMatchType> matchMatchTypeList = new ArrayList<>();
-//    @OneToMany(mappedBy = "idMatch")
-//    private List<CompetitorMatchGroup> competitorMatchGroupList = new ArrayList<>();
+    @JoinColumn(name = "id_competition", referencedColumnName = "id_competition")
+    @ManyToOne(optional = false)
+    private Competition competition;
+    @OneToMany(mappedBy = "idMatch", fetch = FetchType.EAGER, cascade = CascadeType.PERSIST) // list size is at most 2
+    private List<CompetitorMatchGroup> competitorMatchGroupList = new ArrayList<>();
 
     public Matchh() {
     }
@@ -146,14 +153,22 @@ public class Matchh implements Serializable, Comparable<Matchh> {
         this.matchMatchTypeList = matchMatchTypeList;
     }
 
-//    @XmlTransient
-//    public List<CompetitorMatchGroup> getCompetitorMatchGroupList() {
-//        return competitorMatchGroupList;
-//    }
-//
-//    public void setCompetitorMatchGroupList(List<CompetitorMatchGroup> competitorMatchGroupList) {
-//        this.competitorMatchGroupList = competitorMatchGroupList;
-//    }
+    public Competition getCompetition() {
+        return competition;
+    }
+
+    public void setCompetition(Competition competition) {
+        this.competition = competition;
+    }
+
+    @XmlTransient
+    public List<CompetitorMatchGroup> getCompetitorMatchGroupList() {
+        return competitorMatchGroupList;
+    }
+
+    public void setCompetitorMatchGroupList(List<CompetitorMatchGroup> competitorMatchGroupList) {
+        this.competitorMatchGroupList = competitorMatchGroupList;
+    }
 
     @Override
     public int hashCode() {

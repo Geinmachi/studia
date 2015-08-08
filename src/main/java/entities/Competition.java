@@ -40,6 +40,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "competition")
 @XmlRootElement
 @NamedQueries({
+    @NamedQuery(name = "Competition.findByIdAccessLevel", query = "SELECT c FROM Competition c WHERE c.idOrganizer.idAccessLevel = :idAccessLevel"),
     @NamedQuery(name = "Competition.findAll", query = "SELECT c FROM Competition c"),
     @NamedQuery(name = "Competition.findByIdCompetition", query = "SELECT c FROM Competition c WHERE c.idCompetition = :idCompetition"),
     @NamedQuery(name = "Competition.findByCompetitionName", query = "SELECT c FROM Competition c WHERE c.competitionName = :competitionName"),

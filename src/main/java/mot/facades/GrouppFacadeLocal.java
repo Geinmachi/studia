@@ -31,5 +31,6 @@ public interface GrouppFacadeLocal {
 
     int count();
     
-    Groupp createWithReturn(Groupp groupp);
+    Groupp createWithReturn(Groupp entity);
+    
 }

@@ -9,6 +9,7 @@ import entities.Matchh;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -40,5 +41,21 @@ public class MatchhFacade extends AbstractFacade<Matchh> implements MatchhFacade
         em.persist(entity);
         em.flush();
         return entity;
+    }
+
+    @Override
+    public Matchh findAndInitializeTypes(Object id) {
+        Matchh match = em.find(Matchh.class, id);
+        match.getMatchMatchTypeList().size();
+        
+        return match;
+    }
+
+    @Override
+    public Matchh findByMatchNumberAndIdCompetition(short matchNumber, int idCompetition) {
+        Query q = em.createNamedQuery("Matchh.findByMatchNumberAndIdCompetition");
+        q.setParameter("matchNumber", matchNumber);
+        q.setParameter("idCompetition", idCompetition);
+        return (Matchh) q.getSingleResult();
     }
 }

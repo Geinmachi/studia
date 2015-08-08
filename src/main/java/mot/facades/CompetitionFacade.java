@@ -5,10 +5,14 @@
  */
 package mot.facades;
 
+import entities.Account;
 import entities.Competition;
+import entities.GroupCompetition;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -26,6 +30,30 @@ public class CompetitionFacade extends AbstractFacade<Competition> implements Co
 
     public CompetitionFacade() {
         super(Competition.class);
+    }
+
+    @Override
+    public List<Competition> findUserCompetitionsByIdAccessLevel(Object id) {
+        Query q = em.createNamedQuery("Competition.findByIdAccessLevel");
+        q.setParameter("idAccessLevel", id);
+        return (List<Competition>) q.getResultList();
+    }
+
+    @Override
+    public Competition findAndInitializeGCLists(Object id) {
+        Competition managedEntity = em.find(Competition.class, id);
+        for(GroupCompetition gc : managedEntity.getGroupCompetitionList()) {
+            gc.getIdGroup().getCompetitorMatchGroupList().size();
+        }
+        return managedEntity;
+    }
+
+    @Override
+    public Competition createWithReturn(Competition entity) {
+        em.persist(entity);
+        em.flush();
+        
+        return entity;
     }
     
 }

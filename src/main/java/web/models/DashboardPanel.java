@@ -6,6 +6,7 @@
 package web.models;
 
 import entities.Competitor;
+import entities.CompetitorMatchGroup;
 import entities.MatchType;
 import entities.Matchh;
 import java.util.ArrayList;
@@ -19,18 +20,21 @@ import org.primefaces.component.panel.Panel;
  * @author java
  */
 public class DashboardPanel {
-    
+
     private Panel panel;
-        
+
     private Matchh match;
-    
-    private int margin;
-    
+
     boolean filler = false;
-    
+
     private MatchType matchType;
-    
-    private List<Competitor> competitorList = new ArrayList<>();
+
+    private List<Competitor> competitorList = new ArrayList<>(2);
+
+    public DashboardPanel() {
+        competitorList.add(null);
+        competitorList.add(null);
+    }
 
     public Panel getPanel() {
         return panel;
@@ -46,14 +50,6 @@ public class DashboardPanel {
 
     public void setMatch(Matchh match) {
         this.match = match;
-    }
-
-    public int getMargin() {
-        return margin;
-    }
-
-    public void setMargin(int margin) {
-        this.margin = margin;
     }
 
     public boolean isFiller() {
@@ -72,13 +68,65 @@ public class DashboardPanel {
         this.matchType = matchType;
     }
 
+    /**
+     *
+     * @return New List with competitors. To add competitors use method
+ updateCMGwithAdvanced
+     */
     public List<Competitor> getCompetitorList() {
-        return competitorList;
+        return new ArrayList<>(competitorList);
     }
 
     public void setCompetitorList(List<Competitor> competitorList) {
         this.competitorList = competitorList;
     }
-    
-    
+
+    /**
+     * Used for inserting advanced players (rounds other than 1)
+     *
+     * @param competitor
+     * @param index
+     */
+    public void updateCMGwithAdvanced(CompetitorMatchGroup cmg) {
+        List<CompetitorMatchGroup> cmgList = this.match.getCompetitorMatchGroupList();
+
+        for (CompetitorMatchGroup c : cmgList) {
+            if (cmg.equals(c)) {
+                
+            }
+            System.out.println("Przed insertem: " + c.getIdCompetitor());
+        }
+//        competitorList.add(competitor);
+
+        for (CompetitorMatchGroup c : cmgList) {
+            if (cmg.equals(c)) {
+                c.setIdCompetitor(cmg.getIdCompetitor());
+                System.err.println("JAKI PLACER " + c.getPlacer());
+            }
+        }
+//        cmgList.get(index).setIdCompetitor(competitor);
+
+//        competitorList.remove(null);
+//
+//        competitorList.add(index, competitor);
+        for (CompetitorMatchGroup c : cmgList) {
+            System.out.println("Po insercie: " + c.getIdCompetitor());
+        }
+    }
+
+//    /**
+//     * Inserts competitor at unspecific index (rounds 1)
+//     *
+//     * @param competitor
+//     */
+//    public void updateCMGwithAdvanced(Competitor competitor) {
+//
+//        List<CompetitorMatchGroup> cmgList = this.match.getCompetitorMatchGroupList();
+//
+//        cmgList.remove(null);
+//        cmgList.a
+////        cmgList.ad
+////        competitorList.remove(null);
+////        competitorList.add(competitor);
+//    }
 }

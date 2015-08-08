@@ -32,4 +32,8 @@ public interface MatchhFacadeLocal {
     int count();
  
     Matchh createWithReturn(Matchh entity);
+    
+    Matchh findAndInitializeTypes(Object id);
+
+    public Matchh findByMatchNumberAndIdCompetition(short matchNumber, int idCompetition);
 }

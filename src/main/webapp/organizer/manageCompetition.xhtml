@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/templates/main.xhtml"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <ui:define name="title">#{msg.manageCompetitionTitle}</ui:define>
+    <ui:define name="content">
+        <h:form id="manageCompetitionForm">
+
+            <p:outputLabel for="competitionName" value="#{msg.competitionName}: "/>
+            <p:inplace id="competitionName" editor="true">
+                <p:inputText value="#{manageCompetitionBackingBean.competition.competitionName}" required="true"/>
+            </p:inplace>
+            <p:message for="competitionName"/>
+
+            <p:outputLabel value="#{msg.groups}"/>
+            <br/>
+            <ui:repeat value="#{manageCompetitionBackingBean.competition.groupCompetitionList}" 
+                       var="groupCompetition">
+                <p:panel header="#{groupCompetition.idGroup.groupName}" 
+                         style="width: #{(100/manageCompetitionBackingBean.competition.groupCompetitionList.size())-1}%; display: inline-block;">
+                    <ui:repeat value="#{groupCompetition.idGroup.competitorMatchGroupList}" 
+                               var="competitorMatchGroup">
+                        #{competitorMatchGroup.idCompetitor.idPersonalInfo.firstName} 
+                        #{competitorMatchGroup.idCompetitor.idPersonalInfo.lastName} 
+                        <br/>
+                    </ui:repeat>
+                </p:panel>
+            </ui:repeat>
+            <p:dashboard id="dashboard" model="#{manageCompetitionBackingBean.bracketCreator.dashboardModel}">
+                <c:forEach items="#{manageCompetitionBackingBean.bracketCreator.panelList}" var="dashboardPanel" varStatus="panelIndex">
+                    <c:choose>
+                        <c:when test="#{not dashboardPanel.filler}">
+                            <p:panel id="#{dashboardPanel.panel.id}" binding="#{dashboardPanel.panel}"
+                                     header="#{msg.matchNumber} #{dashboardPanel.match.matchNumber}">
+<!--                                <c:forEach items="#{dashboardPanel.competitorList}" var="competitorr" varStatus="competitorIndex">
+                                    <c:choose>
+                                        <c:when test="#{not empty competitorr}">
+                                            <p:outputLabel>
+                                #{competitorr.idPersonalInfo.firstName}
+                                #{competitorr.idPersonalInfo.lastName} 
+                            </p:outputLabel>-->
+                                <!--<ui:repeat value="#{dashboardPanel.match.competitorMatchGroupList}" var="cmgFromMatch">-->
+
+                                <!--                                </ui:repeat>
+                                -->                                                                
+                                idMatch = #{dashboardPanel.match}
+                                <br/>
+                                <c:forEach items="#{dashboardPanel.match.competitorMatchGroupList}"
+                                           var="cmgFromMatch">
+                                    <c:choose>
+                                        <c:when test="#{not empty cmgFromMatch.idCompetitor}">
+                                            <!--<c:if test="#{cmgFromMatch.idCompetitor eq competitorr}">-->
+                                            <p:outputLabel>
+                                                #{cmgFromMatch.idCompetitor.idPersonalInfo.firstName}
+                                                #{cmgFromMatch.idCompetitor.idPersonalInfo.lastName} 
+                                                #{cmgFromMatch.idCompetitor.idCompetitor} 
+                                            </p:outputLabel>
+                                            <p:inplace editor="true">
+                                                <p:ajax event="save" listener="#{manageCompetitionBackingBean.saveScore(cmgFromMatch)}"
+                                                        update=":manageCompetitionForm:dashboard" partialSubmit="true" process="@this"/>
+                                                <p:inputText value="#{cmgFromMatch.competitorMatchScore}" >
+                                                    <p:ajax event="blur" listener="#{manageCompetitionBackingBean.saveScore2(cmgFromMatch)}"
+                                                            />
+                                                    <!--<p:remoteCommand name="updateInplace" update="@this" actionListener="#{manageCompetitionBackingBean.remoteC(cmgFromMatch)}"/>-->
+
+                                                </p:inputText>
+                                            </p:inplace>
+                                            <p:inputText value="#{cmgFromMatch.competitorMatchScore}"/>
+                                            <br/>
+                                            <!--</c:if>-->
+                                        </c:when>
+                                        <c:otherwise>
+                                            #{msg.TBD}
+                                            <br/>
+                                        </c:otherwise>
+                                    </c:choose>
+                                </c:forEach>
+                                <!--</ui:repeat>-->
+                                <!--                                        </c:when>
+                                                                        <c:otherwise>
+                                #{msg.TBD}
+                            </c:otherwise>
+                        </c:choose>-->
+                                <!--
+                                                                    <br/>
+                                                                </c:forEach>-->
+                                <p:outputLabel value="#{msg.date}:"/>
+                                <p:calendar id="matchDate" pattern="MM/dd/yyyy HH:mm:ss" showOn="button" 
+                                            value="#{dashboardPanel.match.matchDate}"/><br/>
+                                <p:outputLabel for="matchType" value="#{msg.matchType}:"/>
+                                <p:selectOneMenu id="matchType" value="#{dashboardPanel.matchType}"
+                                                 converter="matchTypeConverter">
+                                    <f:selectItems value="#{manageCompetitionBackingBean.bracketCreator.matchTypeList}"
+                                                   var="matchType" itemLabel="#{matchType.matchTypeName}"
+                                                   />
+                                </p:selectOneMenu>
+                            </p:panel>
+                        </c:when>
+                        <c:otherwise>
+                            <p:panel id="#{dashboardPanel.panel.id}" binding="#{dashboardPanel.panel}"/>
+                        </c:otherwise>
+                    </c:choose>
+                </c:forEach>
+            </p:dashboard>
+        </h:form>
+    </ui:define>
+</ui:composition>

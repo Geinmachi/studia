@@ -32,4 +32,10 @@ public interface CompetitorMatchGroupFacadeLocal {
     int count();
     
     CompetitorMatchGroup createWithReturn(CompetitorMatchGroup entity);
+
+    public List<CompetitorMatchGroup> getCompetitionCMGMappingsByCompetitionId(Integer idCompetition);
+
+    public List<CompetitorMatchGroup> findByMatchNumberAndIdCompetition(short matchNumber, int idCompetition);
+
+    public List<CompetitorMatchGroup> findCMGByIdMatch(Integer idMatch);
 }
