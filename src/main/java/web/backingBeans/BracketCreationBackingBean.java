@@ -373,9 +373,9 @@ public class BracketCreationBackingBean implements Serializable {
 
     int placerPosition(short placer) {
         if (Short.compare(placer, (short) 1) == 0) {
-            return -1;
-        } else {
             return 1;
+        } else {
+            return -1;
         }
     }
 
