@@ -10,7 +10,6 @@ import entities.Account;
 import entities.Competition;
 import entities.Competitor;
 import entities.CompetitorMatchGroup;
-import entities.GroupCompetition;
 import entities.Groupp;
 import entities.MatchMatchType;
 import entities.Matchh;
@@ -36,7 +35,6 @@ import javax.ejb.TransactionAttributeType;
 import mot.facades.AccountFacadeLocal;
 import mot.facades.CompetitionFacadeLocal;
 import mot.facades.CompetitorMatchGroupFacadeLocal;
-import mot.facades.GroupCompetitionFacadeLocal;
 import mot.facades.GrouppFacadeLocal;
 import mot.facades.MatchMatchTypeFacadeLocal;
 import mot.facades.MatchhFacadeLocal;
@@ -60,8 +58,8 @@ public class CreateCompetitionManager implements CreateCompetitionManagerLocal {
     @EJB
     private AccountFacadeLocal accountFacade;
 
-    @EJB
-    private GroupCompetitionFacadeLocal groupCompetitionFacade;
+//    @EJB
+//    private GroupCompetitionFacadeLocal groupCompetitionFacade;
 
     @EJB
     private GrouppFacadeLocal groupFacade;
@@ -113,11 +111,11 @@ public class CreateCompetitionManager implements CreateCompetitionManagerLocal {
             Groupp managedGroup = groupFacade.createWithReturn(g);
             groupWithIdentityList.add(managedGroup);
 
-            GroupCompetition groupCompetition = new GroupCompetition();
-            groupCompetition.setIdCompetition(competition);
-            groupCompetition.setIdGroup(managedGroup);
-
-            competition.getGroupCompetitionList().add(groupCompetition);
+//            GroupCompetition groupCompetition = new GroupCompetition();
+//            groupCompetition.setIdCompetition(competition);
+//            groupCompetition.setIdGroup(managedGroup);
+//
+//            competition.getGroupCompetitionList().add(groupCompetition);
         }
 
         competition = competitionFacade.createWithReturn(competition);

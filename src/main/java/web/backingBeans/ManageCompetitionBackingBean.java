@@ -8,7 +8,6 @@ package web.backingBeans;
 import entities.Competition;
 import entities.Competitor;
 import entities.CompetitorMatchGroup;
-import entities.GroupCompetition;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;

@@ -31,8 +31,6 @@ public interface CompetitionFacadeLocal {
     int count();
 
     public List<Competition> findUserCompetitionsByIdAccessLevel(Object id);
-    
-    Competition findAndInitializeGCLists(Object id);
-    
+        
     Competition createWithReturn(Competition entity);
 }

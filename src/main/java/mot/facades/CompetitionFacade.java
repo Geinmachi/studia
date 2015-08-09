@@ -7,7 +7,6 @@ package mot.facades;
 
 import entities.Account;
 import entities.Competition;
-import entities.GroupCompetition;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -39,14 +38,14 @@ public class CompetitionFacade extends AbstractFacade<Competition> implements Co
         return (List<Competition>) q.getResultList();
     }
 
-    @Override
-    public Competition findAndInitializeGCLists(Object id) {
-        Competition managedEntity = em.find(Competition.class, id);
-        for(GroupCompetition gc : managedEntity.getGroupCompetitionList()) {
-            gc.getIdGroup().getCompetitorMatchGroupList().size();
-        }
-        return managedEntity;
-    }
+//    @Override
+//    public Competition findAndInitializeGCLists(Object id) {
+//        Competition managedEntity = em.find(Competition.class, id);
+//        for(GroupCompetition gc : managedEntity.getGroupCompetitionList()) {
+//            gc.getIdGroup().getCompetitorMatchGroupList().size();
+//        }
+//        return managedEntity;
+//    }
 
     @Override
     public Competition createWithReturn(Competition entity) {

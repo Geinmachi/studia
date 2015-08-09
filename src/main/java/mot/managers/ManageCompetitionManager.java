@@ -58,7 +58,7 @@ public class ManageCompetitionManager implements ManageCompetitionManagerLocal {
 
     @Override
     public Competition storeCompetition(Competition competition) {
-        Competition fetchedCompetition = competitionFacade.findAndInitializeGCLists(competition.getIdCompetition());
+        Competition fetchedCompetition = competitionFacade.find(competition.getIdCompetition());
 
         if (!fetchedCompetition.equals(competition)) { // after page laod and before button click competition was modified
             throw new IllegalStateException("In the meantime competition was modyfied");
@@ -117,7 +117,7 @@ public class ManageCompetitionManager implements ManageCompetitionManagerLocal {
 
     private CompetitorMatchGroup advanceCompetitor(Competition competition, Matchh fetchedMatch, CompetitorMatchGroup receivedCMG, Competitor competitor) {
         System.out.println("WESLO DO ADVANCE");
-        int competitorCount = competition.getGroupCompetitionList().size() * CreateCompetitionManager.GROUP_SIZE;
+        int competitorCount = competitor.getGroupCompetitorList().size() * CreateCompetitionManager.GROUP_SIZE;
         double matchCounter = 0.0;
 
         for (MatchMatchType mmt : fetchedMatch.getMatchMatchTypeList()) {

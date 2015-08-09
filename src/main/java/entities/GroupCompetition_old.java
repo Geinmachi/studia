@@ -30,7 +30,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "GroupCompetition.findAll", query = "SELECT g FROM GroupCompetition g"),
     @NamedQuery(name = "GroupCompetition.findByIdGroupCompetition", query = "SELECT g FROM GroupCompetition g WHERE g.idGroupCompetition = :idGroupCompetition")})
-public class GroupCompetition implements Serializable {
+public class GroupCompetition_old implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -44,10 +44,10 @@ public class GroupCompetition implements Serializable {
     @ManyToOne(optional = false)
     private Groupp idGroup;
 
-    public GroupCompetition() {
+    public GroupCompetition_old() {
     }
 
-    public GroupCompetition(Integer idGroupCompetition) {
+    public GroupCompetition_old(Integer idGroupCompetition) {
         this.idGroupCompetition = idGroupCompetition;
     }
 
@@ -85,10 +85,10 @@ public class GroupCompetition implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof GroupCompetition)) {
+        if (!(object instanceof GroupCompetition_old)) {
             return false;
         }
-        GroupCompetition other = (GroupCompetition) object;
+        GroupCompetition_old other = (GroupCompetition_old) object;
         if ((this.idGroupCompetition == null && other.idGroupCompetition != null) || (this.idGroupCompetition != null && !this.idGroupCompetition.equals(other.idGroupCompetition))) {
             return false;
         }
