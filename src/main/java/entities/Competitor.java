@@ -60,6 +60,8 @@ public class Competitor implements Serializable {
     @JoinColumn(name = "id_team", referencedColumnName = "id_team")
     @ManyToOne
     private Team idTeam;
+    @OneToMany(mappedBy = "idCompetitor")
+    private List<GroupCompetitor> groupCompetitornList = new ArrayList<>();
 
     public Competitor() {
     }
@@ -112,6 +114,14 @@ public class Competitor implements Serializable {
 
     public void setIdTeam(Team idTeam) {
         this.idTeam = idTeam;
+    }
+
+    public List<GroupCompetitor> getGroupCompetitornList() {
+        return groupCompetitornList;
+    }
+
+    public void setGroupCompetitornList(List<GroupCompetitor> groupCompetitornList) {
+        this.groupCompetitornList = groupCompetitornList;
     }
 
     @Override

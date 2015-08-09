@@ -71,7 +71,7 @@ public class Groupp implements Serializable, Comparable<Groupp> {
     @OneToMany(mappedBy = "idGroup")
     private List<CompetitorMatchGroup> competitorMatchGroupList = new ArrayList<>();
     @OneToMany(mappedBy = "idGroup")
-    private List<GroupCompetition> groupCompetitionList = new ArrayList<>();
+    private List<GroupCompetitor> groupCompetitornList = new ArrayList<>();
 
     public Groupp() {
     }
@@ -139,13 +139,14 @@ public class Groupp implements Serializable, Comparable<Groupp> {
     }
 
     @XmlTransient
-    public List<GroupCompetition> getGroupCompetitionList() {
-        return groupCompetitionList;
+    public List<GroupCompetitor> getGroupCompetitornList() {
+        return groupCompetitornList;
     }
 
-    public void setGroupCompetitionList(List<GroupCompetition> groupCompetitionList) {
-        this.groupCompetitionList = groupCompetitionList;
+    public void setGroupCompetitornList(List<GroupCompetitor> groupCompetitornList) {
+        this.groupCompetitornList = groupCompetitornList;
     }
+
 
     @Override
     public int hashCode() {
