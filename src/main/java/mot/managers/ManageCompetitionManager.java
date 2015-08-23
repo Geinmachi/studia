@@ -9,10 +9,12 @@ import entities.AccessLevel;
 import entities.Account;
 import entities.Competition;
 import entities.Competitor;
-import entities.CompetitorMatchGroup;
+import entities.CompetitorMatch;
+import entities.GroupCompetitor;
 import entities.MatchMatchType;
 import entities.Matchh;
 import entities.Organizer;
+import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.Resource;
 import javax.ejb.EJB;
@@ -20,8 +22,11 @@ import javax.ejb.SessionContext;
 import javax.ejb.Stateless;
 import mot.facades.AccountFacadeLocal;
 import mot.facades.CompetitionFacadeLocal;
-import mot.facades.CompetitorMatchGroupFacadeLocal;
+import mot.facades.CompetitorMatchFacadeLocal;
+import mot.facades.GroupCompetitorFacadeLocal;
 import mot.facades.MatchhFacadeLocal;
+import mot.utils.CMG;
+import mot.utils.CompetitorMatchGroup;
 import utils.ConvertUtil;
 
 /**
@@ -41,10 +46,16 @@ public class ManageCompetitionManager implements ManageCompetitionManagerLocal {
     private CompetitionFacadeLocal competitionFacade;
 
     @EJB
-    private CompetitorMatchGroupFacadeLocal cmgFacade;
+    private CompetitorMatchFacadeLocal cmgFacade;
 
     @EJB
     private MatchhFacadeLocal matchFacade;
+    
+    @EJB
+    private GroupCompetitorFacadeLocal groupCompetitorFacade;
+    
+    @EJB
+    private CompetitorMatchFacadeLocal competitorMatchFacade;
 
     private final String BEST_OF_PREFIX = "BO";
 
@@ -68,21 +79,38 @@ public class ManageCompetitionManager implements ManageCompetitionManagerLocal {
     }
 
     @Override
-    public List<CompetitorMatchGroup> getCompetitionCMGMappings(Competition competition) {
+    public List<CMG> getCompetitionCMGMappings(Competition competition) {
         System.out.println("PRZED getCompetitionCMGMappings");
-        return cmgFacade.getCompetitionCMGMappingsByCompetitionId(competition.getIdCompetition());
+        List<GroupCompetitor> groupCompetitorList = groupCompetitorFacade.findByCompetitionId(competition.getIdCompetition());
+        
+        List<CompetitorMatch> competitorMatchList = competitorMatchFacade.findByCompetitionId(competition.getIdCompetition());
+        
+        List<CMG> cmgList = new ArrayList<>();
+        
+        for (CompetitorMatch cm : competitorMatchList) {
+            if (Short.compare(cm.getIdMatch().getRoundd(), Short.parseShort("1")) == 0) {
+                for (GroupCompetitor gc : groupCompetitorList) {
+                    if (gc.getIdCompetitor().equals(cm.getIdCompetitor())) {
+                        cmgList.add(new CompetitorMatchGroup(gc, cm));
+                        
+                        break;
+                    }
+                }
+            }
+        }
+        return cmgList;
     }
 
     /**
      *
      * @param editingCompetition
      * @param receivedCMG
-     * @return CompetitorMatchGroup if competitor advanced to next round,
-     * oterwise returns null
+     * @return CompetitorMatch if competitor advanced to next round,
+ oterwise returns null
      */
     @Override
-    public CompetitorMatchGroup saveCompetitorScore(Competition editingCompetition, CompetitorMatchGroup receivedCMG) {
-        CompetitorMatchGroup fetchedCMG = cmgFacade.find(receivedCMG.getIdCompetitorMatchGroup());
+    public CompetitorMatch saveCompetitorScore(Competition editingCompetition, CompetitorMatch receivedCMG) {
+        CompetitorMatch fetchedCMG = cmgFacade.find(receivedCMG.getIdCompetitorMatch());
         Matchh fetchedMatch = matchFacade.findAndInitializeTypes(fetchedCMG.getIdMatch().getIdMatch());
 
 //        System.out.println("MATCH TPYYYYYY");
@@ -95,12 +123,12 @@ public class ManageCompetitionManager implements ManageCompetitionManagerLocal {
 
         cmgFacade.edit(fetchedCMG);
 
-        CompetitorMatchGroup advancedCompetitoCMG = advanceCompetitor(editingCompetition, fetchedMatch, receivedCMG, receivedCMG.getIdCompetitor());
+        CompetitorMatch advancedCompetitoCMG = advanceCompetitor(editingCompetition, fetchedMatch, receivedCMG, receivedCMG.getIdCompetitor());
 
         return advancedCompetitoCMG;
     }
 
-    private void validateScore(Matchh match, CompetitorMatchGroup receivedCMG) {
+    private void validateScore(Matchh match, CompetitorMatch receivedCMG) {
         for (MatchMatchType mmt : match.getMatchMatchTypeList()) {
             if (mmt.getIdMatchType().getMatchTypeName().startsWith(BEST_OF_PREFIX)) {
                 int bestOfDigit = Integer.valueOf(mmt.getIdMatchType().getMatchTypeName().substring(2));
@@ -115,7 +143,7 @@ public class ManageCompetitionManager implements ManageCompetitionManagerLocal {
         }
     }
 
-    private CompetitorMatchGroup advanceCompetitor(Competition competition, Matchh fetchedMatch, CompetitorMatchGroup receivedCMG, Competitor competitor) {
+    private CompetitorMatch advanceCompetitor(Competition competition, Matchh fetchedMatch, CompetitorMatch receivedCMG, Competitor competitor) {
         System.out.println("WESLO DO ADVANCE");
         int competitorCount = competitor.getGroupCompetitorList().size() * CreateCompetitionManager.GROUP_SIZE;
         double matchCounter = 0.0;
@@ -125,7 +153,7 @@ public class ManageCompetitionManager implements ManageCompetitionManagerLocal {
                 int bestOfDigit = Integer.valueOf(mmt.getIdMatchType().getMatchTypeName().substring(2));
 
                 if (receivedCMG.getCompetitorMatchScore() == ((bestOfDigit + 1) / 2)) {
-                    CompetitorMatchGroup advancedCompetitorCMG = new CompetitorMatchGroup();
+                    CompetitorMatch advancedCompetitorCMG = new CompetitorMatch();
 
                     int matchesInRound = matchesInRound(competitorCount / 2, fetchedMatch.getRoundd());
                     System.out.println("MatcchesInRound: " + matchesInRound);
@@ -137,7 +165,7 @@ public class ManageCompetitionManager implements ManageCompetitionManagerLocal {
                         matchCounter += 0.5;
                         if ((i + firstMatchIndexInRound) == fetchedMatch.getMatchNumber()) {
                             System.out.println("Znalazlo match nr " + fetchedMatch.getMatchNumber());
-                            List<CompetitorMatchGroup> foundCMGs = cmgFacade.findByMatchNumberAndIdCompetition(((short) (firstMatchIndexInRound + matchesInRound - 1 + Math.ceil(matchCounter))), fetchedMatch.getCompetition().getIdCompetition());
+                            List<CompetitorMatch> foundCMGs = cmgFacade.findByMatchNumberAndIdCompetition(((short) (firstMatchIndexInRound + matchesInRound - 1 + Math.ceil(matchCounter))), fetchedMatch.getCompetition().getIdCompetition());
 //                            Matchh foundMatch = matchFacade.findByMatchNumberAndIdCompetition(((short) (firstMatchIndexInRound + matchesInRound - 1 + Math.ceil(matchCounter))), fetchedMatch.getCompetition().getIdCompetition());
 
 //                            if (foundMatch == null) {
@@ -149,9 +177,9 @@ public class ManageCompetitionManager implements ManageCompetitionManagerLocal {
 //                                }
 //                            if (foundCMG.getIdCompetitor() == null) {// if this is the first competitor in match
                             
-                            CompetitorMatchGroup foundCMG = null;
+                            CompetitorMatch foundCMG = null;
                             
-                            for (CompetitorMatchGroup cmg : foundCMGs) {
+                            for (CompetitorMatch cmg : foundCMGs) {
                                 if (cmg.getPlacer() == null) {
                                     foundCMG = cmg;
                                     
@@ -222,10 +250,10 @@ public class ManageCompetitionManager implements ManageCompetitionManagerLocal {
     }
 
     @Override
-    public List<CompetitorMatchGroup> findCMGByIdMatch(Integer idMatch) {
-        List<CompetitorMatchGroup> found = cmgFacade.findCMGByIdMatch(idMatch);
+    public List<CompetitorMatch> findCMGByIdMatch(Integer idMatch) {
+        List<CompetitorMatch> found = cmgFacade.findCMGByIdMatch(idMatch);
 
-//        for (CompetitorMatchGroup cmg2 : found){
+//        for (CompetitorMatch cmg2 : found){
 //            System.out.println("NR MATCHU i ID COMPETITORA " + cmg2.getIdMatch() + " comp: " + cmg2.getIdCompetitor() + " i wynik " + cmg.getCompetitorMatchScore() + " IDDD " + cmg);
 //        }
         

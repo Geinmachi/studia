@@ -6,9 +6,11 @@
 package mot.facades;
 
 import entities.GroupCompetitor;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -26,6 +28,14 @@ public class GroupCompetitorFacade extends AbstractFacade<GroupCompetitor> imple
 
     public GroupCompetitorFacade() {
         super(GroupCompetitor.class);
+    }
+
+    @Override
+    public List<GroupCompetitor> findByCompetitionId(Integer idCompetition) {
+        Query q = em.createNamedQuery("GroupCompetitor.findByCompetitionId");
+        q.setParameter("idCompetition", idCompetition);
+        
+        return (List<GroupCompetitor>) q.getResultList();
     }
     
 }

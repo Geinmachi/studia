@@ -27,21 +27,23 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "group_competitor")
 @XmlRootElement
 @NamedQueries({
+    @NamedQuery(name = "GroupCompetitor.findByCompetitionId", query = "SELECT g FROM GroupCompetitor g WHERE g.idGroupDetails.competition.idCompetition = :idCompetition"),
     @NamedQuery(name = "GroupCompetitor.findAll", query = "SELECT g FROM GroupCompetitor g"),
     @NamedQuery(name = "GroupCompetitor.findByIdGroupCompetitor", query = "SELECT g FROM GroupCompetitor g WHERE g.idGroupCompetitor = :idGroupCompetitor")})
 public class GroupCompetitor implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id_group_competitor")
     private Integer idGroupCompetitor;
+    @JoinColumn(name = "id_group_details", referencedColumnName = "id_group_details")
+    @ManyToOne(optional = false)
+    private GroupDetails idGroupDetails;
     @JoinColumn(name = "id_competitor", referencedColumnName = "id_competitor")
     @ManyToOne(optional = false)
     private Competitor idCompetitor;
-    @JoinColumn(name = "id_group", referencedColumnName = "id_group")
-    @ManyToOne(optional = false)
-    private Groupp idGroup;
 
     public GroupCompetitor() {
     }
@@ -58,20 +60,20 @@ public class GroupCompetitor implements Serializable {
         this.idGroupCompetitor = idGroupCompetitor;
     }
 
+    public GroupDetails getIdGroupDetails() {
+        return idGroupDetails;
+    }
+
+    public void setIdGroupDetails(GroupDetails idGroupDetails) {
+        this.idGroupDetails = idGroupDetails;
+    }
+
     public Competitor getIdCompetitor() {
         return idCompetitor;
     }
 
     public void setIdCompetitor(Competitor idCompetitor) {
         this.idCompetitor = idCompetitor;
-    }
-
-    public Groupp getIdGroup() {
-        return idGroup;
-    }
-
-    public void setIdGroup(Groupp idGroup) {
-        this.idGroup = idGroup;
     }
 
     @Override
@@ -98,5 +100,5 @@ public class GroupCompetitor implements Serializable {
     public String toString() {
         return "entities.GroupCompetitor[ idGroupCompetitor=" + idGroupCompetitor + " ]";
     }
-    
+
 }

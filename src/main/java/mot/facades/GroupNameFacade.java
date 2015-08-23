@@ -5,7 +5,7 @@
  */
 package mot.facades;
 
-import entities.Competitor;
+import entities.GroupName;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -15,7 +15,7 @@ import javax.persistence.PersistenceContext;
  * @author java
  */
 @Stateless
-public class CompetitorFacade extends AbstractFacade<Competitor> implements CompetitorFacadeLocal {
+public class GroupNameFacade extends AbstractFacade<GroupName> implements GroupNameFacadeLocal {
     @PersistenceContext(unitName = "mot_persistence_unit")
     private EntityManager em;
 
@@ -24,14 +24,14 @@ public class CompetitorFacade extends AbstractFacade<Competitor> implements Comp
         return em;
     }
 
-    public CompetitorFacade() {
-        super(Competitor.class);
+    public GroupNameFacade() {
+        super(GroupName.class);
     }
 
     @Override
-    public Competitor findAndInitializeGroups(Integer idCompetitor) {
-        Competitor entity = em.find(Competitor.class, idCompetitor);
-        entity.getGroupCompetitorList().size();
+    public GroupName createWithReturn(GroupName entity) {
+        em.persist(entity);
+        em.flush();
         
         return entity;
     }

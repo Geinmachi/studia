@@ -30,5 +30,7 @@ public interface GroupCompetitorFacadeLocal {
     List<GroupCompetitor> findRange(int[] range);
 
     int count();
-    
+
+    public List<GroupCompetitor> findByCompetitionId(Integer idCompetition);
+
 }

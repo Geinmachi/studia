@@ -7,7 +7,7 @@ package web.backingBeans;
 
 import entities.Competition;
 import entities.Competitor;
-import entities.CompetitorMatchGroup;
+import entities.CompetitorMatch;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +20,7 @@ import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
+import mot.utils.CMG;
 import org.primefaces.context.RequestContext;
 import web.controllers.CompetitionController;
 import web.models.DashboardPanel;
@@ -40,7 +41,7 @@ public class ManageCompetitionBackingBean implements Serializable {
 
     private List<Competitor> competitorList = new ArrayList<>();
 
-    private List<CompetitorMatchGroup> cmgList = new ArrayList<>();
+    private List<CMG> cmgList = new ArrayList<>();
 
     private Competition competition;
 
@@ -72,13 +73,13 @@ public class ManageCompetitionBackingBean implements Serializable {
         bracketCreator.recreateBracket(cmgList);
     }
 
-    public void saveScore(CompetitorMatchGroup cmg) {
+    public void saveScore(CompetitorMatch cmg) {
         System.out.println("Wykonal sie save z inpalce " + cmg.getCompetitorMatchScore());
         System.out.println("Zawodnika " + cmg.getIdCompetitor());
 
         bracketCreator.updateScores(cmg);
         try {
-            CompetitorMatchGroup advancedCMG = controller.saveCompetitorScore(cmg);
+            CompetitorMatch advancedCMG = controller.saveCompetitorScore(cmg);
             if (advancedCMG != null) {
                 //        cmgList.add(advancedCMG);
                 bracketCreator.addAdvancedCompetitor(advancedCMG);
@@ -103,7 +104,7 @@ public class ManageCompetitionBackingBean implements Serializable {
         return true;
     }
 
-    public void remoteC(CompetitorMatchGroup cmg) {
+    public void remoteC(CompetitorMatch cmg) {
         System.out.println("WYKONALO remotecOMNAE ");
         RequestContext.getCurrentInstance().update("manageCompetitionForm:dashboard");
 
@@ -117,7 +118,7 @@ public class ManageCompetitionBackingBean implements Serializable {
             if (dp != null && dp.getMatch() != null) {
                 if (dp.getMatch().equals(cmg.getIdMatch())) {
                     System.out.println("ODSWIEZENIE SA ROWNE");
-                    for (CompetitorMatchGroup ccmg : dp.getMatch().getCompetitorMatchGroupList()) {
+                    for (CompetitorMatch ccmg : dp.getMatch().getCompetitorMatchGroupList()) {
                         if (ccmg.equals(cmg)) {
                             System.out.println("DP SCOREEE : " + ccmg.getCompetitorMatchScore());
                             System.out.println("ACTUAL ScORE: " + cmg.getCompetitorMatchScore());
@@ -132,7 +133,7 @@ public class ManageCompetitionBackingBean implements Serializable {
             }
         }
 
-        for (CompetitorMatchGroup cmg2 : controller.findCMGByIdMatch(cmg.getIdMatch().getIdMatch())) {
+        for (CompetitorMatch cmg2 : controller.findCMGByIdMatch(cmg.getIdMatch().getIdMatch())) {
             System.out.println("NR MATCHU i ID COMPETITORA " + cmg2.getIdMatch() + " comp: " + cmg2.getIdCompetitor() + " i wynik " + cmg2.getCompetitorMatchScore() + " IDDD " + cmg2);
         }
     }
@@ -149,7 +150,7 @@ public class ManageCompetitionBackingBean implements Serializable {
         System.out.println("ODSEIZYLo STRONE");
     }
 
-    public void saveScore2(CompetitorMatchGroup cmg) {
+    public void saveScore2(CompetitorMatch cmg) {
         System.out.println("Wykonal sie save222 z inputTexta " + cmg.getIdCompetitor());
 //        for(Competi)
 
@@ -157,7 +158,7 @@ public class ManageCompetitionBackingBean implements Serializable {
     }
 //    private void getCMGMappers() { 
 //        for (GroupCompetition gc : competition.getGroupCompetitionList()) {
-//            for (CompetitorMatchGroup cmg : gc.getIdGroup().getCompetitorMatchGroupList()) {
+//            for (CompetitorMatch cmg : gc.getIdGroup().getCompetitorMatchGroupList()) {
 //                cmgList.add(cmg);
 //            }
 //        }

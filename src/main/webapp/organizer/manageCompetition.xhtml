@@ -26,9 +26,9 @@ and open the template in the editor.
             <br/>
             <ui:repeat value="#{manageCompetitionBackingBean.competition.groupCompetitionList}" 
                        var="groupCompetition">
-                <p:panel header="#{groupCompetition.idGroup.groupName}" 
+                <p:panel header="#{groupCompetition.idGroupName.groupName}" 
                          style="width: #{(100/manageCompetitionBackingBean.competition.groupCompetitionList.size())-1}%; display: inline-block;">
-                    <ui:repeat value="#{groupCompetition.idGroup.competitorMatchGroupList}" 
+                    <ui:repeat value="#{groupCompetition.idGroupName.competitorMatchGroupList}" 
                                var="competitorMatchGroup">
                         #{competitorMatchGroup.idCompetitor.idPersonalInfo.firstName} 
                         #{competitorMatchGroup.idCompetitor.idPersonalInfo.lastName} 

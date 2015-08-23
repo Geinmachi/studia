@@ -6,7 +6,7 @@
 package web.models;
 
 import entities.Competitor;
-import entities.CompetitorMatchGroup;
+import entities.CompetitorMatch;
 import entities.MatchType;
 import entities.Matchh;
 import java.util.ArrayList;
@@ -87,10 +87,10 @@ public class DashboardPanel {
      * @param competitor
      * @param index
      */
-    public void updateCMGwithAdvanced(CompetitorMatchGroup cmg) {
-        List<CompetitorMatchGroup> cmgList = this.match.getCompetitorMatchGroupList();
+    public void updateCMGwithAdvanced(CompetitorMatch cmg) {
+        List<CompetitorMatch> cmgList = this.match.getCompetitorMatchGroupList();
 
-        for (CompetitorMatchGroup c : cmgList) {
+        for (CompetitorMatch c : cmgList) {
             if (cmg.equals(c)) {
                 
             }
@@ -98,7 +98,7 @@ public class DashboardPanel {
         }
 //        competitorList.add(competitor);
 
-        for (CompetitorMatchGroup c : cmgList) {
+        for (CompetitorMatch c : cmgList) {
             if (cmg.equals(c)) {
                 c.setIdCompetitor(cmg.getIdCompetitor());
                 System.err.println("JAKI PLACER " + c.getPlacer());
@@ -109,7 +109,7 @@ public class DashboardPanel {
 //        competitorList.remove(null);
 //
 //        competitorList.add(index, competitor);
-        for (CompetitorMatchGroup c : cmgList) {
+        for (CompetitorMatch c : cmgList) {
             System.out.println("Po insercie: " + c.getIdCompetitor());
         }
     }

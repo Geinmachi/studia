@@ -51,7 +51,7 @@ public class Competitor implements Serializable {
     @Column(name = "id_competitor")
     private Integer idCompetitor;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idCompetitor")
-    private List<CompetitorMatchGroup> competitorMatchGroupList = new ArrayList<>();
+    private List<CompetitorMatch> competitorMatchGroupList = new ArrayList<>();
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idCompetitor")
     private List<Score> scoreList = new ArrayList<>();
     @JoinColumn(name = "id_personal_info", referencedColumnName = "id_personal_info")
@@ -61,7 +61,7 @@ public class Competitor implements Serializable {
     @ManyToOne
     private Team idTeam;
     @OneToMany(mappedBy = "idCompetitor")
-    private List<GroupCompetitor> groupCompetitornList = new ArrayList<>();
+    private List<GroupCompetitor> groupCompetitorList = new ArrayList<>();
 
     public Competitor() {
     }
@@ -83,11 +83,11 @@ public class Competitor implements Serializable {
     }
 
     @XmlTransient
-    public List<CompetitorMatchGroup> getCompetitorMatchGroupList() {
+    public List<CompetitorMatch> getCompetitorMatchGroupList() {
         return competitorMatchGroupList;
     }
 
-    public void setCompetitorMatchGroupList(List<CompetitorMatchGroup> competitorMatchGroupList) {
+    public void setCompetitorMatchGroupList(List<CompetitorMatch> competitorMatchGroupList) {
         this.competitorMatchGroupList = competitorMatchGroupList;
     }
 
@@ -116,12 +116,12 @@ public class Competitor implements Serializable {
         this.idTeam = idTeam;
     }
 
-    public List<GroupCompetitor> getGroupCompetitornList() {
-        return groupCompetitornList;
+    public List<GroupCompetitor> getGroupCompetitorList() {
+        return groupCompetitorList;
     }
 
-    public void setGroupCompetitornList(List<GroupCompetitor> groupCompetitornList) {
-        this.groupCompetitornList = groupCompetitornList;
+    public void setGroupCompetitorList(List<GroupCompetitor> groupCompetitorList) {
+        this.groupCompetitorList = groupCompetitorList;
     }
 
     @Override

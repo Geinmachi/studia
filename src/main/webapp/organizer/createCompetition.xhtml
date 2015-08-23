@@ -113,7 +113,7 @@ and open the template in the editor.
                                      style="width: #{(100/createCompetitionBackingBean.bracketCreator.groups.size())-1}%; display: inline-block;">
                                 <ui:repeat value="#{createCompetitionBackingBean.bracketCreator.competitorMatchGroupList}"
                                            var="cmg">
-                                    <p:outputLabel rendered="#{cmg.idGroup eq group}">
+                                    <p:outputLabel rendered="#{cmg.idGroupName eq group}">
                                         #{cmg.idCompetitor.idPersonalInfo.firstName} 
                                         #{cmg.idCompetitor.idPersonalInfo.lastName} 
                                         <br/>

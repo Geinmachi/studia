@@ -6,8 +6,9 @@
 package web.backingBeans;
 
 import entities.Competitor;
-import entities.CompetitorMatchGroup;
-import entities.Groupp;
+import entities.CompetitorMatch;
+import entities.GroupCompetitor;
+import entities.GroupName;
 import entities.MatchMatchType;
 import entities.MatchType;
 import entities.Matchh;
@@ -33,6 +34,7 @@ import javax.faces.component.html.HtmlOutputText;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
+import mot.utils.CMG;
 import org.primefaces.component.dashboard.Dashboard;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.outputlabel.OutputLabel;
@@ -61,9 +63,9 @@ public class BracketCreationBackingBean implements Serializable {
 //    private BracketDashboardModel bracketModel;
     private DashboardModel dashboardModel;
 
-    private List<CompetitorMatchGroup> competitorMatchGroupList = new ArrayList<>();
-
-    private List<Groupp> groups = new ArrayList<>();
+    private List<CMG> competitorMatchGroupList = new ArrayList<>();
+    
+    private List<GroupName> groups = new ArrayList<>();
 
     private List<Matchh> otherMatches = new ArrayList<>();
 
@@ -79,7 +81,7 @@ public class BracketCreationBackingBean implements Serializable {
         return dashboardModel;
     }
 
-    public List<Groupp> getGroups() {
+    public List<GroupName> getGroups() {
         return groups;
     }
 
@@ -95,10 +97,10 @@ public class BracketCreationBackingBean implements Serializable {
         return competitorsWithGroups;
     }
 
-    public List<CompetitorMatchGroup> getCompetitorMatchGroupList() {
+    public List<CMG> getCompetitorMatchGroupList() {
         return competitorMatchGroupList;
     }
-
+    
     public List<DashboardPanel> getPanelList() {
         return panelList;
     }
@@ -121,7 +123,7 @@ public class BracketCreationBackingBean implements Serializable {
         createModel();
     }
 
-    public void recreateBracket(List<CompetitorMatchGroup> competitorMatchGroupList) {
+    public void recreateBracket(List<CMG> competitorMatchGroupList) {
         this.competitorMatchGroupList = competitorMatchGroupList;
         initializeLists();
         createModel();
@@ -135,10 +137,10 @@ public class BracketCreationBackingBean implements Serializable {
     public void verifyEverything() {
         System.out.println("DO persistowania:");
 
-        for (CompetitorMatchGroup cmg : competitorMatchGroupList) {
+        for (CMG cmg : competitorMatchGroupList) {
             System.out.println("Competitor " + cmg.getIdCompetitor());
-            if (cmg.getIdGroup() != null) {
-                System.out.println("Grupa " + cmg.getIdGroup().getGroupName());
+            if (cmg.getGroupCompetitor() != null) {
+                System.out.println("Grupa " + cmg.getIdGroupName());
             } else {
                 System.out.println("Grupa null");
             }
@@ -156,7 +158,7 @@ public class BracketCreationBackingBean implements Serializable {
     }
 
     public void assignMatchTypes() {
-        for (CompetitorMatchGroup cmg : competitorMatchGroupList) {
+        for (CMG cmg : competitorMatchGroupList) {
             for (DashboardPanel dp : panelList) {
                 if (cmg.getIdMatch().equals(dp.getMatch())) {
                     MatchMatchType mmt = new MatchMatchType();
@@ -173,26 +175,26 @@ public class BracketCreationBackingBean implements Serializable {
 
     private void initializeLists() {
 //        Collections.shuffle(competitorMatchGroupList);
-        competitorMatchGroupList.sort(new Comparator<CompetitorMatchGroup>() {
+        competitorMatchGroupList.sort(new Comparator<CMG>() {
 
             @Override
-            public int compare(CompetitorMatchGroup o1, CompetitorMatchGroup o2) {
+            public int compare(CMG o1, CMG o2) {
                 return Short.compare(o1.getIdMatch().getMatchNumber(), o2.getIdMatch().getMatchNumber());
             }
 
         });
 
-        Set<Groupp> uniqueGroups = new HashSet();
+        Set<GroupName> uniqueGroups = new HashSet();
         Set<Matchh> uniqueFirstRoundMatches = new HashSet();
         Set<Matchh> uniqueOtherMatches = new HashSet();
 
-        for (CompetitorMatchGroup cmg : competitorMatchGroupList) {
+        for (CMG cmg : competitorMatchGroupList) {
             System.out.println("CMMMMGGG " + cmg.getIdMatch().getMatchNumber() + " round "
                     + cmg.getIdMatch().getRoundd());
-            if (cmg.getIdCompetitor() != null && cmg.getIdGroup() != null) {
+            if (cmg.getIdCompetitor() != null && cmg.getGroupCompetitor() != null) { // bylo cmg.getIdGroup
                 competitorsWithGroups.add(cmg.getIdCompetitor());
             }
-            uniqueGroups.add(cmg.getIdGroup());
+            uniqueGroups.add(cmg.getIdGroupName());
             if (cmg.getIdMatch().getRoundd() == 1) {
                 uniqueFirstRoundMatches.add(cmg.getIdMatch());
             } else {
@@ -201,9 +203,9 @@ public class BracketCreationBackingBean implements Serializable {
             }
         }
 
-        for (CompetitorMatchGroup cmg : competitorMatchGroupList) {
-            if (cmg.getIdGroup() != null) {
-                System.out.println("Grupa " + cmg.getIdGroup().getGroupName());
+        for (CMG cmg : competitorMatchGroupList) {
+            if (cmg.getGroupCompetitor() != null) {
+                System.out.println("Grupa " + cmg.getIdGroupName());
             }
         }
         groups.addAll(uniqueGroups);
@@ -286,7 +288,7 @@ public class BracketCreationBackingBean implements Serializable {
 
             DashboardPanel dashboardPanel = new DashboardPanel();
 
-//            for (CompetitorMatchGroup cmg : otherMatches.get(i).getCompetitorMatchGroupList()) {
+//            for (CompetitorMatch cmg : otherMatches.get(i).getCompetitorMatchGroupList()) {
 //                if (cmg.getIdCompetitor() != null) {
 //                    System.out.println("CMGGGHHGG : " + cmg.getIdCompetitor());
 //                    dashboardPanel.updateCMGwithAdvanced(cmg.getIdCompetitor(), cmg.getPlacer() - 1);
@@ -348,13 +350,13 @@ public class BracketCreationBackingBean implements Serializable {
 
     private void sortCompetitorsInMatch(Matchh match) {
         if (match != null && match.getCompetitorMatchGroupList().size() > 1) {
-            for (CompetitorMatchGroup cmg : match.getCompetitorMatchGroupList()) {
+            for (CompetitorMatch cmg : match.getCompetitorMatchGroupList()) {
                 System.out.println("Prowownanie cmg.placer = " + cmg.getPlacer());
             }
-            Collections.sort(match.getCompetitorMatchGroupList(), new Comparator<CompetitorMatchGroup>() {
+            Collections.sort(match.getCompetitorMatchGroupList(), new Comparator<CompetitorMatch>() {
 
                 @Override
-                public int compare(CompetitorMatchGroup o1, CompetitorMatchGroup o2) {
+                public int compare(CompetitorMatch o1, CompetitorMatch o2) {
                     if (o1.getPlacer() != null) {
 
                         return placerPosition(o1.getPlacer());
@@ -379,13 +381,13 @@ public class BracketCreationBackingBean implements Serializable {
         }
     }
 
-    public void updateScores(CompetitorMatchGroup updatedCMG) {
+    public void updateScores(CompetitorMatch updatedCMG) {
         for (DashboardPanel dp : panelList) {
             if (dp.getMatch().equals(updatedCMG.getIdMatch())) {
                 System.out.println("DPPPPPPPPPPP : " + dp.getMatch());
                 System.out.println("NEIW DPPPPPPPPPPPP : " + updatedCMG.getIdMatch());
 
-                for (CompetitorMatchGroup cmg : dp.getMatch().getCompetitorMatchGroupList()) {
+                for (CompetitorMatch cmg : dp.getMatch().getCompetitorMatchGroupList()) {
 
                     System.out.println("DP CMGGGGGG  : " + cmg);
                     System.out.println("CMGGGGGG  : " + updatedCMG);
@@ -404,7 +406,7 @@ public class BracketCreationBackingBean implements Serializable {
         }
     }
 
-    public void addAdvancedCompetitor(CompetitorMatchGroup cmg) {
+    public void addAdvancedCompetitor(CompetitorMatch cmg) {
         System.out.println("WYKONALO SIE ADVANCE!!");
 
         for (DashboardPanel dp : panelList) {
@@ -420,7 +422,7 @@ public class BracketCreationBackingBean implements Serializable {
 //                    dp.getMatch().getCompetitorMatchGroupList().add(cmg);
                     System.out.println("ROZMIAR COMPETITOROW PRZED " + dp.getMatch().getCompetitorMatchGroupList().size());
 
-                    for (CompetitorMatchGroup c : dp.getMatch().getCompetitorMatchGroupList()) {
+                    for (CompetitorMatch c : dp.getMatch().getCompetitorMatchGroupList()) {
                         System.out.println("COmpettttt : " + c.getIdCompetitor());
                     }
 
@@ -429,7 +431,7 @@ public class BracketCreationBackingBean implements Serializable {
                     System.out.println("ROZMIAR COMPETITOROW POO " + dp.getMatch().getCompetitorMatchGroupList().size());
                     System.out.println("IIIIIIIIIII MATCH SCORE VALUE = " + cmg.getCompetitorMatchScore());
 
-                    for (CompetitorMatchGroup c : dp.getMatch().getCompetitorMatchGroupList()) {
+                    for (CompetitorMatch c : dp.getMatch().getCompetitorMatchGroupList()) {
                         System.out.println("COmpettttt : " + c.getIdCompetitor());
                     }
 

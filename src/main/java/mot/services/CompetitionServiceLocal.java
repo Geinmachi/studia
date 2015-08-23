@@ -8,11 +8,12 @@ package mot.services;
 import entities.Competition;
 import entities.CompetitionType;
 import entities.Competitor;
-import entities.CompetitorMatchGroup;
+import entities.CompetitorMatch;
 import entities.MatchType;
 import entities.Team;
 import java.util.List;
 import javax.ejb.Local; import javax.ejb.Remote;
+import mot.utils.CMG;
 
 /**
  *
@@ -33,11 +34,11 @@ public interface CompetitionServiceLocal {
     
     public boolean validateCompetitorsAmount(int amount);
     
-    public void createCompetition(Competition competition, List<CompetitorMatchGroup> competitorMatchGroupList);
+    public void createCompetition(Competition competition, List<CMG> competitorMatchGroupList);
     
     public CompetitionType findCompetitionTypeById(int id);
     
-    public List<CompetitorMatchGroup> generateEmptyBracket(List<Competitor> competitors);
+    public List<CMG> generateEmptyBracket(List<Competitor> competitors);
 
     public List<MatchType> getEndUserMatchTypes();
 
@@ -45,9 +46,9 @@ public interface CompetitionServiceLocal {
 
     public Competition storeCompetition(Competition competition);
 
-    public List<CompetitorMatchGroup> getCompetitionCMGMappings(Competition competition);
+    public List<CMG> getCompetitionCMGMappings(Competition competition);
 
-    public CompetitorMatchGroup saveCompetitorScore(CompetitorMatchGroup cmg);
+    public CompetitorMatch saveCompetitorScore(CompetitorMatch cmg);
 
-    public List<CompetitorMatchGroup> findCMGByIdMatch(Integer idMatch);
+    public List<CompetitorMatch> findCMGByIdMatch(Integer idMatch);
 }
