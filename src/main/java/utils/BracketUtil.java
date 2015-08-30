@@ -16,7 +16,7 @@ public class BracketUtil {
 
         while (Math.pow(2, (double) result) != competitorsAmount) {
             if (result == Byte.MAX_VALUE) {
-                throw new IllegalStateException("Nie jest potega 2");
+                throw new IllegalStateException("Nie jest potega 2 competitiorsamount = " + competitorsAmount);
             }
             result++;
         }

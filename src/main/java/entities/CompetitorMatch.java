@@ -29,18 +29,19 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author java
  */
 @Entity
-@Table(name = "competitor_match_group")
+@Table(name = "competitor_match")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "CompetitorMatchGroup.findByIdMatch", query = "SELECT c FROM CompetitorMatchGroup c WHERE c.idMatch.idMatch = :idMatch"),
-    @NamedQuery(name = "CompetitorMatchGroup.findByMatchNumberAndIdCompetition", query = "SELECT c FROM CompetitorMatchGroup c WHERE c.idMatch.matchNumber = :matchNumber AND c.idMatch.competition.idCompetition = :idCompetition"),
-    @NamedQuery(name = "CompetitorMatchGroup.findByMatchNumber", query = "SELECT c FROM CompetitorMatchGroup c WHERE c.idMatch.matchNumber = :matchNumber"),
-    @NamedQuery(name = "CompetitorMatchGroup.findByCompetitionId", query = "SELECT c FROM CompetitorMatchGroup c WHERE c.idMatch.competition.idCompetition = :idCompetition"),
-    @NamedQuery(name = "CompetitorMatchGroup.findAll", query = "SELECT c FROM CompetitorMatchGroup c"),
-    @NamedQuery(name = "CompetitorMatchGroup.findByIdCompetitorMatchGroup", query = "SELECT c FROM CompetitorMatchGroup c WHERE c.idCompetitorMatchGroup = :idCompetitorMatchGroup"),
-    @NamedQuery(name = "CompetitorMatchGroup.findByCompetitorMatchScore", query = "SELECT c FROM CompetitorMatchGroup c WHERE c.competitorMatchScore = :competitorMatchScore"),
-    @NamedQuery(name = "CompetitorMatchGroup.findByVersion", query = "SELECT c FROM CompetitorMatchGroup c WHERE c.version = :version")})
-public class CompetitorMatchGroup implements Serializable {
+    @NamedQuery(name = "CompetitorMatch.findByCompetitionId", query = "SELECT c FROM CompetitorMatch c WHERE c.idMatch.competition.idCompetition = :idCompetition"),
+    @NamedQuery(name = "CompetitorMatch.findByIdMatch", query = "SELECT c FROM CompetitorMatch c WHERE c.idMatch.idMatch = :idMatch"),
+    @NamedQuery(name = "CompetitorMatch.findByMatchNumberAndIdCompetition", query = "SELECT c FROM CompetitorMatch c WHERE c.idMatch.matchNumber = :matchNumber AND c.idMatch.competition.idCompetition = :idCompetition"),
+    @NamedQuery(name = "CompetitorMatch.findByMatchNumber", query = "SELECT c FROM CompetitorMatch c WHERE c.idMatch.matchNumber = :matchNumber"),
+    @NamedQuery(name = "CompetitorMatch.findByCompetitionId", query = "SELECT c FROM CompetitorMatch c WHERE c.idMatch.competition.idCompetition = :idCompetition"),
+    @NamedQuery(name = "CompetitorMatch.findAll", query = "SELECT c FROM CompetitorMatch c"),
+    @NamedQuery(name = "CompetitorMatch.findByIdCompetitorMatch", query = "SELECT c FROM CompetitorMatch c WHERE c.idCompetitorMatch = :idCompetitorMatch"),
+    @NamedQuery(name = "CompetitorMatch.findByCompetitorMatchScore", query = "SELECT c FROM CompetitorMatch c WHERE c.competitorMatchScore = :competitorMatchScore"),
+    @NamedQuery(name = "CompetitorMatch.findByVersion", query = "SELECT c FROM CompetitorMatch c WHERE c.version = :version")})
+public class CompetitorMatch implements Serializable{
     private static final long serialVersionUID = 1L;
     
     @Transient
@@ -49,8 +50,8 @@ public class CompetitorMatchGroup implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "id_competitor_match_group")
-    private Integer idCompetitorMatchGroup;
+    @Column(name = "id_competitor_match")
+    private Integer idCompetitorMatch;
     @Column(name = "competitor_match_score")
     private Short competitorMatchScore;
     @Column(name = "placer")
@@ -62,29 +63,29 @@ public class CompetitorMatchGroup implements Serializable {
     @JoinColumn(name = "id_competitor", referencedColumnName = "id_competitor")
     @ManyToOne(optional = true)
     private Competitor idCompetitor;
-    @JoinColumn(name = "id_group", referencedColumnName = "id_group")
-    @ManyToOne(optional = true)
-    private Groupp idGroup;
+//    @JoinColumn(name = "id_group", referencedColumnName = "id_group")
+//    @ManyToOne(optional = true)
+//    private GroupName idGroup;
     @JoinColumn(name = "id_match", referencedColumnName = "id_match")
     @ManyToOne(optional = false)
     private Matchh idMatch;
 
-    public CompetitorMatchGroup() {
+    public CompetitorMatch() {
     }
 
-    public CompetitorMatchGroup(UUID uuid) {
+    public CompetitorMatch(UUID uuid) {
         this.uuid = uuid;
     }
-    public CompetitorMatchGroup(Integer idCompetitorMatchGroup) {
-        this.idCompetitorMatchGroup = idCompetitorMatchGroup;
+    public CompetitorMatch(Integer idCompetitorMatch) {
+        this.idCompetitorMatch = idCompetitorMatch;
     }
 
-    public Integer getIdCompetitorMatchGroup() {
-        return idCompetitorMatchGroup;
+    public Integer getIdCompetitorMatch() {
+        return idCompetitorMatch;
     }
 
-    public void setIdCompetitorMatchGroup(Integer idCompetitorMatchGroup) {
-        this.idCompetitorMatchGroup = idCompetitorMatchGroup;
+    public void setIdCompetitorMatch(Integer idCompetitorMatch) {
+        this.idCompetitorMatch = idCompetitorMatch;
     }
 
     public Short getCompetitorMatchScore() {
@@ -119,13 +120,13 @@ public class CompetitorMatchGroup implements Serializable {
         this.idCompetitor = idCompetitor;
     }
 
-    public Groupp getIdGroup() {
-        return idGroup;
-    }
-
-    public void setIdGroup(Groupp idGroup) {
-        this.idGroup = idGroup;
-    }
+//    public GroupName getIdGroup() {
+//        return idGroup;
+//    }
+//
+//    public void setIdGroup(GroupName idGroup) {
+//        this.idGroup = idGroup;
+//    }
 
     public Matchh getIdMatch() {
         return idMatch;
@@ -139,7 +140,7 @@ public class CompetitorMatchGroup implements Serializable {
     public int hashCode() {
         int hash = 3;
         hash = 59 * hash + Objects.hashCode(this.uuid);
-        hash = 59 * hash + Objects.hashCode(this.idCompetitorMatchGroup);
+        hash = 59 * hash + Objects.hashCode(this.idCompetitorMatch);
         return hash;
     }
 
@@ -151,7 +152,7 @@ public class CompetitorMatchGroup implements Serializable {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final CompetitorMatchGroup other = (CompetitorMatchGroup) obj;
+        final CompetitorMatch other = (CompetitorMatch) obj;
         
         if (this.uuid != null && other.uuid != null) {
             if (Objects.equals(this.uuid, other.uuid)) {
@@ -161,7 +162,7 @@ public class CompetitorMatchGroup implements Serializable {
             }
         }
         
-        if (!Objects.equals(this.idCompetitorMatchGroup, other.idCompetitorMatchGroup)) {
+        if (!Objects.equals(this.idCompetitorMatch, other.idCompetitorMatch)) {
             return false;
         }
         return true;
@@ -173,7 +174,7 @@ public class CompetitorMatchGroup implements Serializable {
 
     @Override
     public String toString() {
-        return "entities.CompetitorMatchGroup[ idCompetitorMatchGroup=" + idCompetitorMatchGroup + " ]";
+        return "entities.CompetitorMatch[ idCompetitorMatch=" + idCompetitorMatch + " ]";
     }
     
 }

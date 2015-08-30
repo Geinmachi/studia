@@ -6,10 +6,11 @@
 package mot.managers;
 
 import entities.Competition;
-import entities.CompetitorMatchGroup;
+import entities.CompetitorMatch;
 import java.util.List;
 import javax.ejb.Local;
 import javax.ejb.Remote;
+import mot.utils.CMG;
 
 /**
  *
@@ -22,10 +23,10 @@ public interface ManageCompetitionManagerLocal {
 
     public Competition storeCompetition(Competition competition);
 
-    public List<CompetitorMatchGroup> getCompetitionCMGMappings(Competition competition);
+    public List<CMG> getCompetitionCMGMappings(Competition competition);
 
-    public CompetitorMatchGroup saveCompetitorScore(Competition editingCompetition, CompetitorMatchGroup cmg);
+    public CompetitorMatch saveCompetitorScore(Competition editingCompetition, CompetitorMatch cmg);
 
-    public List<CompetitorMatchGroup> findCMGByIdMatch(Integer idMatch);
+    public List<CompetitorMatch> findCMGByIdMatch(Integer idMatch);
     
 }

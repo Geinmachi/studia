@@ -7,10 +7,11 @@ package mot.managers;
 
 import entities.Competition;
 import entities.Competitor;
-import entities.CompetitorMatchGroup;
+import entities.CompetitorMatch;
 import java.util.List;
 import javax.ejb.Local; import javax.ejb.Remote;
 import javax.ejb.Remote;
+import mot.utils.CMG;
 
 /**
  *
@@ -21,7 +22,7 @@ public interface CreateCompetitionManagerLocal {
     
     public boolean validateCompetitorsAmount(int amount);
     
-    public void createCompetition(Competition competition, List<CompetitorMatchGroup> competitorMatchGroupList);
+    public void createCompetition(Competition competition, List<CMG> competitorMatchGroupList);
     
-    public List<CompetitorMatchGroup> generateEmptyBracket(List<Competitor> competitors);
+    public List<CMG> generateEmptyBracket(List<Competitor> competitors);
 }

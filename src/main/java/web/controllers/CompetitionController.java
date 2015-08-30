@@ -8,7 +8,7 @@ package web.controllers;
 import entities.Competition;
 import entities.CompetitionType;
 import entities.Competitor;
-import entities.CompetitorMatchGroup;
+import entities.CompetitorMatch;
 import entities.MatchType;
 import entities.Team;
 import javax.inject.Named;
@@ -16,6 +16,7 @@ import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
 import java.util.List;
 import javax.ejb.EJB;
+import mot.utils.CMG;
 import mot.services.CompetitionService;
 import mot.services.CompetitionServiceLocal;
 
@@ -35,6 +36,7 @@ public class CompetitionController implements Serializable {
     }
 
     public Competition getEditingCompetition() {
+        System.out.println("FD SIZEEEE " + editingCompetition.getGroupDetailsList().size());
         return editingCompetition;
     }
     
@@ -63,7 +65,7 @@ public class CompetitionController implements Serializable {
         return service.validateCompetitorsAmount(amount);
     }
     
-    public void createCompetition(Competition competition, List<CompetitorMatchGroup> competitorMatchGroupList) {
+    public void createCompetition(Competition competition, List<CMG> competitorMatchGroupList) {
         service.createCompetition(competition, competitorMatchGroupList);
     }
     
@@ -71,7 +73,7 @@ public class CompetitionController implements Serializable {
         return service.findCompetitionTypeById(id);
     }
     
-    public List<CompetitorMatchGroup> generateEmptyBracket(List<Competitor> competitors){
+    public List<CMG> generateEmptyBracket(List<Competitor> competitors){
         return service.generateEmptyBracket(competitors);
     }
 
@@ -87,15 +89,15 @@ public class CompetitionController implements Serializable {
         editingCompetition = service.storeCompetition(competition);
     }
 
-    public List<CompetitorMatchGroup> getCompetitionCMGMappings(Competition competition) {
+    public List<CMG> getCompetitionCMGMappings(Competition competition) {
         return service.getCompetitionCMGMappings(competition);
     }
 
-    public CompetitorMatchGroup saveCompetitorScore(CompetitorMatchGroup cmg) {
+    public CompetitorMatch saveCompetitorScore(CompetitorMatch cmg) {
         return service.saveCompetitorScore(cmg);
     }
 
-    public List<CompetitorMatchGroup> findCMGByIdMatch(Integer idMatch) {
+    public List<CompetitorMatch> findCMGByIdMatch(Integer idMatch) {
         return service.findCMGByIdMatch(idMatch);
     }
 

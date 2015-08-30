@@ -8,7 +8,7 @@ package mot.services;
 import entities.Competition;
 import entities.CompetitionType;
 import entities.Competitor;
-import entities.CompetitorMatchGroup;
+import entities.CompetitorMatch;
 import entities.MatchType;
 import entities.Team;
 import java.util.ArrayList;
@@ -17,6 +17,7 @@ import javax.ejb.EJB;
 import javax.ejb.Stateful;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
+import mot.utils.CMG;
 import mot.facades.CompetitionTypeFacadeLocal;
 import mot.facades.CompetitorFacadeLocal;
 import mot.facades.MatchTypeFacadeLocal;
@@ -86,7 +87,7 @@ public class CompetitionService implements CompetitionServiceLocal {
     }
 
     @Override
-    public void createCompetition(Competition competition, List<CompetitorMatchGroup> competitorMatchGroupList) {
+    public void createCompetition(Competition competition, List<CMG> competitorMatchGroupList) {
         createCompetitionManager.createCompetition(competition, competitorMatchGroupList);
     }
 
@@ -96,7 +97,7 @@ public class CompetitionService implements CompetitionServiceLocal {
     }
 
     @Override
-    public List<CompetitorMatchGroup> generateEmptyBracket(List<Competitor> competitors) {
+    public List<CMG> generateEmptyBracket(List<Competitor> competitors) {
         return createCompetitionManager.generateEmptyBracket(competitors);
     }
 
@@ -117,17 +118,17 @@ public class CompetitionService implements CompetitionServiceLocal {
     }
 
     @Override
-    public List<CompetitorMatchGroup> getCompetitionCMGMappings(Competition competition) {
+    public List<CMG> getCompetitionCMGMappings(Competition competition) {
         return manageCompetitionManager.getCompetitionCMGMappings(competition);
     }
 
     @Override
-    public CompetitorMatchGroup saveCompetitorScore(CompetitorMatchGroup cmg) {
+    public CompetitorMatch saveCompetitorScore(CompetitorMatch cmg) {
         return manageCompetitionManager.saveCompetitorScore(editingCompetition, cmg);
     }
 
     @Override
-    public List<CompetitorMatchGroup> findCMGByIdMatch(Integer idMatch) {
+    public List<CompetitorMatch> findCMGByIdMatch(Integer idMatch) {
         return manageCompetitionManager.findCMGByIdMatch(idMatch);
     }
 }

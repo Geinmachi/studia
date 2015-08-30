@@ -109,11 +109,16 @@ and open the template in the editor.
                 <p:tab id="secondStep" title="#{msg.bracket}">
                     <p:outputPanel id="groupsHolder">
                         <ui:repeat value="#{createCompetitionBackingBean.bracketCreator.groups}" var="group">
-                            <p:panel header="#{group.groupName}" 
-                                     style="width: #{(100/createCompetitionBackingBean.bracketCreator.groups.size())-1}%; display: inline-block;">
+                            <p:panel
+                                style="width: #{(100/createCompetitionBackingBean.bracketCreator.groups.size())-1}%; display: inline-block;">
+                                <f:facet name="header">
+                                    #{group.idGroupName.groupName}
+                                    <p:calendar id="groupDetailsDate" pattern="MM/dd/yyyy HH:mm:ss" showOn="button" 
+                                                value="#{group.startDate}"/>
+                                </f:facet>
                                 <ui:repeat value="#{createCompetitionBackingBean.bracketCreator.competitorMatchGroupList}"
                                            var="cmg">
-                                    <p:outputLabel rendered="#{cmg.idGroup eq group}">
+                                    <p:outputLabel rendered="#{cmg.idGroupName eq group.idGroupName}">
                                         #{cmg.idCompetitor.idPersonalInfo.firstName} 
                                         #{cmg.idCompetitor.idPersonalInfo.lastName} 
                                         <br/>
@@ -121,9 +126,6 @@ and open the template in the editor.
                                 </ui:repeat>
                             </p:panel>
                         </ui:repeat>
-                    </p:outputPanel>
-                    <p:outputPanel id="ss">
-                        <p:panel header="cos"/>
                     </p:outputPanel>
 <!--                    <p:dashboard id="dashboard" model="#{createCompetitionBackingBean.bracketCreator.dashboardModel}">
         <c:forEach items="#{createCompetitionBackingBean.bracketCreator.panelList}" var="dashboardPanel">
@@ -158,27 +160,46 @@ and open the template in the editor.
                                 <c:when test="#{not dashboardPanel.filler}">
                                     <p:panel id="#{dashboardPanel.panel.id}" binding="#{dashboardPanel.panel}"
                                              header="#{msg.matchNumber} #{dashboardPanel.match.matchNumber}">
-                                        <c:forEach items="#{dashboardPanel.competitorList}" var="competitorr" varStatus="competitorIndex">
-                                            <p:outputLabel>
-                                                #{competitorr.idPersonalInfo.firstName} 
-                                                #{competitorr.idPersonalInfo.lastName} 
-                                            </p:outputLabel>
-                                            <c:forEach items="#{dashboardPanel.match.competitorMatchGroupList}"
-                                                       var="cmgFromMatch">
-                                                <c:if test="#{cmgFromMatch.idCompetitor eq competitorr}">
-                                                    <p:inplace editor="true">
-                                                        <p:inputText value="#{cmgFromMatch.competitorMatchScore}"/>
-                                                    </p:inplace>
-                                                </c:if>
-                                            </c:forEach>
-                                            <br/>
+
+                                        <c:forEach items="#{dashboardPanel.match.competitorMatchList}"
+                                                   var="cmgFromMatch">
+                                            <c:choose>
+                                                <c:when test="#{not empty cmgFromMatch.idCompetitor}">
+                                                    <!--<c:if test="#{cmgFromMatch.idCompetitor eq competitorr}">-->
+                                                    <p:outputLabel>
+                                                        #{cmgFromMatch.idCompetitor.idPersonalInfo.firstName}
+                                                        #{cmgFromMatch.idCompetitor.idPersonalInfo.lastName} 
+                                                    </p:outputLabel>
+                                                    <br/>
+                                                    <!--</c:if>-->
+                                                </c:when>
+                                                <c:otherwise>
+                                                    #{msg.TBD}
+                                                    <br/>
+                                                </c:otherwise>
+                                            </c:choose>
                                         </c:forEach>
-                                        <c:if test="#{empty dashboardPanel.competitorList}">
-                                            <p:outputLabel>
-                                                #{msg.TBD}<br/>
-                                                #{msg.TBD}<br/>
-                                            </p:outputLabel>
+                                        <!--        <c:forEach items="#{dashboardPanel.competitorList}" var="competitorr" varStatus="competitorIndex">
+                                                    <p:outputLabel>
+                                        #{competitorr.idPersonalInfo.firstName} 
+                                        #{competitorr.idPersonalInfo.lastName} 
+                                    </p:outputLabel>
+                                    <c:forEach items="#{dashboardPanel.match.competitorMatchList}"
+                                               var="cmgFromMatch">
+                                        <c:if test="#{cmgFromMatch.idCompetitor eq competitorr}">
+                                            <p:inplace editor="true">
+                                                <p:inputText value="#{cmgFromMatch.competitorMatchScore}"/>
+                                            </p:inplace>
                                         </c:if>
+                                    </c:forEach>
+                                    <br/>
+                                </c:forEach>
+                                <c:if test="#{empty dashboardPanel.competitorList}">
+                                    <p:outputLabel>
+                                        #{msg.TBD}<br/>
+                                        #{msg.TBD}<br/>
+                                    </p:outputLabel>
+                                </c:if>-->
                                         <p:outputLabel value="#{msg.date}:"/>
                                         <p:calendar id="matchDate" pattern="MM/dd/yyyy HH:mm:ss" showOn="button" 
                                                     value="#{dashboardPanel.match.matchDate}"/><br/>

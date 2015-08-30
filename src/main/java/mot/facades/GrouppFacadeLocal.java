@@ -1,36 +1,36 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package mot.facades;
-
-import entities.Groupp;
-import java.util.List;
-import javax.ejb.Local;
-import javax.ejb.Remote;
-
-/**
- *
- * @author java
- */
-@Remote
-public interface GrouppFacadeLocal {
-
-    void create(Groupp groupp);
-
-    void edit(Groupp groupp);
-
-    void remove(Groupp groupp);
-
-    Groupp find(Object id);
-
-    List<Groupp> findAll();
-
-    List<Groupp> findRange(int[] range);
-
-    int count();
-    
-    Groupp createWithReturn(Groupp entity);
-    
-}
+///*
+// * To change this license header, choose License Headers in Project Properties.
+// * To change this template file, choose Tools | Templates
+// * and open the template in the editor.
+// */
+//package mot.facades;
+//
+//import entities.GroupName;
+//import java.util.List;
+//import javax.ejb.Local;
+//import javax.ejb.Remote;
+//
+///**
+// *
+// * @author java
+// */
+//@Remote
+//public interface GroupNameFacadeLocal {
+//
+//    void create(GroupName GroupName);
+//
+//    void edit(GroupName GroupName);
+//
+//    void remove(GroupName GroupName);
+//
+//    GroupName find(Object id);
+//
+//    List<GroupName> findAll();
+//
+//    List<GroupName> findRange(int[] range);
+//
+//    int count();
+//    
+//    GroupName createWithReturn(GroupName entity);
+//    
+//}
