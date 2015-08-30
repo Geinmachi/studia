@@ -8,6 +8,8 @@ package entities;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
+import java.util.UUID;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -23,6 +25,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -40,8 +43,12 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "GroupDetails.findByStartDate", query = "SELECT g FROM GroupDetails g WHERE g.startDate = :startDate"),
     @NamedQuery(name = "GroupDetails.findByEndDate", query = "SELECT g FROM GroupDetails g WHERE g.endDate = :endDate"),
     @NamedQuery(name = "GroupDetails.findByVersion", query = "SELECT g FROM GroupDetails g WHERE g.version = :version")})
-public class GroupDetails implements Serializable {
+public class GroupDetails implements Serializable, Comparable<GroupDetails> {
     private static final long serialVersionUID = 1L;
+    
+    @Transient
+    private UUID uuid;
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
@@ -63,12 +70,16 @@ public class GroupDetails implements Serializable {
     @JoinColumn(name = "id_competition", referencedColumnName = "id_competition")
     @ManyToOne(optional = false)
     private Competition competition;
-//    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idGroupDetails")
-//    private List<GroupCompetitor> groupCompetitorList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idGroupDetails")
+    private List<GroupCompetitor> groupCompetitorList;
 
     public GroupDetails() {
     }
 
+    public GroupDetails(UUID uuid) {
+        this.uuid = uuid;
+    }
+    
     public GroupDetails(Integer idGroupDetails) {
         this.idGroupDetails = idGroupDetails;
     }
@@ -126,6 +137,18 @@ public class GroupDetails implements Serializable {
         this.competition = competition;
     }
 
+    public UUID getUuid() {
+        return uuid;
+    }
+
+    public List<GroupCompetitor> getGroupCompetitorList() {
+        return groupCompetitorList;
+    }
+
+    public void setGroupCompetitorList(List<GroupCompetitor> groupCompetitorList) {
+        this.groupCompetitorList = groupCompetitorList;
+    }
+    
 //    @XmlTransient
 //    public List<GroupCompetitor> getGroupCompetitorList() {
 //        return groupCompetitorList;
@@ -137,27 +160,48 @@ public class GroupDetails implements Serializable {
 
     @Override
     public int hashCode() {
-        int hash = 0;
-        hash += (idGroupDetails != null ? idGroupDetails.hashCode() : 0);
+        int hash = 7;
+        hash = 41 * hash + Objects.hashCode(this.uuid);
+        hash = 41 * hash + Objects.hashCode(this.idGroupDetails);
         return hash;
     }
 
     @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof GroupDetails)) {
+    public boolean equals(Object obj) {
+        if (obj == null) {
             return false;
         }
-        GroupDetails other = (GroupDetails) object;
-        if ((this.idGroupDetails == null && other.idGroupDetails != null) || (this.idGroupDetails != null && !this.idGroupDetails.equals(other.idGroupDetails))) {
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final GroupDetails other = (GroupDetails) obj;
+        
+        if (this.uuid != null && other.uuid != null) {
+            if (Objects.equals(this.uuid, other.uuid)) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        
+        if (!Objects.equals(this.idGroupDetails, other.idGroupDetails)) {
             return false;
         }
         return true;
     }
 
+
     @Override
     public String toString() {
         return "entities.GroupDetails[ idGroupDetails=" + idGroupDetails + " ]";
+    }
+
+    @Override
+    public int compareTo(GroupDetails o) {
+        System.out.println("THIS GROUPNAME = " + this.idGroupName.getGroupName());
+        System.out.println("OTHER GROUPNAME = " + o.getIdGroupName().getGroupName());
+        System.out.println("RESULT = " + Character.compare(this.idGroupName.getGroupName(), o.getIdGroupName().getGroupName()));
+        return Character.compare(this.idGroupName.getGroupName(), o.getIdGroupName().getGroupName());
     }
     
 }

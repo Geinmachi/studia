@@ -11,15 +11,16 @@ import entities.GroupCompetitor;
 import entities.GroupDetails;
 import entities.GroupName;
 import entities.Matchh;
+import java.util.Objects;
 
 /**
  *
  * @author java
  */
 public class CompetitorMatchGroup implements CMG {
-    
+
     private CompetitorMatch competitorMatch;
-    
+
     private GroupCompetitor groupCompetitor;
 
     public CompetitorMatchGroup(GroupCompetitor gc, CompetitorMatch cm) {
@@ -34,7 +35,7 @@ public class CompetitorMatchGroup implements CMG {
     public void setGroupCompetitor(GroupCompetitor groupCompetitor) {
         this.groupCompetitor = groupCompetitor;
     }
- 
+
     @Override
     public Competitor getIdCompetitor() {
         return competitorMatch.getIdCompetitor();
@@ -47,7 +48,11 @@ public class CompetitorMatchGroup implements CMG {
 
     @Override
     public GroupName getIdGroupName() {
-        return groupCompetitor.getIdGroupDetails().getIdGroupName();
+        if (groupCompetitor != null && groupCompetitor.getIdGroupDetails() != null) {
+            return groupCompetitor.getIdGroupDetails().getIdGroupName();
+        } else {
+            return null;
+        }
     }
 
     @Override
@@ -73,7 +78,37 @@ public class CompetitorMatchGroup implements CMG {
 
     @Override
     public GroupDetails getGroupDetails() {
-        return groupCompetitor.getIdGroupDetails();
+        if (groupCompetitor != null) {
+            return groupCompetitor.getIdGroupDetails();
+        } else {
+            return null;
+        }
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 89 * hash + Objects.hashCode(this.competitorMatch);
+        hash = 89 * hash + Objects.hashCode(this.groupCompetitor);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final CompetitorMatchGroup other = (CompetitorMatchGroup) obj;
+        if (!Objects.equals(this.competitorMatch, other.competitorMatch)) {
+            return false;
+        }
+        if (!Objects.equals(this.groupCompetitor, other.groupCompetitor)) {
+            return false;
+        }
+        return true;
     }
     
 }

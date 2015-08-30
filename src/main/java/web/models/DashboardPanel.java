@@ -88,7 +88,7 @@ public class DashboardPanel {
      * @param index
      */
     public void updateCMGwithAdvanced(CompetitorMatch cmg) {
-        List<CompetitorMatch> cmgList = this.match.getCompetitorMatchGroupList();
+        List<CompetitorMatch> cmgList = this.match.getCompetitorMatchList();
 
         for (CompetitorMatch c : cmgList) {
             if (cmg.equals(c)) {
@@ -101,7 +101,10 @@ public class DashboardPanel {
         for (CompetitorMatch c : cmgList) {
             if (cmg.equals(c)) {
                 c.setIdCompetitor(cmg.getIdCompetitor());
-                System.err.println("JAKI PLACER " + c.getPlacer());
+                System.err.println("JJJAKI PLACER " + cmg.getPlacer());
+                System.out.println("Compedtitori  " + c.getIdCompetitor());
+                System.out.println("CMMM ID " + c);
+                System.out.println("MATCH ID " + c.getIdMatch());
             }
         }
 //        cmgList.get(index).setIdCompetitor(competitor);

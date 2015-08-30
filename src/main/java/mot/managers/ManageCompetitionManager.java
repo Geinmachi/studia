@@ -15,7 +15,9 @@ import entities.MatchMatchType;
 import entities.Matchh;
 import entities.Organizer;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import javax.annotation.Resource;
 import javax.ejb.EJB;
 import javax.ejb.SessionContext;
@@ -50,10 +52,10 @@ public class ManageCompetitionManager implements ManageCompetitionManagerLocal {
 
     @EJB
     private MatchhFacadeLocal matchFacade;
-    
+
     @EJB
     private GroupCompetitorFacadeLocal groupCompetitorFacade;
-    
+
     @EJB
     private CompetitorMatchFacadeLocal competitorMatchFacade;
 
@@ -69,7 +71,7 @@ public class ManageCompetitionManager implements ManageCompetitionManagerLocal {
 
     @Override
     public Competition storeCompetition(Competition competition) {
-        Competition fetchedCompetition = competitionFacade.find(competition.getIdCompetition());
+        Competition fetchedCompetition = competitionFacade.findAndInitializeGD(competition.getIdCompetition());
 
         if (!fetchedCompetition.equals(competition)) { // after page laod and before button click competition was modified
             throw new IllegalStateException("In the meantime competition was modyfied");
@@ -82,31 +84,43 @@ public class ManageCompetitionManager implements ManageCompetitionManagerLocal {
     public List<CMG> getCompetitionCMGMappings(Competition competition) {
         System.out.println("PRZED getCompetitionCMGMappings");
         List<GroupCompetitor> groupCompetitorList = groupCompetitorFacade.findByCompetitionId(competition.getIdCompetition());
-        
+
         List<CompetitorMatch> competitorMatchList = competitorMatchFacade.findByCompetitionId(competition.getIdCompetition());
-        
-        List<CMG> cmgList = new ArrayList<>();
-        
+
+        Set<CMG> cmgSet = new HashSet<>();
+        System.out.println("GROUPCOMPETITOR SSS " + groupCompetitorList.size());
+        System.out.println("COMPETITORMATCH SSS " + competitorMatchList.size());
         for (CompetitorMatch cm : competitorMatchList) {
-            if (Short.compare(cm.getIdMatch().getRoundd(), Short.parseShort("1")) == 0) {
-                for (GroupCompetitor gc : groupCompetitorList) {
+            //    if (Short.compare(cm.getIdMatch().getRoundd(), Short.parseShort("1")) == 0) {
+            System.out.println("RUNDA 11111111111111");
+            for (GroupCompetitor gc : groupCompetitorList) {
+                if (gc.getIdCompetitor() != null && cm.getIdCompetitor() != null ) {
                     if (gc.getIdCompetitor().equals(cm.getIdCompetitor())) {
-                        cmgList.add(new CompetitorMatchGroup(gc, cm));
-                        
+                        cmgSet.add(new CompetitorMatchGroup(gc, cm));
+
                         break;
                     }
+                } else {
+                    cmgSet.add(new CompetitorMatchGroup(null, cm));
                 }
             }
+            //    } 
         }
-        return cmgList;
+
+//        for (CompetitorMatch cm : competitorMatchList) {
+//            if (cm.getIdMatch().ge) {
+//                cmgList.add(new CompetitorMatchGroup(null, cm));
+//            }
+//        }
+        return new ArrayList<>(cmgSet);
     }
 
     /**
      *
      * @param editingCompetition
      * @param receivedCMG
-     * @return CompetitorMatch if competitor advanced to next round,
- oterwise returns null
+     * @return CompetitorMatch if competitor advanced to next round, oterwise
+     * returns null
      */
     @Override
     public CompetitorMatch saveCompetitorScore(Competition editingCompetition, CompetitorMatch receivedCMG) {
@@ -145,7 +159,7 @@ public class ManageCompetitionManager implements ManageCompetitionManagerLocal {
 
     private CompetitorMatch advanceCompetitor(Competition competition, Matchh fetchedMatch, CompetitorMatch receivedCMG, Competitor competitor) {
         System.out.println("WESLO DO ADVANCE");
-        int competitorCount = competitor.getGroupCompetitorList().size() * CreateCompetitionManager.GROUP_SIZE;
+        int competitorCount = competition.getGroupDetailsList().size() * CreateCompetitionManager.GROUP_SIZE;
         double matchCounter = 0.0;
 
         for (MatchMatchType mmt : fetchedMatch.getMatchMatchTypeList()) {
@@ -176,21 +190,20 @@ public class ManageCompetitionManager implements ManageCompetitionManagerLocal {
 //                                    System.out.println("Match number XXXXXX  " + foundMatch.getMatchNumber() + " id " + foundMatch.getIdMatch());
 //                                }
 //                            if (foundCMG.getIdCompetitor() == null) {// if this is the first competitor in match
-                            
                             CompetitorMatch foundCMG = null;
-                            
+
                             for (CompetitorMatch cmg : foundCMGs) {
                                 if (cmg.getPlacer() == null) {
                                     foundCMG = cmg;
-                                    
+
                                     break;
                                 }
                             }
-                            
+
                             if (foundCMG == null) {
                                 throw new IllegalStateException("DID not find emtpy CMG in match");
                             }
-                            
+
                             foundCMG.setIdCompetitor(competitor);
                             foundCMG.setCompetitorMatchScore((short) 0);
                             foundCMG.setPlacer(calculatePlacer(matchCounter));
@@ -256,7 +269,6 @@ public class ManageCompetitionManager implements ManageCompetitionManagerLocal {
 //        for (CompetitorMatch cmg2 : found){
 //            System.out.println("NR MATCHU i ID COMPETITORA " + cmg2.getIdMatch() + " comp: " + cmg2.getIdCompetitor() + " i wynik " + cmg.getCompetitorMatchScore() + " IDDD " + cmg);
 //        }
-        
         return found;
     }
 }

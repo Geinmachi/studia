@@ -36,6 +36,7 @@ public class CompetitionController implements Serializable {
     }
 
     public Competition getEditingCompetition() {
+        System.out.println("FD SIZEEEE " + editingCompetition.getGroupDetailsList().size());
         return editingCompetition;
     }
     

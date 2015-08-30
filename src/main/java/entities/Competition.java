@@ -91,6 +91,8 @@ public class Competition implements Serializable {
     private CompetitionType idCompetitionType;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idCompetition")
     private List<Score> scoreList = new ArrayList<>();
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "competition")
+    private List<GroupDetails> groupDetailsList = new ArrayList<>();
 //    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idCompetition")
 //    private List<GroupCompetition> groupCompetitionList = new ArrayList<>();
 
@@ -186,6 +188,10 @@ public class Competition implements Serializable {
     public void setScoreList(List<Score> scoreList) {
         this.scoreList = scoreList;
     }
+    
+    public List<GroupDetails> getGroupDetailsList() {
+        return groupDetailsList;
+    }
 
 //    @XmlTransient
 //    public List<GroupCompetition> getGroupCompetitionList() {
@@ -195,6 +201,9 @@ public class Competition implements Serializable {
 //    public void setGroupCompetitionList(List<GroupCompetition> groupCompetitionList) {
 //        this.groupCompetitionList = groupCompetitionList;
 //    }
+    public void setGroupDetailsList(List<GroupDetails> groupDetailsList) {    
+        this.groupDetailsList = groupDetailsList;
+    }
 
     @Override
     public int hashCode() {

@@ -24,11 +24,16 @@ and open the template in the editor.
 
             <p:outputLabel value="#{msg.groups}"/>
             <br/>
-            <ui:repeat value="#{manageCompetitionBackingBean.competition.groupCompetitionList}" 
-                       var="groupCompetition">
-                <p:panel header="#{groupCompetition.idGroupName.groupName}" 
-                         style="width: #{(100/manageCompetitionBackingBean.competition.groupCompetitionList.size())-1}%; display: inline-block;">
-                    <ui:repeat value="#{groupCompetition.idGroupName.competitorMatchGroupList}" 
+            <ui:repeat value="#{manageCompetitionBackingBean.groupDetailsList}" 
+                       var="groupDetails">
+                <p:panel
+                    style="width: #{(100/manageCompetitionBackingBean.competition.groupDetailsList.size())-1}%; display: inline-block;">
+                    <f:facet name="header">
+                        #{groupDetails.idGroupName.groupName}
+                        <p:calendar id="groupDetailsDate" pattern="MM/dd/yyyy HH:mm:ss" showOn="button" 
+                                    value="#{groupDetails.startDate}"/>
+                    </f:facet>
+                    <ui:repeat value="#{groupDetails.groupCompetitorList}" 
                                var="competitorMatchGroup">
                         #{competitorMatchGroup.idCompetitor.idPersonalInfo.firstName} 
                         #{competitorMatchGroup.idCompetitor.idPersonalInfo.lastName} 
@@ -49,13 +54,13 @@ and open the template in the editor.
                                 #{competitorr.idPersonalInfo.firstName}
                                 #{competitorr.idPersonalInfo.lastName} 
                             </p:outputLabel>-->
-                                <!--<ui:repeat value="#{dashboardPanel.match.competitorMatchGroupList}" var="cmgFromMatch">-->
+                                <!--<ui:repeat value="#{dashboardPanel.match.competitorMatchList}" var="cmgFromMatch">-->
 
                                 <!--                                </ui:repeat>
                                 -->                                                                
                                 idMatch = #{dashboardPanel.match}
                                 <br/>
-                                <c:forEach items="#{dashboardPanel.match.competitorMatchGroupList}"
+                                <c:forEach items="#{dashboardPanel.match.competitorMatchList}"
                                            var="cmgFromMatch">
                                     <c:choose>
                                         <c:when test="#{not empty cmgFromMatch.idCompetitor}">
@@ -75,7 +80,6 @@ and open the template in the editor.
 
                                                 </p:inputText>
                                             </p:inplace>
-                                            <p:inputText value="#{cmgFromMatch.competitorMatchScore}"/>
                                             <br/>
                                             <!--</c:if>-->
                                         </c:when>

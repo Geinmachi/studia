@@ -80,7 +80,7 @@ public class Matchh implements Serializable, Comparable<Matchh> {
     @ManyToOne(optional = false)
     private Competition competition;
     @OneToMany(mappedBy = "idMatch", fetch = FetchType.EAGER, cascade = CascadeType.PERSIST) // list size is at most 2
-    private List<CompetitorMatch> competitorMatchGroupList = new ArrayList<>();
+    private List<CompetitorMatch> competitorMatchList = new ArrayList<>();
 
     public Matchh() {
     }
@@ -162,12 +162,12 @@ public class Matchh implements Serializable, Comparable<Matchh> {
     }
 
     @XmlTransient
-    public List<CompetitorMatch> getCompetitorMatchGroupList() {
-        return competitorMatchGroupList;
+    public List<CompetitorMatch> getCompetitorMatchList() {
+        return competitorMatchList;
     }
 
-    public void setCompetitorMatchGroupList(List<CompetitorMatch> competitorMatchGroupList) {
-        this.competitorMatchGroupList = competitorMatchGroupList;
+    public void setCompetitorMatchList(List<CompetitorMatch> competitorMatchList) {
+        this.competitorMatchList = competitorMatchList;
     }
 
     @Override
