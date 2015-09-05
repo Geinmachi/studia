@@ -14,6 +14,7 @@ import entities.GroupCompetitor;
 import entities.GroupDetails;
 import entities.GroupName;
 import entities.MatchMatchType;
+import entities.MatchType;
 import entities.Matchh;
 import entities.Organizer;
 import entities.Score;
@@ -43,6 +44,7 @@ import mot.facades.GroupCompetitorFacadeLocal;
 import mot.facades.GroupDetailsFacadeLocal;
 import mot.facades.GroupNameFacadeLocal;
 import mot.facades.MatchMatchTypeFacadeLocal;
+import mot.facades.MatchTypeFacadeLocal;
 import mot.facades.MatchhFacadeLocal;
 import mot.facades.ScoreFacadeLocal;
 import utils.BracketUtil;
@@ -89,9 +91,12 @@ public class CreateCompetitionManager implements CreateCompetitionManagerLocal {
 
     @EJB
     private GroupDetailsFacadeLocal groupDetailsFacade;
-    
+
     @EJB
     private ScoreFacadeLocal scoreFacade;
+
+    @EJB
+    private MatchTypeFacadeLocal matchTypeFacade;
 
     final static int GROUP_SIZE = 4;
 
@@ -145,13 +150,13 @@ public class CreateCompetitionManager implements CreateCompetitionManagerLocal {
                 System.out.println("GROUPS with identity " + groupDetailsWithIdentityList.get(groupDetailsWithIdentityList.indexOf(cmg.getGroupDetails())).getIdGroupDetails());
                 gc.setIdGroupDetails(groupDetailsWithIdentityList.get(groupDetailsWithIdentityList.indexOf(cmg.getGroupDetails())));
                 groupCompetitorFacade.create(cmg.getGroupCompetitor());
-                
+
                 if (cmg.getIdCompetitor() != null) {
                     Score score = new Score();
                     score.setIdCompetition(competition);
                     score.setIdCompetitor(cmg.getIdCompetitor());
-                    score.setScore((short)0);
-                    
+                    score.setScore((short) 0);
+
                     scoreFacade.create(score);
                 }
             }
@@ -183,7 +188,7 @@ public class CreateCompetitionManager implements CreateCompetitionManagerLocal {
             if (m.getCompetitorMatchList().isEmpty()) {
                 System.out.println("CMG JEsT PUSTEEEE dla meczu nr " + m.getMatchNumber());
             }
-            
+
             m.setCompetition(competition);
             matchWithIdentityList.add(matchFacade.createWithReturn(m));
 //            System.out.println("MMAMAMAMAMAMAM " + m + "  number " + m.getMatchNumber());
@@ -508,6 +513,16 @@ public class CreateCompetitionManager implements CreateCompetitionManagerLocal {
                 Matchh match = new Matchh(UUID.randomUUID());
                 match.setRoundd((short) (i + 2));
                 match.setMatchNumber(++matchCounter);
+
+                if (matchesInRound == 1) {  // finals
+                    MatchType finalMatchType = matchTypeFacade.findByMatchTypeName("final");
+
+                    MatchMatchType mmt = new MatchMatchType();
+                    mmt.setIdMatch(match);
+                    mmt.setIdMatchType(finalMatchType);
+
+                    match.getMatchMatchTypeList().add(mmt);
+                }
 
                 CompetitorMatch cmg1 = new CompetitorMatch(UUID.randomUUID());
                 match.getCompetitorMatchList().add(cmg1);

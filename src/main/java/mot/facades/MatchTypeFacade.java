@@ -39,4 +39,12 @@ public class MatchTypeFacade extends AbstractFacade<MatchType> implements MatchT
         return (List<MatchType>) q.getResultList();
     }
 
+    @Override
+    public MatchType findByMatchTypeName(String name) {
+        Query q = em.createNamedQuery("MatchType.findByMatchTypeName");
+        q.setParameter("matchTypeName", name);
+        
+        return (MatchType)q.getSingleResult();
+    }
+
 }
