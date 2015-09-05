@@ -70,7 +70,7 @@ and open the template in the editor.
                                                 #{cmgFromMatch.idCompetitor.idPersonalInfo.lastName} 
                                                 #{cmgFromMatch.idCompetitor.idCompetitor} 
                                             </p:outputLabel>
-                                            <p:inplace editor="true">
+                                            <p:inplace editor="true" disabled="#{!dashboardPanel.editable}">
                                                 <p:ajax event="save" listener="#{manageCompetitionBackingBean.saveScore(cmgFromMatch)}"
                                                         update=":manageCompetitionForm:dashboard" partialSubmit="true" process="@this"/>
                                                 <p:inputText value="#{cmgFromMatch.competitorMatchScore}" >
@@ -100,10 +100,10 @@ and open the template in the editor.
                                                                 </c:forEach>-->
                                 <p:outputLabel value="#{msg.date}:"/>
                                 <p:calendar id="matchDate" pattern="MM/dd/yyyy HH:mm:ss" showOn="button" 
-                                            value="#{dashboardPanel.match.matchDate}"/><br/>
+                                            value="#{dashboardPanel.match.matchDate}" disabled="#{!dashboardPanel.editable}"/><br/>
                                 <p:outputLabel for="matchType" value="#{msg.matchType}:"/>
                                 <p:selectOneMenu id="matchType" value="#{dashboardPanel.matchType}"
-                                                 converter="matchTypeConverter">
+                                                 converter="matchTypeConverter" disabled="#{!dashboardPanel.editable}">
                                     <f:selectItems value="#{manageCompetitionBackingBean.bracketCreator.matchTypeList}"
                                                    var="matchType" itemLabel="#{matchType.matchTypeName}"
                                                    />

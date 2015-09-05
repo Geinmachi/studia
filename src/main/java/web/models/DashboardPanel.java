@@ -30,6 +30,8 @@ public class DashboardPanel {
     private MatchType matchType;
 
     private List<Competitor> competitorList = new ArrayList<>(2);
+    
+    private boolean editable = true;
 
     public DashboardPanel() {
         competitorList.add(null);
@@ -68,6 +70,13 @@ public class DashboardPanel {
         this.matchType = matchType;
     }
 
+    public boolean getEditable() {
+        return this.editable;
+    }
+    
+    public void setEditable(boolean editable) {
+        this.editable = editable;
+    }
     /**
      *
      * @return New List with competitors. To add competitors use method

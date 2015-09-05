@@ -65,7 +65,7 @@ public class BracketCreationBackingBean implements Serializable {
     private DashboardModel dashboardModel;
 
     private List<CMG> competitorMatchGroupList = new ArrayList<>();
-    
+
     private List<GroupDetails> groups = new ArrayList<>();
 
     private List<Matchh> otherMatches = new ArrayList<>();
@@ -101,7 +101,7 @@ public class BracketCreationBackingBean implements Serializable {
     public List<CMG> getCompetitorMatchGroupList() {
         return competitorMatchGroupList;
     }
-    
+
     public List<DashboardPanel> getPanelList() {
         return panelList;
     }
@@ -242,15 +242,17 @@ public class BracketCreationBackingBean implements Serializable {
         List<DashboardColumn> otherColumns = createOtherRoundsColumns();
 
         for (int i = 0; i < otherColumns.size(); i++) {
-            dashboardModel.addColumn(createFillers(i));
+            dashboardModel.addColumn(createFillers(i, otherColumns.get(i).getWidgetCount()));
             dashboardModel.addColumn(otherColumns.get(i));
         }
+
+        disableFinishedMatches();
     }
 
-    private DashboardColumn createFillers(int columnNumber) {
+    private DashboardColumn createFillers(int columnNumber, int matchesInRoundCount) {
         DashboardColumn column = new DefaultDashboardColumn();
 
-        for (int i = 0; i < 20; i++) {
+        for (int i = 0; i < ((matchesInRoundCount * 2) + matchesInRoundCount); i++) {
             Panel panel = new Panel();
             panel.setId("filler" + columnNumber + i);
 
@@ -451,6 +453,32 @@ public class BracketCreationBackingBean implements Serializable {
 
                     break;
                 }
+            }
+        }
+    }
+
+    private void disableFinishedMatches() {
+        for (DashboardPanel dp : panelList) {
+            dp_block:
+            {
+                if (dp.getMatch() != null) {
+                    for (MatchMatchType mmt : dp.getMatch().getMatchMatchTypeList()) {
+                        System.out.println("mmt " + mmt.getIdMatchType().getMatchTypeName());
+                        if (mmt.getIdMatchType().getMatchTypeName().startsWith("BO")) {
+                            for (CompetitorMatch cm : dp.getMatch().getCompetitorMatchList()) {
+                                if (cm.getCompetitorMatchScore() != null && ((Integer.valueOf(mmt.getIdMatchType().getMatchTypeName().substring(2)) + 1) / 2) == cm.getCompetitorMatchScore()) {
+                                    System.out.println("WYLACZA " + dp.getMatch());
+                                    dp.setEditable(false);
+                                    break dp_block;
+                                }
+                            }
+                        }
+                    }
+                    System.out.println("TYP : " + dp.getMatch().getMatchMatchTypeList());
+                }
+        //    for (CompetitorMatch cm : dp.getMatch().getCompetitorMatchList()) {
+                // if (cm.getCompetitorMatchScore() == cm.ge)
+                //   }
             }
         }
     }

@@ -27,6 +27,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "score")
 @XmlRootElement
 @NamedQueries({
+    @NamedQuery(name = "Score.findByIdCompetitionAndIdCompetitor", query = "SELECT s FROM Score s WHERE s.idCompetition.idCompetition = :idCompetition AND s.idCompetitor.idCompetitor = :idCompetitor"),
     @NamedQuery(name = "Score.findAll", query = "SELECT s FROM Score s"),
     @NamedQuery(name = "Score.findByIdScore", query = "SELECT s FROM Score s WHERE s.idScore = :idScore"),
     @NamedQuery(name = "Score.findByScore", query = "SELECT s FROM Score s WHERE s.score = :score")})

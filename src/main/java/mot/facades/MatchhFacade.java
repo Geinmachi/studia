@@ -47,7 +47,7 @@ public class MatchhFacade extends AbstractFacade<Matchh> implements MatchhFacade
     public Matchh findAndInitializeTypes(Object id) {
         Matchh match = em.find(Matchh.class, id);
         match.getMatchMatchTypeList().size();
-        
+        match.getCompetition().getGroupDetailsList().size();
         return match;
     }
 

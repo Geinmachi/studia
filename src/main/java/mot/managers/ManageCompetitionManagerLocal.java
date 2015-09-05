@@ -25,7 +25,7 @@ public interface ManageCompetitionManagerLocal {
 
     public List<CMG> getCompetitionCMGMappings(Competition competition);
 
-    public CompetitorMatch saveCompetitorScore(Competition editingCompetition, CompetitorMatch cmg);
+    public CompetitorMatch saveCompetitorScore(CompetitorMatch cmg);
 
     public List<CompetitorMatch> findCMGByIdMatch(Integer idMatch);
     

@@ -124,7 +124,7 @@ public class CompetitionService implements CompetitionServiceLocal {
 
     @Override
     public CompetitorMatch saveCompetitorScore(CompetitorMatch cmg) {
-        return manageCompetitionManager.saveCompetitorScore(editingCompetition, cmg);
+        return manageCompetitionManager.saveCompetitorScore(cmg);
     }
 
     @Override

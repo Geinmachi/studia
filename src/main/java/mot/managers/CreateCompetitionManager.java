@@ -16,6 +16,7 @@ import entities.GroupName;
 import entities.MatchMatchType;
 import entities.Matchh;
 import entities.Organizer;
+import entities.Score;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -43,6 +44,7 @@ import mot.facades.GroupDetailsFacadeLocal;
 import mot.facades.GroupNameFacadeLocal;
 import mot.facades.MatchMatchTypeFacadeLocal;
 import mot.facades.MatchhFacadeLocal;
+import mot.facades.ScoreFacadeLocal;
 import utils.BracketUtil;
 import utils.ConvertUtil;
 import mot.utils.CMG;
@@ -87,6 +89,9 @@ public class CreateCompetitionManager implements CreateCompetitionManagerLocal {
 
     @EJB
     private GroupDetailsFacadeLocal groupDetailsFacade;
+    
+    @EJB
+    private ScoreFacadeLocal scoreFacade;
 
     final static int GROUP_SIZE = 4;
 
@@ -140,6 +145,15 @@ public class CreateCompetitionManager implements CreateCompetitionManagerLocal {
                 System.out.println("GROUPS with identity " + groupDetailsWithIdentityList.get(groupDetailsWithIdentityList.indexOf(cmg.getGroupDetails())).getIdGroupDetails());
                 gc.setIdGroupDetails(groupDetailsWithIdentityList.get(groupDetailsWithIdentityList.indexOf(cmg.getGroupDetails())));
                 groupCompetitorFacade.create(cmg.getGroupCompetitor());
+                
+                if (cmg.getIdCompetitor() != null) {
+                    Score score = new Score();
+                    score.setIdCompetition(competition);
+                    score.setIdCompetitor(cmg.getIdCompetitor());
+                    score.setScore((short)0);
+                    
+                    scoreFacade.create(score);
+                }
             }
 
         }

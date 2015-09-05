@@ -72,7 +72,6 @@
     width: 100px;
     background-color: #fff;
     right: 0.1px;
-    top: -26px;
 }
 
 [id*="CompetitionForm:filler1"] {
@@ -93,7 +92,6 @@
     width: 100px;
     background-color: #fff;
     right: 0.1px;
-    top: -35px;
 }
 
 [id*="CompetitionForm:filler2"] {
@@ -116,7 +114,7 @@
     width: 100px;
     background-color: #fff;
     right: 0.1px;
-    top: -53px;
+    height: 100% !important;
 }
 
 [id*="CompetitionForm:filler"]:nth-child(3n+1) {
@@ -124,6 +122,8 @@
 }
 
 [id*="CompetitionForm:filler"]:nth-child(3n+2) > div{
+    height: calc(100% + 10px) !important;
+    z-index: 1;
     position: absolute;
     width: 100px;
     background-color: #fff;

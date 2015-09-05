@@ -74,7 +74,7 @@ public class Matchh implements Serializable, Comparable<Matchh> {
     @NotNull
     @Column(name = "version")
     private long version;
-    @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "idMatch")
+    @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "idMatch", fetch = FetchType.EAGER)
     private List<MatchMatchType> matchMatchTypeList = new ArrayList<>();
     @JoinColumn(name = "id_competition", referencedColumnName = "id_competition")
     @ManyToOne(optional = false)
