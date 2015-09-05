@@ -140,13 +140,7 @@ public class ManageCompetitionManager implements ManageCompetitionManagerLocal {
         competitorMatchFacade.edit(fetchedCompetitorMatch);
 
         CompetitorMatch advancedCompetitoCMG = advanceCompetitor(fetchedMatch, receivedCompetitorMatch, receivedCompetitorMatch.getIdCompetitor());
-        
-        if (advancedCompetitoCMG != null) { //TODO lub jesli final
-            Score score = scoreFacade.findByIdCompetitorAndIdCompetition(fetchedMatch.getCompetition().getIdCompetition(), fetchedCompetitorMatch.getIdCompetitor().getIdCompetitor());
-            score.setScore((short)(score.getScore()+1));
-            scoreFacade.edit(score);
-        }
-        
+
         return advancedCompetitoCMG;
     }
 
@@ -175,6 +169,10 @@ public class ManageCompetitionManager implements ManageCompetitionManagerLocal {
                 int bestOfDigit = Integer.valueOf(mmt.getIdMatchType().getMatchTypeName().substring(2));
 
                 if (receivedCMG.getCompetitorMatchScore() == ((bestOfDigit + 1) / 2)) {
+                    Score score = scoreFacade.findByIdCompetitorAndIdCompetition(fetchedMatch.getCompetition().getIdCompetition(), receivedCMG.getIdCompetitor().getIdCompetitor());
+                    score.setScore((short) (score.getScore() + 1));
+                    scoreFacade.edit(score);
+
                     CompetitorMatch advancedCompetitorCMG = new CompetitorMatch();
 
                     int matchesInRound = matchesInRound(competitorCount / 2, fetchedMatch.getRoundd());
@@ -207,7 +205,16 @@ public class ManageCompetitionManager implements ManageCompetitionManagerLocal {
                                     break;
                                 }
                             }
-
+                            
+                            for (MatchMatchType mmt2 : fetchedMatch.getMatchMatchTypeList()) {
+                                if (mmt2.getIdMatchType().getMatchTypeName().equals("final")) { // if final there is no advancing
+                                    fetchedMatch.getCompetition().setIdWinner(competitor);
+                                    competitionFacade.edit(fetchedMatch.getCompetition());
+                                    
+                                    return null;
+                                }
+                            }
+                            
                             if (foundCMG == null) {
                                 throw new IllegalStateException("DID not find emtpy CMG in match");
                             }

@@ -89,6 +89,9 @@ public class Competition implements Serializable {
     @JoinColumn(name = "id_competition_type", referencedColumnName = "id_competition_type")
     @ManyToOne(optional = false)
     private CompetitionType idCompetitionType;
+    @JoinColumn(name = "id_winner", referencedColumnName = "id_competitor")
+    @ManyToOne(optional = true)
+    private Competitor idWinner;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idCompetition")
     private List<Score> scoreList = new ArrayList<>();
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "competition")
@@ -191,6 +194,14 @@ public class Competition implements Serializable {
     
     public List<GroupDetails> getGroupDetailsList() {
         return groupDetailsList;
+    }
+
+    public Competitor getIdWinner() {
+        return idWinner;
+    }
+
+    public void setIdWinner(Competitor idWinner) {
+        this.idWinner = idWinner;
     }
 
 //    @XmlTransient
