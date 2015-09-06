@@ -5,6 +5,7 @@
  */
 package web.backingBeans;
 
+import entities.Competition;
 import entities.Competitor;
 import entities.CompetitorMatch;
 import entities.GroupCompetitor;
@@ -124,10 +125,19 @@ public class BracketCreationBackingBean implements Serializable {
         createModel();
     }
 
-    public void recreateBracket(List<CMG> competitorMatchGroupList) {
-        this.competitorMatchGroupList = competitorMatchGroupList;
+//    public void recreateBracket(List<CMG> competitorMatchGroupList) {
+//        this.competitorMatchGroupList = competitorMatchGroupList;
+//        initializeLists();
+//        createModel();
+//    }
+    
+    public void recreateBracket(Competition competition) {
+        List<CMG> cmgList = controller.getCompetitionCMGMappings(competition);
+        
+        this.competitorMatchGroupList = cmgList;
         initializeLists();
         createModel();
+        assignMatchTypes();
     }
 
     public void updateBracket() {
@@ -465,6 +475,8 @@ public class BracketCreationBackingBean implements Serializable {
                     for (MatchMatchType mmt : dp.getMatch().getMatchMatchTypeList()) {
                         System.out.println("mmt " + mmt.getIdMatchType().getMatchTypeName());
                         if (mmt.getIdMatchType().getMatchTypeName().startsWith("BO")) {
+                            dp.setMatchType(mmt.getIdMatchType());
+                            
                             for (CompetitorMatch cm : dp.getMatch().getCompetitorMatchList()) {
                                 if (cm.getCompetitorMatchScore() != null && ((Integer.valueOf(mmt.getIdMatchType().getMatchTypeName().substring(2)) + 1) / 2) == cm.getCompetitorMatchScore()) {
                                     System.out.println("WYLACZA " + dp.getMatch());

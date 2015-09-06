@@ -26,6 +26,10 @@
     padding: 0px;
 }
 
+[id*="CompetitionForm:other"].ui-panel {
+    height: 160px;
+}
+
 [id*="CompetitionForm:other2"].ui-panel:nth-child(1) {
     margin-top: 160px !important;
 }
@@ -133,4 +137,23 @@
 
 [id*="CompetitionForm:filler"]:nth-child(1) {
     border: 0 !important;
+}
+
+/* -------------------------- */
+.matchWinnertrue {
+    color: green;
+}
+
+div[class*="displayCompetitorRow"]:hover {
+    background-color: yellow;
+}
+
+.hoveredCompetitor {
+    background-color: yellow;
+}
+
+.crown {
+    position: absolute;
+    right: -60px;
+    top: 47px;
 }

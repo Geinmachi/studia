@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/templates/main.xhtml"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <ui:define name="title">#{msg.competitionListTitle}</ui:define>
+    <ui:define name="content">
+        <h:form id="competitionListForm">
+            <p:dataTable var="competition" value="#{competitionListBackingBean.competitionList}">
+                <p:column headerText="#{msg.competitionName}">
+                    <h:outputText value="#{competition.competitionName}" />
+                </p:column>
+
+                <p:column headerText="#{msg.competitionCreator}"> 
+                    <p:outputLabel>
+                        #{competition.idOrganizer.idAccount.idPersonalInfo.firstName} 
+                        #{competition.idOrganizer.idAccount.idPersonalInfo.lastName} 
+                    </p:outputLabel>
+                </p:column>
+
+                <p:column headerText="#{msg.startDate}">
+                    <h:outputText value="#{competition.startDate}" />
+                </p:column>
+
+                <p:column headerText="#{msg.endDate}">
+                    <h:outputText value="#{competition.endDate}" />
+                </p:column>
+                
+                <p:column headerText="#{msg.winner}">
+                    <p:outputLabel rendered="#{not empty competition.idWinner}">
+                        #{competition.idWinner.idPersonalInfo.firstName} 
+                        #{competition.idWinner.idPersonalInfo.lastName}
+                    </p:outputLabel>
+                    <p:outputLabel rendered="#{empty competition.idWinner}">
+                        #{msg.TBD}
+                    </p:outputLabel>
+                </p:column>
+                
+                <p:column headerText="#{msg.details}">
+                    <p:commandButton action="#{competitionListBackingBean.displayCompetition(competition)}" 
+                                     value="#{msg.show}"/>
+                </p:column>
+            </p:dataTable>
+        </h:form>
+    </ui:define>
+</ui:composition>

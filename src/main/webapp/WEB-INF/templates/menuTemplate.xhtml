@@ -13,6 +13,7 @@
                         <p:menuitem value="#{msg.addCompetitor}" icon="ui-icon-person" url="/organizer/addCompetitor.xhtml"/>
                         <p:menuitem value="#{msg.createCompetition}" icon="ui-icon-person" url="/organizer/createCompetition.xhtml"/>
                         <p:menuitem value="#{msg.chooseCompetition}" icon="ui-icon-person" url="/organizer/chooseCompetition.xhtml"/>
+                        <p:menuitem value="#{msg.competitionList}" icon="ui-icon-key" url="/competitionList.xhtml"/>
                         <p:menuitem value="#{msg.logout}" icon="ui-icon-locked" action="#{loginBackingBean.logout()}"  />
                     </p:submenu>
 
@@ -22,6 +23,7 @@
                         <p:menuitem value="#{msg.mainPage}" icon="ui-icon-home" url="/index.xhtml"/>
                         <p:menuitem value="#{msg.register}" icon="ui-icon-plusthick" url="/register.xhtml?faces-redirect=true" />
                         <p:menuitem value="#{msg.login}" icon="ui-icon-key" url="/login/login.xhtml"/>
+                        <p:menuitem value="#{msg.competitionList}" icon="ui-icon-key" url="/competitionList.xhtml"/>
                     </p:submenu>
                 </c:otherwise>  
             </c:choose>
