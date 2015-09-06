@@ -109,7 +109,7 @@ and open the template in the editor.
                 <p:tab id="secondStep" title="#{msg.bracket}">
                     <p:outputPanel id="groupsHolder">
                         <ui:repeat value="#{createCompetitionBackingBean.bracketCreator.groups}" var="group">
-                            <p:panel
+                            <p:panel styleClass="groupPanel" 
                                 style="width: #{(100/createCompetitionBackingBean.bracketCreator.groups.size())-1}%; display: inline-block;">
                                 <f:facet name="header">
                                     #{group.idGroupName.groupName}

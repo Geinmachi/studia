@@ -157,3 +157,7 @@ div[class*="displayCompetitorRow"]:hover {
     right: -60px;
     top: 47px;
 }
+
+.groupPanel > * {
+    text-align: center;
+}

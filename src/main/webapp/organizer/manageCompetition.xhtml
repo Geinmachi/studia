@@ -26,7 +26,7 @@ and open the template in the editor.
             <br/>
             <ui:repeat value="#{manageCompetitionBackingBean.groupDetailsList}" 
                        var="groupDetails">
-                <p:panel
+                <p:panel  styleClass="groupPanel" 
                     style="width: #{(100/manageCompetitionBackingBean.competition.groupDetailsList.size())-1}%; display: inline-block;">
                     <f:facet name="header">
                         #{groupDetails.idGroupName.groupName}
