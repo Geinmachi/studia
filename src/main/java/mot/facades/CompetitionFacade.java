@@ -7,8 +7,11 @@ package mot.facades;
 
 import entities.Account;
 import entities.Competition;
+import entities.GroupCompetitor;
 import entities.GroupDetails;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -62,8 +65,26 @@ public class CompetitionFacade extends AbstractFacade<Competition> implements Co
         Competition entity = em.find(Competition.class, idCompetition);
    //     entity.getGroupDetailsList().size();
         for(GroupDetails gd : entity.getGroupDetailsList()) {
-            gd.getGroupCompetitorList().size();
+            
+            List<GroupCompetitor> gc = new ArrayList<>(gd.getGroupCompetitorList());
+            Collections.sort(gc, new Comparator<GroupCompetitor>(){
+
+                @Override
+                public int compare(GroupCompetitor o1, GroupCompetitor o2) {
+                    return o1.getIdCompetitor().getIdPersonalInfo().getLastName().compareTo(
+                        o2.getIdCompetitor().getIdPersonalInfo().getLastName());
+                }
+                
+            });
+            
+            gd.setGroupCompetitorList(gc);
         }
+        
+        List<GroupDetails> gdList = new ArrayList<>(entity.getGroupDetailsList());
+        Collections.sort(gdList);
+        
+        entity.setGroupDetailsList(gdList);
+        
         return entity;
     }
 

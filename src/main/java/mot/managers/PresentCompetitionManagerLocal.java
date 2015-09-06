@@ -18,4 +18,6 @@ import javax.ejb.Remote;
 public interface PresentCompetitionManagerLocal {
     
     List<Competition> findAllCompetitions();
+
+    public Competition getInitializedCompetition(int idCompetition);
 }

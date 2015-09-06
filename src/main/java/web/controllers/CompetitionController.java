@@ -32,6 +32,8 @@ public class CompetitionController implements Serializable {
     
     private Competition editingCompetition;
     
+    private Competition displayedCompetition;
+    
     public CompetitionController() {
     }
 
@@ -39,7 +41,15 @@ public class CompetitionController implements Serializable {
         System.out.println("FD SIZEEEE " + editingCompetition.getGroupDetailsList().size());
         return editingCompetition;
     }
+
+    public Competition getDisplayedCompetition() {
+        return service.getInitializedCompetition(displayedCompetition.getIdCompetition());
+    }
     
+    public void setDisplayedCompetition(Competition competition) {
+        this.displayedCompetition = competition;
+    }
+
     public List<Team> findAllTeams() {
         
         return service.findAllTeams();
@@ -97,12 +107,12 @@ public class CompetitionController implements Serializable {
         return service.saveCompetitorScore(cmg);
     }
 
-    public List<CompetitorMatch> findCMGByIdMatch(Integer idMatch) {
-        return service.findCMGByIdMatch(idMatch);
+    public List<CompetitorMatch> findCompetitorMatchByIdMatch(Integer idMatch) {
+        return service.findCompeitorMatchByIdMatch(idMatch);
     }
 
     public List<Competition> findAllCompetitions() {
         return service.findAllCompetitions();
     }
-
+    
 }

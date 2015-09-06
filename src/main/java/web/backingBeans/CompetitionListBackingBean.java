@@ -40,8 +40,9 @@ public class CompetitionListBackingBean implements Serializable{
         competitionList = controller.findAllCompetitions();
     }
     
-    public String displayCompetition(Competition competition) {
+    public String displayCompetition(Competition competition) { 
+        controller.setDisplayedCompetition(competition);
         
-        return "competitionDetails.xhtml";
+        return "competitionDetails.xhtml?faces-redirect=true";
     }
 }

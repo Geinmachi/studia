@@ -82,62 +82,8 @@ public class ManageCompetitionBackingBean implements Serializable {
         groupDetailsList = new ArrayList<>(competition.getGroupDetailsList());
         
         Collections.sort(groupDetailsList);
-//        System.out.println(competition.getGroupDetailsList().size() + " PRED SORTEM111");
-//        sdsd.sort(new Comparator<GroupDetails>() {
-//
-//            @Override
-//            public int compare(GroupDetails o1, GroupDetails o2) {
-//                throw new NullPointerException();
-////                System.out.println("o1 === " + o1.getIdGroupName().getGroupName());
-////                System.out.println("o2 === " + o2.getIdGroupName().getGroupName());
-////                System.out.println("WYNIK === " + Character.compare(o1.getIdGroupName().getGroupName(), o2.getIdGroupName().getGroupName()));
-////                for (GroupDetails gd : competition.getGroupDetailsList()) {
-////                    System.out.println("w petli " + gd.getIdGroupName().getGroupName());
-////                }
-//                
-//            //    return Character.compare(o1.getIdGroupName().getGroupName(), o2.getIdGroupName().getGroupName());
-//            }
-//        });
-//        System.out.println("PO SORCIE");
-        
-//        List<GroupDetails> sdsd = competition.getGroupDetailsList();
-//        
-//        for (GroupDetails gd : sdsd) {
-//            System.out.println(gd.getIdGroupName().getGroupName() + "    id " + gd);
-//        }
-//        Collections.shuffle(sdsd);
-//        
-//        for (GroupDetails gd : sdsd) {
-//            System.out.println(gd.getIdGroupName().getGroupName() + "    id " + gd);
-//        }
-//        
-//        Collections.sort(sdsd, new Comparator() {
-//
-//            @Override
-//            public int compare(Object o1, Object o2) {
-//                throw new UnsupportedOperationException("AAAAAAAAAAAAAAAAA"); //To change body of generated methods, choose Tools | Templates.
-//            }
-//
-//        });
-        
-//        List<GroupDetails> groupDetails = new ArrayList(sdsd);
-//
-//        Collections.sort(groupDetails, new Comparator() {
-//
-//            @Override
-//            public int compare(Object o1, Object o2) {
-//                throw new UnsupportedOperationException("VVVVVVVVVVVVVVV"); //To change body of generated methods, choose Tools | Templates.
-//            }
-//
-//        });
 
-//        System.out.println("PO SORCIE STINGOW");
-//        for (GroupDetails gd : competition.getGroupDetailsList()) {
-//            System.out.println("CZy posortowane " + gd.getIdGroupName().getGroupName());
-//        }
-        cmgList = controller.getCompetitionCMGMappings(competition);
-
-        bracketCreator.recreateBracket(cmgList);
+        bracketCreator.recreateBracket(competition);
     }
 
     public void saveScore(CompetitorMatch cmg) {
@@ -199,7 +145,7 @@ public class ManageCompetitionBackingBean implements Serializable {
             }
         }
 
-        for (CompetitorMatch cmg2 : controller.findCMGByIdMatch(cmg.getIdMatch().getIdMatch())) {
+        for (CompetitorMatch cmg2 : controller.findCompetitorMatchByIdMatch(cmg.getIdMatch().getIdMatch())) {
             System.out.println("NR MATCHU i ID COMPETITORA " + cmg2.getIdMatch() + " comp: " + cmg2.getIdCompetitor() + " i wynik " + cmg2.getCompetitorMatchScore() + " IDDD " + cmg2);
         }
     }

@@ -26,5 +26,10 @@ public class PresentCompetitionManager implements PresentCompetitionManagerLocal
         
         return competitionFacade.findAll();
     }
+
+    @Override
+    public Competition getInitializedCompetition(int idCompetition) {
+        return competitionFacade.findAndInitializeGD(idCompetition);
+    }
     
 }

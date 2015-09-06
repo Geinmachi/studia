@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/templates/main.xhtml"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <ui:define name="title">#{msg.competitionDetailsTitle}</ui:define>
+    <ui:define name="content">
+        <h:outputScript library="js" name="dashboard.js" />
+        <h:form id="displayCompetitionForm">
+            <p:outputLabel value="#{msg.competitionName}: "/>
+            <p:outputLabel value="#{competitionDetailsBackingBean.competition.competitionName}"/>
+            <br/>
+
+            <p:outputLabel value="#{msg.groups}"/>
+            <br/>
+
+            <ui:repeat value="#{competitionDetailsBackingBean.competition.groupDetailsList}" 
+                       var="groupDetails">
+                <p:panel
+                    style="width: #{(100/competitionDetailsBackingBean.competition.groupDetailsList.size())-1}%; display: inline-block;">
+
+                    <f:facet name="header">
+                        #{groupDetails.idGroupName.groupName}
+                    </f:facet>
+
+                    <f:facet name="options">
+                        <p:menu>
+                            <p:menuitem value="#{msg.startDate}: #{groupDetails.startDate}" />
+                            <p:menuitem value="#{msg.endDate}: #{groupDetails.endDate}" />
+                        </p:menu>
+                    </f:facet>
+
+                    <ui:repeat value="#{groupDetails.groupCompetitorList.toArray()}" 
+                               var="competitorMatchGroup">
+                        #{competitorMatchGroup.idCompetitor.idPersonalInfo.firstName} 
+                        #{competitorMatchGroup.idCompetitor.idPersonalInfo.lastName} 
+                        <br/>
+                    </ui:repeat>
+                </p:panel>
+            </ui:repeat>
+
+            <p:dashboard id="dashboard" model="#{competitionDetailsBackingBean.bracketCreator.dashboardModel}">
+                <c:forEach items="#{competitionDetailsBackingBean.bracketCreator.panelList}" var="dashboardPanel" varStatus="panelIndex">
+                    <c:choose>
+                        <c:when test="#{not dashboardPanel.filler}">
+                            <p:panel id="#{dashboardPanel.panel.id}" binding="#{dashboardPanel.panel}"
+                                     header="#{msg.matchNumber} #{dashboardPanel.match.matchNumber}">
+                                <c:forEach items="#{dashboardPanel.match.competitorMatchList}"
+                                           var="cmgFromMatch">
+                                    <c:choose>
+                                        <c:when test="#{not empty cmgFromMatch.idCompetitor}">
+                                            <br/>
+                                            <p:outputPanel styleClass="matchWinner#{'BO'.concat(cmgFromMatch.competitorMatchScore*2 - 1) eq 'BO3'} 
+                                                           competitiorInMatch#{cmgFromMatch.idCompetitor.idCompetitor}">
+                                                <p:outputLabel>
+                                                    #{cmgFromMatch.idCompetitor.idPersonalInfo.firstName}
+                                                    #{cmgFromMatch.idCompetitor.idPersonalInfo.lastName} 
+                                                </p:outputLabel>
+                                                <p:outputLabel style="float: right;">
+                                                    #{cmgFromMatch.competitorMatchScore}
+                                                </p:outputLabel>
+                                                <p:graphicImage library="img" value="/resources/img/Crown_Icon.png" class="crown" 
+                                                                rendered="#{'BO'.concat(cmgFromMatch.competitorMatchScore*2 - 1) eq 'BO3' 
+                                                                                    and dashboardPanel.match.matchNumber eq (competitionDetailsBackingBean.matchCount - 1)}"/>
+                                            </p:outputPanel>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <br/>
+                                            <p:outputPanel>
+                                                <p:outputLabel value="#{msg.TBD}"/>
+                                                <p:outputLabel style="float: right;">
+                                                    -
+                                                </p:outputLabel>
+                                            </p:outputPanel>
+                                        </c:otherwise>
+                                    </c:choose>
+                                </c:forEach>
+
+                                <f:facet name="options">
+                                    <p:menu>
+                                        <p:menuitem value="#{dashboardPanel.match.matchDate}"/>
+                                        <p:menuitem value="#{dashboardPanel.matchType.matchTypeName}"/>
+                                    </p:menu>
+                                </f:facet>
+                            </p:panel>
+                        </c:when>
+                        <c:otherwise>
+                            <p:panel id="#{dashboardPanel.panel.id}" binding="#{dashboardPanel.panel}"/>
+                        </c:otherwise>
+                    </c:choose>
+                </c:forEach>
+            </p:dashboard>
+
+        </h:form>
+    </ui:define>
+</ui:composition>
