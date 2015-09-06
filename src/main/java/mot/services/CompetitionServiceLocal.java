@@ -51,4 +51,6 @@ public interface CompetitionServiceLocal {
     public CompetitorMatch saveCompetitorScore(CompetitorMatch cmg);
 
     public List<CompetitorMatch> findCMGByIdMatch(Integer idMatch);
+    
+    public List<Competition> findAllCompetitions();
 }

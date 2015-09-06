@@ -66,5 +66,5 @@ public class CompetitionFacade extends AbstractFacade<Competition> implements Co
         }
         return entity;
     }
-    
+
 }

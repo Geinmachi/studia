@@ -123,7 +123,7 @@ public class CreateCompetitionManager implements CreateCompetitionManagerLocal {
     public void createCompetition(Competition competition, List<CMG> competitorMatchGroupList) {
         Account loggedUser = accountFacade.findByLogin(sessionContext.getCallerPrincipal().getName());
         AccessLevel organizer = ConvertUtil.getSpecAccessLevelFromAccount(loggedUser, Organizer.class);
-
+        
         competition.setIdOrganizer(organizer);
         competition.setCreationDate(new Date());
 

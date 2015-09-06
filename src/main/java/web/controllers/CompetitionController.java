@@ -101,4 +101,8 @@ public class CompetitionController implements Serializable {
         return service.findCMGByIdMatch(idMatch);
     }
 
+    public List<Competition> findAllCompetitions() {
+        return service.findAllCompetitions();
+    }
+
 }
