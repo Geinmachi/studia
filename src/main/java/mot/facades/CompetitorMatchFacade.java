@@ -69,4 +69,12 @@ public class CompetitorMatchFacade extends AbstractFacade<CompetitorMatch> imple
         return (List<CompetitorMatch>) q.getResultList();
     }
 
+    @Override
+    public List<CompetitorMatch> findByIdMatch(Integer idMatch) {
+        Query q = em.createNamedQuery("CompetitorMatch.findByIdMatch");
+        q.setParameter("idMatch", idMatch);
+        
+        return (List<CompetitorMatch>) q.getResultList();
+    }
+
 }

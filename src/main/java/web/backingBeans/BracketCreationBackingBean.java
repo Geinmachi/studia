@@ -467,11 +467,21 @@ public class BracketCreationBackingBean implements Serializable {
         }
     }
 
-    private void disableFinishedMatches() {
+    private void disableFinishedMatches() { // zrobic w EJB !!!!!!!!!
         for (DashboardPanel dp : panelList) {
             dp_block:
             {
                 if (dp.getMatch() != null) {
+                    
+                    for (CompetitorMatch cm : dp.getMatch().getCompetitorMatchList()) {
+                        if(cm.getIdCompetitor() == null) {
+                            System.out.println("Nie ma jakiegos competitora w metch, wylacza edycje");
+                            dp.setInplaceEditable(false);
+                            
+                            return;
+                        }
+                    }
+                    
                     for (MatchMatchType mmt : dp.getMatch().getMatchMatchTypeList()) {
                         System.out.println("mmt " + mmt.getIdMatchType().getMatchTypeName());
                         if (mmt.getIdMatchType().getMatchTypeName().startsWith("BO")) {
@@ -480,6 +490,9 @@ public class BracketCreationBackingBean implements Serializable {
                             for (CompetitorMatch cm : dp.getMatch().getCompetitorMatchList()) {
                                 if (cm.getCompetitorMatchScore() != null && ((Integer.valueOf(mmt.getIdMatchType().getMatchTypeName().substring(2)) + 1) / 2) == cm.getCompetitorMatchScore()) {
                                     System.out.println("WYLACZA " + dp.getMatch());
+                                    
+                                    System.out.println("idMatch =  " + dp.getMatch().getIdMatch() + " COMPETITORRRRRRRRRRRRRRRRx " + cm.getIdCompetitor() + "   ---   idCompetitorMatch " + cm.getIdCompetitorMatch());
+                                    
                                     dp.setEditable(false);
                                     break dp_block;
                                 }
