@@ -32,6 +32,8 @@ public class DashboardPanel {
     private List<Competitor> competitorList = new ArrayList<>(2);
     
     private boolean editable = true;
+    
+    private boolean inplaceEditable = true;
 
     public DashboardPanel() {
         competitorList.add(null);
@@ -77,6 +79,16 @@ public class DashboardPanel {
     public void setEditable(boolean editable) {
         this.editable = editable;
     }
+
+    public boolean isInplaceEditable() {
+        return inplaceEditable;
+    }
+
+    public void setInplaceEditable(boolean inplaceEditable) {
+        this.inplaceEditable = inplaceEditable;
+    }
+    
+    
     /**
      *
      * @return New List with competitors. To add competitors use method

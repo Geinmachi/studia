@@ -144,13 +144,14 @@ public class ManageCompetitionManager implements ManageCompetitionManagerLocal {
         return advancedCompetitoCMG;
     }
 
-    private void validateScore(Matchh match, CompetitorMatch receivedCMG) {
+    private void validateScore(Matchh match, CompetitorMatch receivedCompetitorMatch) {
         for (MatchMatchType mmt : match.getMatchMatchTypeList()) {
             if (mmt.getIdMatchType().getMatchTypeName().startsWith(BEST_OF_PREFIX)) {
                 int bestOfDigit = Integer.valueOf(mmt.getIdMatchType().getMatchTypeName().substring(2));
-                if (receivedCMG.getCompetitorMatchScore() > ((bestOfDigit + 1) / 2)) {
+                if (receivedCompetitorMatch.getCompetitorMatchScore() > ((bestOfDigit + 1) / 2)) {
+                    System.out.println("IIIDDDDDDDDDDD --- match " + receivedCompetitorMatch.getIdMatch().getIdMatch());
                     throw new IllegalStateException("Too big number");
-                } else if (receivedCMG.getCompetitorMatchScore() < 0) {
+                } else if (receivedCompetitorMatch.getCompetitorMatchScore() < 0) {
                     throw new IllegalStateException("Score can't be lower than 0");
                 }
 

@@ -27,7 +27,7 @@ and open the template in the editor.
             <ui:repeat value="#{manageCompetitionBackingBean.groupDetailsList}" 
                        var="groupDetails">
                 <p:panel  styleClass="groupPanel" 
-                    style="width: #{(100/manageCompetitionBackingBean.competition.groupDetailsList.size())-1}%; display: inline-block;">
+                          style="width: #{(100/manageCompetitionBackingBean.competition.groupDetailsList.size())-1}%; display: inline-block;">
                     <f:facet name="header">
                         #{groupDetails.idGroupName.groupName}
                         <p:calendar id="groupDetailsDate" pattern="MM/dd/yyyy HH:mm:ss" showOn="button" 
@@ -47,17 +47,7 @@ and open the template in the editor.
                         <c:when test="#{not dashboardPanel.filler}">
                             <p:panel id="#{dashboardPanel.panel.id}" binding="#{dashboardPanel.panel}"
                                      header="#{msg.matchNumber} #{dashboardPanel.match.matchNumber}">
-<!--                                <c:forEach items="#{dashboardPanel.competitorList}" var="competitorr" varStatus="competitorIndex">
-                                    <c:choose>
-                                        <c:when test="#{not empty competitorr}">
-                                            <p:outputLabel>
-                                #{competitorr.idPersonalInfo.firstName}
-                                #{competitorr.idPersonalInfo.lastName} 
-                            </p:outputLabel>-->
-                                <!--<ui:repeat value="#{dashboardPanel.match.competitorMatchList}" var="cmgFromMatch">-->
 
-                                <!--                                </ui:repeat>
-                                -->                                                                
                                 idMatch = #{dashboardPanel.match}
                                 <br/>
                                 <c:forEach items="#{dashboardPanel.match.competitorMatchList}"
@@ -70,7 +60,7 @@ and open the template in the editor.
                                                 #{cmgFromMatch.idCompetitor.idPersonalInfo.lastName} 
                                                 #{cmgFromMatch.idCompetitor.idCompetitor} 
                                             </p:outputLabel>
-                                            <p:inplace editor="true" disabled="#{!dashboardPanel.editable}">
+                                            <p:inplace editor="true" disabled="#{!dashboardPanel.inplaceEditable || !dashboardPanel.editable}">
                                                 <p:ajax event="save" listener="#{manageCompetitionBackingBean.saveScore(cmgFromMatch)}"
                                                         update=":manageCompetitionForm:dashboard" partialSubmit="true" process="@this"/>
                                                 <p:inputText value="#{cmgFromMatch.competitorMatchScore}" >
@@ -89,15 +79,7 @@ and open the template in the editor.
                                         </c:otherwise>
                                     </c:choose>
                                 </c:forEach>
-                                <!--</ui:repeat>-->
-                                <!--                                        </c:when>
-                                                                        <c:otherwise>
-                                #{msg.TBD}
-                            </c:otherwise>
-                        </c:choose>-->
-                                <!--
-                                                                    <br/>
-                                                                </c:forEach>-->
+
                                 <p:outputLabel value="#{msg.date}:"/>
                                 <p:calendar id="matchDate" pattern="MM/dd/yyyy HH:mm:ss" showOn="button" 
                                             value="#{dashboardPanel.match.matchDate}" disabled="#{!dashboardPanel.editable}"/><br/>

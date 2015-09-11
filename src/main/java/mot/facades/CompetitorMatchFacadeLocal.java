@@ -40,4 +40,6 @@ public interface CompetitorMatchFacadeLocal {
     public List<CompetitorMatch> findCMGByIdMatch(Integer idMatch);
 
     public List<CompetitorMatch> findByCompetitionId(Integer idCompetition);
+
+    public List<CompetitorMatch> findByIdMatch(Integer idMatch);
 }
