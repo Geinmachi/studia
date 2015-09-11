@@ -478,7 +478,7 @@ public class BracketCreationBackingBean implements Serializable {
                             System.out.println("Nie ma jakiegos competitora w metch, wylacza edycje");
                             dp.setInplaceEditable(false);
                             
-                            return;
+                            continue;
                         }
                     }
                     
