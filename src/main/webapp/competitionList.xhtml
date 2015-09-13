@@ -16,6 +16,7 @@ and open the template in the editor.
     <ui:define name="content">
         <h:form id="competitionListForm">
             <p:dataTable var="competition" value="#{competitionListBackingBean.competitionList}">
+                
                 <p:column headerText="#{msg.competitionName}">
                     <h:outputText value="#{competition.competitionName}" />
                 </p:column>
@@ -46,9 +47,15 @@ and open the template in the editor.
                 </p:column>
                 
                 <p:column headerText="#{msg.details}">
-                    <p:commandButton action="#{competitionListBackingBean.displayCompetition(competition)}" 
+                    <p:commandButton action="#{competitionListBackingBean.displayCompetition(competition, competitionListBackingBean.getDisplayPageEnum('DETAILS'))}" 
                                      value="#{msg.show}"/>
                 </p:column>
+                
+                <p:column headerText="#{msg.results}">
+                    <p:commandButton action="#{competitionListBackingBean.displayCompetition(competition, competitionListBackingBean.getDisplayPageEnum('RESULTS'))}" 
+                                     value="#{msg.show}"/>
+                </p:column>
+                
             </p:dataTable>
         </h:form>
     </ui:define>

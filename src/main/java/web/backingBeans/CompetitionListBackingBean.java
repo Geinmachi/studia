@@ -13,6 +13,7 @@ import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import web.controllers.CompetitionController;
+import web.utils.DisplayPageEnum;
 
 /**
  *
@@ -34,15 +35,19 @@ public class CompetitionListBackingBean implements Serializable{
         return competitionList;
     }
     
+    public DisplayPageEnum getDisplayPageEnum(String type) {
+        return DisplayPageEnum.valueOf(type);
+    }
+    
     @PostConstruct
     private void init() {
         
         competitionList = controller.findAllCompetitions();
     }
     
-    public String displayCompetition(Competition competition) { 
-        controller.setDisplayedCompetition(competition);
-        
-        return "competitionDetails.xhtml?faces-redirect=true";
+    public String displayCompetition(Competition competition, DisplayPageEnum type) { 
+        controller.setDisplayedCompetition(competition, type);
+        System.out.println("ZMIANAA " + Character.toUpperCase(type.toString().toLowerCase().charAt(0)) + type.toString().substring(1).toLowerCase());
+        return "competition" + Character.toUpperCase(type.toString().toLowerCase().charAt(0)) + type.toString().substring(1).toLowerCase() + ".xhtml?faces-redirect=true";
     }
 }

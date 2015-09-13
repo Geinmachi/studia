@@ -10,9 +10,11 @@ import entities.CompetitionType;
 import entities.Competitor;
 import entities.CompetitorMatch;
 import entities.MatchType;
+import entities.Score;
 import entities.Team;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import javax.ejb.EJB;
 import javax.ejb.Stateful;
 import javax.ejb.TransactionAttribute;
@@ -142,7 +144,17 @@ public class CompetitionService implements CompetitionServiceLocal {
     }
 
     @Override
-    public Competition getInitializedCompetition(Integer idCompetition) {
+    public Competition getInitializedCompetition(int idCompetition) {
         return presentCompetitionManager.getInitializedCompetition(idCompetition);
+    }
+
+    @Override
+    public List<Score> findCompetitionScores(int idCompetition) {
+        return presentCompetitionManager.findCompetitionScore(idCompetition);
+    }
+
+    @Override
+    public Map<Competitor, Integer> getCompetitionResults(Integer idCompetition) {
+        return presentCompetitionManager.getCompetitionResults(idCompetition);
     }
 }

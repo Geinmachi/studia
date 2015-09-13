@@ -5,6 +5,7 @@
  */
 package web.backingBeans;
 
+import web.utils.BracketCreation;
 import entities.Competition;
 import entities.CompetitionType;
 import entities.Competitor;
@@ -43,7 +44,7 @@ public class CreateCompetitionBackingBean implements Serializable {
     private CompetitionController controller;
 
     @Inject
-    private BracketCreationBackingBean bracketCreator;
+    private BracketCreation bracketCreator;
 
     private final Competition competition = new Competition();
 
@@ -108,7 +109,7 @@ public class CreateCompetitionBackingBean implements Serializable {
         return isCompetitorsAmountValid;
     }
 
-    public BracketCreationBackingBean getBracketCreator() {
+    public BracketCreation getBracketCreator() {
         return bracketCreator;
     }
 

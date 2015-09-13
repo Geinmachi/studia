@@ -6,6 +6,7 @@
 package mot.facades;
 
 import entities.Score;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -36,6 +37,14 @@ public class ScoreFacade extends AbstractFacade<Score> implements ScoreFacadeLoc
         q.setParameter("idCompetitor", idCompetitor);
         
         return (Score)q.getSingleResult();
+    }
+
+    @Override
+    public List<Score> findScoreByIdCompetition(int idCompetition) {
+        Query q = em.createNamedQuery("Score.findByIdCompetition");
+        q.setParameter("idCompetition", idCompetition);
+        
+        return (List<Score>)q.getResultList();
     }
     
 }

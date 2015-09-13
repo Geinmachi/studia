@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package web.backingBeans;
+package web.utils;
 
 import entities.Competition;
 import entities.Competitor;
@@ -56,7 +56,7 @@ import web.models.DashboardPanel;
 //@Named(value = "bracketCreationBackingBean")
 //@ViewScoped
 @Dependent
-public class BracketCreationBackingBean implements Serializable {
+public class BracketCreation implements Serializable {
 
     @Inject
     private CompetitionController controller;
@@ -111,7 +111,7 @@ public class BracketCreationBackingBean implements Serializable {
         return matchTypeList;
     }
 
-    public BracketCreationBackingBean() {
+    public BracketCreation() {
     }
 
     @PostConstruct
