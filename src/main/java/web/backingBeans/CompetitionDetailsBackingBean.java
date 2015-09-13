@@ -5,6 +5,7 @@
  */
 package web.backingBeans;
 
+import web.utils.BracketCreation;
 import entities.Competition;
 import entities.Competitor;
 import entities.GroupCompetitor;
@@ -20,6 +21,9 @@ import javax.inject.Inject;
 import mot.utils.CMG;
 import web.controllers.CompetitionController;
 import web.models.DashboardPanel;
+import web.utils.CheckUtils;
+import web.utils.DisplayPageEnum;
+import web.utils.JsfUtils;
 
 /**
  *
@@ -33,10 +37,10 @@ public class CompetitionDetailsBackingBean {
     private CompetitionController controller;
     
     @Inject
-    private BracketCreationBackingBean bracketCreator;
+    private BracketCreation bracketCreator;
     
     private Competition competition;
-    
+        
     private int matchCount = 0;
     
     public CompetitionDetailsBackingBean() {
@@ -46,7 +50,7 @@ public class CompetitionDetailsBackingBean {
         return competition;
     }
 
-    public BracketCreationBackingBean getBracketCreator() {
+    public BracketCreation getBracketCreator() {
         return bracketCreator;
     }
 
@@ -56,7 +60,11 @@ public class CompetitionDetailsBackingBean {
     
     @PostConstruct
     private void init() {
-        competition = controller.getDisplayedCompetition();
+        competition = controller.getDisplayedCompetition(DisplayPageEnum.DETAILS);
+        
+        if (CheckUtils.isCompetitionNull(competition)) {
+            return;
+        }
         
         for (GroupDetails gd : competition.getGroupDetailsList()) {
             for (GroupCompetitor gc : gd.getGroupCompetitorList()) {

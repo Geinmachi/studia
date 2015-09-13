@@ -10,15 +10,18 @@ import entities.CompetitionType;
 import entities.Competitor;
 import entities.CompetitorMatch;
 import entities.MatchType;
+import entities.Score;
 import entities.Team;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 import javax.ejb.EJB;
 import mot.utils.CMG;
 import mot.services.CompetitionService;
 import mot.services.CompetitionServiceLocal;
+import web.utils.DisplayPageEnum;
 
 /**
  *
@@ -29,11 +32,13 @@ public class CompetitionController implements Serializable {
 
     @EJB
     private CompetitionServiceLocal service;
-    
+
     private Competition editingCompetition;
-    
+
     private Competition displayedCompetition;
-    
+
+    private DisplayPageEnum pageType;
+
     public CompetitionController() {
     }
 
@@ -42,48 +47,62 @@ public class CompetitionController implements Serializable {
         return editingCompetition;
     }
 
-    public Competition getDisplayedCompetition() {
-        return service.getInitializedCompetition(displayedCompetition.getIdCompetition());
+    public Competition getDisplayedCompetition(DisplayPageEnum type) {
+        System.out.println("TYPP pram " + type + " zmienna " + pageType);
+        if (type.equals(pageType)) {
+            return service.getInitializedCompetition(displayedCompetition.getIdCompetition());
+        } else {
+            return null;
+        }
     }
-    
-    public void setDisplayedCompetition(Competition competition) {
+
+    public void setDisplayedCompetition(Competition competition, DisplayPageEnum type) {
         this.displayedCompetition = competition;
+        this.pageType = type;
+    }
+
+    public DisplayPageEnum getPageType() {
+        return pageType;
+    }
+
+    public void setPageType(DisplayPageEnum pageType) {
+        this.pageType = pageType;
     }
 
     public List<Team> findAllTeams() {
-        
+
         return service.findAllTeams();
     }
-    
+
     public void addCompetitor(Competitor competitor) {
         service.addCompetitor(competitor);
     }
-    
+
     public List<Competitor> getAllCompetitors() {
         return service.getAllCompetitors();
     }
-    
+
     public List<CompetitionType> getAllCompetitionTypes() {
         return service.getAllCompetitionTypes();
     }
-    
+
     public Competitor findCompetitorById(Integer id) {
         return service.findCopetitorById(id);
     }
-    
+
     public boolean validateCompetitorsAmount(int amount) {
         return service.validateCompetitorsAmount(amount);
     }
-    
+
     public void createCompetition(Competition competition, List<CMG> competitorMatchGroupList) {
         service.createCompetition(competition, competitorMatchGroupList);
     }
-    
+
     public CompetitionType findCompetitionTypeById(int id) {
         return service.findCompetitionTypeById(id);
     }
-    
-    public List<CMG> generateEmptyBracket(List<Competitor> competitors){
+
+    public List<CMG> generateEmptyBracket(List<Competitor> competitors) {
         return service.generateEmptyBracket(competitors);
     }
 
@@ -114,5 +133,13 @@ public class CompetitionController implements Serializable {
     public List<Competition> findAllCompetitions() {
         return service.findAllCompetitions();
     }
-    
+
+    public List<Score> findCompetitionScores(Competition competition) {
+        return service.findCompetitionScores(competition.getIdCompetition());
+    }
+
+    public Map<Competitor, Integer> getCompetitionResults(Competition competition) {
+        return service.getCompetitionResults(competition.getIdCompetition());
+    }
+
 }

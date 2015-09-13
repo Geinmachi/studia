@@ -10,8 +10,10 @@ import entities.CompetitionType;
 import entities.Competitor;
 import entities.CompetitorMatch;
 import entities.MatchType;
+import entities.Score;
 import entities.Team;
 import java.util.List;
+import java.util.Map;
 import javax.ejb.Local; import javax.ejb.Remote;
 import mot.utils.CMG;
 
@@ -54,5 +56,9 @@ public interface CompetitionServiceLocal {
     
     public List<Competition> findAllCompetitions();
 
-    public Competition getInitializedCompetition(Integer idCompetition);
+    public Competition getInitializedCompetition(int idCompetition);
+
+    public List<Score> findCompetitionScores(int idCompetition);
+
+    public Map<Competitor, Integer> getCompetitionResults(Integer idCompetition);
 }

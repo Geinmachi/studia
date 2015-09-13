@@ -6,7 +6,10 @@
 package mot.managers;
 
 import entities.Competition;
+import entities.Competitor;
+import entities.Score;
 import java.util.List;
+import java.util.Map;
 import javax.ejb.Local;
 import javax.ejb.Remote;
 
@@ -20,4 +23,8 @@ public interface PresentCompetitionManagerLocal {
     List<Competition> findAllCompetitions();
 
     public Competition getInitializedCompetition(int idCompetition);
+
+    public List<Score> findCompetitionScore(int idCompetition);
+
+    public Map<Competitor, Integer> getCompetitionResults(int idCompetition);
 }
