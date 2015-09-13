@@ -78,6 +78,8 @@ public class BracketCreation implements Serializable {
     private List<DashboardPanel> panelList = new ArrayList<>();
 
     private List<MatchType> matchTypeList = new ArrayList<>();
+    
+    private int rounds;
 
     public DashboardModel getDashboardModel() {
         return dashboardModel;
@@ -112,6 +114,10 @@ public class BracketCreation implements Serializable {
     }
 
     public BracketCreation() {
+    }
+
+    public int getRounds() {
+        return rounds;
     }
 
     @PostConstruct
@@ -277,7 +283,7 @@ public class BracketCreation implements Serializable {
     }
 
     private List<DashboardColumn> createOtherRoundsColumns() {
-        int rounds = BracketUtil.numberOfRounds(competitorsWithGroups.size());
+        rounds = BracketUtil.numberOfRounds(competitorsWithGroups.size());
 
         System.out.println("competitorsWithGroups " + competitorsWithGroups.size());
         System.out.println("otherMatches " + otherMatches.size());
