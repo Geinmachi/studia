@@ -53,7 +53,7 @@ and open the template in the editor.
                 
                 <p:column headerText="#{msg.results}">
                     <p:commandButton action="#{competitionListBackingBean.displayCompetition(competition, competitionListBackingBean.getDisplayPageEnum('RESULTS'))}" 
-                                     value="#{msg.show}"/>
+                                     value="#{msg.show}" disabled="#{empty competition.idWinner}"/>
                 </p:column>
                 
             </p:dataTable>

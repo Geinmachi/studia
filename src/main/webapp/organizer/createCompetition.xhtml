@@ -15,6 +15,7 @@ and open the template in the editor.
                 xmlns:fn="http://java.sun.com/jsp/jstl/functions">
     <ui:define name="title">#{msg.createCompetitionTitle}</ui:define>
     <ui:define name="content">
+        <h:outputScript library="js" name="dashboard.js" />
         <h:form id="createCompetitionForm">
             <p:wizard flowListener="#{createCompetitionBackingBean.onFlowProcess}">
                 <p:tab id="firstStep" title="#{msg.generalTab}">
@@ -127,34 +128,8 @@ and open the template in the editor.
                             </p:panel>
                         </ui:repeat>
                     </p:outputPanel>
-<!--                    <p:dashboard id="dashboard" model="#{createCompetitionBackingBean.bracketCreator.dashboardModel}">
-        <c:forEach items="#{createCompetitionBackingBean.bracketCreator.panelList}" var="dashboardPanel">
-            <p:panel id="#{dashboardPanel.panel.id}" binding="#{dashboardPanel.panel}"
-                     style="margin-top: #{dashboardPanel.margin}%;">
-                <c:if test="#{not dashboardPanel.filler}">
-                    <c:forEach items="#{dashboardPanel.competitorList}" var="competitorr">
-                        <p:outputLabel>
-                    #{competitorr.idPersonalInfo.firstName} 
-                    #{competitorr.idPersonalInfo.lastName}
-    <br/>
-</p:outputLabel>
-</c:forEach>
-<p:outputLabel value="#{msg.date}:"/><br/>
-<p:calendar id="matchDate" pattern="MM/dd/yyyy HH:mm:ss" showOn="button" 
-        value="#{dashboardPanel.match.matchDate}"/>
-<p:outputLabel for="matchType" value="#{msg.matchType}:"/><br/>
-<p:selectOneMenu id="matchType" value="#{dashboardPanel.matchType}"
-             converter="matchTypeConverter">
-<f:selectItems value="#{createCompetitionBackingBean.bracketCreator.matchTypeList}"
-               var="matchType" itemLabel="#{matchType.matchTypeName}"
-               />
-</p:selectOneMenu>
-</c:if>
-</p:panel>
-</c:forEach>
-</p:dashboard>-->
 
-                    <p:dashboard id="dashboard" model="#{createCompetitionBackingBean.bracketCreator.dashboardModel}">
+                    <p:dashboard id="dashboard" model="#{createCompetitionBackingBean.bracketCreator.dashboardModel}" style="width: #{createCompetitionBackingBean.bracketCreator.rounds * 400}px">
                         <c:forEach items="#{createCompetitionBackingBean.bracketCreator.panelList}" var="dashboardPanel" varStatus="panelIndex">
                             <c:choose>
                                 <c:when test="#{not dashboardPanel.filler}">
@@ -218,6 +193,9 @@ and open the template in the editor.
                             </c:choose>
                         </c:forEach>
                     </p:dashboard>
+                    <script>
+                        removeDraggable();
+                    </script>
                 </p:tab>
                 <p:tab id="thirdStep" title="#{msg.bracket}">
                     <p:outputLabel value="Test"/>

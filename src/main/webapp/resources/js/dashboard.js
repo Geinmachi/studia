@@ -36,5 +36,12 @@ $(document).ready(function () {
             competitorOut(this);
         });
     });
+    
+    removeDraggable();
 });
 
+function removeDraggable() {
+    $("div[id$='CompetitionForm\\:dashboard']").find(".ui-panel-titlebar").each(function () {
+       $(this).removeClass("ui-panel-titlebar"); 
+    });
+}

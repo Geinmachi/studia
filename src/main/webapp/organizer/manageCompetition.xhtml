@@ -14,7 +14,8 @@ and open the template in the editor.
                 xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
     <ui:define name="title">#{msg.manageCompetitionTitle}</ui:define>
     <ui:define name="content">
-        <h:form id="manageCompetitionForm">
+        <h:outputScript library="js" name="dashboard.js" />
+        <h:form id="manageCompetitionForm" style="width: #{manageCompetitionBackingBean.bracketCreator.rounds * 400}px">
 
             <p:outputLabel for="competitionName" value="#{msg.competitionName}: "/>
             <p:inplace id="competitionName" editor="true">
