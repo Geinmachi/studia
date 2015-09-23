@@ -96,6 +96,7 @@ public class ManageCompetitionBackingBean implements Serializable {
             CompetitorMatch advancedCMG = controller.saveCompetitorScore(cmg);
             if (advancedCMG != null) {
                 //        cmgList.add(advancedCMG);
+                System.out.println("Z ADVANCED SCORE " + advancedCMG.getCompetitorMatchScore());
                 bracketCreator.addAdvancedCompetitor(advancedCMG);
             }
             System.out.println("Przeszlo all, advanced id = " + advancedCMG);
@@ -109,7 +110,7 @@ public class ManageCompetitionBackingBean implements Serializable {
             }
         }
 
-        refreshPage();
+     //   refreshPage();
     }
 
     public boolean wa() {

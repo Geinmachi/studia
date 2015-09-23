@@ -122,10 +122,15 @@ public class DashboardPanel {
         for (CompetitorMatch c : cmgList) {
             if (cmg.equals(c)) {
                 c.setIdCompetitor(cmg.getIdCompetitor());
+                c.setCompetitorMatchScore(cmg.getCompetitorMatchScore());
                 System.err.println("JJJAKI PLACER " + cmg.getPlacer());
                 System.out.println("Compedtitori  " + c.getIdCompetitor());
                 System.out.println("CMMM ID " + c);
+                System.out.println("SCOREEEE " + c.getCompetitorMatchScore());
                 System.out.println("MATCH ID " + c.getIdMatch());
+                
+                System.out.println("EDITABLE " + this.editable);
+                System.out.println("INPLACE  EDITABLE " + this.inplaceEditable);
             }
         }
 //        cmgList.get(index).setIdCompetitor(competitor);
