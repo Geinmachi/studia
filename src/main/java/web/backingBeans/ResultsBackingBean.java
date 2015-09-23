@@ -18,7 +18,7 @@ import javax.annotation.PostConstruct;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
-import mot.utils.CMG;
+import mot.interfaces.CMG;
 import utils.SortUtil;
 import web.controllers.CompetitionController;
 import web.utils.CheckUtils;

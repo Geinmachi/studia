@@ -44,7 +44,8 @@ public class MatchTypeConverter  implements Converter {
             
             throw new IllegalArgumentException("Nie ma takiego matchType");
         } catch (Exception e) {
-            System.out.println("WYjatekgetAsObject");
+            System.out.println("MatchTypeConverter#getAsObject WYjatekgetAsObject " + e.getMessage());
+            e.printStackTrace();
             throw new ConverterException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Conversion Error", "Conversion Error"));
         }
     }

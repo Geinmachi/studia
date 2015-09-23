@@ -10,6 +10,7 @@ import entities.CompetitionType;
 import entities.Competitor;
 import entities.CompetitorMatch;
 import entities.MatchType;
+import entities.Matchh;
 import entities.Score;
 import entities.Team;
 import javax.inject.Named;
@@ -18,9 +19,12 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 import javax.ejb.EJB;
-import mot.utils.CMG;
+import mot.interfaces.CMG;
 import mot.services.CompetitionService;
 import mot.services.CompetitionServiceLocal;
+import mot.interfaces.CurrentMatchType;
+import mot.interfaces.InactivateMatch;
+import web.models.DashboardPanel;
 import web.utils.DisplayPageEnum;
 
 /**
@@ -29,6 +33,8 @@ import web.utils.DisplayPageEnum;
  */
 @SessionScoped
 public class CompetitionController implements Serializable {
+
+    private static final long serialVersionUID = 645645987823402129L;
 
     @EJB
     private CompetitionServiceLocal service;
@@ -140,6 +146,18 @@ public class CompetitionController implements Serializable {
 
     public Map<Competitor, Integer> getCompetitionResults(Competition competition) {
         return service.getCompetitionResults(competition.getIdCompetition());
+    }
+
+    public void updateMatchType(Matchh match) {
+        service.updateMatchType(match);
+    }
+
+    public InactivateMatch disableMatch(InactivateMatch inactivateMatch) {
+        return service.disableMatch(inactivateMatch);
+    }
+
+    public CurrentMatchType assignCurrentMatchType(CurrentMatchType cmt) {
+        return service.assignCurrentMatchType(cmt);
     }
 
 }

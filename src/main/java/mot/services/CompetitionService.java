@@ -10,6 +10,7 @@ import entities.CompetitionType;
 import entities.Competitor;
 import entities.CompetitorMatch;
 import entities.MatchType;
+import entities.Matchh;
 import entities.Score;
 import entities.Team;
 import java.util.ArrayList;
@@ -19,7 +20,7 @@ import javax.ejb.EJB;
 import javax.ejb.Stateful;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
-import mot.utils.CMG;
+import mot.interfaces.CMG;
 import mot.facades.CompetitionTypeFacadeLocal;
 import mot.facades.CompetitorFacadeLocal;
 import mot.facades.MatchTypeFacadeLocal;
@@ -27,6 +28,8 @@ import mot.facades.TeamFacadeLocal;
 import mot.managers.CreateCompetitionManagerLocal;
 import mot.managers.ManageCompetitionManagerLocal;
 import mot.managers.PresentCompetitionManagerLocal;
+import mot.interfaces.CurrentMatchType;
+import mot.interfaces.InactivateMatch;
 
 /**
  *
@@ -156,5 +159,20 @@ public class CompetitionService implements CompetitionServiceLocal {
     @Override
     public Map<Competitor, Integer> getCompetitionResults(Integer idCompetition) {
         return presentCompetitionManager.getCompetitionResults(idCompetition);
+    }
+
+    @Override
+    public void updateMatchType(Matchh match) {
+        manageCompetitionManager.updateMatchType(match);
+    }
+
+    @Override
+    public InactivateMatch disableMatch(InactivateMatch inactivateMatch) {
+        return manageCompetitionManager.disableMatch(inactivateMatch);
+    }
+
+    @Override
+    public CurrentMatchType assignCurrentMatchType(CurrentMatchType cmt) {
+        return manageCompetitionManager.assignCurrentMatchType(cmt);
     }
 }

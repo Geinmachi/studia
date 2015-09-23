@@ -18,7 +18,7 @@ import javax.inject.Named;
 import javax.enterprise.context.Dependent;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
-import mot.utils.CMG;
+import mot.interfaces.CMG;
 import web.controllers.CompetitionController;
 import web.models.DashboardPanel;
 import web.utils.CheckUtils;

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package mot.utils;
+package web.models;
 
 import entities.Competitor;
 import entities.CompetitorMatch;
@@ -12,6 +12,7 @@ import entities.GroupDetails;
 import entities.GroupName;
 import entities.Matchh;
 import java.util.Objects;
+import mot.interfaces.CMG;
 
 /**
  *

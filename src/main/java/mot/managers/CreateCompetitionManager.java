@@ -49,8 +49,8 @@ import mot.facades.MatchhFacadeLocal;
 import mot.facades.ScoreFacadeLocal;
 import utils.BracketUtil;
 import utils.ConvertUtil;
-import mot.utils.CMG;
-import mot.utils.CompetitorMatchGroup;
+import mot.interfaces.CMG;
+import web.models.CompetitorMatchGroup;
 
 /**
  *

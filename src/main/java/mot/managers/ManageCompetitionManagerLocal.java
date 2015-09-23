@@ -7,10 +7,13 @@ package mot.managers;
 
 import entities.Competition;
 import entities.CompetitorMatch;
+import entities.Matchh;
 import java.util.List;
 import javax.ejb.Local;
 import javax.ejb.Remote;
-import mot.utils.CMG;
+import mot.interfaces.CMG;
+import mot.interfaces.CurrentMatchType;
+import mot.interfaces.InactivateMatch;
 
 /**
  *
@@ -28,5 +31,11 @@ public interface ManageCompetitionManagerLocal {
     public CompetitorMatch saveCompetitorScore(CompetitorMatch cmg);
 
     public List<CompetitorMatch> findCMGByIdMatch(Integer idMatch);
+
+    public void updateMatchType(Matchh match);
+
+    public InactivateMatch disableMatch(InactivateMatch inactivateMatch);
+
+    public CurrentMatchType assignCurrentMatchType(CurrentMatchType cmt);
     
 }

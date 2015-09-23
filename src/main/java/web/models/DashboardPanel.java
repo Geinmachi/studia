@@ -9,17 +9,20 @@ import entities.Competitor;
 import entities.CompetitorMatch;
 import entities.MatchType;
 import entities.Matchh;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import mot.interfaces.CurrentMatchType;
+import mot.interfaces.InactivateMatch;
 import org.primefaces.component.panel.Panel;
 
 /**
  *
  * @author java
  */
-public class DashboardPanel {
+public class DashboardPanel implements InactivateMatch, CurrentMatchType{
 
     private Panel panel;
 
@@ -48,6 +51,7 @@ public class DashboardPanel {
         this.panel = panel;
     }
 
+    @Override
     public Matchh getMatch() {
         return match;
     }
@@ -64,26 +68,32 @@ public class DashboardPanel {
         this.filler = filler;
     }
 
+    @Override
     public MatchType getMatchType() {
         return matchType;
     }
 
+    @Override
     public void setMatchType(MatchType matchType) {
         this.matchType = matchType;
     }
 
+    @Override
     public boolean getEditable() {
         return this.editable;
     }
     
+    @Override
     public void setEditable(boolean editable) {
         this.editable = editable;
     }
 
+    @Override
     public boolean isInplaceEditable() {
         return inplaceEditable;
     }
 
+    @Override
     public void setInplaceEditable(boolean inplaceEditable) {
         this.inplaceEditable = inplaceEditable;
     }
@@ -111,6 +121,12 @@ public class DashboardPanel {
     public void updateCMGwithAdvanced(CompetitorMatch cmg) {
         List<CompetitorMatch> cmgList = this.match.getCompetitorMatchList();
 
+        MatchType mt = new MatchType();
+        mt.setEndUser(true);
+        mt.setMatchTypeName("BO3");
+        
+        this.matchType = mt;
+        
         for (CompetitorMatch c : cmgList) {
             if (cmg.equals(c)) {
                 
@@ -122,6 +138,7 @@ public class DashboardPanel {
         for (CompetitorMatch c : cmgList) {
             if (cmg.equals(c)) {
                 c.setIdCompetitor(cmg.getIdCompetitor());
+                c.setCompetitorMatchScore(cmg.getCompetitorMatchScore());
                 System.err.println("JJJAKI PLACER " + cmg.getPlacer());
                 System.out.println("Compedtitori  " + c.getIdCompetitor());
                 System.out.println("CMMM ID " + c);
@@ -153,4 +170,10 @@ public class DashboardPanel {
 ////        competitorList.remove(null);
 ////        competitorList.add(competitor);
 //    }
+
+    @Override
+    public String toString() {
+        return "DashboardPanel{" + "panel=" + panel + ", match=" + match + ", filler=" + filler + ", matchType=" + matchType + ", competitorList=" + competitorList + ", editable=" + editable + ", inplaceEditable=" + inplaceEditable + '}';
+    }
+    
 }

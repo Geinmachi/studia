@@ -36,7 +36,9 @@ import javax.faces.component.html.HtmlOutputText;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
-import mot.utils.CMG;
+import mot.interfaces.CMG;
+import mot.interfaces.CurrentMatchType;
+import mot.interfaces.InactivateMatch;
 import org.primefaces.component.dashboard.Dashboard;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.outputlabel.OutputLabel;
@@ -58,6 +60,8 @@ import web.models.DashboardPanel;
 @Dependent
 public class BracketCreation implements Serializable {
 
+    private static final long serialVersionUID = 234324L;
+
     @Inject
     private CompetitionController controller;
 
@@ -78,7 +82,7 @@ public class BracketCreation implements Serializable {
     private List<DashboardPanel> panelList = new ArrayList<>();
 
     private List<MatchType> matchTypeList = new ArrayList<>();
-    
+
     private int rounds;
 
     public DashboardModel getDashboardModel() {
@@ -122,6 +126,8 @@ public class BracketCreation implements Serializable {
 
     @PostConstruct
     private void init() {
+        Package p = FacesContext.class.getPackage();
+        System.out.println("MOJARA " + p.getImplementationTitle() + " " + p.getImplementationVersion());
         matchTypeList = controller.getEndUserMatchTypes();
     }
 
@@ -136,14 +142,14 @@ public class BracketCreation implements Serializable {
 //        initializeLists();
 //        createModel();
 //    }
-    
     public void recreateBracket(Competition competition) {
         List<CMG> cmgList = controller.getCompetitionCMGMappings(competition);
-        
+
         this.competitorMatchGroupList = cmgList;
         initializeLists();
         createModel();
-        assignMatchTypes();
+        assignCurrentMatchTypes();
+        //    assignMatchTypes();
     }
 
     public void updateBracket() {
@@ -459,10 +465,16 @@ public class BracketCreation implements Serializable {
                     }
 
                     dp.updateCMGwithAdvanced(cmg);
-
+                    
+                    System.out.println("PRZED DISABLE");
+                    BracketUtil.makeSerializablePanel(dp);
+                    this.disableMatch(dp);
+                    System.out.println("PO DISABLE");
+                    
                     System.out.println("ROZMIAR COMPETITOROW POO " + dp.getMatch().getCompetitorMatchList().size());
                     System.out.println("IIIIIIIIIII MATCH SCORE VALUE = " + cmg.getCompetitorMatchScore());
 
+                    System.out.println("CZY jest nULL w CM " + dp.getMatch().getCompetitorMatchList().contains(null));
                     for (CompetitorMatch c : dp.getMatch().getCompetitorMatchList()) {
                         System.out.println("COmpettttt : " + c.getIdCompetitor());
                     }
@@ -473,44 +485,78 @@ public class BracketCreation implements Serializable {
         }
     }
 
-    private void disableFinishedMatches() { // zrobic w EJB !!!!!!!!!
+    public void disableFinishedMatches() {
+//        for (int i = 0; i < panelList.size(); i++) {
+//            Collections.sw
+//        }
         for (DashboardPanel dp : panelList) {
-            dp_block:
-            {
-                if (dp.getMatch() != null) {
+
+            //    System.out.println("PANEL SERAILZIABLE " + dp.getPanel());
+            InactivateMatch updatedMatch = controller.disableMatch(dp);
+
+            dp.setEditable(updatedMatch.getEditable());
+            dp.setInplaceEditable(updatedMatch.isInplaceEditable());
+            dp.setMatch(updatedMatch.getMatch());
+
+            /*    dp_block:
+             {
+             if (dp.getMatch() != null) {
                     
-                    for (CompetitorMatch cm : dp.getMatch().getCompetitorMatchList()) {
-                        if(cm.getIdCompetitor() == null) {
-                            System.out.println("Nie ma jakiegos competitora w metch, wylacza edycje");
-                            dp.setInplaceEditable(false);
+             for (CompetitorMatch cm : dp.getMatch().getCompetitorMatchList()) {
+             if(cm.getIdCompetitor() == null) {
+             System.out.println("Nie ma jakiegos competitora w metch, wylacza edycje");
+             dp.setInplaceEditable(false);
                             
-                            continue;
-                        }
-                    }
+             continue;
+             }
+             }
                     
-                    for (MatchMatchType mmt : dp.getMatch().getMatchMatchTypeList()) {
-                        System.out.println("mmt " + mmt.getIdMatchType().getMatchTypeName());
-                        if (mmt.getIdMatchType().getMatchTypeName().startsWith("BO")) {
-                            dp.setMatchType(mmt.getIdMatchType());
+             for (MatchMatchType mmt : dp.getMatch().getMatchMatchTypeList()) {
+             System.out.println("mmt " + mmt.getIdMatchType().getMatchTypeName());
+             if (mmt.getIdMatchType().getMatchTypeName().startsWith("BO")) {
+             dp.setMatchType(mmt.getIdMatchType());
                             
-                            for (CompetitorMatch cm : dp.getMatch().getCompetitorMatchList()) {
-                                if (cm.getCompetitorMatchScore() != null && ((Integer.valueOf(mmt.getIdMatchType().getMatchTypeName().substring(2)) + 1) / 2) == cm.getCompetitorMatchScore()) {
-                                    System.out.println("WYLACZA " + dp.getMatch());
+             for (CompetitorMatch cm : dp.getMatch().getCompetitorMatchList()) {
+             if (cm.getCompetitorMatchScore() != null && ((Integer.valueOf(mmt.getIdMatchType().getMatchTypeName().substring(2)) + 1) / 2) == cm.getCompetitorMatchScore()) {
+             System.out.println("WYLACZA " + dp.getMatch());
                                     
-                                    System.out.println("idMatch =  " + dp.getMatch().getIdMatch() + " COMPETITORRRRRRRRRRRRRRRRx " + cm.getIdCompetitor() + "   ---   idCompetitorMatch " + cm.getIdCompetitorMatch());
+             System.out.println("idMatch =  " + dp.getMatch().getIdMatch() + " COMPETITORRRRRRRRRRRRRRRRx " + cm.getIdCompetitor() + "   ---   idCompetitorMatch " + cm.getIdCompetitorMatch());
                                     
-                                    dp.setEditable(false);
-                                    break dp_block;
-                                }
-                            }
-                        }
-                    }
-                    System.out.println("TYP : " + dp.getMatch().getMatchMatchTypeList());
-                }
-        //    for (CompetitorMatch cm : dp.getMatch().getCompetitorMatchList()) {
-                // if (cm.getCompetitorMatchScore() == cm.ge)
-                //   }
-            }
+             dp.setEditable(false);
+             break dp_block;
+             }
+             }
+             }
+             }
+             System.out.println("TYP : " + dp.getMatch().getMatchMatchTypeList());
+             }
+             //    for (CompetitorMatch cm : dp.getMatch().getCompetitorMatchList()) {
+             // if (cm.getCompetitorMatchScore() == cm.ge)
+             //   }
+             }
+             */
         }
+    }
+
+    private void assignCurrentMatchTypes() {
+        for (DashboardPanel dp : panelList) {
+            CurrentMatchType cmt = controller.assignCurrentMatchType(dp);
+
+            dp.setMatchType(cmt.getMatchType());
+        }
+    }
+    
+    /**
+     *
+     * @param match
+     * @return true if something was disabled
+     */
+    public boolean disableMatch(InactivateMatch match) {
+        InactivateMatch disabledMatch = controller.disableMatch(match);
+        
+        match.setEditable(disabledMatch.getEditable());
+        match.setInplaceEditable(disabledMatch.isInplaceEditable());
+        
+        return disabledMatch.getEditable() || disabledMatch.isInplaceEditable();
     }
 }

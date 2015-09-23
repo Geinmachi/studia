@@ -10,6 +10,8 @@ import entities.Competition;
 import entities.Competitor;
 import entities.CompetitorMatch;
 import entities.GroupDetails;
+import entities.MatchMatchType;
+import entities.Matchh;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -21,13 +23,18 @@ import java.util.UUID;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.ViewHandler;
+import javax.faces.component.UIComponent;
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
-import mot.utils.CMG;
+import mot.interfaces.CMG;
+import mot.interfaces.InactivateMatch;
+import org.primefaces.component.panel.Panel;
+import org.primefaces.component.selectonemenu.SelectOneMenu;
 import org.primefaces.context.RequestContext;
+import utils.BracketUtil;
 import web.controllers.CompetitionController;
 import web.models.DashboardPanel;
 
@@ -38,6 +45,8 @@ import web.models.DashboardPanel;
 @Named(value = "manageCompetitionBackingBean")
 @ViewScoped
 public class ManageCompetitionBackingBean implements Serializable {
+
+    private static final long serialVersionUID = 7526472295622776147L;
 
     @Inject
     private CompetitionController controller;
@@ -81,24 +90,34 @@ public class ManageCompetitionBackingBean implements Serializable {
         }
 
         groupDetailsList = new ArrayList<>(competition.getGroupDetailsList());
-        
+
         Collections.sort(groupDetailsList);
 
         bracketCreator.recreateBracket(competition);
     }
 
-    public void saveScore(CompetitorMatch cmg) {
+    public void saveScore(CompetitorMatch cmg, DashboardPanel dp) {
         System.out.println("Wykonal sie save z inpalce " + cmg.getCompetitorMatchScore());
         System.out.println("Zawodnika " + cmg.getIdCompetitor());
 
         bracketCreator.updateScores(cmg);
         try {
-            CompetitorMatch advancedCMG = controller.saveCompetitorScore(cmg);
-            if (advancedCMG != null) {
-                //        cmgList.add(advancedCMG);
-                bracketCreator.addAdvancedCompetitor(advancedCMG);
+            CompetitorMatch advancedCompetitorMatch = controller.saveCompetitorScore(cmg);
+            if (advancedCompetitorMatch != null) {
+                //        cmgList.add(advancedCompetitorMatch);
+                bracketCreator.addAdvancedCompetitor(advancedCompetitorMatch);
+                
+                BracketUtil.makeSerializablePanel(dp);
+                bracketCreator.disableMatch(dp);
+                
+                int advancedMatchNumber = BracketUtil.advancedMatchNumber(advancedCompetitorMatch.getIdMatch(), 
+                        bracketCreator.getFirstRoundMatches().size() + bracketCreator.getOtherMatches().size() + 1);
+                
+                
+                System.out.println("NOWEEE editable " + dp.getEditable());
+                System.out.println("NOWEEE inplaceEEeditable " + dp.isInplaceEditable());
             }
-            System.out.println("Przeszlo all, advanced id = " + advancedCMG);
+            System.out.println("Przeszlo all, advanced id = " + advancedCompetitorMatch);
             RequestContext.getCurrentInstance().update(":manageCompetitionForm:dashboard");
             System.out.println("Po odswiezeniu");
 
@@ -109,7 +128,7 @@ public class ManageCompetitionBackingBean implements Serializable {
             }
         }
 
-        refreshPage();
+    //    refreshPage();
     }
 
     public boolean wa() {
@@ -153,13 +172,24 @@ public class ManageCompetitionBackingBean implements Serializable {
 
     private void refreshPage() {
 
+//        System.out.println("START refresha");
         FacesContext context = FacesContext.getCurrentInstance();
-        String viewId = context.getViewRoot().getViewId();
-        ViewHandler handler = context.getApplication().getViewHandler();
-        UIViewRoot root = handler.createView(context, viewId);
-        root.setViewId(viewId);
-        context.setViewRoot(root);
+//        String viewId = context.getViewRoot().getViewId();
+//        ViewHandler handler = context.getApplication().getViewHandler();
+//        UIViewRoot root = handler.createView(context, viewId);
+//        root.setViewId(viewId);
+//        for (UIComponent c : context.getViewRoot().getChildren()) {
+//            System.out.println("COMP " + c);
+//        }
+        Panel p = (Panel)context.getViewRoot().findComponent("manageCompetitionForm:other35");
+        for (UIComponent c : ((Panel)context.getViewRoot().findComponent("manageCompetitionForm:other35")).getChildren()) {
+            System.out.println("W panelu " + c);
+        }
+//        System.out.println("ZNLAEZIONY COMPO " + ((Panel)context.getViewRoot().findComponent("manageCompetitionForm:other35")).getChildren());
 
+        UIViewRoot root = new UIViewRoot();
+        context.setViewRoot(root);
+//        FacesContext.getCurrentInstance().renderResponse();
         System.out.println("ODSEIZYLo STRONE");
     }
 
@@ -176,4 +206,61 @@ public class ManageCompetitionBackingBean implements Serializable {
 //            }
 //        }
 //    }
+
+    public void updateMatchType(DashboardPanel dp) {
+
+        Matchh match = dp.getMatch();
+
+//        System.out.println("PANEL SERAILZIABLE BLAAAADDD" + dp.getPanel());
+//        dp.setEditable(inactivateMatch.getEditable());
+//        dp.setInplaceEditable(inactivateMatch.isInplaceEditable());
+//        
+//        System.out.println("DP: " + dp);
+//        System.out.println("MATCH IDIDID " + dp.getMatch());
+        for (MatchMatchType mmt : match.getMatchMatchTypeList()) {
+            if (mmt.getIdMatchType().getMatchTypeName().startsWith("BO")) {
+                mmt.setIdMatchType(dp.getMatchType());
+
+                break;
+            }
+        }
+        controller.updateMatchType(match);
+
+        BracketUtil.makeSerializablePanel(dp);
+
+        InactivateMatch inactiveMatch = controller.disableMatch(dp);
+        int advancedMatchNumber = BracketUtil.advancedMatchNumber(dp.getMatch(),
+                (bracketCreator.getFirstRoundMatches().size() + bracketCreator.getOtherMatches().size()) + 1);
+
+//        addAdvancedCompetitor(advancedMatchNumber);
+        if (!inactiveMatch.getEditable()) {
+
+            dp.setEditable(inactiveMatch.getEditable());
+            dp.setInplaceEditable(inactiveMatch.isInplaceEditable());
+
+            //    int advancedMatchNumber = BracketUtil.advancedMatchNumber(dp.getMatch(),
+            //            (bracketCreator.getFirstRoundMatches().size() + bracketCreator.getOtherMatches().size()) + 1);
+            addAdvancedCompetitor(advancedMatchNumber);
+//            bracketCreator.addAdvancedCompetitor(dp.getMatch().ge);
+        }
+    }
+
+    private void addAdvancedCompetitor(int matchNumber) {
+        for (DashboardPanel dp : bracketCreator.getPanelList()) {
+            if (dp.getMatch() != null && dp.getMatch().getMatchNumber() == matchNumber) {
+                System.out.println("ID = " + "manageCompetitionForm:" + dp.getPanel().getId());
+                for (CompetitorMatch cm : dp.getMatch().getCompetitorMatchList()) {
+                    bracketCreator.addAdvancedCompetitor(cm);
+                }
+                RequestContext.getCurrentInstance().update("manageCompetitionForm:" + dp.getPanel().getId());
+
+            }
+        }
+    }
+    
+    private void updateMatch(DashboardPanel dp) {
+        FacesContext context = FacesContext.getCurrentInstance();
+        
+        Panel p = (Panel)context.getViewRoot().findComponent("manageCompetitionForm:other");
+    }
 }
