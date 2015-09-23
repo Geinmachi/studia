@@ -31,6 +31,7 @@ import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+import mot.interfaces.AdvancingMatchData;
 
 /**
  *
@@ -46,7 +47,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Matchh.findByMatchDate", query = "SELECT m FROM Matchh m WHERE m.matchDate = :matchDate"),
     @NamedQuery(name = "Matchh.findByRoundd", query = "SELECT m FROM Matchh m WHERE m.roundd = :roundd"),
     @NamedQuery(name = "Matchh.findByVersion", query = "SELECT m FROM Matchh m WHERE m.version = :version")})
-public class Matchh implements Serializable, Comparable<Matchh> {
+public class Matchh implements Serializable, Comparable<Matchh>, AdvancingMatchData {
     private static final long serialVersionUID = 1L;  
     
     @Transient
@@ -120,6 +121,7 @@ public class Matchh implements Serializable, Comparable<Matchh> {
         this.matchDate = matchDate;
     }
 
+    @Override
     public short getRoundd() {
         return roundd;
     }
@@ -128,6 +130,7 @@ public class Matchh implements Serializable, Comparable<Matchh> {
         this.roundd = roundd;
     }
 
+    @Override
     public short getMatchNumber() {
         return matchNumber;
     }

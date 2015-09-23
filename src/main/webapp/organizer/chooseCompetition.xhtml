@@ -19,7 +19,9 @@ and open the template in the editor.
                     <p:outputLabel value="#{competition.competitionName}"/>
                 </p:column>
                 <p:column headerText="#{msg.manageCompetition}">
-                    <p:commandButton value="#{msg.manage}" action="#{chooseCompetitionBackingBean.manageCompetition(competition)}"/>
+                    <p:commandButton value="#{msg.manage}" 
+                                     action="#{chooseCompetitionBackingBean.manageCompetition(competition)}"
+                                     disabled="#{not empty competition.idWinner}"/>
             </p:column>
         </p:dataTable>
     </h:form>

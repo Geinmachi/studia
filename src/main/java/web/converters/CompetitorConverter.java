@@ -42,7 +42,8 @@ public class CompetitorConverter implements Converter {
 
             throw new IllegalArgumentException("Nie ma takiego competitionType");
         } catch (Exception e) {
-            System.out.println("WYjatekgetAsObject");
+            System.out.println("CompetitorConverter#getAsObject WYjatekgetAsObject " + e.getMessage());
+            e.printStackTrace();
             throw new ConverterException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Conversion Error", "Conversion Error"));
         }
     }

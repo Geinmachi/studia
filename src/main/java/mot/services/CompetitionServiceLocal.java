@@ -10,12 +10,15 @@ import entities.CompetitionType;
 import entities.Competitor;
 import entities.CompetitorMatch;
 import entities.MatchType;
+import entities.Matchh;
 import entities.Score;
 import entities.Team;
 import java.util.List;
 import java.util.Map;
 import javax.ejb.Local; import javax.ejb.Remote;
-import mot.utils.CMG;
+import mot.interfaces.CMG;
+import mot.interfaces.CurrentMatchType;
+import mot.interfaces.InactivateMatch;
 
 /**
  *
@@ -61,4 +64,10 @@ public interface CompetitionServiceLocal {
     public List<Score> findCompetitionScores(int idCompetition);
 
     public Map<Competitor, Integer> getCompetitionResults(Integer idCompetition);
+
+    public void updateMatchType(Matchh match);
+
+    public InactivateMatch disableMatch(InactivateMatch inactivateMatch);
+
+    public CurrentMatchType assignCurrentMatchType(CurrentMatchType cmt);
 }
