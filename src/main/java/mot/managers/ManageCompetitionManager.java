@@ -147,7 +147,7 @@ public class ManageCompetitionManager implements ManageCompetitionManagerLocal {
 
         competitorMatchFacade.edit(fetchedCompetitorMatch);
 
-        CompetitorMatch advancedCompetitoCMG = advanceCompetitor(fetchedMatch, receivedCompetitorMatch, receivedCompetitorMatch.getIdCompetitor());
+        CompetitorMatch advancedCompetitoCMG = advanceCompetitor(receivedCompetitorMatch);
 
         return advancedCompetitoCMG;
     }
@@ -168,8 +168,13 @@ public class ManageCompetitionManager implements ManageCompetitionManagerLocal {
         }
     }
 
-    private CompetitorMatch advanceCompetitor(Matchh fetchedMatch, CompetitorMatch receivedCompetitorMatch, Competitor competitor) {
-        fetchedMatch = matchFacade.findAndInitializeTypes(fetchedMatch.getIdMatch());
+    @Override
+    public CompetitorMatch advanceCompetitor(CompetitorMatch receivedCompetitorMatch) {
+        if (receivedCompetitorMatch == null || receivedCompetitorMatch.getIdMatch() == null) {
+            throw new IllegalArgumentException("ManageComeptitonManager#advanceCompetitor: "
+                    + "competitorMatch or match cannot be null competitorMatch: " + receivedCompetitorMatch);
+        }
+        Matchh fetchedMatch = matchFacade.findAndInitializeTypes(receivedCompetitorMatch.getIdMatch().getIdMatch());
 
         System.out.println("WESLO DO ADVANCE");
         int competitorCount = fetchedMatch.getCompetition().getGroupDetailsList().size() * CreateCompetitionManager.GROUP_SIZE;

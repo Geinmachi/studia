@@ -160,4 +160,7 @@ public class CompetitionController implements Serializable {
         return service.assignCurrentMatchType(cmt);
     }
 
+    public CompetitorMatch advanceCompetitor(CompetitorMatch competitorMatch) {
+        return service.advanceCompetitor(competitorMatch);
+    }
 }

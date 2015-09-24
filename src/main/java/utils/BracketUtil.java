@@ -5,7 +5,9 @@
  */
 package utils;
 
+import entities.CompetitorMatch;
 import entities.Matchh;
+import java.util.List;
 import mot.interfaces.AdvancingMatchData;
 import org.primefaces.component.panel.Panel;
 import web.models.DashboardPanel;
@@ -98,5 +100,28 @@ public class BracketUtil {
 //        roun_(count/2 - (nr - 1))
 //        System.out.println("WYNIK " + )
         return 0;
+    }
+
+    public static CompetitorMatch getMatchWinner(Matchh match) {
+
+        List<CompetitorMatch> cmList = match.getCompetitorMatchList();
+        if (cmList.size() == 2 && cmList.get(0).getCompetitorMatchScore() != null
+                && cmList.get(1).getCompetitorMatchScore() != null) {
+
+            short firstCompetitorScore = cmList.get(0).getCompetitorMatchScore();
+            short secondCompetitorScore = cmList.get(1).getCompetitorMatchScore();
+
+            int comparisonResult = Short.compare(firstCompetitorScore, secondCompetitorScore);
+            System.out.println("comparisonResult " + comparisonResult);
+            if (comparisonResult == 0) {
+                throw new IllegalStateException("Competitor can't advance if scores are even");
+            } else if (comparisonResult < 0) {
+                return cmList.get(1);
+            } else if (comparisonResult > 0) {
+                return cmList.get(0);
+            }
+        }
+        
+        return new CompetitorMatch();
     }
 }

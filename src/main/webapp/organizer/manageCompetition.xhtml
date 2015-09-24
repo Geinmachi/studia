@@ -90,7 +90,7 @@ and open the template in the editor.
                                     <f:selectItems value="#{manageCompetitionBackingBean.bracketCreator.matchTypeList}"
                                                    var="matchType" itemLabel="#{matchType.matchTypeName}"
                                                    />
-                                    <p:ajax process="@this" update="@parent:@parent" listener="#{manageCompetitionBackingBean.updateMatchType(dashboardPanel)}"/>
+                                    <p:ajax process="@this" partialSubmit="true" update=":manageCompetitionForm:dashboard" listener="#{manageCompetitionBackingBean.updateMatchType(dashboardPanel)}"/>
                                 </p:selectOneMenu>
                             </p:panel>
                         </c:when>

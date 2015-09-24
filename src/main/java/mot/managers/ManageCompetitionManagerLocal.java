@@ -38,4 +38,5 @@ public interface ManageCompetitionManagerLocal {
 
     public CurrentMatchType assignCurrentMatchType(CurrentMatchType cmt);
     
+    CompetitorMatch advanceCompetitor(CompetitorMatch receivedCompetitorMatch);
 }

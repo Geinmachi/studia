@@ -70,4 +70,6 @@ public interface CompetitionServiceLocal {
     public InactivateMatch disableMatch(InactivateMatch inactivateMatch);
 
     public CurrentMatchType assignCurrentMatchType(CurrentMatchType cmt);
+    
+    public CompetitorMatch advanceCompetitor(CompetitorMatch competitorMatch);
 }

@@ -175,4 +175,9 @@ public class CompetitionService implements CompetitionServiceLocal {
     public CurrentMatchType assignCurrentMatchType(CurrentMatchType cmt) {
         return manageCompetitionManager.assignCurrentMatchType(cmt);
     }
+
+    @Override
+    public CompetitorMatch advanceCompetitor(CompetitorMatch competitorMatch) {
+        return manageCompetitionManager.advanceCompetitor(competitorMatch);
+    }
 }

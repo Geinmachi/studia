@@ -106,14 +106,13 @@ public class ManageCompetitionBackingBean implements Serializable {
             if (advancedCompetitorMatch != null) {
                 //        cmgList.add(advancedCompetitorMatch);
                 bracketCreator.addAdvancedCompetitor(advancedCompetitorMatch);
-                
+
                 BracketUtil.makeSerializablePanel(dp);
                 bracketCreator.disableMatch(dp);
-                
-                int advancedMatchNumber = BracketUtil.advancedMatchNumber(advancedCompetitorMatch.getIdMatch(), 
+
+                int advancedMatchNumber = BracketUtil.advancedMatchNumber(advancedCompetitorMatch.getIdMatch(),
                         bracketCreator.getFirstRoundMatches().size() + bracketCreator.getOtherMatches().size() + 1);
-                
-                
+
                 System.out.println("NOWEEE editable " + dp.getEditable());
                 System.out.println("NOWEEE inplaceEEeditable " + dp.isInplaceEditable());
             }
@@ -128,7 +127,7 @@ public class ManageCompetitionBackingBean implements Serializable {
             }
         }
 
-    //    refreshPage();
+        //    refreshPage();
     }
 
     public boolean wa() {
@@ -181,8 +180,8 @@ public class ManageCompetitionBackingBean implements Serializable {
 //        for (UIComponent c : context.getViewRoot().getChildren()) {
 //            System.out.println("COMP " + c);
 //        }
-        Panel p = (Panel)context.getViewRoot().findComponent("manageCompetitionForm:other35");
-        for (UIComponent c : ((Panel)context.getViewRoot().findComponent("manageCompetitionForm:other35")).getChildren()) {
+        Panel p = (Panel) context.getViewRoot().findComponent("manageCompetitionForm:other35");
+        for (UIComponent c : ((Panel) context.getViewRoot().findComponent("manageCompetitionForm:other35")).getChildren()) {
             System.out.println("W panelu " + c);
         }
 //        System.out.println("ZNLAEZIONY COMPO " + ((Panel)context.getViewRoot().findComponent("manageCompetitionForm:other35")).getChildren());
@@ -229,38 +228,20 @@ public class ManageCompetitionBackingBean implements Serializable {
         BracketUtil.makeSerializablePanel(dp);
 
         InactivateMatch inactiveMatch = controller.disableMatch(dp);
-        int advancedMatchNumber = BracketUtil.advancedMatchNumber(dp.getMatch(),
-                (bracketCreator.getFirstRoundMatches().size() + bracketCreator.getOtherMatches().size()) + 1);
-
 //        addAdvancedCompetitor(advancedMatchNumber);
         if (!inactiveMatch.getEditable()) {
 
             dp.setEditable(inactiveMatch.getEditable());
             dp.setInplaceEditable(inactiveMatch.isInplaceEditable());
 
-            //    int advancedMatchNumber = BracketUtil.advancedMatchNumber(dp.getMatch(),
-            //            (bracketCreator.getFirstRoundMatches().size() + bracketCreator.getOtherMatches().size()) + 1);
-            addAdvancedCompetitor(advancedMatchNumber);
-//            bracketCreator.addAdvancedCompetitor(dp.getMatch().ge);
+            CompetitorMatch advancedCompetitorMatch = controller.advanceCompetitor(BracketUtil.getMatchWinner(dp.getMatch()));
+            bracketCreator.addAdvancedCompetitor(advancedCompetitorMatch);
         }
     }
 
-    private void addAdvancedCompetitor(int matchNumber) {
-        for (DashboardPanel dp : bracketCreator.getPanelList()) {
-            if (dp.getMatch() != null && dp.getMatch().getMatchNumber() == matchNumber) {
-                System.out.println("ID = " + "manageCompetitionForm:" + dp.getPanel().getId());
-                for (CompetitorMatch cm : dp.getMatch().getCompetitorMatchList()) {
-                    bracketCreator.addAdvancedCompetitor(cm);
-                }
-                RequestContext.getCurrentInstance().update("manageCompetitionForm:" + dp.getPanel().getId());
-
-            }
-        }
-    }
-    
     private void updateMatch(DashboardPanel dp) {
         FacesContext context = FacesContext.getCurrentInstance();
-        
-        Panel p = (Panel)context.getViewRoot().findComponent("manageCompetitionForm:other");
+
+        Panel p = (Panel) context.getViewRoot().findComponent("manageCompetitionForm:other");
     }
 }
