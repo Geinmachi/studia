@@ -8,6 +8,7 @@ package mot.managers;
 import entities.Competition;
 import entities.CompetitorMatch;
 import entities.Matchh;
+import exceptions.ApplicationException;
 import java.util.List;
 import javax.ejb.Local;
 import javax.ejb.Remote;
@@ -28,7 +29,7 @@ public interface ManageCompetitionManagerLocal {
 
     public List<CMG> getCompetitionCMGMappings(Competition competition);
 
-    public CompetitorMatch saveCompetitorScore(CompetitorMatch cmg);
+    public CompetitorMatch saveCompetitorScore(CompetitorMatch cmg)  throws ApplicationException;
 
     public List<CompetitorMatch> findCMGByIdMatch(Integer idMatch);
 

@@ -13,6 +13,7 @@ import entities.MatchType;
 import entities.Matchh;
 import entities.Score;
 import entities.Team;
+import exceptions.ApplicationException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -132,7 +133,7 @@ public class CompetitionService implements CompetitionServiceLocal {
     }
 
     @Override
-    public CompetitorMatch saveCompetitorScore(CompetitorMatch cmg) {
+    public CompetitorMatch saveCompetitorScore(CompetitorMatch cmg)  throws ApplicationException{
         return manageCompetitionManager.saveCompetitorScore(cmg);
     }
 

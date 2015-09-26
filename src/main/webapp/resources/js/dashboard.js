@@ -2,7 +2,6 @@ function competitorHover(obj) {
     var classList = obj.className.split(/\s+/);
 
     for (var i = 0; i < classList.length; i++) {
-        console.log("Klasa " + classList[i]);
         if (classList[i].indexOf("competitiorInMatch") > -1) {
             $("." + classList[i]).addClass("hoveredCompetitor");
 
@@ -15,7 +14,6 @@ function competitorOut(obj) {
     var classList = obj.className.split(/\s+/);
 
     for (var i = 0; i < classList.length; i++) {
-        console.log("Klasa " + classList[i]);
         if (classList[i].indexOf("competitiorInMatch") > -1) {
             $("." + classList[i]).removeClass("hoveredCompetitor");
 
@@ -26,22 +24,33 @@ function competitorOut(obj) {
 $(document).ready(function () {
 
     $("div[class*='competitiorInMatch']").each(function () {
-        $(this).on("mouseenter", function(){
+        $(this).on("mouseenter", function () {
             competitorHover(this);
         });
     });
-    
+
     $("div[class*='competitiorInMatch']").each(function () {
-        $(this).on("mouseleave", function(){
+        $(this).on("mouseleave", function () {
             competitorOut(this);
         });
     });
-    
+
     removeDraggable();
 });
 
 function removeDraggable() {
     $("div[id$='CompetitionForm\\:dashboard']").find(".ui-panel-titlebar").each(function () {
-       $(this).removeClass("ui-panel-titlebar"); 
+        $(this).removeClass("ui-panel-titlebar");
     });
 }
+
+$(document).on("keypress", "[id$='scoreInput']", function (event) {
+    if (event.which === 13) {
+        event.preventDefault(); // wylacza akcje eventu
+        var $saveButton = $(event.target).parent().find("button:first");
+        $saveButton.click();
+    }
+});
+$(document).on("blur", "[id$='scoreInput']", function () {
+    $(this).parent().find("button:first").click();
+});

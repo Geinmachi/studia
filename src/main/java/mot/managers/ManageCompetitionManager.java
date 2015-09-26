@@ -15,6 +15,8 @@ import entities.MatchMatchType;
 import entities.Matchh;
 import entities.Organizer;
 import entities.Score;
+import exceptions.ApplicationException;
+import exceptions.InvalidScoreException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -133,7 +135,7 @@ public class ManageCompetitionManager implements ManageCompetitionManagerLocal {
      * returns null
      */
     @Override
-    public CompetitorMatch saveCompetitorScore(CompetitorMatch receivedCompetitorMatch) {
+    public CompetitorMatch saveCompetitorScore(CompetitorMatch receivedCompetitorMatch)  throws ApplicationException {
         CompetitorMatch fetchedCompetitorMatch = competitorMatchFacade.find(receivedCompetitorMatch.getIdCompetitorMatch());
         Matchh fetchedMatch = matchFacade.findAndInitializeTypes(fetchedCompetitorMatch.getIdMatch().getIdMatch());
 
@@ -152,15 +154,15 @@ public class ManageCompetitionManager implements ManageCompetitionManagerLocal {
         return advancedCompetitoCMG;
     }
 
-    private void validateScore(Matchh match, CompetitorMatch receivedCompetitorMatch) {
+    private void validateScore(Matchh match, CompetitorMatch receivedCompetitorMatch) throws ApplicationException {
         for (MatchMatchType mmt : match.getMatchMatchTypeList()) {
             if (mmt.getIdMatchType().getMatchTypeName().startsWith(BEST_OF_PREFIX)) {
                 int bestOfDigit = Integer.valueOf(mmt.getIdMatchType().getMatchTypeName().substring(2));
                 if (receivedCompetitorMatch.getCompetitorMatchScore() > ((bestOfDigit + 1) / 2)) {
                     System.out.println("IIIDDDDDDDDDDD --- match " + receivedCompetitorMatch.getIdMatch().getIdMatch());
-                    throw new IllegalStateException("Too big number");
+                    throw new InvalidScoreException("Too big number");
                 } else if (receivedCompetitorMatch.getCompetitorMatchScore() < 0) {
-                    throw new IllegalStateException("Score can't be lower than 0");
+                    throw new InvalidScoreException("Score can't be lower than 0");
                 }
 
                 break;

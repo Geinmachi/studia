@@ -12,6 +12,8 @@ import entities.CompetitorMatch;
 import entities.GroupDetails;
 import entities.MatchMatchType;
 import entities.Matchh;
+import exceptions.ApplicationException;
+import exceptions.InvalidScoreException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -26,6 +28,7 @@ import javax.faces.application.ViewHandler;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ValueChangeEvent;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
@@ -37,6 +40,7 @@ import org.primefaces.context.RequestContext;
 import utils.BracketUtil;
 import web.controllers.CompetitionController;
 import web.models.DashboardPanel;
+import web.utils.JsfUtils;
 
 /**
  *
@@ -59,6 +63,8 @@ public class ManageCompetitionBackingBean implements Serializable {
     private List<CMG> cmgList = new ArrayList<>();
 
     private Competition competition;
+    
+    private short competitorOldScore;
 
     /**
      * Creates a new instance of ManageCompetitionBacking
@@ -110,21 +116,22 @@ public class ManageCompetitionBackingBean implements Serializable {
                 BracketUtil.makeSerializablePanel(dp);
                 bracketCreator.disableMatch(dp);
 
-                int advancedMatchNumber = BracketUtil.advancedMatchNumber(advancedCompetitorMatch.getIdMatch(),
-                        bracketCreator.getFirstRoundMatches().size() + bracketCreator.getOtherMatches().size() + 1);
-
-                System.out.println("NOWEEE editable " + dp.getEditable());
-                System.out.println("NOWEEE inplaceEEeditable " + dp.isInplaceEditable());
+                JsfUtils.addSuccessMessage("Competitor advanced", "Name: " 
+                        + advancedCompetitorMatch.getIdCompetitor().getIdPersonalInfo().getFirstName() 
+                        + " " 
+                        + advancedCompetitorMatch.getIdCompetitor().getIdPersonalInfo().getLastName(), "manageCompetitionForm");
             }
             System.out.println("Przeszlo all, advanced id = " + advancedCompetitorMatch);
             RequestContext.getCurrentInstance().update(":manageCompetitionForm:dashboard");
             System.out.println("Po odswiezeniu");
 
-        } catch (IllegalStateException ise) {
-            if (ise.getMessage().equals("Too big number")) {
-                cmg.setCompetitorMatchScore((short) 0);
-                bracketCreator.updateScores(cmg);
-            }
+        } catch (InvalidScoreException ise) {
+            cmg.setCompetitorMatchScore(competitorOldScore);
+            bracketCreator.updateScores(cmg);
+            JsfUtils.addErrorMessage(ise.getLocalizedMessage(), "", "manageCompetitionForm");
+        } catch (ApplicationException ae) {
+            System.out.println("ManageCompetitonBackingBean#saceScore exception" + ae.getMessage());
+            ae.printStackTrace();
         }
 
         //    refreshPage();
@@ -243,5 +250,10 @@ public class ManageCompetitionBackingBean implements Serializable {
         FacesContext context = FacesContext.getCurrentInstance();
 
         Panel p = (Panel) context.getViewRoot().findComponent("manageCompetitionForm:other");
+    }
+    
+    public void saveOldScore(ValueChangeEvent event) {
+        System.out.println("OLD VALUE " + event.getOldValue());
+        competitorOldScore = (short)event.getOldValue();
     }
 }

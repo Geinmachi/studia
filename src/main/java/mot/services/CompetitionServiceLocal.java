@@ -13,6 +13,7 @@ import entities.MatchType;
 import entities.Matchh;
 import entities.Score;
 import entities.Team;
+import exceptions.ApplicationException;
 import java.util.List;
 import java.util.Map;
 import javax.ejb.Local; import javax.ejb.Remote;
@@ -53,7 +54,7 @@ public interface CompetitionServiceLocal {
 
     public List<CMG> getCompetitionCMGMappings(Competition competition);
 
-    public CompetitorMatch saveCompetitorScore(CompetitorMatch cmg);
+    public CompetitorMatch saveCompetitorScore(CompetitorMatch cmg)  throws ApplicationException;
 
     public List<CompetitorMatch> findCompeitorMatchByIdMatch(Integer idMatch);
     

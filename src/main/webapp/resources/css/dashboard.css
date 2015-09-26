@@ -1,5 +1,5 @@
-.hasDatepicker {
-    width: 50px !important;
+.ui-dashboard .hasDatepicker {
+    width: 90px !important;
 }
 .ui-dashboard-column:nth-child(2n) {
     width: 101px;
@@ -167,6 +167,13 @@ div[class*="displayCompetitorRow"]:hover {
 .groupPanel > * {
     text-align: center;
 }
+.editableGroupPanel .hasDatepicker {
+    width: 70% !important;
+}
+
+.dateCalendarInput > .ui-state-disabled {
+    width: 170px;
+}
 
 .resultsTable {
     width: 40%;
@@ -181,4 +188,14 @@ div[class*="displayCompetitorRow"]:hover {
 
 div[id$="CompetitionForm:dashboard"] .ui-sortable-handle {
     padding: 0.5em 1em 0.3em !important;
+}
+
+.loadingDialog {
+    background: transparent;
+    border: 0 none;
+    box-shadow: 0 0 !important;
+}
+
+input[id$="scoreInput"] {
+    width: 20px !important;
 }

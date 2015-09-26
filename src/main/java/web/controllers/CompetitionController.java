@@ -13,6 +13,7 @@ import entities.MatchType;
 import entities.Matchh;
 import entities.Score;
 import entities.Team;
+import exceptions.ApplicationException;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
@@ -128,7 +129,7 @@ public class CompetitionController implements Serializable {
         return service.getCompetitionCMGMappings(competition);
     }
 
-    public CompetitorMatch saveCompetitorScore(CompetitorMatch cmg) {
+    public CompetitorMatch saveCompetitorScore(CompetitorMatch cmg)  throws ApplicationException{
         return service.saveCompetitorScore(cmg);
     }
 
