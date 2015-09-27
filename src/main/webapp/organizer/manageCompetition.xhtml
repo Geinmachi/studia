@@ -33,7 +33,8 @@ and open the template in the editor.
                         <p:inputText id="competitionName" value="#{manageCompetitionBackingBean.competition.competitionName}" required="true"/>
                     </p:column>
                     <p:column rowspan="3">
-                        <p:commandButton value="#{msg.save}"  style="display: inline"/>
+                        <p:commandButton value="#{msg.save}" process="generalInfo" partialSubmit="true"
+                                         update="generalInfo" action="#{manageCompetitionBackingBean.saveGeneralInfo}"/>
                     </p:column>
                 </p:row>
                 <p:row>
@@ -50,6 +51,12 @@ and open the template in the editor.
                     </p:column>
                     <p:column>
                         <p:calendar id="competitionEndDate" pattern="MM/dd/yyyy HH:mm:ss" value="#{manageCompetitionBackingBean.competition.endDate}"/>
+                    </p:column>
+                </p:row>
+                <p:row >
+                    <p:column colspan="3" >
+                        <p:messages for="competitionStartDate competitionEndDate competitionName"
+                                    showDetail="true"/>
                     </p:column>
                 </p:row>
             </p:panelGrid>

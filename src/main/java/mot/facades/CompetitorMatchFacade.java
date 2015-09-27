@@ -8,8 +8,10 @@ package mot.facades;
 import entities.Account;
 import entities.CompetitorMatch;
 import java.util.List;
+import javax.ejb.LockType;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.LockModeType;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -75,6 +77,29 @@ public class CompetitorMatchFacade extends AbstractFacade<CompetitorMatch> imple
         q.setParameter("idMatch", idMatch);
         
         return (List<CompetitorMatch>) q.getResultList();
+    }
+
+    @Override
+    public void edit(CompetitorMatch entity) {
+        em.merge(entity);
+        em.flush();
+        
+    }
+
+    @Override
+    public CompetitorMatch find(Object id) {
+        CompetitorMatch entity = em.find(CompetitorMatch.class, id);
+        em.flush();
+        
+        return entity;
+    }
+
+    @Override
+    public CompetitorMatch editWithReturn(CompetitorMatch entity) {
+        CompetitorMatch editedCompetitorMatch = em.merge(entity);
+        em.flush();
+    
+        return editedCompetitorMatch;
     }
 
 }

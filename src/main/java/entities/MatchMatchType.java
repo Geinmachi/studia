@@ -19,6 +19,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Version;
+import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -44,6 +46,11 @@ public class MatchMatchType implements Serializable {
     @JoinColumn(name = "id_match", referencedColumnName = "id_match")
     @ManyToOne(optional = false, cascade = CascadeType.PERSIST)
     private Matchh idMatch;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "version")
+    @Version
+    private long version;
 
     public MatchMatchType() {
     }

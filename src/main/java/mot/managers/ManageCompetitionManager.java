@@ -18,8 +18,10 @@ import entities.Score;
 import exceptions.ApplicationException;
 import exceptions.InvalidScoreException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import javax.annotation.Resource;
 import javax.ejb.EJB;
@@ -34,7 +36,7 @@ import mot.facades.MatchTypeFacadeLocal;
 import mot.facades.MatchhFacadeLocal;
 import mot.facades.ScoreFacadeLocal;
 import mot.interfaces.CMG;
-import web.models.CompetitorMatchGroup;
+import mot.models.CompetitorMatchGroup;
 import mot.interfaces.CurrentMatchType;
 import mot.interfaces.InactivateMatch;
 import utils.BracketUtil;
@@ -71,6 +73,8 @@ public class ManageCompetitionManager implements ManageCompetitionManagerLocal {
     @EJB
     private MatchMatchTypeFacadeLocal mmtFacade;
 
+    private List<CMG> storedCMGmappings;
+
     private final String BEST_OF_PREFIX = "BO";
 
     @Override
@@ -86,7 +90,7 @@ public class ManageCompetitionManager implements ManageCompetitionManagerLocal {
         Competition fetchedCompetition = competitionFacade.findAndInitializeGD(competition.getIdCompetition());
 
         if (!fetchedCompetition.equals(competition)) { // after page laod and before button click competition was modified
-            throw new IllegalStateException("In the meantime competition was modyfied");
+            throw new IllegalStateException("In the meantime competition was modified");
         }
 
         return fetchedCompetition;
@@ -119,12 +123,22 @@ public class ManageCompetitionManager implements ManageCompetitionManagerLocal {
             //    } 
         }
 
-//        for (CompetitorMatch cm : competitorMatchList) {
-//            if (cm.getIdMatch().ge) {
-//                cmgList.add(new CompetitorMatchGroup(null, cm));
-//            }
-//        }
-        return new ArrayList<>(cmgSet);
+        List<CMG> liststoredCMGmappings = new ArrayList<>(cmgSet);
+
+        return liststoredCMGmappings;
+    }
+
+    private CompetitorMatch getStoredCompetitorMatch(int idCompetitorMatch) {
+
+        for (CMG cmg : storedCMGmappings) {
+            for (CompetitorMatch cm : cmg.getIdMatch().getCompetitorMatchList()) {
+                if (cm.getIdCompetitorMatch() == idCompetitorMatch) {
+                    return cm;
+                }
+            }
+        }
+
+        throw new IllegalStateException("Given competitorMatch doesnt exist in stored competition");
     }
 
     /**
@@ -135,8 +149,12 @@ public class ManageCompetitionManager implements ManageCompetitionManagerLocal {
      * returns null
      */
     @Override
-    public CompetitorMatch saveCompetitorScore(CompetitorMatch receivedCompetitorMatch)  throws ApplicationException {
-        CompetitorMatch fetchedCompetitorMatch = competitorMatchFacade.find(receivedCompetitorMatch.getIdCompetitorMatch());
+    public Map<String, CompetitorMatch> saveCompetitorScore(CompetitorMatch receivedCompetitorMatch, List<CMG> storedCMGmappings) throws ApplicationException {
+        this.storedCMGmappings = storedCMGmappings;
+        
+        CompetitorMatch storedCompetitorMatch = getStoredCompetitorMatch(receivedCompetitorMatch.getIdCompetitorMatch());
+
+        CompetitorMatch fetchedCompetitorMatch = storedCompetitorMatch;
         Matchh fetchedMatch = matchFacade.findAndInitializeTypes(fetchedCompetitorMatch.getIdMatch().getIdMatch());
 
 //        System.out.println("MATCH TPYYYYYY");
@@ -147,14 +165,24 @@ public class ManageCompetitionManager implements ManageCompetitionManagerLocal {
 
         fetchedCompetitorMatch.setCompetitorMatchScore(receivedCompetitorMatch.getCompetitorMatchScore());
 
-        competitorMatchFacade.edit(fetchedCompetitorMatch);
+        System.out.println("VERSION before edit " + fetchedCompetitorMatch.getVersion());
+        fetchedCompetitorMatch = competitorMatchFacade.editWithReturn(fetchedCompetitorMatch);
+        System.out.println("VERSION after edit " + fetchedCompetitorMatch.getVersion());
 
         CompetitorMatch advancedCompetitoCMG = advanceCompetitor(receivedCompetitorMatch);
+        
+        Map<String, CompetitorMatch> returnObject = new HashMap<>();
+        returnObject.put("saved", fetchedCompetitorMatch);
+        returnObject.put("advanced", advancedCompetitoCMG);
 
-        return advancedCompetitoCMG;
+        return returnObject;
     }
 
     private void validateScore(Matchh match, CompetitorMatch receivedCompetitorMatch) throws ApplicationException {
+        if (receivedCompetitorMatch == null || receivedCompetitorMatch.getCompetitorMatchScore() == null) {
+            throw new IllegalArgumentException("Can't be null");
+        }
+
         for (MatchMatchType mmt : match.getMatchMatchTypeList()) {
             if (mmt.getIdMatchType().getMatchTypeName().startsWith(BEST_OF_PREFIX)) {
                 int bestOfDigit = Integer.valueOf(mmt.getIdMatchType().getMatchTypeName().substring(2));
@@ -236,7 +264,7 @@ public class ManageCompetitionManager implements ManageCompetitionManagerLocal {
                             if (foundCMG == null) {
                                 System.out.println("not emtpty CMG");
                                 return null;
-                            //    throw new IllegalStateException("DID not find emtpy CMG in match");
+                                //    throw new IllegalStateException("DID not find emtpy CMG in match");
                             }
 
                             foundCMG.setIdCompetitor(receivedCompetitorMatch.getIdCompetitor());
@@ -288,7 +316,6 @@ public class ManageCompetitionManager implements ManageCompetitionManagerLocal {
 //        }
 //        return matchesInRound(firstRoundMatches, (short) (round - 1)) / 2;
 //    }
-
     private short calculatePlacer(double matchCounter) {
         if (Math.ceil(matchCounter) == matchCounter) { // second placer
             return (short) 2;
@@ -343,7 +370,7 @@ public class ManageCompetitionManager implements ManageCompetitionManagerLocal {
                     if (cm.getIdCompetitor() == null) { // no competitor in match
                         inactivateMatch.setInplaceEditable(false);
                         System.out.println("PUSTY COMEPTITOR, INPLACE EDITABLE false " + cm);
-                        
+
                         break;
                     } else {
                         inactivateMatch.setInplaceEditable(true);
@@ -358,9 +385,9 @@ public class ManageCompetitionManager implements ManageCompetitionManagerLocal {
                         for (CompetitorMatch cm : inactivateMatch.getMatch().getCompetitorMatchList()) {
                             if (cm.getCompetitorMatchScore() != null && ((Integer.valueOf(mmt.getIdMatchType().getMatchTypeName().substring(2)) + 1) / 2) == cm.getCompetitorMatchScore()) {
                                 System.out.println("WYLACZA " + inactivateMatch.getMatch());
-                                
+
                                 System.out.println("ADVANCINS z DISABLING " + inactivateMatch.getMatch());
-    //                            advanceCompetitor(inactivateMatch.getMatch(), cm, cm.getIdCompetitor());
+                                //                            advanceCompetitor(inactivateMatch.getMatch(), cm, cm.getIdCompetitor());
                                 System.out.println("idMatch =  " + inactivateMatch.getMatch().getIdMatch() + " COMPETITORRRRRRRRRRRRRRRRx " + cm.getIdCompetitor() + "   ---   idCompetitorMatch " + cm.getIdCompetitorMatch());
 
                                 inactivateMatch.setEditable(false);
@@ -394,5 +421,22 @@ public class ManageCompetitionManager implements ManageCompetitionManagerLocal {
         }
 
         return cmt;
+    }
+
+    @Override
+    public Competition saveCompetitionGeneralInfo(Competition competition, Competition storedCompetition) {
+        if (storedCompetition == null) {
+            throw new IllegalArgumentException("There is no stored competition to edit");
+        } else if (!competition.equals(storedCompetition)) {
+            throw new IllegalStateException("Editing and stored comeptition don't match");
+        }
+
+        storedCompetition.setCompetitionName(competition.getCompetitionName());
+        storedCompetition.setStartDate(competition.getStartDate());
+        storedCompetition.setEndDate(competition.getEndDate());
+
+        competitionFacade.edit(storedCompetition);
+
+        return storedCompetition;
     }
 }

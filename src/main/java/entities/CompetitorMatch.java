@@ -21,6 +21,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.persistence.Version;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -59,6 +60,7 @@ public class CompetitorMatch implements Serializable{
     @Basic(optional = false)
     @NotNull
     @Column(name = "version")
+    @Version
     private long version;
     @JoinColumn(name = "id_competitor", referencedColumnName = "id_competitor")
     @ManyToOne(optional = true)
