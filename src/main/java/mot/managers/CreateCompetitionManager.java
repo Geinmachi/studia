@@ -50,7 +50,7 @@ import mot.facades.ScoreFacadeLocal;
 import utils.BracketUtil;
 import utils.ConvertUtil;
 import mot.interfaces.CMG;
-import web.models.CompetitorMatchGroup;
+import mot.models.CompetitorMatchGroup;
 
 /**
  *

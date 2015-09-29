@@ -129,7 +129,7 @@ public class CompetitionController implements Serializable {
         return service.getCompetitionCMGMappings(competition);
     }
 
-    public CompetitorMatch saveCompetitorScore(CompetitorMatch cmg)  throws ApplicationException{
+    public Map<String, CompetitorMatch> saveCompetitorScore(CompetitorMatch cmg)  throws ApplicationException{
         return service.saveCompetitorScore(cmg);
     }
 
@@ -163,5 +163,9 @@ public class CompetitionController implements Serializable {
 
     public CompetitorMatch advanceCompetitor(CompetitorMatch competitorMatch) {
         return service.advanceCompetitor(competitorMatch);
+    }
+
+    public void saveCompetitionGeneralInfo(Competition competition) {
+        editingCompetition = service.saveCompetitionGeneralInfo(competition);
     }
 }

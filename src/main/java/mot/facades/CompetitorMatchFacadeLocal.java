@@ -42,4 +42,6 @@ public interface CompetitorMatchFacadeLocal {
     public List<CompetitorMatch> findByCompetitionId(Integer idCompetition);
 
     public List<CompetitorMatch> findByIdMatch(Integer idMatch);
+    
+    public CompetitorMatch editWithReturn(CompetitorMatch entity);
 }

@@ -63,6 +63,8 @@ public class CompetitionService implements CompetitionServiceLocal {
     
     private Competition editingCompetition;
 
+    private List<CMG> storedCMGmappings;
+
     @Override
     public List<Team> findAllTeams() {
         return teamFacade.findAll();
@@ -129,12 +131,37 @@ public class CompetitionService implements CompetitionServiceLocal {
 
     @Override
     public List<CMG> getCompetitionCMGMappings(Competition competition) {
-        return manageCompetitionManager.getCompetitionCMGMappings(competition);
+        storedCMGmappings = manageCompetitionManager.getCompetitionCMGMappings(competition);
+        return storedCMGmappings;
     }
 
     @Override
-    public CompetitorMatch saveCompetitorScore(CompetitorMatch cmg)  throws ApplicationException{
-        return manageCompetitionManager.saveCompetitorScore(cmg);
+    public Map<String, CompetitorMatch> saveCompetitorScore(CompetitorMatch receivedCompetitorMatch)  throws ApplicationException{
+        Map<String, CompetitorMatch> returnMap = manageCompetitionManager.saveCompetitorScore(receivedCompetitorMatch, storedCMGmappings);
+        
+        replaceStoredCompetitorMatch(returnMap.get("saved"));
+        replaceStoredCompetitorMatch(returnMap.get("advanced"));
+        
+        return manageCompetitionManager.saveCompetitorScore(receivedCompetitorMatch, storedCMGmappings);
+    }
+    
+    private void replaceStoredCompetitorMatch(CompetitorMatch competitorMatch) {
+        if (competitorMatch == null) {
+            return;
+        }
+        
+        for (CMG cmg : storedCMGmappings) {
+            for (CompetitorMatch cm : cmg.getIdMatch().getCompetitorMatchList()) {
+                if (Integer.compare(cm.getIdCompetitorMatch(), competitorMatch.getIdCompetitorMatch()) == 0) {
+                    int cmIndex = cm.getIdMatch().getCompetitorMatchList().indexOf(cm);
+                    cmg.getIdMatch().getCompetitorMatchList().set(cmIndex, competitorMatch);
+                    
+                    return;
+                }
+            }
+        }
+        
+        throw new IllegalStateException("There was no competitorMatch to replace");
     }
 
     @Override
@@ -180,5 +207,11 @@ public class CompetitionService implements CompetitionServiceLocal {
     @Override
     public CompetitorMatch advanceCompetitor(CompetitorMatch competitorMatch) {
         return manageCompetitionManager.advanceCompetitor(competitorMatch);
+    }
+
+    @Override
+    public Competition saveCompetitionGeneralInfo(Competition competition) {
+        editingCompetition = manageCompetitionManager.saveCompetitionGeneralInfo(competition, editingCompetition);
+        return editingCompetition;
     }
 }

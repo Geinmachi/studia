@@ -22,6 +22,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Version;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -70,6 +71,7 @@ public class Account implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "version")
+    @Version
     private long version;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idAccount", fetch = FetchType.EAGER)
     private List<AccessLevel> accessLevelList = new ArrayList<>();

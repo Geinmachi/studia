@@ -10,6 +10,7 @@ import entities.CompetitorMatch;
 import entities.Matchh;
 import exceptions.ApplicationException;
 import java.util.List;
+import java.util.Map;
 import javax.ejb.Local;
 import javax.ejb.Remote;
 import mot.interfaces.CMG;
@@ -29,7 +30,7 @@ public interface ManageCompetitionManagerLocal {
 
     public List<CMG> getCompetitionCMGMappings(Competition competition);
 
-    public CompetitorMatch saveCompetitorScore(CompetitorMatch cmg)  throws ApplicationException;
+    public Map<String,CompetitorMatch> saveCompetitorScore(CompetitorMatch cmg, List<CMG> storedCMGmappings)  throws ApplicationException;
 
     public List<CompetitorMatch> findCMGByIdMatch(Integer idMatch);
 
@@ -40,4 +41,6 @@ public interface ManageCompetitionManagerLocal {
     public CurrentMatchType assignCurrentMatchType(CurrentMatchType cmt);
     
     CompetitorMatch advanceCompetitor(CompetitorMatch receivedCompetitorMatch);
+
+    public Competition saveCompetitionGeneralInfo(Competition competition, Competition storedCompetition);
 }

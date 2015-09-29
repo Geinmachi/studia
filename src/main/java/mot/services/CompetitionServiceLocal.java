@@ -54,7 +54,7 @@ public interface CompetitionServiceLocal {
 
     public List<CMG> getCompetitionCMGMappings(Competition competition);
 
-    public CompetitorMatch saveCompetitorScore(CompetitorMatch cmg)  throws ApplicationException;
+    public Map<String, CompetitorMatch> saveCompetitorScore(CompetitorMatch cmg)  throws ApplicationException;
 
     public List<CompetitorMatch> findCompeitorMatchByIdMatch(Integer idMatch);
     
@@ -73,4 +73,6 @@ public interface CompetitionServiceLocal {
     public CurrentMatchType assignCurrentMatchType(CurrentMatchType cmt);
     
     public CompetitorMatch advanceCompetitor(CompetitorMatch competitorMatch);
+
+    public Competition saveCompetitionGeneralInfo(Competition competition);
 }
