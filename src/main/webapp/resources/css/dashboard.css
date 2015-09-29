@@ -201,5 +201,5 @@ input[id$="scoreInput"] {
 }
 
 div[id$="dashboard"] .ui-panel:not([id*="filler"]) {
-    width: 260.1px !important;
+    min-width: 260.1px !important;
 }
