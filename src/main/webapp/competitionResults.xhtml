@@ -12,7 +12,7 @@ and open the template in the editor.
                 template="/WEB-INF/templates/main.xhtml"
                 xmlns:f="http://xmlns.jcp.org/jsf/core"
                 xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
-    <ui:define name="title">#{msg.competitionDetailsTitle}</ui:define>
+    <ui:define name="title">#{msg.competitionResultsTitle}</ui:define>
     <ui:define name="content">
         <p:messages id="msg" showDetail="true"/>
         <p:dataTable value="#{resultsBackingBean.competitorPositionMap.entrySet()}" 
