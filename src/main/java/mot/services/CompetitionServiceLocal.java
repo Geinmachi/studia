@@ -9,6 +9,7 @@ import entities.Competition;
 import entities.CompetitionType;
 import entities.Competitor;
 import entities.CompetitorMatch;
+import entities.MatchMatchType;
 import entities.MatchType;
 import entities.Matchh;
 import entities.Score;
@@ -66,7 +67,7 @@ public interface CompetitionServiceLocal {
 
     public Map<Competitor, Integer> getCompetitionResults(Integer idCompetition);
 
-    public void updateMatchType(Matchh match);
+    public MatchMatchType updateMatchType(Matchh match);
 
     public InactivateMatch disableMatch(InactivateMatch inactivateMatch);
 

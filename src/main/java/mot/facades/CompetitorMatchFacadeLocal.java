@@ -6,6 +6,7 @@
 package mot.facades;
 
 import entities.CompetitorMatch;
+import entities.Matchh;
 import java.util.List;
 import javax.ejb.Local;
 import javax.ejb.Remote;
@@ -44,4 +45,6 @@ public interface CompetitorMatchFacadeLocal {
     public List<CompetitorMatch> findByIdMatch(Integer idMatch);
     
     public CompetitorMatch editWithReturn(CompetitorMatch entity);
+    
+    public Matchh editWithReturnAdvancing(Matchh storedMtch);
 }

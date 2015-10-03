@@ -148,6 +148,7 @@ public class BracketCreation implements Serializable {
         this.competitorMatchGroupList = cmgList;
         initializeLists();
         createModel();
+        disableFinishedMatches();
         assignCurrentMatchTypes();
         //    assignMatchTypes();
     }
@@ -268,7 +269,6 @@ public class BracketCreation implements Serializable {
             dashboardModel.addColumn(otherColumns.get(i));
         }
 
-        disableFinishedMatches();
     }
 
     private DashboardColumn createFillers(int columnNumber, int matchesInRoundCount) {
@@ -497,6 +497,7 @@ public class BracketCreation implements Serializable {
         for (DashboardPanel dp : panelList) {
 
             //    System.out.println("PANEL SERAILZIABLE " + dp.getPanel());
+            BracketUtil.makeSerializablePanel(dp);
             InactivateMatch updatedMatch = controller.disableMatch(dp);
 
             dp.setEditable(updatedMatch.getEditable());

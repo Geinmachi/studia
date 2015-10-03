@@ -9,6 +9,7 @@ import entities.Competition;
 import entities.CompetitionType;
 import entities.Competitor;
 import entities.CompetitorMatch;
+import entities.MatchMatchType;
 import entities.MatchType;
 import entities.Matchh;
 import entities.Score;
@@ -21,6 +22,7 @@ import javax.ejb.EJB;
 import javax.ejb.Stateful;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
+import javax.interceptor.Interceptors;
 import mot.interfaces.CMG;
 import mot.facades.CompetitionTypeFacadeLocal;
 import mot.facades.CompetitorFacadeLocal;
@@ -31,36 +33,38 @@ import mot.managers.ManageCompetitionManagerLocal;
 import mot.managers.PresentCompetitionManagerLocal;
 import mot.interfaces.CurrentMatchType;
 import mot.interfaces.InactivateMatch;
+import ejbCommon.TrackerInterceptor;
 
 /**
  *
  * @author java
  */
 @Stateful
+@Interceptors({TrackerInterceptor.class})
 @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 public class CompetitionService implements CompetitionServiceLocal {
 
     @EJB
     private CreateCompetitionManagerLocal createCompetitionManager;
-    
+
     @EJB
     private ManageCompetitionManagerLocal manageCompetitionManager;
-    
+
     @EJB
     private PresentCompetitionManagerLocal presentCompetitionManager;
-    
+
     @EJB
     private TeamFacadeLocal teamFacade;
 
     @EJB
     private CompetitorFacadeLocal competitorFacade;
-    
+
     @EJB
     private CompetitionTypeFacadeLocal competitionTypeFacade;
-    
+
     @EJB
     private MatchTypeFacadeLocal matchTypeFacade;
-    
+
     private Competition editingCompetition;
 
     private List<CMG> storedCMGmappings;
@@ -136,34 +140,43 @@ public class CompetitionService implements CompetitionServiceLocal {
     }
 
     @Override
-    public Map<String, CompetitorMatch> saveCompetitorScore(CompetitorMatch receivedCompetitorMatch)  throws ApplicationException{
+    public Map<String, CompetitorMatch> saveCompetitorScore(CompetitorMatch receivedCompetitorMatch) throws ApplicationException {
         Map<String, CompetitorMatch> returnMap = manageCompetitionManager.saveCompetitorScore(receivedCompetitorMatch, storedCMGmappings);
-        
-        replaceStoredCompetitorMatch(returnMap.get("saved"));
-        replaceStoredCompetitorMatch(returnMap.get("advanced"));
-        
-        return manageCompetitionManager.saveCompetitorScore(receivedCompetitorMatch, storedCMGmappings);
-    }
-    
-    private void replaceStoredCompetitorMatch(CompetitorMatch competitorMatch) {
-        if (competitorMatch == null) {
-            return;
-        }
-        
-        for (CMG cmg : storedCMGmappings) {
-            for (CompetitorMatch cm : cmg.getIdMatch().getCompetitorMatchList()) {
-                if (Integer.compare(cm.getIdCompetitorMatch(), competitorMatch.getIdCompetitorMatch()) == 0) {
-                    int cmIndex = cm.getIdMatch().getCompetitorMatchList().indexOf(cm);
-                    cmg.getIdMatch().getCompetitorMatchList().set(cmIndex, competitorMatch);
-                    
-                    return;
-                }
+
+        for (CompetitorMatch cm : returnMap.values()) {
+//            System.out.println("VERSION in service " + cm + " " + cm.getVersion());
+            
+            if (cm != null) {
+                replaceUpdatedMatch(cm.getIdMatch());
             }
         }
-        
-        throw new IllegalStateException("There was no competitorMatch to replace");
+//        replaceUpdatedMatch(returnMap.get("saved").getIdMatch());
+//
+//        if (returnMap.get("advanced") != null) {
+//            replaceUpdatedMatch(returnMap.get("advanced").getIdMatch());
+//        }
+
+        return returnMap;
     }
 
+//    private void replaceStoredCompetitorMatch(CompetitorMatch competitorMatch) {
+//        if (competitorMatch == null) {
+//            return;
+//        }
+//
+//        for (CMG cmg : storedCMGmappings) {
+//            for (CompetitorMatch cm : cmg.getIdMatch().getCompetitorMatchList()) {
+//                if (Integer.compare(cm.getIdCompetitorMatch(), competitorMatch.getIdCompetitorMatch()) == 0) {
+//                    int cmIndex = cm.getIdMatch().getCompetitorMatchList().indexOf(cm);
+//                    cmg.getIdMatch().getCompetitorMatchList().set(cmIndex, competitorMatch);
+//
+//                    return;
+//                }
+//            }
+//        }
+//
+//        throw new IllegalStateException("There was no competitorMatch to replace");
+//    }
     @Override
     public List<CompetitorMatch> findCompeitorMatchByIdMatch(Integer idMatch) {
         return manageCompetitionManager.findCMGByIdMatch(idMatch);
@@ -190,10 +203,33 @@ public class CompetitionService implements CompetitionServiceLocal {
     }
 
     @Override
-    public void updateMatchType(Matchh match) {
-        manageCompetitionManager.updateMatchType(match);
+    public MatchMatchType updateMatchType(Matchh match) {
+        MatchMatchType updatedMMT = manageCompetitionManager.updateMatchType(match, storedCMGmappings);
+        replaceUpdatedMatch(updatedMMT.getIdMatch());
+
+        return updatedMMT;
     }
 
+//    private void replaceStoredMatchMatchType(MatchMatchType updatedMMT) {
+//        if (updatedMMT == null) {
+//            return;
+//        }
+//
+//        for (CMG cmg : storedCMGmappings) {
+//            if (Integer.compare(cmg.getIdMatch().getIdMatch(), updatedMMT.getIdMatch().getIdMatch()) == 0) {
+//                for (MatchMatchType mmt : cmg.getIdMatch().getMatchMatchTypeList()) {
+//                    if (Integer.compare(mmt.getIdMatchMatchType(), updatedMMT.getIdMatchMatchType()) == 0) {
+//                        int mmtIndex = cmg.getIdMatch().getMatchMatchTypeList().indexOf(mmt);
+//                        cmg.getIdMatch().getMatchMatchTypeList().set(mmtIndex, updatedMMT);
+//
+//                        return;
+//                    }
+//                }
+//            }
+//        }
+//
+//        throw new IllegalStateException("There was no matchMatchType to replace");
+//    }
     @Override
     public InactivateMatch disableMatch(InactivateMatch inactivateMatch) {
         return manageCompetitionManager.disableMatch(inactivateMatch);
@@ -206,12 +242,32 @@ public class CompetitionService implements CompetitionServiceLocal {
 
     @Override
     public CompetitorMatch advanceCompetitor(CompetitorMatch competitorMatch) {
-        return manageCompetitionManager.advanceCompetitor(competitorMatch);
+        CompetitorMatch updatedCompetitorMatch = manageCompetitionManager.advanceCompetitor(competitorMatch);
+        replaceUpdatedMatch(updatedCompetitorMatch.getIdMatch());
+
+        return updatedCompetitorMatch;
     }
 
     @Override
     public Competition saveCompetitionGeneralInfo(Competition competition) {
         editingCompetition = manageCompetitionManager.saveCompetitionGeneralInfo(competition, editingCompetition);
         return editingCompetition;
+    }
+
+    private void replaceUpdatedMatch(Matchh updatedMatch) {
+        if (updatedMatch == null) {
+            System.out.println("PARAMETER nuLl in Service#replaceUpdatedMatch");
+            return;
+        }
+
+        for (CMG cmg : storedCMGmappings) {
+            if (Integer.compare(cmg.getIdMatch().getIdMatch(), updatedMatch.getIdMatch()) == 0) {
+                cmg.setIdMatch(updatedMatch);
+
+                return;
+            }
+        }
+
+        throw new IllegalStateException("There was no match to replace");
     }
 }

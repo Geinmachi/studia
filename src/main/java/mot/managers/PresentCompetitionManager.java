@@ -15,15 +15,18 @@ import java.util.List;
 import java.util.Map;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import javax.interceptor.Interceptors;
 import mot.facades.CompetitionFacadeLocal;
 import mot.facades.ScoreFacadeLocal;
 import utils.SortUtil;
+import ejbCommon.TrackerInterceptor;
 
 /**
  *
  * @author java
  */
 @Stateless
+@Interceptors({TrackerInterceptor.class})
 public class PresentCompetitionManager implements PresentCompetitionManagerLocal {
 
     @EJB

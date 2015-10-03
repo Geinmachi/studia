@@ -7,6 +7,7 @@ package mot.managers;
 
 import entities.Competition;
 import entities.CompetitorMatch;
+import entities.MatchMatchType;
 import entities.Matchh;
 import exceptions.ApplicationException;
 import java.util.List;
@@ -34,7 +35,7 @@ public interface ManageCompetitionManagerLocal {
 
     public List<CompetitorMatch> findCMGByIdMatch(Integer idMatch);
 
-    public void updateMatchType(Matchh match);
+    public MatchMatchType updateMatchType(Matchh match, List<CMG> storedCMGmappings);
 
     public InactivateMatch disableMatch(InactivateMatch inactivateMatch);
 

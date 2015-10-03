@@ -27,6 +27,7 @@ import javax.annotation.Resource;
 import javax.ejb.EJB;
 import javax.ejb.SessionContext;
 import javax.ejb.Stateless;
+import javax.interceptor.Interceptors;
 import mot.facades.AccountFacadeLocal;
 import mot.facades.CompetitionFacadeLocal;
 import mot.facades.CompetitorMatchFacadeLocal;
@@ -41,12 +42,14 @@ import mot.interfaces.CurrentMatchType;
 import mot.interfaces.InactivateMatch;
 import utils.BracketUtil;
 import utils.ConvertUtil;
+import ejbCommon.TrackerInterceptor;
 
 /**
  *
  * @author java
  */
 @Stateless
+@Interceptors({TrackerInterceptor.class})
 public class ManageCompetitionManager implements ManageCompetitionManagerLocal {
 
     @Resource
@@ -150,30 +153,43 @@ public class ManageCompetitionManager implements ManageCompetitionManagerLocal {
      */
     @Override
     public Map<String, CompetitorMatch> saveCompetitorScore(CompetitorMatch receivedCompetitorMatch, List<CMG> storedCMGmappings) throws ApplicationException {
+        System.out.println("ManageCompetitonMnager#saveCompetitorScore CompetitorMatch" + receivedCompetitorMatch);
         this.storedCMGmappings = storedCMGmappings;
-        
+
         CompetitorMatch storedCompetitorMatch = getStoredCompetitorMatch(receivedCompetitorMatch.getIdCompetitorMatch());
 
-        CompetitorMatch fetchedCompetitorMatch = storedCompetitorMatch;
-        Matchh fetchedMatch = matchFacade.findAndInitializeTypes(fetchedCompetitorMatch.getIdMatch().getIdMatch());
+    //    Matchh fetchedMatch = matchFacade.findAndInitializeTypes(storedCompetitorMatch.getIdMatch().getIdMatch());
 
 //        System.out.println("MATCH TPYYYYYY");
 //        for (MatchMatchType mt : fetchedMatch.getMatchMatchTypeList()) {
 //            System.out.println("TYYP ::: " + mt.getIdMatchType().getMatchTypeName());
 //        }
-        validateScore(fetchedMatch, receivedCompetitorMatch);
+        validateScore(storedCompetitorMatch.getIdMatch(), receivedCompetitorMatch);
 
-        fetchedCompetitorMatch.setCompetitorMatchScore(receivedCompetitorMatch.getCompetitorMatchScore());
+        storedCompetitorMatch.setCompetitorMatchScore(receivedCompetitorMatch.getCompetitorMatchScore());
 
-        System.out.println("VERSION before edit " + fetchedCompetitorMatch.getVersion());
-        fetchedCompetitorMatch = competitorMatchFacade.editWithReturn(fetchedCompetitorMatch);
-        System.out.println("VERSION after edit " + fetchedCompetitorMatch.getVersion());
+        System.out.println("VERSION before edit " + storedCompetitorMatch.getVersion());
+        storedCompetitorMatch = competitorMatchFacade.editWithReturn(storedCompetitorMatch);
+        System.out.println("VERSION after edit " + storedCompetitorMatch.getVersion());
 
-        CompetitorMatch advancedCompetitoCMG = advanceCompetitor(receivedCompetitorMatch);
-        
+        CompetitorMatch advancedCompetitorMatch = advanceCompetitor(storedCompetitorMatch);
+
         Map<String, CompetitorMatch> returnObject = new HashMap<>();
-        returnObject.put("saved", fetchedCompetitorMatch);
-        returnObject.put("advanced", advancedCompetitoCMG);
+        returnObject.put("saved", storedCompetitorMatch);
+        returnObject.put("advanced", advancedCompetitorMatch);
+        
+//        if (advancedCompetitoCMG != null) {
+//            for (CompetitorMatch cm : advancedCompetitoCMG.getCompetitorMatchList()) {
+//                if (cm.getIdCompetitor() != null && cm.getIdCompetitor().getIdCompetitor()
+//                        .equals(storedCompetitorMatch.getIdCompetitor().getIdCompetitor())) {
+//                    returnObject.put("advanced", cm);
+//                } else {
+//                    returnObject.put("advancedVersioned", cm);
+//                }
+//            }
+//        }
+//        returnObject.put("advanced1", advancedCompetitoCMG.getCompetitorMatchList().get(0));
+//        returnObject.put("advanced2", advancedCompetitoCMG.getCompetitorMatchList().get(1));
 
         return returnObject;
     }
@@ -219,7 +235,7 @@ public class ManageCompetitionManager implements ManageCompetitionManagerLocal {
                     score.setScore((short) (score.getScore() + 1));
                     scoreFacade.edit(score);
 
-                    CompetitorMatch advancedCompetitorCMG = new CompetitorMatch();
+                    CompetitorMatch advancedCompetitorMatch = null;
 
                     int matchesInRound = BracketUtil.matchesInRound(competitorCount / 2, fetchedMatch.getRoundd());
                     System.out.println("MatcchesInRound: " + matchesInRound);
@@ -232,21 +248,19 @@ public class ManageCompetitionManager implements ManageCompetitionManagerLocal {
                         if ((i + firstMatchIndexInRound) == fetchedMatch.getMatchNumber()) {
                             System.out.println("Znalazlo match nr " + fetchedMatch.getMatchNumber());
                             List<CompetitorMatch> foundCMGs = competitorMatchFacade.findByMatchNumberAndIdCompetition(((short) (firstMatchIndexInRound + matchesInRound - 1 + Math.ceil(matchCounter))), fetchedMatch.getCompetition().getIdCompetition());
-//                            Matchh foundMatch = matchFacade.findByMatchNumberAndIdCompetition(((short) (firstMatchIndexInRound + matchesInRound - 1 + Math.ceil(matchCounter))), fetchedMatch.getCompetition().getIdCompetition());
 
-//                            if (foundMatch == null) {
-//                                    System.out.println("Match number " + (firstMatchIndexInRound + matchesInRound - 1 + Math.ceil(matchCounter)));
-//                                    System.out.println("Competition id " + fetchedMatch.getCompetition().getIdCompetition());
-//                                    throw new IllegalStateException("Ssss");
-//                                } else {
-//                                    System.out.println("Match number XXXXXX  " + foundMatch.getMatchNumber() + " id " + foundMatch.getIdMatch());
-//                                }
-//                            if (foundCMG.getIdCompetitor() == null) {// if this is the first competitor in match
-                            CompetitorMatch foundCMG = null;
+                            CompetitorMatch storedCompetitorMatch = null;
+                            Matchh storedMatch = null;
 
                             for (CompetitorMatch cmg : foundCMGs) {
                                 if (cmg.getPlacer() == null) {
-                                    foundCMG = cmg;
+                                    for (CompetitorMatch cm : getStoredMatch(cmg.getIdMatch().getIdMatch()).getCompetitorMatchList()) {
+                                        if (cm.getIdCompetitorMatch().intValue() == cmg.getIdCompetitorMatch().intValue()) {
+                                            storedCompetitorMatch = cm;
+                                            storedMatch = getStoredMatch(cmg.getIdMatch().getIdMatch());
+                                            break;
+                                        }
+                                    }
 
                                     break;
                                 }
@@ -261,32 +275,30 @@ public class ManageCompetitionManager implements ManageCompetitionManagerLocal {
                                 }
                             }
 
-                            if (foundCMG == null) {
+                            if (storedCompetitorMatch == null) {
                                 System.out.println("not emtpty CMG");
                                 return null;
                                 //    throw new IllegalStateException("DID not find emtpy CMG in match");
                             }
 
-                            foundCMG.setIdCompetitor(receivedCompetitorMatch.getIdCompetitor());
-                            foundCMG.setCompetitorMatchScore((short) 0);
-                            foundCMG.setPlacer(calculatePlacer(matchCounter));
-                            competitorMatchFacade.edit(foundCMG);
-                            System.out.println("EDYOWANY foundCMG " + foundCMG.getIdMatch().getMatchNumber());
-
-                            advancedCompetitorCMG = foundCMG;
-//                            } else {
-//                                advancedCompetitorCMG.setCompetitorMatchScore((short) 0);
-//                                advancedCompetitorCMG.setIdCompetitor(competitor);
-//                                advancedCompetitorCMG.setIdMatch(foundMatch);
-//                                advancedCompetitorCMG.calculatePlacer(calculatePlacer(matchCounter));
-//                                competitorMatchFacade.create(advancedCompetitorCMG);
-//                            }
+                            storedCompetitorMatch.setIdCompetitor(receivedCompetitorMatch.getIdCompetitor());
+                            storedCompetitorMatch.setCompetitorMatchScore((short) 0);
+                            storedCompetitorMatch.setPlacer(calculatePlacer(matchCounter));
+                            
+                            Matchh updatedMatch = competitorMatchFacade.editWithReturnAdvancing(storedMatch);
+                            for (CompetitorMatch cm : updatedMatch.getCompetitorMatchList()) {
+                                if (cm.getIdCompetitor() != null && cm.getIdCompetitor().getIdCompetitor()
+                                        .equals(storedCompetitorMatch.getIdCompetitor().getIdCompetitor())) {
+                                    advancedCompetitorMatch = cm;
+                                }
+                            }
+//                                    System.out.println("EDYOWANY foundCMG " + advancedMatchh.getIdMatch().getMatchNumber());
 
                             break;
                         }
                     }
 
-                    return advancedCompetitorCMG;
+                    return advancedCompetitorMatch;
                 }
             }
 
@@ -295,27 +307,6 @@ public class ManageCompetitionManager implements ManageCompetitionManagerLocal {
         return null;
     }
 
-    // 8 2, 
-//    private short firstMatchIndexInRound(int firstRoundMatches, short round) {
-//        if (round < 1) {
-//            throw new IllegalStateException("Round is lower than 1");
-//        }
-//        if (round == 1) {
-//            return 1;
-//        }
-//
-//        return (short) (firstMatchIndexInRound(firstRoundMatches / 2, (short) (round - 1)) + firstRoundMatches);
-//    }
-//
-//    private int matchesInRound(int firstRoundMatches, short round) {
-//        if (round < 1) {
-//            throw new IllegalStateException("Round is lower than 1");
-//        }
-//        if (round == 1) {
-//            return firstRoundMatches;
-//        }
-//        return matchesInRound(firstRoundMatches, (short) (round - 1)) / 2;
-//    }
     private short calculatePlacer(double matchCounter) {
         if (Math.ceil(matchCounter) == matchCounter) { // second placer
             return (short) 2;
@@ -335,29 +326,57 @@ public class ManageCompetitionManager implements ManageCompetitionManagerLocal {
     }
 
     @Override
-    public void updateMatchType(Matchh match) {
-        List<CompetitorMatch> competitorMatchList = competitorMatchFacade.findByIdMatch(match.getIdMatch());
+    public MatchMatchType updateMatchType(Matchh match, List<CMG> storedCMGmappings) {
+        this.storedCMGmappings = storedCMGmappings;
 
-        for (MatchMatchType mmt : match.getMatchMatchTypeList()) {
+        Matchh storedMatch = getStoredMatch(match.getIdMatch());
+
+        List<CompetitorMatch> competitorMatchList = competitorMatchFacade.findByIdMatch(storedMatch.getIdMatch());
+
+        for (MatchMatchType mmt : storedMatch.getMatchMatchTypeList()) {
             if (mmt.getIdMatchType().getMatchTypeName().startsWith(BEST_OF_PREFIX)) {
                 int bestOfDigit = Integer.valueOf(mmt.getIdMatchType().getMatchTypeName().substring(2));
 
-                for (CompetitorMatch cm : competitorMatchList) {
+                for (CompetitorMatch cm : competitorMatchList) { // validation loop
                     if (cm != null && cm.getCompetitorMatchScore() != null) {
                         if (cm.getCompetitorMatchScore() > ((bestOfDigit + 1) / 2)) {
                             throw new IllegalStateException("Can't change match type because score exceeds maximum possible score");
                         } else if (cm.getCompetitorMatchScore().intValue() == ((bestOfDigit + 1) / 2)) {
-                            if (Short.compare(match.getCompetitorMatchList().get(0).getCompetitorMatchScore(),
-                                    match.getCompetitorMatchList().get(1).getCompetitorMatchScore()) == 0) {
+                            if (Short.compare(storedMatch.getCompetitorMatchList().get(0).getCompetitorMatchScore(),
+                                    storedMatch.getCompetitorMatchList().get(1).getCompetitorMatchScore()) == 0) {
                                 throw new IllegalStateException("After lowering the match type two competitor are tied on match point");
                             }
                         }
                     }
                 }
+
+                for (MatchMatchType receivedMMT : match.getMatchMatchTypeList()) {
+                    if (receivedMMT.getIdMatchType().getMatchTypeName().startsWith(BEST_OF_PREFIX)) {
+                        System.out.println("STORED TYPEEE " + mmt.getIdMatchType());
+                        System.out.println("RECEIVED TYPE " + receivedMMT.getIdMatchType());
+                        mmt.setIdMatchType(receivedMMT.getIdMatchType());
+
+                        break;
+                    }
+                }
+
+                return mmtFacade.editWithReturn(mmt);
             }
 
-            mmtFacade.edit(mmt);
         }
+
+        return null;
+    }
+
+    private Matchh getStoredMatch(int idMatch) {
+
+        for (CMG cmg : storedCMGmappings) {
+            if (cmg.getIdMatch() != null && cmg.getIdMatch().getIdMatch() == idMatch) {
+                return cmg.getIdMatch();
+            }
+        }
+
+        throw new IllegalStateException("Given match doesnt exist in stored competition");
     }
 
     @Override

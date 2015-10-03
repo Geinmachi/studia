@@ -92,14 +92,14 @@ public class CompetitionFacade extends AbstractFacade<Competition> implements Co
 
     @Override
     public void edit(Competition entity) {
-        Query q = em.createNamedQuery("CompetitorMatch.findByCompetitionId");
-        q.setParameter("idCompetition", entity.getIdCompetition());
-        
-        List<CompetitorMatch> competitorMatchList = (List<CompetitorMatch>)q.getResultList();
-        
-        for (CompetitorMatch cm : competitorMatchList) {
-            em.lock(cm, LockModeType.OPTIMISTIC_FORCE_INCREMENT);
-        }
+//        Query q = em.createNamedQuery("CompetitorMatch.findByCompetitionId");
+//        q.setParameter("idCompetition", entity.getIdCompetition());
+//        
+//        List<CompetitorMatch> competitorMatchList = (List<CompetitorMatch>)q.getResultList();
+//        
+//        for (CompetitorMatch cm : competitorMatchList) {
+//            em.lock(cm, LockModeType.OPTIMISTIC_FORCE_INCREMENT);
+//        }
         
         em.merge(entity);
         em.flush();

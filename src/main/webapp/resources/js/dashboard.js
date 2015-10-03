@@ -35,14 +35,13 @@ $(document).ready(function () {
         });
     });
 
-    removeDraggable();
 });
 
-function removeDraggable() {
-    $("div[id$='CompetitionForm\\:dashboard']").find(".ui-panel-titlebar").each(function () {
+$("div[id$='CompetitionForm\\:dashboard']").ready(function(){
+    $(this).find(".ui-panel-titlebar").each(function () {
         $(this).removeClass("ui-panel-titlebar");
     });
-}
+});
 
 $(document).on("keypress", "[id$='scoreInput']", function (event) {
     if (event.which === 13) {

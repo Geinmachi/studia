@@ -36,6 +36,7 @@ import javax.ejb.SessionContext;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
+import javax.interceptor.Interceptors;
 import mot.facades.AccountFacadeLocal;
 import mot.facades.CompetitionFacadeLocal;
 import mot.facades.CompetitorFacadeLocal;
@@ -51,6 +52,7 @@ import utils.BracketUtil;
 import utils.ConvertUtil;
 import mot.interfaces.CMG;
 import mot.models.CompetitorMatchGroup;
+import ejbCommon.TrackerInterceptor;
 
 /**
  *
@@ -58,6 +60,8 @@ import mot.models.CompetitorMatchGroup;
  */
 @Stateless
 @TransactionAttribute(TransactionAttributeType.MANDATORY)
+@Interceptors({TrackerInterceptor.class})
+
 public class CreateCompetitionManager implements CreateCompetitionManagerLocal {
 
     @Resource
