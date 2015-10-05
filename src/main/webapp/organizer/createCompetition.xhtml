@@ -83,7 +83,7 @@ and open the template in the editor.
                                 <p:outputLabel for="assignedCompetitors" value="#{msg.assignedCompetitors}"/><br/>
                                 <p:selectOneListbox scrollHeight="100"  id="assignedCompetitors" 
                                                     value="#{createCompetitionBackingBean.selectedToRemove}"
-                                                    var="selectedToRemove" converter="competitorConverter">
+                                                    var="selectedToRemove" converter="#{competitorConverter}">
                                     <f:selectItems value="#{createCompetitionBackingBean.selectedCompetitors}"/>
                                     <p:column>#{selectedToRemove.idPersonalInfo.firstName} 
                                         #{selectedToRemove.idPersonalInfo.lastName}</p:column>
@@ -105,7 +105,7 @@ and open the template in the editor.
                                 <p:outputLabel for="allCompetitors" value="#{msg.allCompetitors}"/><br/>
                                 <p:selectOneListbox scrollHeight="100" id="allCompetitors" 
                                                     value="#{createCompetitionBackingBean.selectedToAdd}"
-                                                    var="selectedToAdd" converter="competitorConverter">
+                                                    var="selectedToAdd" converter="#{competitorConverter}">
                                     <f:selectItems value="#{createCompetitionBackingBean.competitorList}"  />
                                     <p:column>#{selectedToAdd.idPersonalInfo.firstName} 
                                         #{selectedToAdd.idPersonalInfo.lastName}</p:column>

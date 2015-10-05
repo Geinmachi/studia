@@ -31,6 +31,7 @@ import javax.inject.Inject;
 import mot.services.CompetitionService;
 import org.primefaces.event.FlowEvent;
 import web.controllers.CompetitionController;
+import web.converters.CompetitorConverterData;
 
 /**
  *
@@ -38,7 +39,7 @@ import web.controllers.CompetitionController;
  */
 @Named(value = "createCompetitionBackingBean")
 @ViewScoped
-public class CreateCompetitionBackingBean implements Serializable {
+public class CreateCompetitionBackingBean implements Serializable, CompetitorConverterData {
 
     @Inject
     private CompetitionController controller;
@@ -116,6 +117,7 @@ public class CreateCompetitionBackingBean implements Serializable {
     
     @PostConstruct
     private void init() {
+        System.out.println("CReateCompetitionBB#init() ");
         competitorList = controller.getAllCompetitors();
         competitionTypes = controller.getAllCompetitionTypes();
         for (int i = 0; i < 16; i++) {
