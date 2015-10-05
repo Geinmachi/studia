@@ -27,6 +27,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
+import javax.persistence.Version;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -64,6 +65,7 @@ public class GroupDetails implements Serializable, Comparable<GroupDetails> {
     @Basic(optional = false)
     @NotNull
     @Column(name = "version")
+    @Version
     private long version;
     @JoinColumn(name = "id_group_name", referencedColumnName = "id_group_name")
     @ManyToOne(optional = false)

@@ -27,6 +27,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
+import javax.persistence.Version;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -82,6 +83,7 @@ public class Competition implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "version")
+    @Version
     private long version;
     @JoinColumn(name = "id_organizer", referencedColumnName = "id_access_level")
     @ManyToOne(optional = false)

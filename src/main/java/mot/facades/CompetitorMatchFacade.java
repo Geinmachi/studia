@@ -7,17 +7,25 @@ package mot.facades;
 
 import entities.Account;
 import entities.CompetitorMatch;
+import entities.MatchMatchType;
+import entities.Matchh;
 import java.util.List;
+import javax.ejb.LockType;
 import javax.ejb.Stateless;
+import javax.interceptor.Interceptors;
 import javax.persistence.EntityManager;
+import javax.persistence.LockModeType;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import ejbCommon.TrackerInterceptor;
 
 /**
  *
  * @author java
  */
 @Stateless
+@Interceptors({TrackerInterceptor.class})
+
 public class CompetitorMatchFacade extends AbstractFacade<CompetitorMatch> implements CompetitorMatchFacadeLocal {
 
     @PersistenceContext(unitName = "mot_persistence_unit")
@@ -65,7 +73,7 @@ public class CompetitorMatchFacade extends AbstractFacade<CompetitorMatch> imple
     public List<CompetitorMatch> findByCompetitionId(Integer idCompetition) {
         Query q = em.createNamedQuery("CompetitorMatch.findByCompetitionId");
         q.setParameter("idCompetition", idCompetition);
-        
+
         return (List<CompetitorMatch>) q.getResultList();
     }
 
@@ -73,8 +81,64 @@ public class CompetitorMatchFacade extends AbstractFacade<CompetitorMatch> imple
     public List<CompetitorMatch> findByIdMatch(Integer idMatch) {
         Query q = em.createNamedQuery("CompetitorMatch.findByIdMatch");
         q.setParameter("idMatch", idMatch);
-        
+
         return (List<CompetitorMatch>) q.getResultList();
     }
 
+    @Override
+    public void edit(CompetitorMatch entity) {
+        em.merge(entity);
+        em.flush();
+
+    }
+
+    @Override
+    public CompetitorMatch find(Object id) {
+        CompetitorMatch entity = em.find(CompetitorMatch.class, id);
+        em.flush();
+
+        return entity;
+    }
+
+    @Override
+    public CompetitorMatch editWithReturn(CompetitorMatch entity) {
+        for (MatchMatchType mmt : entity.getIdMatch().getMatchMatchTypeList()) {
+            em.lock(em.find(MatchMatchType.class, mmt.getIdMatchMatchType()), LockModeType.OPTIMISTIC_FORCE_INCREMENT);
+        }
+        
+        Query q = em.createNamedQuery("CompetitorMatch.findOtherByIdMatch");
+        q.setParameter("idMatch", entity.getIdMatch().getIdMatch());
+        q.setParameter("idCompetitorMatch", entity.getIdCompetitorMatch());
+        
+        CompetitorMatch otherCompetitorMatch = (CompetitorMatch) q.getSingleResult();
+        System.out.println("otherCompetitorMatch ID " + otherCompetitorMatch.getIdCompetitorMatch());
+        em.lock(otherCompetitorMatch, LockModeType.OPTIMISTIC_FORCE_INCREMENT);
+        
+        for (CompetitorMatch cm : entity.getIdMatch().getCompetitorMatchList()) {
+            if (cm.getIdCompetitorMatch().equals(otherCompetitorMatch.getIdCompetitorMatch())) {
+                int index = entity.getIdMatch().getCompetitorMatchList().indexOf(cm);
+                entity.getIdMatch().getCompetitorMatchList().set(index, otherCompetitorMatch);
+            }
+        }
+        
+        System.out.println("VERSION BEFORE UPDATE CompetitorMatch " + entity.getVersion());
+        CompetitorMatch editedCompetitorMatch = em.merge(entity);
+        em.flush();
+        System.out.println("VERSION AFTER UPDATE CompetitorMatch " + entity.getVersion());
+
+        return editedCompetitorMatch;
+    }
+
+    @Override
+    public Matchh editWithReturnAdvancing(Matchh storedMatch) {
+
+        for (int i = 0; i < storedMatch.getCompetitorMatchList().size(); i++) {
+            storedMatch.getCompetitorMatchList().set(i, em.merge(storedMatch.getCompetitorMatchList().get(i)));
+        }
+
+//        em.lock(em.find(Matchh.class, storedMatch.getIdMatch()), LockModeType.OPTIMISTIC_FORCE_INCREMENT);
+        em.flush();
+
+        return storedMatch;
+    }
 }

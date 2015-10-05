@@ -21,6 +21,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.persistence.Version;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -32,6 +33,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "competitor_match")
 @XmlRootElement
 @NamedQueries({
+    @NamedQuery(name = "CompetitorMatch.findOtherByIdMatch", query = "SELECT c FROM CompetitorMatch c WHERE c.idMatch.idMatch = :idMatch AND c.idCompetitorMatch != :idCompetitorMatch"),
     @NamedQuery(name = "CompetitorMatch.findByCompetitionId", query = "SELECT c FROM CompetitorMatch c WHERE c.idMatch.competition.idCompetition = :idCompetition"),
     @NamedQuery(name = "CompetitorMatch.findByIdMatch", query = "SELECT c FROM CompetitorMatch c WHERE c.idMatch.idMatch = :idMatch"),
     @NamedQuery(name = "CompetitorMatch.findByMatchNumberAndIdCompetition", query = "SELECT c FROM CompetitorMatch c WHERE c.idMatch.matchNumber = :matchNumber AND c.idMatch.competition.idCompetition = :idCompetition"),
@@ -59,6 +61,7 @@ public class CompetitorMatch implements Serializable{
     @Basic(optional = false)
     @NotNull
     @Column(name = "version")
+    @Version
     private long version;
     @JoinColumn(name = "id_competitor", referencedColumnName = "id_competitor")
     @ManyToOne(optional = true)

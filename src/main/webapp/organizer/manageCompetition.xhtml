@@ -33,7 +33,8 @@ and open the template in the editor.
                         <p:inputText id="competitionName" value="#{manageCompetitionBackingBean.competition.competitionName}" required="true"/>
                     </p:column>
                     <p:column rowspan="3">
-                        <p:commandButton value="#{msg.save}"  style="display: inline"/>
+                        <p:commandButton value="#{msg.save}" process="generalInfo" partialSubmit="true"
+                                         update="generalInfo" action="#{manageCompetitionBackingBean.saveGeneralInfo}"/>
                     </p:column>
                 </p:row>
                 <p:row>
@@ -50,6 +51,13 @@ and open the template in the editor.
                     </p:column>
                     <p:column>
                         <p:calendar id="competitionEndDate" pattern="MM/dd/yyyy HH:mm:ss" value="#{manageCompetitionBackingBean.competition.endDate}"/>
+                    </p:column>
+                </p:row>
+                <p:row >
+                    <p:column colspan="3" >
+                        <p:messages for="competitionStartDate"/>
+                        <p:messages for="competitionEndDate"/>
+                        <p:messages for="competitionName"/>
                     </p:column>
                 </p:row>
             </p:panelGrid>
@@ -87,7 +95,7 @@ and open the template in the editor.
                         <c:when test="#{not dashboardPanel.filler}">
                             <p:panel id="#{dashboardPanel.panel.id}" binding="#{dashboardPanel.panel}"
                                      header="#{msg.matchNumber} #{dashboardPanel.match.matchNumber}">
-                                <!--       idMatch = #{dashboardPanel.match} -->
+                                       idMatch = #{dashboardPanel.match} <br/>
                                 <ui:repeat value="#{dashboardPanel.match.competitorMatchList}" var="cmgFromMatch">
 <!--                                <c:forEach items="#{dashboardPanel.match.competitorMatchList}"
                                           var="cmgFromMatch">-->
@@ -102,7 +110,7 @@ and open the template in the editor.
                                         <p:inplace editor="true" disabled="#{!dashboardPanel.inplaceEditable || !dashboardPanel.editable}">
                                             <p:ajax event="save" listener="#{manageCompetitionBackingBean.saveScore(cmgFromMatch, dashboardPanel)}"
                                                     update=":manageCompetitionForm:dashboard" partialSubmit="true" process="@this"/>
-                                            <p:inputText id="scoreInput" value="#{cmgFromMatch.competitorMatchScore}" 
+                                            <p:inputText id="scoreInput" value="#{cmgFromMatch.competitorMatchScore}" label="#{msg.score}"
                                                          valueChangeListener="#{manageCompetitionBackingBean.saveOldScore}">
                                             </p:inputText>
                                             <p:message for="scoreInput" display="tooltip" />
@@ -125,7 +133,7 @@ and open the template in the editor.
                                     <f:selectItems value="#{manageCompetitionBackingBean.bracketCreator.matchTypeList}"
                                                    var="matchType" itemLabel="#{matchType.matchTypeName}"
                                                    />
-                                    <p:ajax process="@this" partialSubmit="true" update=":manageCompetitionForm:dashboard" listener="#{manageCompetitionBackingBean.updateMatchType(dashboardPanel)}"/>
+                                    <p:ajax process="@this" partialSubmit="true" update="@this" listener="#{manageCompetitionBackingBean.updateMatchType(dashboardPanel)}"/>
                                 </p:selectOneMenu>
                             </p:panel>
                         </c:when>

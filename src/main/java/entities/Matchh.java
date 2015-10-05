@@ -28,6 +28,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
+import javax.persistence.Version;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -74,6 +75,7 @@ public class Matchh implements Serializable, Comparable<Matchh>, AdvancingMatchD
     @Basic(optional = false)
     @NotNull
     @Column(name = "version")
+    @Version
     private long version;
     @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "idMatch", fetch = FetchType.EAGER)
     private List<MatchMatchType> matchMatchTypeList = new ArrayList<>();

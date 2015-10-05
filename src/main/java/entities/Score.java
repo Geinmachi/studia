@@ -17,6 +17,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Version;
+import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -47,6 +49,11 @@ public class Score implements Serializable {
     @JoinColumn(name = "id_competitor", referencedColumnName = "id_competitor")
     @ManyToOne(optional = false)
     private Competitor idCompetitor;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "version")
+    @Version
+    private long version;
 
     public Score() {
     }

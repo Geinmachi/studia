@@ -148,6 +148,7 @@ public class BracketCreation implements Serializable {
         this.competitorMatchGroupList = cmgList;
         initializeLists();
         createModel();
+        disableFinishedMatches();
         assignCurrentMatchTypes();
         //    assignMatchTypes();
     }
@@ -268,7 +269,6 @@ public class BracketCreation implements Serializable {
             dashboardModel.addColumn(otherColumns.get(i));
         }
 
-        disableFinishedMatches();
     }
 
     private DashboardColumn createFillers(int columnNumber, int matchesInRoundCount) {
@@ -419,22 +419,27 @@ public class BracketCreation implements Serializable {
         }
     }
 
-    public void updateScores(CompetitorMatch updatedCMG) {
+    public void updateScores(CompetitorMatch updatedCompetitorMatch) {
         for (DashboardPanel dp : panelList) {
-            if (dp.getMatch().equals(updatedCMG.getIdMatch())) {
+            if (dp.getMatch().equals(updatedCompetitorMatch.getIdMatch())) {
                 System.out.println("DPPPPPPPPPPP : " + dp.getMatch());
-                System.out.println("NEIW DPPPPPPPPPPPP : " + updatedCMG.getIdMatch());
+                System.out.println("NEIW DPPPPPPPPPPPP : " + updatedCompetitorMatch.getIdMatch());
 
                 for (CompetitorMatch cmg : dp.getMatch().getCompetitorMatchList()) {
 
                     System.out.println("DP CMGGGGGG  : " + cmg);
-                    System.out.println("CMGGGGGG  : " + updatedCMG);
+                    System.out.println("CMGGGGGG  : " + updatedCompetitorMatch);
 
-                    if (cmg.equals(updatedCMG)) {
-                        cmg.setCompetitorMatchScore(updatedCMG.getCompetitorMatchScore());
+                    if (cmg.equals(updatedCompetitorMatch)) {
+                        int cmIndex = dp.getMatch().getCompetitorMatchList().indexOf(cmg);
+                        
+                        System.out.println("VERSION before update " + dp.getMatch().getCompetitorMatchList().get(cmIndex).getVersion());
+                        dp.getMatch().getCompetitorMatchList().set(cmIndex, updatedCompetitorMatch);
+                        System.out.println("VERSION after update " + dp.getMatch().getCompetitorMatchList().get(cmIndex).getVersion());
+//                        cmg.setCompetitorMatchScore(updatedCompetitorMatch.getCompetitorMatchScore());
 
                         System.out.println("CMGs sa rowne:::: score " + cmg.getCompetitorMatchScore());
-                        System.out.println("CZy sa rowne referencyjnie " + (cmg == updatedCMG));
+                        System.out.println("CZy sa rowne referencyjnie " + (cmg == updatedCompetitorMatch));
                         System.out.println("DP SIZE " + panelList.size());
                         System.out.println("CMG SIZE " + dp.getMatch().getCompetitorMatchList().size());
                         return;
@@ -492,6 +497,7 @@ public class BracketCreation implements Serializable {
         for (DashboardPanel dp : panelList) {
 
             //    System.out.println("PANEL SERAILZIABLE " + dp.getPanel());
+            BracketUtil.makeSerializablePanel(dp);
             InactivateMatch updatedMatch = controller.disableMatch(dp);
 
             dp.setEditable(updatedMatch.getEditable());

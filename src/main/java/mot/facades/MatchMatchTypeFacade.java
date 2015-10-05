@@ -5,9 +5,11 @@
  */
 package mot.facades;
 
+import entities.CompetitorMatch;
 import entities.MatchMatchType;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.LockModeType;
 import javax.persistence.PersistenceContext;
 
 /**
@@ -26,6 +28,19 @@ public class MatchMatchTypeFacade extends AbstractFacade<MatchMatchType> impleme
 
     public MatchMatchTypeFacade() {
         super(MatchMatchType.class);
+    }
+
+    @Override
+    public MatchMatchType editWithReturn(MatchMatchType matchMatchType) {
+        for (CompetitorMatch cm : matchMatchType.getIdMatch().getCompetitorMatchList()) {
+            System.out.println("VERSION bbbb " + cm.getVersion());
+            em.lock(em.find(CompetitorMatch.class, cm.getIdCompetitorMatch()), LockModeType.OPTIMISTIC_FORCE_INCREMENT);
+        }
+        
+        MatchMatchType entity = em.merge(matchMatchType);
+        em.flush();
+        System.out.println("VERSION aaa " + matchMatchType.getIdMatch().getCompetitorMatchList().get(0).getVersion());
+        return entity;
     }
     
 }

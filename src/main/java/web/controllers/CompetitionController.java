@@ -9,6 +9,7 @@ import entities.Competition;
 import entities.CompetitionType;
 import entities.Competitor;
 import entities.CompetitorMatch;
+import entities.MatchMatchType;
 import entities.MatchType;
 import entities.Matchh;
 import entities.Score;
@@ -129,7 +130,7 @@ public class CompetitionController implements Serializable {
         return service.getCompetitionCMGMappings(competition);
     }
 
-    public CompetitorMatch saveCompetitorScore(CompetitorMatch cmg)  throws ApplicationException{
+    public Map<String, CompetitorMatch> saveCompetitorScore(CompetitorMatch cmg)  throws ApplicationException{
         return service.saveCompetitorScore(cmg);
     }
 
@@ -149,8 +150,8 @@ public class CompetitionController implements Serializable {
         return service.getCompetitionResults(competition.getIdCompetition());
     }
 
-    public void updateMatchType(Matchh match) {
-        service.updateMatchType(match);
+    public MatchMatchType updateMatchType(Matchh match) {
+        return service.updateMatchType(match);
     }
 
     public InactivateMatch disableMatch(InactivateMatch inactivateMatch) {
@@ -163,5 +164,9 @@ public class CompetitionController implements Serializable {
 
     public CompetitorMatch advanceCompetitor(CompetitorMatch competitorMatch) {
         return service.advanceCompetitor(competitorMatch);
+    }
+
+    public void saveCompetitionGeneralInfo(Competition competition) {
+        editingCompetition = service.saveCompetitionGeneralInfo(competition);
     }
 }

@@ -9,6 +9,7 @@ import entities.Competition;
 import entities.CompetitionType;
 import entities.Competitor;
 import entities.CompetitorMatch;
+import entities.MatchMatchType;
 import entities.MatchType;
 import entities.Matchh;
 import entities.Score;
@@ -54,7 +55,7 @@ public interface CompetitionServiceLocal {
 
     public List<CMG> getCompetitionCMGMappings(Competition competition);
 
-    public CompetitorMatch saveCompetitorScore(CompetitorMatch cmg)  throws ApplicationException;
+    public Map<String, CompetitorMatch> saveCompetitorScore(CompetitorMatch cmg)  throws ApplicationException;
 
     public List<CompetitorMatch> findCompeitorMatchByIdMatch(Integer idMatch);
     
@@ -66,11 +67,13 @@ public interface CompetitionServiceLocal {
 
     public Map<Competitor, Integer> getCompetitionResults(Integer idCompetition);
 
-    public void updateMatchType(Matchh match);
+    public MatchMatchType updateMatchType(Matchh match);
 
     public InactivateMatch disableMatch(InactivateMatch inactivateMatch);
 
     public CurrentMatchType assignCurrentMatchType(CurrentMatchType cmt);
     
     public CompetitorMatch advanceCompetitor(CompetitorMatch competitorMatch);
+
+    public Competition saveCompetitionGeneralInfo(Competition competition);
 }
