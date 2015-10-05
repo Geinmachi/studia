@@ -33,6 +33,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "competitor_match")
 @XmlRootElement
 @NamedQueries({
+    @NamedQuery(name = "CompetitorMatch.findOtherByIdMatch", query = "SELECT c FROM CompetitorMatch c WHERE c.idMatch.idMatch = :idMatch AND c.idCompetitorMatch != :idCompetitorMatch"),
     @NamedQuery(name = "CompetitorMatch.findByCompetitionId", query = "SELECT c FROM CompetitorMatch c WHERE c.idMatch.competition.idCompetition = :idCompetition"),
     @NamedQuery(name = "CompetitorMatch.findByIdMatch", query = "SELECT c FROM CompetitorMatch c WHERE c.idMatch.idMatch = :idMatch"),
     @NamedQuery(name = "CompetitorMatch.findByMatchNumberAndIdCompetition", query = "SELECT c FROM CompetitorMatch c WHERE c.idMatch.matchNumber = :matchNumber AND c.idMatch.competition.idCompetition = :idCompetition"),

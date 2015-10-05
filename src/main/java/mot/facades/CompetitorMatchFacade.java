@@ -105,6 +105,22 @@ public class CompetitorMatchFacade extends AbstractFacade<CompetitorMatch> imple
         for (MatchMatchType mmt : entity.getIdMatch().getMatchMatchTypeList()) {
             em.lock(em.find(MatchMatchType.class, mmt.getIdMatchMatchType()), LockModeType.OPTIMISTIC_FORCE_INCREMENT);
         }
+        
+        Query q = em.createNamedQuery("CompetitorMatch.findOtherByIdMatch");
+        q.setParameter("idMatch", entity.getIdMatch().getIdMatch());
+        q.setParameter("idCompetitorMatch", entity.getIdCompetitorMatch());
+        
+        CompetitorMatch otherCompetitorMatch = (CompetitorMatch) q.getSingleResult();
+        System.out.println("otherCompetitorMatch ID " + otherCompetitorMatch.getIdCompetitorMatch());
+        em.lock(otherCompetitorMatch, LockModeType.OPTIMISTIC_FORCE_INCREMENT);
+        
+        for (CompetitorMatch cm : entity.getIdMatch().getCompetitorMatchList()) {
+            if (cm.getIdCompetitorMatch().equals(otherCompetitorMatch.getIdCompetitorMatch())) {
+                int index = entity.getIdMatch().getCompetitorMatchList().indexOf(cm);
+                entity.getIdMatch().getCompetitorMatchList().set(index, otherCompetitorMatch);
+            }
+        }
+        
         System.out.println("VERSION BEFORE UPDATE CompetitorMatch " + entity.getVersion());
         CompetitorMatch editedCompetitorMatch = em.merge(entity);
         em.flush();
