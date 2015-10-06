@@ -26,6 +26,7 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import web.backingBeans.CreateCompetitionBackingBean;
+import web.backingBeans.CreateTeamBackingBean;
 import web.controllers.CompetitionController;
 import web.qualifiers.CompetitorsDataSource;
 
@@ -46,8 +47,8 @@ public class CompetitorConverter implements Converter, Serializable {
     @Produces
     @CompetitorsDataSource
     @ViewScoped
-    public CompetitorConverterData getDataSource(@Any CreateCompetitionBackingBean competition) {
-        System.out.println("WYkonalo sie produces");
+    public CompetitorConverterData getDataSource(@Any CreateCompetitionBackingBean competition, @Any CreateTeamBackingBean team) {
+        System.out.println("WYkonalo sie produces " + competition);
         
         return competition;
     }

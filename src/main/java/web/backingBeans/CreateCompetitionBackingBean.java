@@ -117,7 +117,7 @@ public class CreateCompetitionBackingBean implements Serializable, CompetitorCon
     
     @PostConstruct
     private void init() {
-        System.out.println("CReateCompetitionBB#init() ");
+        System.out.println("CReateCompetitionBB#init() " + this);
         competitorList = controller.getAllCompetitors();
         competitionTypes = controller.getAllCompetitionTypes();
         for (int i = 0; i < 16; i++) {
