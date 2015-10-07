@@ -25,6 +25,7 @@ import javax.faces.convert.FacesConverter;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.servlet.http.HttpServletRequest;
 import web.backingBeans.CreateCompetitionBackingBean;
 import web.backingBeans.CreateTeamBackingBean;
 import web.controllers.CompetitionController;
@@ -48,11 +49,21 @@ public class CompetitorConverter implements Converter, Serializable {
     @CompetitorsDataSource
     @ViewScoped
     public CompetitorConverterData getDataSource(@Any CreateCompetitionBackingBean competition, @Any CreateTeamBackingBean team) {
-        System.out.println("WYkonalo sie produces " + competition);
+        System.out.println("PRODUUUUUUUUUUUUUUUUCES");
         
-        return competition;
+        String viewId = FacesContext.getCurrentInstance().getViewRoot().getViewId();
+
+        if (viewId.contains("createCompetition")) {
+            return competition;
+        } else if (viewId.contains("createTeam")) {
+            return team;
+        } else {
+            System.out.println("CompetitorConverter#getDataSource no injection point");
+            throw new IllegalStateException("No injection point found in @Produces");
+        }
+
     }
-    
+
     @Override
     public Object getAsObject(FacesContext fc, UIComponent uic, String value) {
         try {

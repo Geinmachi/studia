@@ -35,5 +35,13 @@ public class CompetitorFacade extends AbstractFacade<Competitor> implements Comp
         
         return entity;
     }
+
+    @Override
+    public Competitor editWithReturn(Competitor competitor) {
+        Competitor entity = em.merge(competitor);
+        em.flush();
+        
+        return entity;
+    }
     
 }

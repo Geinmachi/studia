@@ -6,14 +6,19 @@
 package web.backingBeans;
 
 import entities.Competitor;
+import entities.Team;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
+import org.primefaces.model.DualListModel;
 import web.controllers.CompetitionController;
 import web.converters.CompetitorConverterData;
 
@@ -22,35 +27,62 @@ import web.converters.CompetitorConverterData;
  * @author java
  */
 @Named(value = "createTeamBackingBean")
-@SessionScoped
+@ViewScoped
 public class CreateTeamBackingBean implements Serializable, CompetitorConverterData{
 
-    private String na = "abcd";
+    private final Team team = new Team();
+    
+    private DualListModel competitors;
     
     @Inject
     private CompetitionController controller;
 
-    public String getNa() {
-        return na;
+    public Team getTeam() {
+        return team;
     }
 
-    public void setNa(String na) {
-        this.na = na;
+    public DualListModel getCompetitors() {
+        return competitors;
+    }
+
+    public void setCompetitors(DualListModel competitors) {
+        this.competitors = competitors;
     }
     
-    @PostConstruct
-    private void init() {
-        System.out.println("CreateTeamBackingBean#init() " + this);
-    }
     /**
      * Creates a new instance of CreateTeamBackingBean
      */
     public CreateTeamBackingBean() {
     }
 
+    
+    @PostConstruct
+    private void init() {
+        System.out.println("CreateTeamBackingBean#init() " + this);
+        
+        List<Competitor> competitorsSource = controller.getAllCompetitors();
+        List<Competitor> comeptitorsTarget = new ArrayList<>();
+        
+        competitors = new DualListModel(competitorsSource, comeptitorsTarget);
+        
+    }
+    
     @Override
     public List<Competitor> getCompetitorList() {
-        return controller.getAllCompetitors();
+        return competitors.getSource();
+    }
+    
+    public String createTeam() {
+        team.setCompetitorList(competitors.getTarget());
+        
+        try {
+            controller.createTeam(team);
+            return "/index.xhtml?faces-redirect=true";
+        } catch (Exception e) {
+            System.out.println("Wyjatek przy twrzoeniu");
+            Logger.getLogger(CreateTeamBackingBean.class.getName()).log(Level.SEVERE, null, e);
+            return null;
+        }
     }
     
 }

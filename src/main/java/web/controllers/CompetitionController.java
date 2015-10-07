@@ -169,4 +169,8 @@ public class CompetitionController implements Serializable {
     public void saveCompetitionGeneralInfo(Competition competition) {
         editingCompetition = service.saveCompetitionGeneralInfo(competition);
     }
+
+    public void createTeam(Team team) {
+        service.createTeam(team);
+    }
 }

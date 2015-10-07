@@ -76,4 +76,6 @@ public interface CompetitionServiceLocal {
     public CompetitorMatch advanceCompetitor(CompetitorMatch competitorMatch);
 
     public Competition saveCompetitionGeneralInfo(Competition competition);
+
+    public void createTeam(Team team);
 }

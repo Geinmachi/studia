@@ -20,12 +20,15 @@ import mot.facades.CompetitionFacadeLocal;
 import mot.facades.ScoreFacadeLocal;
 import utils.SortUtil;
 import ejbCommon.TrackerInterceptor;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 
 /**
  *
  * @author java
  */
 @Stateless
+@TransactionAttribute(TransactionAttributeType.MANDATORY)
 @Interceptors({TrackerInterceptor.class})
 public class PresentCompetitionManager implements PresentCompetitionManagerLocal {
 
