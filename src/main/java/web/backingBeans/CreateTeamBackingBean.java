@@ -76,6 +76,7 @@ public class CreateTeamBackingBean implements Serializable, CompetitorConverterD
         team.setCompetitorList(competitors.getTarget());
         
         try {
+            System.out.println("Competitors size BB " + team.getCompetitorList().size());
             controller.createTeam(team);
             return "/index.xhtml?faces-redirect=true";
         } catch (Exception e) {

@@ -37,7 +37,12 @@ public class CompetitionComponentsManager implements CompetitionComponentsManage
     public void createTeam(Team team) {
         List<Competitor> fetchedCompetitors = new ArrayList<>();
         
+        
         teamFacade.create(team);
+        
+        System.out.println("Competitors size " + team.getCompetitorList().size());
+        System.out.println("TEAM NAME " + team.getTeamName());
+        
         
         for (Competitor c : team.getCompetitorList()) {
             Competitor fetchedCompetitor = competitorFacade.find(c.getIdCompetitor());
