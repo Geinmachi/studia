@@ -22,6 +22,7 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.bean.RequestScoped;
 import javax.inject.Named;
@@ -31,14 +32,17 @@ import javax.inject.Inject;
 import mot.services.CompetitionService;
 import org.primefaces.event.FlowEvent;
 import web.controllers.CompetitionController;
+import web.qualifiers.CompetitionCreation;
+import web.utils.ConverterData;
 
 /**
  *
  * @author java
  */
+//@CompetitionCreation
 @Named(value = "createCompetitionBackingBean")
 @ViewScoped
-public class CreateCompetitionBackingBean implements Serializable {
+public class CreateCompetitionBackingBean implements Serializable, ConverterData {
 
     @Inject
     private CompetitionController controller;
@@ -69,6 +73,7 @@ public class CreateCompetitionBackingBean implements Serializable {
         return competition;
     }
 
+    @Override
     public List<Competitor> getCompetitorList() {
         return competitorList;
     }
@@ -116,6 +121,8 @@ public class CreateCompetitionBackingBean implements Serializable {
     
     @PostConstruct
     private void init() {
+        System.out.println("CreateCompetitionBackingBean#init ");
+        System.out.println("HASCODE beana " + this.toString());
         competitorList = controller.getAllCompetitors();
         competitionTypes = controller.getAllCompetitionTypes();
         for (int i = 0; i < 16; i++) {
@@ -126,6 +133,12 @@ public class CreateCompetitionBackingBean implements Serializable {
         competition.setStartDate(new Date());
     }
 
+    @PreDestroy
+    private void destroy() {
+        System.out.println("CreateCompetitionBackingBean#destroyyyyy ");
+        System.out.println("HASCODE beana " + this.toString());
+    }
+    
     public String onFlowProcess(FlowEvent event) {
         if (event.getOldStep().equals("firstStep")) {
             bracketCreator.createEmptyBracket(selectedCompetitors);
