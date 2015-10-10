@@ -60,7 +60,7 @@ public class CreateTeamBackingBean implements Serializable, CompetitorConverterD
     private void init() {
         System.out.println("CreateTeamBackingBean#init() " + this);
         
-        List<Competitor> competitorsSource = controller.getAllCompetitors();
+        List<Competitor> competitorsSource = controller.getAllTeamlessCompetitors();
         List<Competitor> comeptitorsTarget = new ArrayList<>();
         
         competitors = new DualListModel(competitorsSource, comeptitorsTarget);

@@ -37,6 +37,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Competitor.findAll", query = "SELECT c FROM Competitor c"),
+    @NamedQuery(name = "Competitor.findAllTeamless", query = "SELECT c FROM Competitor c WHERE c.idTeam IS NULL"),
     @NamedQuery(name = "Competitor.findByIdCompetitor", query = "SELECT c FROM Competitor c WHERE c.idCompetitor = :idCompetitor")})
 public class Competitor implements Serializable {
 

@@ -78,4 +78,6 @@ public interface CompetitionServiceLocal {
     public Competition saveCompetitionGeneralInfo(Competition competition);
 
     public void createTeam(Team team);
+
+    public List<Competitor> getAllTeamlessCompetitors();
 }

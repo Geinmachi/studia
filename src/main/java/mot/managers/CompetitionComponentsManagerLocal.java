@@ -5,7 +5,9 @@
  */
 package mot.managers;
 
+import entities.Competitor;
 import entities.Team;
+import java.util.List;
 import javax.ejb.Remote;
 
 /**
@@ -16,4 +18,6 @@ import javax.ejb.Remote;
 public interface CompetitionComponentsManagerLocal {
     
     public void createTeam(Team team);
+
+    public List<Competitor> getAllTeamlessCompetitors();
 }

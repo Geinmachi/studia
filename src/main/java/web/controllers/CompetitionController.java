@@ -173,4 +173,8 @@ public class CompetitionController implements Serializable {
     public void createTeam(Team team) {
         service.createTeam(team);
     }
+
+    public List<Competitor> getAllTeamlessCompetitors() {
+        return service.getAllTeamlessCompetitors();
+    }
 }

@@ -38,7 +38,7 @@ public class CompetitionComponentsManager implements CompetitionComponentsManage
         List<Competitor> fetchedCompetitors = new ArrayList<>();
         
         
-        teamFacade.create(team);
+        team = teamFacade.createWithReturn(team);
         
         System.out.println("Competitors size " + team.getCompetitorList().size());
         System.out.println("TEAM NAME " + team.getTeamName());
@@ -46,6 +46,11 @@ public class CompetitionComponentsManager implements CompetitionComponentsManage
         
         for (Competitor c : team.getCompetitorList()) {
             Competitor fetchedCompetitor = competitorFacade.find(c.getIdCompetitor());
+            
+            if (fetchedCompetitor.getIdTeam() != null) {
+                throw new IllegalStateException("Competitor has alredy team, cannot add to another one");
+            }
+            
             fetchedCompetitor.setIdTeam(team);
             fetchedCompetitor = competitorFacade.editWithReturn(fetchedCompetitor);
             
@@ -54,6 +59,11 @@ public class CompetitionComponentsManager implements CompetitionComponentsManage
 //            fetchedCompetitors.add(fetchedCompetitor);
         }
         
+    }
+
+    @Override
+    public List<Competitor> getAllTeamlessCompetitors() {
+        return competitorFacade.findAllTeamless();
     }
     
 }

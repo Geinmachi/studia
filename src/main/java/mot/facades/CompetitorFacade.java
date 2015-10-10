@@ -6,9 +6,11 @@
 package mot.facades;
 
 import entities.Competitor;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -42,6 +44,13 @@ public class CompetitorFacade extends AbstractFacade<Competitor> implements Comp
         em.flush();
         
         return entity;
+    }
+
+    @Override
+    public List<Competitor> findAllTeamless() {
+        Query q = em.createNamedQuery("Competitor.findAllTeamless");
+        
+        return (List<Competitor>) q.getResultList();
     }
     
 }

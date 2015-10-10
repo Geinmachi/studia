@@ -33,5 +33,7 @@ public interface CompetitorFacadeLocal {
     public Competitor findAndInitializeGroups(Integer idCompetitor);
 
     public Competitor editWithReturn(Competitor competitor);
+
+    public List<Competitor> findAllTeamless();
     
 }

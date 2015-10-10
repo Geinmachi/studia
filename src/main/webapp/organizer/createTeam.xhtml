@@ -32,8 +32,8 @@ and open the template in the editor.
                 </p:row>
                 <p:row>
                     <p:column colspan="2">
-                        <p:pickList id="competitorPickList" value="#{createTeamBackingBean.competitors}" var="competitors"
-                                    itemValue="#{competitors}" showCheckbox="true"
+                        <p:pickList id="competitorPickList" value="#{createTeamBackingBean.competitors}" var="competitor"
+                                    itemValue="#{competitor}" itemLabel="#{competitor.idPersonalInfo.firstName} #{competitor.idPersonalInfo.lastName} " showCheckbox="true" converter="#{competitorConverter}"
                                     showSourceFilter="true" showTargetFilter="true" filterMatchMode="contains">
 
                             <f:facet name="sourceCaption">#{msg.competitors}</f:facet>
@@ -41,8 +41,8 @@ and open the template in the editor.
 
                             <p:column style="width: 100%">
                                 <p:outputLabel>
-                                    #{competitors.idPersonalInfo.firstName} 
-                                    #{competitors.idPersonalInfo.lastName}
+                                    #{competitor.idPersonalInfo.firstName} 
+                                    #{competitor.idPersonalInfo.lastName}
                                 </p:outputLabel>
                             </p:column>
                         </p:pickList>

@@ -278,4 +278,9 @@ public class CompetitionService implements CompetitionServiceLocal {
     public void createTeam(Team team) {
         competitionComponentsManager.createTeam(team);
     }
+
+    @Override
+    public List<Competitor> getAllTeamlessCompetitors() {
+        return competitionComponentsManager.getAllTeamlessCompetitors();
+    }
 }
