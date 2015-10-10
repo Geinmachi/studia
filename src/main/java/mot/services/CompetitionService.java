@@ -15,7 +15,6 @@ import entities.Matchh;
 import entities.Score;
 import entities.Team;
 import exceptions.ApplicationException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import javax.ejb.EJB;
@@ -34,6 +33,7 @@ import mot.managers.PresentCompetitionManagerLocal;
 import mot.interfaces.CurrentMatchType;
 import mot.interfaces.InactivateMatch;
 import ejbCommon.TrackerInterceptor;
+import mot.managers.CompetitionComponentsManagerLocal;
 
 /**
  *
@@ -52,6 +52,9 @@ public class CompetitionService implements CompetitionServiceLocal {
 
     @EJB
     private PresentCompetitionManagerLocal presentCompetitionManager;
+    
+    @EJB
+    private CompetitionComponentsManagerLocal competitionComponentsManager;
 
     @EJB
     private TeamFacadeLocal teamFacade;
@@ -269,5 +272,15 @@ public class CompetitionService implements CompetitionServiceLocal {
         }
 
         throw new IllegalStateException("There was no match to replace");
+    }
+
+    @Override
+    public void createTeam(Team team) {
+        competitionComponentsManager.createTeam(team);
+    }
+
+    @Override
+    public List<Competitor> getAllTeamlessCompetitors() {
+        return competitionComponentsManager.getAllTeamlessCompetitors();
     }
 }

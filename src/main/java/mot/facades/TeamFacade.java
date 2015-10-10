@@ -30,5 +30,13 @@ public class TeamFacade extends AbstractFacade<Team> implements TeamFacadeLocal 
     public TeamFacade() {
         super(Team.class);
     }
+
+    @Override
+    public Team createWithReturn(Team team) {
+        em.persist(team);
+        em.flush();
+        
+        return team;
+    }
     
 }

@@ -61,7 +61,6 @@ import ejbCommon.TrackerInterceptor;
 @Stateless
 @TransactionAttribute(TransactionAttributeType.MANDATORY)
 @Interceptors({TrackerInterceptor.class})
-
 public class CreateCompetitionManager implements CreateCompetitionManagerLocal {
 
     @Resource

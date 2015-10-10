@@ -199,3 +199,7 @@ div[id$="CompetitionForm:dashboard"] .ui-sortable-handle {
 input[id$="scoreInput"] {
     width: 20px !important;
 }
+
+.ui-picklist-list {
+    width: auto !important;
+}

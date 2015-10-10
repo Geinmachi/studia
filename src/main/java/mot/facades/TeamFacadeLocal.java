@@ -29,5 +29,7 @@ public interface TeamFacadeLocal {
     List<Team> findRange(int[] range);
 
     int count();
+
+    public Team createWithReturn(Team team);
     
 }

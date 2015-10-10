@@ -43,12 +43,15 @@ import mot.interfaces.InactivateMatch;
 import utils.BracketUtil;
 import utils.ConvertUtil;
 import ejbCommon.TrackerInterceptor;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 
 /**
  *
  * @author java
  */
 @Stateless
+@TransactionAttribute(TransactionAttributeType.MANDATORY)
 @Interceptors({TrackerInterceptor.class})
 public class ManageCompetitionManager implements ManageCompetitionManagerLocal {
 
@@ -196,7 +199,7 @@ public class ManageCompetitionManager implements ManageCompetitionManagerLocal {
 
     private void validateScore(Matchh match, CompetitorMatch receivedCompetitorMatch) throws ApplicationException {
         if (receivedCompetitorMatch == null || receivedCompetitorMatch.getCompetitorMatchScore() == null) {
-            throw new IllegalArgumentException("Can't be null");
+            throw new InvalidScoreException("Can't be null");
         }
 
         for (MatchMatchType mmt : match.getMatchMatchTypeList()) {
