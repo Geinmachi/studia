@@ -8,12 +8,14 @@ package web.backingBeans;
 import entities.Competitor;
 import entities.PersonalInfo;
 import entities.Team;
+import exceptions.ApplicationException;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import web.controllers.CompetitionController;
+import web.utils.JsfUtils;
 
 /**
  *
@@ -30,6 +32,8 @@ public class AddCompetitorBackingBean {
 
     private final PersonalInfo personalInfo = new PersonalInfo();
 
+    private boolean isGlobal = false;
+
     private List<Team> teamList;
 
     private Team selectedTeam;
@@ -45,6 +49,14 @@ public class AddCompetitorBackingBean {
         return personalInfo;
     }
 
+    public boolean isIsGlobal() {
+        return isGlobal;
+    }
+
+    public void setIsGlobal(boolean isGlobal) {
+        this.isGlobal = isGlobal;
+    }
+
     public List<Team> getTeamList() {
         return teamList;
     }
@@ -56,7 +68,7 @@ public class AddCompetitorBackingBean {
     public void setSelectedTeam(Team selectedTeam) {
         this.selectedTeam = selectedTeam;
     }
-    
+
     @PostConstruct
     private void init() {
         competitor.setIdPersonalInfo(personalInfo);
@@ -66,12 +78,19 @@ public class AddCompetitorBackingBean {
 
     public String addCompetitor() {
         try {
-            controller.addCompetitor(competitor);
+            competitor.setIdTeam(selectedTeam);
+            controller.addCompetitor(competitor, isGlobal);
             return "/index.xhtml?faces-redirect=true";
+        } catch (ApplicationException e) {
+            JsfUtils.addErrorMessage(e.getLocalizedMessage(), null, null);
+            
+            System.out.println("Application Exception ");
         } catch (Exception e) {
-            System.out.println("Exception ");
+
+            System.out.println("Exception in AddCompetitorBB#addCompetitor");
             e.printStackTrace();
-            return null;
         }
+
+        return null;
     }
 }

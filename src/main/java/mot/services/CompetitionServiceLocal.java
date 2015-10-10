@@ -31,7 +31,7 @@ public interface CompetitionServiceLocal {
     
     public List<Team> findAllTeams();
     
-    public void addCompetitor(Competitor competitor);
+    public void addCompetitor(Competitor competitor, boolean global) throws ApplicationException;
     
     public List<Competitor> getAllCompetitors();
     

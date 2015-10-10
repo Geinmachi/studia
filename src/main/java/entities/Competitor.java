@@ -25,6 +25,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.persistence.Version;
+import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -37,6 +39,8 @@ import javax.xml.bind.annotation.XmlTransient;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Competitor.findAll", query = "SELECT c FROM Competitor c"),
+    @NamedQuery(name = "Competitor.findByFirstnameLastnameGlobal", query = "SELECT c FROM Competitor c WHERE c.idPersonalInfo.firstName = :firstName AND c.idPersonalInfo.lastName = :lastName AND c.idCreator IS NULL"),
+    @NamedQuery(name = "Competitor.findByFirstnameLastnameCreator", query = "SELECT c FROM Competitor c WHERE c.idPersonalInfo.firstName = :firstName AND c.idPersonalInfo.lastName = :lastName AND c.idCreator.idAccessLevel = :idCreator"),
     @NamedQuery(name = "Competitor.findAllTeamless", query = "SELECT c FROM Competitor c WHERE c.idTeam IS NULL"),
     @NamedQuery(name = "Competitor.findByIdCompetitor", query = "SELECT c FROM Competitor c WHERE c.idCompetitor = :idCompetitor")})
 public class Competitor implements Serializable {
@@ -61,8 +65,16 @@ public class Competitor implements Serializable {
     @JoinColumn(name = "id_team", referencedColumnName = "id_team")
     @ManyToOne
     private Team idTeam;
+    @JoinColumn(name = "id_creator", referencedColumnName = "id_access_level")
+    @ManyToOne
+    private AccessLevel idCreator;
     @OneToMany(mappedBy = "idCompetitor")
     private List<GroupCompetitor> groupCompetitorList = new ArrayList<>();
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "version")
+    @Version
+    private long version;
 
     public Competitor() {
     }
@@ -107,6 +119,14 @@ public class Competitor implements Serializable {
 
     public void setIdPersonalInfo(PersonalInfo idPersonalInfo) {
         this.idPersonalInfo = idPersonalInfo;
+    }
+
+    public AccessLevel getIdCreator() {
+        return idCreator;
+    }
+
+    public void setIdCreator(AccessLevel idCreator) {
+        this.idCreator = idCreator;
     }
 
     public Team getIdTeam() {

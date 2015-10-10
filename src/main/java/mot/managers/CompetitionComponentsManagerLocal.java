@@ -7,6 +7,7 @@ package mot.managers;
 
 import entities.Competitor;
 import entities.Team;
+import exceptions.ApplicationException;
 import java.util.List;
 import javax.ejb.Remote;
 
@@ -20,4 +21,6 @@ public interface CompetitionComponentsManagerLocal {
     public void createTeam(Team team);
 
     public List<Competitor> getAllTeamlessCompetitors();
+
+    public void addCompetitor(Competitor competitor, boolean global) throws ApplicationException;
 }

@@ -82,8 +82,8 @@ public class CompetitionController implements Serializable {
         return service.findAllTeams();
     }
 
-    public void addCompetitor(Competitor competitor) {
-        service.addCompetitor(competitor);
+    public void addCompetitor(Competitor competitor, boolean global) throws ApplicationException {
+        service.addCompetitor(competitor, global);
     }
 
     public List<Competitor> getAllCompetitors() {

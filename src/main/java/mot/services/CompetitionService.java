@@ -78,8 +78,8 @@ public class CompetitionService implements CompetitionServiceLocal {
     }
 
     @Override
-    public void addCompetitor(Competitor competitor) {
-        competitorFacade.create(competitor);
+    public void addCompetitor(Competitor competitor, boolean global) throws ApplicationException {
+        competitionComponentsManager.addCompetitor(competitor, global);
     }
 
     @Override
