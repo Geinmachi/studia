@@ -77,7 +77,7 @@ public class CompetitorConverter implements Converter, Serializable {
                 }
             }
 
-            throw new IllegalArgumentException("Nie ma takiego competitionType");
+            throw new IllegalArgumentException("Nie ma takiego competitora " + value);
         } catch (Exception e) {
             System.out.println("CompetitorConverter#getAsObject WYjatekgetAsObject " + e.getMessage());
             e.printStackTrace();

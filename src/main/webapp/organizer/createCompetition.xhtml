@@ -15,13 +15,13 @@ and open the template in the editor.
                 xmlns:fn="http://java.sun.com/jsp/jstl/functions">
     <ui:define name="title">#{msg.createCompetitionTitle}</ui:define>
     <ui:define name="content">
-        
+
         <p:ajaxStatus onstart="PF('ajaxStatusDialog').show();" onsuccess="PF('ajaxStatusDialog').hide();"/> 
         <p:dialog styleClass="loadingDialog" showHeader="false" modal="true" widgetVar="ajaxStatusDialog"  
                   resizable="false"  draggable="false" closable="false" >
             <p:graphicImage height="36" width="36" library="img" name="loading_icon.gif"/>
         </p:dialog>
-        
+
         <h:outputScript library="js" name="dashboard.js" />
         <h:form id="createCompetitionForm">
             <p:wizard flowListener="#{createCompetitionBackingBean.onFlowProcess}">
@@ -79,46 +79,82 @@ and open the template in the editor.
                             </p:column>
                         </p:row>
                         <p:row>
-                            <p:column>
-                                <p:outputLabel for="assignedCompetitors" value="#{msg.assignedCompetitors}"/><br/>
-                                <p:selectOneListbox scrollHeight="100"  id="assignedCompetitors" 
-                                                    value="#{createCompetitionBackingBean.selectedToRemove}"
-                                                    var="selectedToRemove" converter="#{competitorConverter}">
-                                    <f:selectItems value="#{createCompetitionBackingBean.selectedCompetitors}"/>
-                                    <p:column>#{selectedToRemove.idPersonalInfo.firstName} 
-                                        #{selectedToRemove.idPersonalInfo.lastName}</p:column>
-                                </p:selectOneListbox>
+                            <p:column colspan="3">
+                                <p:pickList id="competitorPickList" value="#{createCompetitionBackingBean.competitors}" var="competitor"
+                                            itemLabel="#{not empty competitor.idCreator ? '*' : ''}#{competitor.idPersonalInfo.firstName} #{competitor.idPersonalInfo.lastName} " 
+                                            itemValue="#{competitor}" showCheckbox="true" converter="#{competitorConverter}"
+                                            showSourceFilter="true" showTargetFilter="true" filterMatchMode="contains">
+
+                                    <f:facet name="sourceCaption">#{msg.competitors}</f:facet>
+                                    <f:facet name="targetCaption">#{msg.assignedCompetitors}</f:facet>
+                                    <p:ajax event="transfer" listener="#{createCompetitionBackingBean.checkDuplicate}" update="competitorsAmountValidation msg" />
+
+                                    <p:column style="width: 100%">
+                                        <p:outputLabel>
+                                            <ui:fragment rendered="#{not empty competitor.idCreator}">
+                                                *
+                                            </ui:fragment>
+                                            #{competitor.idPersonalInfo.firstName}
+                                            #{competitor.idPersonalInfo.lastName}
+                                        </p:outputLabel>
+                                    </p:column>
+                                </p:pickList>
                             </p:column>
-                            <p:column>
-                                <p:commandButton value="&lt;&lt;&lt;" action="#{createCompetitionBackingBean.addCompetitor()}"
-                                                 update="allCompetitors, assignedCompetitors, msgs, competitorsAmountValidation" partialSubmit="true"
-                                                 process="@this, assignedCompetitors, allCompetitors"/><br/>
-                                <p:commandButton value="&gt;&gt;&gt;" action="#{createCompetitionBackingBean.removeCompetitor()}"
-                                                 update="allCompetitors, assignedCompetitors, msgs, competitorsAmountValidation" partialSubmit="true"
-                                                 process="@this, assignedCompetitors, allCompetitors"/><br/>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
                                 <p:outputPanel id="competitorsAmountValidation" >
                                     <p:outputLabel value="#{msg.assignedCompetitorsMustBePowerOfTwo}" 
                                                    rendered="#{not createCompetitionBackingBean.isCompetitorsAmountValid}"/>
                                 </p:outputPanel>
                             </p:column>
-                            <p:column>
-                                <p:outputLabel for="allCompetitors" value="#{msg.allCompetitors}"/><br/>
-                                <p:selectOneListbox scrollHeight="100" id="allCompetitors" 
-                                                    value="#{createCompetitionBackingBean.selectedToAdd}"
-                                                    var="selectedToAdd" converter="#{competitorConverter}">
-                                    <f:selectItems value="#{createCompetitionBackingBean.competitorList}"  />
-                                    <p:column>#{selectedToAdd.idPersonalInfo.firstName} 
-                                        #{selectedToAdd.idPersonalInfo.lastName}</p:column>
-                                </p:selectOneListbox>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:messages showDetail="true" globalOnly="true" id="msg"/>
                             </p:column>
                         </p:row>
+                        <!--                        <p:row>
+                                                    <p:column>
+                                                        <p:outputLabel for="assignedCompetitors" value="#{msg.assignedCompetitors}"/><br/>
+                                                        <p:selectOneListbox scrollHeight="100"  id="assignedCompetitors" 
+                                                                            value="#{createCompetitionBackingBean.selectedToRemove}"
+                                                                            var="selectedToRemove" converter="#{competitorConverter}">
+                                                            <f:selectItems value="#{createCompetitionBackingBean.selectedCompetitors}"/>
+                                                            <p:column>#{selectedToRemove.idPersonalInfo.firstName} 
+                        #{selectedToRemove.idPersonalInfo.lastName}</p:column>
+                </p:selectOneListbox>
+            </p:column>
+            <p:column>
+                <p:commandButton value="&lt;&lt;&lt;" action="#{createCompetitionBackingBean.addCompetitor()}"
+                                 update="allCompetitors, assignedCompetitors, msgs, competitorsAmountValidation" partialSubmit="true"
+                                 process="@this, assignedCompetitors, allCompetitors"/><br/>
+                <p:commandButton value="&gt;&gt;&gt;" action="#{createCompetitionBackingBean.removeCompetitor()}"
+                                 update="allCompetitors, assignedCompetitors, msgs, competitorsAmountValidation" partialSubmit="true"
+                                 process="@this, assignedCompetitors, allCompetitors"/><br/>
+                <p:outputPanel id="competitorsAmountValidation" >
+                    <p:outputLabel value="#{msg.assignedCompetitorsMustBePowerOfTwo}" 
+                                   rendered="#{not createCompetitionBackingBean.isCompetitorsAmountValid}"/>
+                </p:outputPanel>
+            </p:column>
+            <p:column>
+                <p:outputLabel for="allCompetitors" value="#{msg.allCompetitors}"/><br/>
+                <p:selectOneListbox scrollHeight="100" id="allCompetitors" 
+                                    value="#{createCompetitionBackingBean.selectedToAdd}"
+                                    var="selectedToAdd" converter="#{competitorConverter}">
+                    <f:selectItems value="#{createCompetitionBackingBean.competitorList}"  />
+                    <p:column>#{selectedToAdd.idPersonalInfo.firstName} 
+                        #{selectedToAdd.idPersonalInfo.lastName}</p:column>
+                </p:selectOneListbox>
+            </p:column>
+        </p:row>-->
                     </p:panelGrid>
                 </p:tab>
                 <p:tab id="secondStep" title="#{msg.bracket}">
                     <p:outputPanel id="groupsHolder">
                         <ui:repeat value="#{createCompetitionBackingBean.bracketCreator.groups}" var="group">
                             <p:panel styleClass="groupPanel editableGroupPanel" 
-                                style="width: #{(100/createCompetitionBackingBean.bracketCreator.groups.size())-1}%; display: inline-block;">
+                                     style="max-width: #{(100/createCompetitionBackingBean.bracketCreator.groups.size())-1}%; display: inline-block;">
                                 <f:facet name="header">
                                     #{group.idGroupName.groupName}
                                     <br/>

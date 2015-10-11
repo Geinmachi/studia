@@ -78,8 +78,8 @@ public class CompetitionService implements CompetitionServiceLocal {
     }
 
     @Override
-    public void addCompetitor(Competitor competitor) {
-        competitorFacade.create(competitor);
+    public void addCompetitor(Competitor competitor, boolean global) throws ApplicationException {
+        competitionComponentsManager.addCompetitor(competitor, global);
     }
 
     @Override
@@ -275,7 +275,7 @@ public class CompetitionService implements CompetitionServiceLocal {
     }
 
     @Override
-    public void createTeam(Team team) {
+    public void createTeam(Team team) throws ApplicationException {
         competitionComponentsManager.createTeam(team);
     }
 
@@ -283,4 +283,11 @@ public class CompetitionService implements CompetitionServiceLocal {
     public List<Competitor> getAllTeamlessCompetitors() {
         return competitionComponentsManager.getAllTeamlessCompetitors();
     }
+
+    @Override
+    public Competitor vlidateCompetitorDuplicate(List<Competitor> competitorList) {
+        return competitionComponentsManager.vlidateCompetitorDuplicate(competitorList);
+    }
+    
+    
 }

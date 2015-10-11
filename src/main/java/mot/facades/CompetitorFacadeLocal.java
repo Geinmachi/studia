@@ -6,6 +6,7 @@
 package mot.facades;
 
 import entities.Competitor;
+import exceptions.ApplicationException;
 import java.util.List;
 import javax.ejb.Local; import javax.ejb.Remote;
 
@@ -35,5 +36,7 @@ public interface CompetitorFacadeLocal {
     public Competitor editWithReturn(Competitor competitor);
 
     public List<Competitor> findAllTeamless();
+
+    public void competitorConstraints(Competitor competitor) throws ApplicationException;
     
 }

@@ -82,8 +82,8 @@ public class CompetitionController implements Serializable {
         return service.findAllTeams();
     }
 
-    public void addCompetitor(Competitor competitor) {
-        service.addCompetitor(competitor);
+    public void addCompetitor(Competitor competitor, boolean global) throws ApplicationException {
+        service.addCompetitor(competitor, global);
     }
 
     public List<Competitor> getAllCompetitors() {
@@ -170,11 +170,15 @@ public class CompetitionController implements Serializable {
         editingCompetition = service.saveCompetitionGeneralInfo(competition);
     }
 
-    public void createTeam(Team team) {
+    public void createTeam(Team team) throws ApplicationException {
         service.createTeam(team);
     }
 
     public List<Competitor> getAllTeamlessCompetitors() {
         return service.getAllTeamlessCompetitors();
+    }
+
+    public Competitor vlidateCompetitorDuplicate(List<Competitor> competitorList) {
+        return service.vlidateCompetitorDuplicate(competitorList);
     }
 }
