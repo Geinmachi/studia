@@ -178,7 +178,7 @@ public class CompetitionController implements Serializable {
         return service.getAllTeamlessCompetitors();
     }
 
-    public boolean vlidateCompetitorDuplicate(List<Competitor> competitorList) {
+    public Competitor vlidateCompetitorDuplicate(List<Competitor> competitorList) {
         return service.vlidateCompetitorDuplicate(competitorList);
     }
 }

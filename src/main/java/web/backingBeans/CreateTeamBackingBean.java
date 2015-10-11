@@ -118,9 +118,13 @@ public class CreateTeamBackingBean implements Serializable, CompetitorConverterD
 //    }
 
     public void checkDuplicate() {
-        if (!controller.vlidateCompetitorDuplicate((List<Competitor>) competitors.getTarget())) {
+        Competitor duplicatedCompetitor = controller.vlidateCompetitorDuplicate((List<Competitor>) competitors.getTarget());
+        
+        if (duplicatedCompetitor != null) {
             System.out.println("Duplicated competitor");
-            JsfUtils.addErrorMessage("Team contains duplicated competitor", null, null);
+            JsfUtils.addErrorMessage("Team contains duplicated competitor" , 
+                    duplicatedCompetitor.getIdPersonalInfo().getFirstName() + " " 
+                            + duplicatedCompetitor.getIdPersonalInfo().getLastName(), null);
             duplicatedCompetitorFlag = true;
             return;
         }

@@ -26,5 +26,5 @@ public interface CompetitionComponentsManagerLocal {
 
 //    public boolean checkCompetitorDuplicate(Competitor competitor, List<Competitor> competitorList);
     
-    public boolean vlidateCompetitorDuplicate(List<Competitor> competitorList);
+    public Competitor vlidateCompetitorDuplicate(List<Competitor> competitorList);
 }

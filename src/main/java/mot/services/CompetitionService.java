@@ -285,7 +285,7 @@ public class CompetitionService implements CompetitionServiceLocal {
     }
 
     @Override
-    public boolean vlidateCompetitorDuplicate(List<Competitor> competitorList) {
+    public Competitor vlidateCompetitorDuplicate(List<Competitor> competitorList) {
         return competitionComponentsManager.vlidateCompetitorDuplicate(competitorList);
     }
     

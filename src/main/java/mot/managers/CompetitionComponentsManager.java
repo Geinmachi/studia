@@ -57,7 +57,7 @@ public class CompetitionComponentsManager implements CompetitionComponentsManage
         System.out.println("Competitors size " + team.getCompetitorList().size());
         System.out.println("TEAM NAME " + team.getTeamName());
 
-        if(!vlidateCompetitorDuplicate(team.getCompetitorList())) {
+        if(vlidateCompetitorDuplicate(team.getCompetitorList()) != null) {
             throw new TeamCreationException("Team can't contain duplicated competitors (private and global)");
         }
 
@@ -80,10 +80,10 @@ public class CompetitionComponentsManager implements CompetitionComponentsManage
     /**
      *
      * @param competitorList
-     * @return Returns true if validation passes
+     * @return Null if validation passes or duplicated competitor when failed
      */
     @Override
-    public boolean vlidateCompetitorDuplicate(List<Competitor> competitorList) {
+    public Competitor vlidateCompetitorDuplicate(List<Competitor> competitorList) {
         
         competitorList.sort(new Comparator<Competitor>() {
 
@@ -101,11 +101,11 @@ public class CompetitionComponentsManager implements CompetitionComponentsManage
                 System.out.println("THE SAME ");
                 System.out.println(competitorList.get(i - 1).getIdPersonalInfo().getFirstName() + competitorList.get(i - 1).getIdPersonalInfo().getLastName());
                 System.out.println(competitorList.get(i).getIdPersonalInfo().getFirstName() + competitorList.get(i).getIdPersonalInfo().getLastName());
-                return false;
+                return competitorList.get(i);
             }
         }
         
-        return true;
+        return null;
     }
 
     @Override

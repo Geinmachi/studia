@@ -81,5 +81,5 @@ public interface CompetitionServiceLocal {
 
     public List<Competitor> getAllTeamlessCompetitors();
 
-    public boolean vlidateCompetitorDuplicate(List<Competitor> competitorList);
+    public Competitor vlidateCompetitorDuplicate(List<Competitor> competitorList);
 }
