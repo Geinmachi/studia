@@ -9,6 +9,7 @@ import entities.AccessLevel;
 import entities.Competitor;
 import exceptions.ApplicationException;
 import exceptions.CompetitorCreationException;
+import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -56,7 +57,7 @@ public class CompetitorFacade extends AbstractFacade<Competitor> implements Comp
     public List<Competitor> findAllTeamless() {
         Query q = em.createNamedQuery("Competitor.findAllTeamless");
 
-        return (List<Competitor>) q.getResultList();
+        return new ArrayList((List<Competitor>) q.getResultList());
     }
 
     @Override

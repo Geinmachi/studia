@@ -77,7 +77,9 @@ public interface CompetitionServiceLocal {
 
     public Competition saveCompetitionGeneralInfo(Competition competition);
 
-    public void createTeam(Team team);
+    public void createTeam(Team team) throws ApplicationException;
 
     public List<Competitor> getAllTeamlessCompetitors();
+
+    public boolean vlidateCompetitorDuplicate(List<Competitor> competitorList);
 }

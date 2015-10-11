@@ -6,6 +6,7 @@
 package mot.facades;
 
 import entities.Team;
+import java.util.ArrayList;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
@@ -35,6 +36,8 @@ public class TeamFacade extends AbstractFacade<Team> implements TeamFacadeLocal 
     public Team createWithReturn(Team team) {
         em.persist(team);
         em.flush();
+        
+        team.setCompetitorList(new ArrayList<>(team.getCompetitorList()));
         
         return team;
     }

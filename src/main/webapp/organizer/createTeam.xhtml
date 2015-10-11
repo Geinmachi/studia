@@ -33,15 +33,20 @@ and open the template in the editor.
                 <p:row>
                     <p:column colspan="2">
                         <p:pickList id="competitorPickList" value="#{createTeamBackingBean.competitors}" var="competitor"
-                                    itemValue="#{competitor}" itemLabel="#{competitor.idPersonalInfo.firstName} #{competitor.idPersonalInfo.lastName} " showCheckbox="true" converter="#{competitorConverter}"
+                                    itemLabel="#{not empty competitor.idCreator ? '*' : ''}#{competitor.idPersonalInfo.firstName} #{competitor.idPersonalInfo.lastName} " 
+                                    itemValue="#{competitor}" showCheckbox="true" converter="#{competitorConverter}"
                                     showSourceFilter="true" showTargetFilter="true" filterMatchMode="contains">
-
+                            
                             <f:facet name="sourceCaption">#{msg.competitors}</f:facet>
                             <f:facet name="targetCaption">#{msg.assignedCompetitors}</f:facet>
-
+                            <p:ajax event="transfer" listener="#{createTeamBackingBean.checkDuplicate}" update="submitButton msg" />
+                            
                             <p:column style="width: 100%">
                                 <p:outputLabel>
-                                    #{competitor.idPersonalInfo.firstName} 
+                                    <ui:fragment rendered="#{not empty competitor.idCreator}">
+                                    *
+                                    </ui:fragment>
+                                    #{competitor.idPersonalInfo.firstName}
                                     #{competitor.idPersonalInfo.lastName}
                                 </p:outputLabel>
                             </p:column>
@@ -50,10 +55,17 @@ and open the template in the editor.
                 </p:row>
                 <p:row>
                     <p:column colspan="2">
-                        <p:commandButton action="#{createTeamBackingBean.createTeam}" update="createTeamForm"/>
+                        <p:outputLabel>
+                            * - #{msg.competitorAsterisk}
+                        </p:outputLabel>
+                        <br/>
+                        <br/>
+                        <p:commandButton id="submitButton" action="#{createTeamBackingBean.createTeam}"  value="#{msg.create}"
+                                         update="createTeamForm" disabled="#{createTeamBackingBean.duplicatedCompetitorFlag}"/>
                     </p:column>
                 </p:row>
             </p:panelGrid>
+            <p:messages id="msg" globalOnly="true"/>
         </h:form>
     </ui:define>
 </ui:composition>

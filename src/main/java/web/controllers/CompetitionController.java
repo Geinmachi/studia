@@ -170,11 +170,15 @@ public class CompetitionController implements Serializable {
         editingCompetition = service.saveCompetitionGeneralInfo(competition);
     }
 
-    public void createTeam(Team team) {
+    public void createTeam(Team team) throws ApplicationException {
         service.createTeam(team);
     }
 
     public List<Competitor> getAllTeamlessCompetitors() {
         return service.getAllTeamlessCompetitors();
+    }
+
+    public boolean vlidateCompetitorDuplicate(List<Competitor> competitorList) {
+        return service.vlidateCompetitorDuplicate(competitorList);
     }
 }

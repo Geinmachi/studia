@@ -18,9 +18,13 @@ import javax.ejb.Remote;
 @Remote
 public interface CompetitionComponentsManagerLocal {
     
-    public void createTeam(Team team);
+    public void createTeam(Team team) throws ApplicationException;
 
     public List<Competitor> getAllTeamlessCompetitors();
 
     public void addCompetitor(Competitor competitor, boolean global) throws ApplicationException;
+
+//    public boolean checkCompetitorDuplicate(Competitor competitor, List<Competitor> competitorList);
+    
+    public boolean vlidateCompetitorDuplicate(List<Competitor> competitorList);
 }

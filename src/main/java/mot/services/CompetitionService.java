@@ -275,7 +275,7 @@ public class CompetitionService implements CompetitionServiceLocal {
     }
 
     @Override
-    public void createTeam(Team team) {
+    public void createTeam(Team team) throws ApplicationException {
         competitionComponentsManager.createTeam(team);
     }
 
@@ -283,4 +283,11 @@ public class CompetitionService implements CompetitionServiceLocal {
     public List<Competitor> getAllTeamlessCompetitors() {
         return competitionComponentsManager.getAllTeamlessCompetitors();
     }
+
+    @Override
+    public boolean vlidateCompetitorDuplicate(List<Competitor> competitorList) {
+        return competitionComponentsManager.vlidateCompetitorDuplicate(competitorList);
+    }
+    
+    
 }
