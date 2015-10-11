@@ -128,20 +128,4 @@ public class CompetitionComponentsManager implements CompetitionComponentsManage
         competitorFacade.create(competitor);
     }
 
-//    @Override
-//    public boolean checkCompetitorDuplicate(Competitor competitor, List<Competitor> competitorList) {
-//        for (Competitor c : competitorList) {
-//            if (competitor.getIdPersonalInfo().getFirstName().equals(c.getIdPersonalInfo().getFirstName())
-//                    && competitor.getIdPersonalInfo().getLastName().equals(c.getIdPersonalInfo().getLastName())) {
-//
-//                System.out.println("Competitor duplicated, cant choose "
-//                        + competitor.getIdPersonalInfo().getFirstName() + " "
-//                        + competitor.getIdPersonalInfo().getLastName());
-//
-//                return !competitorList.contains(competitor); // only source list gets disabled
-//            }
-//        }
-//
-//        return false;
-//    }
 }
