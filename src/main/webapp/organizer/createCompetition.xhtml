@@ -114,40 +114,6 @@ and open the template in the editor.
                                 <p:messages showDetail="true" globalOnly="true" id="msg"/>
                             </p:column>
                         </p:row>
-                        <!--                        <p:row>
-                                                    <p:column>
-                                                        <p:outputLabel for="assignedCompetitors" value="#{msg.assignedCompetitors}"/><br/>
-                                                        <p:selectOneListbox scrollHeight="100"  id="assignedCompetitors" 
-                                                                            value="#{createCompetitionBackingBean.selectedToRemove}"
-                                                                            var="selectedToRemove" converter="#{competitorConverter}">
-                                                            <f:selectItems value="#{createCompetitionBackingBean.selectedCompetitors}"/>
-                                                            <p:column>#{selectedToRemove.idPersonalInfo.firstName} 
-                        #{selectedToRemove.idPersonalInfo.lastName}</p:column>
-                </p:selectOneListbox>
-            </p:column>
-            <p:column>
-                <p:commandButton value="&lt;&lt;&lt;" action="#{createCompetitionBackingBean.addCompetitor()}"
-                                 update="allCompetitors, assignedCompetitors, msgs, competitorsAmountValidation" partialSubmit="true"
-                                 process="@this, assignedCompetitors, allCompetitors"/><br/>
-                <p:commandButton value="&gt;&gt;&gt;" action="#{createCompetitionBackingBean.removeCompetitor()}"
-                                 update="allCompetitors, assignedCompetitors, msgs, competitorsAmountValidation" partialSubmit="true"
-                                 process="@this, assignedCompetitors, allCompetitors"/><br/>
-                <p:outputPanel id="competitorsAmountValidation" >
-                    <p:outputLabel value="#{msg.assignedCompetitorsMustBePowerOfTwo}" 
-                                   rendered="#{not createCompetitionBackingBean.isCompetitorsAmountValid}"/>
-                </p:outputPanel>
-            </p:column>
-            <p:column>
-                <p:outputLabel for="allCompetitors" value="#{msg.allCompetitors}"/><br/>
-                <p:selectOneListbox scrollHeight="100" id="allCompetitors" 
-                                    value="#{createCompetitionBackingBean.selectedToAdd}"
-                                    var="selectedToAdd" converter="#{competitorConverter}">
-                    <f:selectItems value="#{createCompetitionBackingBean.competitorList}"  />
-                    <p:column>#{selectedToAdd.idPersonalInfo.firstName} 
-                        #{selectedToAdd.idPersonalInfo.lastName}</p:column>
-                </p:selectOneListbox>
-            </p:column>
-        </p:row>-->
                     </p:panelGrid>
                 </p:tab>
                 <p:tab id="secondStep" title="#{msg.bracket}">
@@ -203,27 +169,6 @@ and open the template in the editor.
                                                 </c:otherwise>
                                             </c:choose>
                                         </c:forEach>
-                                        <!--        <c:forEach items="#{dashboardPanel.competitorList}" var="competitorr" varStatus="competitorIndex">
-                                                    <p:outputLabel>
-                                        #{competitorr.idPersonalInfo.firstName} 
-                                        #{competitorr.idPersonalInfo.lastName} 
-                                    </p:outputLabel>
-                                    <c:forEach items="#{dashboardPanel.match.competitorMatchList}"
-                                               var="cmgFromMatch">
-                                        <c:if test="#{cmgFromMatch.idCompetitor eq competitorr}">
-                                            <p:inplace editor="true">
-                                                <p:inputText value="#{cmgFromMatch.competitorMatchScore}"/>
-                                            </p:inplace>
-                                        </c:if>
-                                    </c:forEach>
-                                    <br/>
-                                </c:forEach>
-                                <c:if test="#{empty dashboardPanel.competitorList}">
-                                    <p:outputLabel>
-                                        #{msg.TBD}<br/>
-                                        #{msg.TBD}<br/>
-                                    </p:outputLabel>
-                                </c:if>-->
                                         <p:outputLabel value="#{msg.date}:"/>
                                         <p:calendar id="matchDate" pattern="MM/dd/yyyy HH:mm:ss" showOn="button" 
                                                     value="#{dashboardPanel.match.matchDate}"/><br/>

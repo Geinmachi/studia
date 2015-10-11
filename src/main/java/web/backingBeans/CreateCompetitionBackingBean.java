@@ -57,8 +57,6 @@ public class CreateCompetitionBackingBean implements Serializable, CompetitorCon
 
     private List<Competitor> competitorList = new ArrayList<>(); // for converter
 
-//    private final List<Competitor> selectedCompetitors = new ArrayList<>();
-
     private List<CompetitionType> competitionTypes = new ArrayList<>();
 
     private DualListModel competitors;
@@ -84,9 +82,6 @@ public class CreateCompetitionBackingBean implements Serializable, CompetitorCon
         return competitorList;
     }
 
-//    public List<Competitor> getSelectedCompetitors() {
-//        return selectedCompetitors;
-//    }
     public List<CompetitionType> getCompetitionTypes() {
         return competitionTypes;
     }
@@ -171,24 +166,7 @@ public class CreateCompetitionBackingBean implements Serializable, CompetitorCon
         }
         return event.getNewStep();
     }
-
-//    public void addCompetitor() {
-//        if (selectedToAdd != null) {
-//            selectedCompetitors.add(selectedToAdd);
-//            competitorList.remove(selectedToAdd);
-//            isCompetitorsAmountValid = controller.validateCompetitorsAmount(selectedCompetitors.size());
-//            selectedToAdd = null;
-//        }
-//    }
-//
-//    public void removeCompetitor() {
-//        if (selectedToRemove != null) {
-//            competitorList.add(selectedToRemove);
-//            selectedCompetitors.remove(selectedToRemove);
-//            isCompetitorsAmountValid = controller.validateCompetitorsAmount(selectedCompetitors.size());
-//            selectedToRemove = null;
-//        }
-//    }
+    
     public String createCompetition() {
         try {
             competition.setIdCompetitionType(selectedCompetitionType);

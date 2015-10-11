@@ -101,22 +101,6 @@ public class CreateTeamBackingBean implements Serializable, CompetitorConverterD
         return null;
     }
 
-//    public void onTransfer(TransferEvent event) {
-//        StringBuilder builder = new StringBuilder();
-//        for (Object item : event.getItems()) {
-//            builder.append(((Competitor) item).getIdPersonalInfo().getFirstName()).append("<br />");
-//        }
-//
-//        System.out.println("SIZE " + competitors.getTarget().size());
-//
-//        FacesMessage msg = new FacesMessage();
-//        msg.setSeverity(FacesMessage.SEVERITY_INFO);
-//        msg.setSummary("Items Transferred");
-//        msg.setDetail(builder.toString());
-//
-//        FacesContext.getCurrentInstance().addMessage(null, msg);
-//    }
-
     public void checkDuplicate() {
         Competitor duplicatedCompetitor = controller.vlidateCompetitorDuplicate((List<Competitor>) competitors.getTarget());
         
