@@ -9,10 +9,13 @@
             <supported-locale>en</supported-locale>
         </locale-config>
         <resource-bundle>
-            <base-name>languages.locale</base-name>
+            <base-name>properties.language.locale</base-name>
             <var>msg</var>
         </resource-bundle>
-        <!--<message-bundle>JSFvalidation.Messages</message-bundle>-->
+        <resource-bundle>
+            <base-name>properties.business.business</base-name>
+            <var>bsn</var>
+        </resource-bundle>
     </application>
     <lifecycle>
         <phase-listener>LifeCycleListener</phase-listener>

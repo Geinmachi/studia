@@ -42,6 +42,8 @@ public class CompetitionController implements Serializable {
     private CompetitionServiceLocal service;
 
     private Competition editingCompetition;
+    
+    private Competitor editingCompetitor;
 
     private Competition displayedCompetition;
 
@@ -53,6 +55,10 @@ public class CompetitionController implements Serializable {
     public Competition getEditingCompetition() {
         System.out.println("FD SIZEEEE " + editingCompetition.getGroupDetailsList().size());
         return editingCompetition;
+    }
+
+    public Competitor getEditingCompetitor() {
+        return editingCompetitor;
     }
 
     public Competition getDisplayedCompetition(DisplayPageEnum type) {
@@ -180,5 +186,13 @@ public class CompetitionController implements Serializable {
 
     public Competitor vlidateCompetitorDuplicate(List<Competitor> competitorList) {
         return service.vlidateCompetitorDuplicate(competitorList);
+    }
+
+    public List<Competitor> getCompetitorsToEdit() {
+        return service.getCompetitorsToEdit();
+    }
+
+    public void storeCompetitor(Competitor competitor) {
+        editingCompetitor = service.storeCompetitor(competitor);
     }
 }

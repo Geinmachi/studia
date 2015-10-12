@@ -1,12 +1,46 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html">
-    <h:head>
-        <title>Facelet Title</title>
-    </h:head>
-    <h:body>
-        Hello from Facelets
-    </h:body>
-</html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/templates/main.xhtml"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <ui:define name="title">#{msg.competitorListTitle}</ui:define>
+    <ui:define name="content">
+        <h:form id="competitorListForm">
+            sss #{bsn['role.admin']}
+            <p:dataTable var="competitor" value="#{competitorListBackingBean.competitorList}">
+
+                <p:column headerText="#{msg.competitorFirstName}">
+                    <h:outputText value="#{competitor.idPersonalInfo.firstName}" />
+                </p:column>
+
+                <p:column headerText="#{msg.competitorLastName}">
+                    <h:outputText value="#{competitor.idPersonalInfo.lastName}" />
+                </p:column>
+
+                <p:column headerText="#{msg.team}">
+                    <h:outputText value="#{competitor.idTeam.teamName}" />
+                </p:column>
+
+                <p:column headerText="#{msg.creator}" rendered="#{request.isUserInRole(bsn['role.admin'])}">
+                    <ui:fragment rendered="#{empty competitor.idCreator}">
+                        #{msg.globalCompetitor}
+                    </ui:fragment>
+                    
+                    #{competitor.idCreator.idAccount.idPersonalInfo.firstName}
+                    #{competitor.idCreator.idAccount.idPersonalInfo.lastName}
+                </p:column>
+
+                <p:column headerText="#{msg.edition}">
+                    <p:commandButton action="#{competitorListBackingBean.edit(competitor)}"
+                                     value="#{msg.edit}"/>
+                </p:column>
+
+            </p:dataTable>
+        </h:form>
+    </ui:define>
+</ui:composition>
 

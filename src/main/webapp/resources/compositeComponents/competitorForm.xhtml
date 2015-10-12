@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:composite="http://java.sun.com/jsf/composite"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+    <composite:interface componentType="">
+        <composite:attribute name="afterActionUpdateId"/>
+        <composite:attribute name="firstName" required="true"/>
+        <composite:attribute name="lastName" required="true"/>
+        <composite:attribute name="selectedTeam" required="true"/>
+        <composite:attribute name="teamList" required="true"/>
+        <composite:attribute name="isGlobal" required="true"/>
+        <composite:attribute name="saveAction" method-signature="java.lang.String action()" required="true"/>
+    </composite:interface>
+
+    <composite:implementation>
+        <ui:fragment id="test">
+            <p:panelGrid>
+                <p:row>
+                    <p:column>
+                        <p:outputLabel for="firstName" value="#{msg.firstName}"/>
+                    </p:column>
+                    <p:column>
+                        <p:inputText id="firstName" value="#{cc.attrs.firstName}"/>
+                    </p:column>
+                    <p:column>
+                        <p:message for="firstName"/>
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column>
+                        <p:outputLabel for="lastName" value="#{msg.lastName}"/>
+                    </p:column>
+                    <p:column>
+                        <p:inputText id="lastName" value="#{cc.attrs.lastName}"/>
+                    </p:column>
+                    <p:column>
+                        <p:message for="lastName"/>
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column>
+                        <p:outputLabel for="teamListbox" value="#{msg.team}"/>
+                    </p:column>
+                    <p:column>
+                        <p:selectOneMenu id="teamListbox" value="#{cc.attrs.selectedTeam}" converter="#{teamConverter}">
+                            <f:selectItem itemValue="#{null}" itemLabel="#{msg.none}" />
+                            <f:selectItems value="#{cc.attrs.teamList}" var="team" itemLabel="#{team.teamName}"/>
+                        </p:selectOneMenu>
+                    </p:column>
+                    <p:column>
+                        <p:message for="teamListbox"/>
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column>
+                        <p:outputLabel for="isGlobal" value="#{msg.globalCompetitor}"/>
+                    </p:column>
+                    <p:column>
+                        <p:selectBooleanCheckbox id="isGlobal" value="#{cc.attrs.isGlobal}"/>
+                    </p:column>
+                    <p:column>
+                        <p:message for="isGlobal"/>
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column colspan="3">
+                        <p:commandButton value="#{msg.add}" action="#{cc.attrs.saveAction}" 
+                                         update="#{cc.attrs.afterActionUpdateId}"/>
+                    </p:column>
+                </p:row>
+            </p:panelGrid>
+        </ui:fragment>
+    </composite:implementation>
+
+</html>

@@ -39,6 +39,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Competitor.findAll", query = "SELECT c FROM Competitor c"),
+    @NamedQuery(name = "Competitor.findUserCompetitors", query = "SELECT c FROM Competitor c WHERE c.idCreator.idAccessLevel = :idAccessLevel"),
     @NamedQuery(name = "Competitor.findByFirstnameLastnameGlobal", query = "SELECT c FROM Competitor c WHERE c.idPersonalInfo.firstName = :firstName AND c.idPersonalInfo.lastName = :lastName AND c.idCreator IS NULL"),
     @NamedQuery(name = "Competitor.findByFirstnameLastnameCreator", query = "SELECT c FROM Competitor c WHERE c.idPersonalInfo.firstName = :firstName AND c.idPersonalInfo.lastName = :lastName AND c.idCreator.idAccessLevel = :idCreator"),
     @NamedQuery(name = "Competitor.findAllTeamless", query = "SELECT c FROM Competitor c WHERE c.idTeam IS NULL"),

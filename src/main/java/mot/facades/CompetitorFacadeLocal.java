@@ -5,6 +5,7 @@
  */
 package mot.facades;
 
+import entities.AccessLevel;
 import entities.Competitor;
 import exceptions.ApplicationException;
 import java.util.List;
@@ -38,5 +39,9 @@ public interface CompetitorFacadeLocal {
     public List<Competitor> findAllTeamless();
 
     public void competitorConstraints(Competitor competitor) throws ApplicationException;
+
+    public List<Competitor> findUserCompetitors(AccessLevel accessLevel);
+
+    public Competitor findCompetitorById(int idCompetitor);
     
 }

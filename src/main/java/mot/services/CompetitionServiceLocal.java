@@ -82,4 +82,8 @@ public interface CompetitionServiceLocal {
     public List<Competitor> getAllTeamlessCompetitors();
 
     public Competitor vlidateCompetitorDuplicate(List<Competitor> competitorList);
+
+    public List<Competitor> getCompetitorsToEdit();
+
+    public Competitor storeCompetitor(Competitor competitor);
 }

@@ -14,20 +14,22 @@ import entities.Team;
 import exceptions.ApplicationException;
 import exceptions.TeamCreationException;
 import java.util.Comparator;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import javax.annotation.Resource;
+import javax.annotation.security.DeclareRoles;
 import javax.ejb.EJB;
 import javax.ejb.SessionContext;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.interceptor.Interceptors;
+import javax.persistence.Query;
 import mot.facades.AccountFacadeLocal;
 import mot.facades.CompetitorFacadeLocal;
 import mot.facades.TeamFacadeLocal;
+import mot.services.CompetitionService;
 import utils.ConvertUtil;
+import utils.ResourceBundleUtil;
 
 /**
  *
@@ -36,6 +38,7 @@ import utils.ConvertUtil;
 @Stateless
 @TransactionAttribute(TransactionAttributeType.MANDATORY)
 @Interceptors({TrackerInterceptor.class})
+@DeclareRoles({"Administrator","Organizer"})
 public class CompetitionComponentsManager implements CompetitionComponentsManagerLocal {
 
     @Resource
@@ -126,6 +129,27 @@ public class CompetitionComponentsManager implements CompetitionComponentsManage
         competitorFacade.competitorConstraints(competitor);
 
         competitorFacade.create(competitor);
+    }
+
+    @Override
+    public List<Competitor> getCompetitionsToEdit() {
+        List<Competitor> competitorList = null;
+        
+        if (sessionContext.isCallerInRole(ResourceBundleUtil.getResourceBundleBusinessProperty(CompetitionService.ADMIN_PROPERTY_KEY))) {
+            competitorList = competitorFacade.findAll();
+        } else {
+            Account loggedUser = accountFacade.findByLogin(sessionContext.getCallerPrincipal().getName());
+            AccessLevel organizer = ConvertUtil.getSpecAccessLevelFromAccount(loggedUser, Organizer.class);
+            
+            competitorList = competitorFacade.findUserCompetitors(organizer);
+        }
+        
+        return competitorList;
+    }
+
+    @Override
+    public Competitor findCompetitorById(int idCompetitor) {
+        return competitorFacade.findCompetitorById(idCompetitor);
     }
 
 }

@@ -10,6 +10,7 @@ import entities.Team;
 import exceptions.ApplicationException;
 import java.util.List;
 import javax.ejb.Remote;
+import javax.ejb.SessionContext;
 
 /**
  *
@@ -27,4 +28,8 @@ public interface CompetitionComponentsManagerLocal {
 //    public boolean checkCompetitorDuplicate(Competitor competitor, List<Competitor> competitorList);
     
     public Competitor vlidateCompetitorDuplicate(List<Competitor> competitorList);
+
+    public List<Competitor> getCompetitionsToEdit();
+
+    public Competitor findCompetitorById(int idCompetitor);
 }

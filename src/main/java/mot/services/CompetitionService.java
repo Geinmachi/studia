@@ -69,8 +69,12 @@ public class CompetitionService implements CompetitionServiceLocal {
     private MatchTypeFacadeLocal matchTypeFacade;
 
     private Competition editingCompetition;
+    
+    private Competitor editingCompetitor;
 
     private List<CMG> storedCMGmappings;
+    
+    public static String ADMIN_PROPERTY_KEY = "role.admin";
 
     @Override
     public List<Team> findAllTeams() {
@@ -288,6 +292,16 @@ public class CompetitionService implements CompetitionServiceLocal {
     public Competitor vlidateCompetitorDuplicate(List<Competitor> competitorList) {
         return competitionComponentsManager.vlidateCompetitorDuplicate(competitorList);
     }
-    
+
+    @Override
+    public List<Competitor> getCompetitorsToEdit() {
+        return competitionComponentsManager.getCompetitionsToEdit();
+    }
+
+    @Override
+    public Competitor storeCompetitor(Competitor competitor) {
+        editingCompetitor = competitionComponentsManager.findCompetitorById(competitor.getIdCompetitor());
+        return editingCompetitor;
+    }
     
 }
