@@ -195,4 +195,8 @@ public class CompetitionController implements Serializable {
     public void storeCompetitor(Competitor competitor) {
         editingCompetitor = service.storeCompetitor(competitor);
     }
+
+    public void editCompetitor(Competitor competitor) {
+        service.editCompetitor(competitor);
+    }
 }

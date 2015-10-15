@@ -12,61 +12,20 @@ and open the template in the editor.
                 template="/WEB-INF/templates/main.xhtml"
                 xmlns:f="http://xmlns.jcp.org/jsf/core"
                 xmlns:c="http://java.sun.com/jsp/jstl/core"
-                xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+                xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+                xmlns:cc="http://xmlns.jcp.org/jsf/composite/compositeComponents">
     <ui:define name="title">#{msg.createTeamTitle}</ui:define>
     <ui:define name="content">
         <h:form id="createTeamForm">
-            KKKKKKKK : #{bsn['role.admin']}
-            <p:panelGrid >
-                <p:row>
-                    <p:column>
-                        <p:outputLabel for="teamName" value="#{msg.teamName}"/>
-                    </p:column>
-                    <p:column>
-                        <p:inputText id="teamName" value="#{createTeamBackingBean.team.teamName}"/>
-                    </p:column>
-                </p:row>
-                <p:row>
-                    <p:column colspan="2">
-                        <p:message for="teamName"/>
-                    </p:column>
-                </p:row>
-                <p:row>
-                    <p:column colspan="2">
-                        <p:pickList id="competitorPickList" value="#{createTeamBackingBean.competitors}" var="competitor"
-                                    itemLabel="#{not empty competitor.idCreator ? '*' : ''}#{competitor.idPersonalInfo.firstName} #{competitor.idPersonalInfo.lastName} " 
-                                    itemValue="#{competitor}" showCheckbox="true" converter="#{competitorConverter}"
-                                    showSourceFilter="true" showTargetFilter="true" filterMatchMode="contains">
-                            
-                            <f:facet name="sourceCaption">#{msg.competitors}</f:facet>
-                            <f:facet name="targetCaption">#{msg.assignedCompetitors}</f:facet>
-                            <p:ajax event="transfer" listener="#{createTeamBackingBean.checkDuplicate}" update="submitButton msg" />
-                            
-                            <p:column style="width: 100%">
-                                <p:outputLabel>
-                                    <ui:fragment rendered="#{not empty competitor.idCreator}">
-                                    *
-                                    </ui:fragment>
-                                    #{competitor.idPersonalInfo.firstName}
-                                    #{competitor.idPersonalInfo.lastName}
-                                </p:outputLabel>
-                            </p:column>
-                        </p:pickList>
-                    </p:column>
-                </p:row>
-                <p:row>
-                    <p:column colspan="2">
-                        <p:outputLabel>
-                            * - #{msg.competitorAsterisk}
-                        </p:outputLabel>
-                        <br/>
-                        <br/>
-                        <p:commandButton id="submitButton" action="#{createTeamBackingBean.createTeam}"  value="#{msg.create}"
-                                         update="createTeamForm" disabled="#{createTeamBackingBean.duplicatedCompetitorFlag}"/>
-                    </p:column>
-                </p:row>
-            </p:panelGrid>
-            <p:messages showDetail="true" id="msg" globalOnly="true"/>
+            <cc:teamFormInsides
+                afterActionUpdateId="createTeamForm"
+                teamName="#{createTeamBackingBean.team.teamName}"
+                competitorDualList="#{createTeamBackingBean.competitors}"
+                duplicatedCompetitorFlag="#{createTeamBackingBean.duplicatedCompetitorFlag}"
+                checkDuplicate="#{createTeamBackingBean.checkDuplicate()}"
+                buttonLabel="#{msg.add}"
+                saveAction="#{createTeamBackingBean.createTeam()}"/>
+            <p:messages globalOnly="true"/>
         </h:form>
     </ui:define>
 </ui:composition>

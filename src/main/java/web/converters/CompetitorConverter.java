@@ -5,6 +5,7 @@
  */
 package web.converters;
 
+import web.converters.interfaces.CompetitorConverterData;
 import entities.CompetitionType;
 import entities.Competitor;
 import java.io.Serializable;
@@ -26,8 +27,8 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.servlet.http.HttpServletRequest;
-import web.backingBeans.CreateCompetitionBackingBean;
-import web.backingBeans.CreateTeamBackingBean;
+import web.backingBeans.mot.CreateCompetitionBackingBean;
+import web.backingBeans.mot.CreateTeamBackingBean;
 import web.controllers.CompetitionController;
 import web.qualifiers.CompetitorsDataSource;
 

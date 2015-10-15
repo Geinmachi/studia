@@ -32,4 +32,6 @@ public interface CompetitionComponentsManagerLocal {
     public List<Competitor> getCompetitionsToEdit();
 
     public Competitor findCompetitorById(int idCompetitor);
+
+    public void editCompetitor(Competitor editingCompetitor, Competitor competitor);
 }

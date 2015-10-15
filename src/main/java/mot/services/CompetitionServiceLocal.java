@@ -86,4 +86,6 @@ public interface CompetitionServiceLocal {
     public List<Competitor> getCompetitorsToEdit();
 
     public Competitor storeCompetitor(Competitor competitor);
+
+    public void editCompetitor(Competitor competitor);
 }

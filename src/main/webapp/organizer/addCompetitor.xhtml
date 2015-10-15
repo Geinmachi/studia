@@ -15,14 +15,15 @@ and open the template in the editor.
     <ui:define name="title">#{msg.addCompetitorTitle}</ui:define>
     <ui:define name="content">
 
-        <h:form id="addTeamForm">
-            <cc:competitorForm
-                afterActionUpdateId="addTeamForm"
+        <h:form id="addCompetitorForm">
+            <cc:competitorFormInsides
+                afterActionUpdateId="addCompetitorForm"
                 firstName="#{addCompetitorBackingBean.personalInfo.firstName}"
                 lastName="#{addCompetitorBackingBean.personalInfo.lastName}"
                 selectedTeam="#{addCompetitorBackingBean.selectedTeam}"
                 teamList="#{addCompetitorBackingBean.teamList}"
                 isGlobal="#{addCompetitorBackingBean.isGlobal}"
+                buttonLabel="#{msg.add}"
                 saveAction="#{addCompetitorBackingBean.addCompetitor}"/>
             <p:messages globalOnly="true"/>
         </h:form>

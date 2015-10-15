@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package web.backingBeans;
+package web.backingBeans.mot;
 
 import entities.Competitor;
 import entities.PersonalInfo;
@@ -15,6 +15,7 @@ import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import web.controllers.CompetitionController;
+import web.converters.interfaces.TeamConverterData;
 import web.utils.JsfUtils;
 
 /**
@@ -23,10 +24,7 @@ import web.utils.JsfUtils;
  */
 @Named(value = "addCompetitorBackingBean")
 @RequestScoped
-public class AddCompetitorBackingBean {
-
-    @Inject
-    private CompetitionController controller;
+public class AddCompetitorBackingBean extends CompetitionBackingBean implements TeamConverterData {
 
     private final Competitor competitor = new Competitor();
 
@@ -57,6 +55,7 @@ public class AddCompetitorBackingBean {
         this.isGlobal = isGlobal;
     }
 
+    @Override
     public List<Team> getTeamList() {
         return teamList;
     }

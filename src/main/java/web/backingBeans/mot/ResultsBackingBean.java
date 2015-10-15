@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package web.backingBeans;
+package web.backingBeans.mot;
 
 import entities.Competition;
 import entities.Competitor;
@@ -30,10 +30,7 @@ import web.utils.DisplayPageEnum;
  */
 @Named(value = "resultsBackingBean")
 @RequestScoped
-public class ResultsBackingBean {
-
-    @Inject
-    CompetitionController controller;
+public class ResultsBackingBean  extends CompetitionBackingBean {
     
     private Competition competition;
     

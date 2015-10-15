@@ -152,4 +152,20 @@ public class CompetitionComponentsManager implements CompetitionComponentsManage
         return competitorFacade.findCompetitorById(idCompetitor);
     }
 
+    @Override
+    public void editCompetitor(Competitor editingCompetitor, Competitor competitor) {
+        if (editingCompetitor == null || competitor == null) {
+            throw new IllegalStateException("There is no object to edit");
+        }
+        if (!editingCompetitor.getIdCompetitor().equals(competitor.getIdCompetitor())) {
+            throw new IllegalStateException("Wrong object");
+        }
+        
+        editingCompetitor.getIdPersonalInfo().setFirstName(competitor.getIdPersonalInfo().getFirstName());
+        editingCompetitor.getIdPersonalInfo().setLastName(competitor.getIdPersonalInfo().getLastName());
+        editingCompetitor.setIdTeam(competitor.getIdTeam());
+        
+        competitorFacade.edit(editingCompetitor);
+    }
+
 }

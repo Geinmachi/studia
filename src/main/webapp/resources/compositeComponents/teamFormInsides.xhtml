@@ -1,0 +1,74 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:composite="http://java.sun.com/jsf/composite"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+    <composite:interface>
+        <composite:attribute name="afterActionUpdateId"/>
+        <composite:attribute name="teamName" required="true"/>
+        <composite:attribute name="competitorDualList" required="true"/>
+        <composite:attribute name="checkDuplicate" method-signature="void action()" required="true"/>
+        <composite:attribute name="duplicatedCompetitorFlag" required="true"/>
+        <composite:attribute name="buttonLabel" required="true"/>
+        <composite:attribute name="saveAction" method-signature="java.lang.String action()" required="true"/>
+    </composite:interface>
+
+    <composite:implementation>
+        <p:panelGrid >
+            <p:row>
+                <p:column>
+                    <p:outputLabel for="teamName" value="#{msg.teamName}"/>
+                </p:column>
+                <p:column>
+                    <p:inputText id="teamName" value="#{cc.attrs.teamName}"/>
+                </p:column>
+            </p:row>
+            <p:row>
+                <p:column colspan="2">
+                    <p:message for="teamName"/>
+                </p:column>
+            </p:row>
+            <p:row>
+                <p:column colspan="2">
+                    <p:pickList id="competitorPickList" value="#{cc.attrs.competitorDualList}" var="competitor"
+                                itemLabel="#{not empty competitor.idCreator ? '*' : ''}#{competitor.idPersonalInfo.firstName} #{competitor.idPersonalInfo.lastName} " 
+                                itemValue="#{competitor}" showCheckbox="true" converter="#{competitorConverter}"
+                                showSourceFilter="true" showTargetFilter="true" filterMatchMode="contains">
+
+                        <f:facet name="sourceCaption">#{msg.competitors}</f:facet>
+                        <f:facet name="targetCaption">#{msg.assignedCompetitors}</f:facet>
+                        <p:ajax event="transfer" listener="#{cc.attrs.checkDuplicate}" update="msg submitButton" />
+
+                        <p:column style="width: 100%">
+                            <p:outputLabel>
+                                <ui:fragment rendered="#{not empty competitor.idCreator}">
+                                    *
+                                </ui:fragment>
+                                #{competitor.idPersonalInfo.firstName}
+                                #{competitor.idPersonalInfo.lastName}
+                            </p:outputLabel>
+                        </p:column>
+                    </p:pickList>
+                </p:column>
+            </p:row>
+            <p:row>
+                <p:column colspan="2">
+                    <p:outputLabel>
+                        * - #{msg.competitorAsterisk}
+                    </p:outputLabel>
+                    <br/>
+                    <br/>
+                    <p:commandButton id="submitButton" action="#{cc.attrs.saveAction}"  value="#{cc.attrs.buttonLabel}"
+                                     update="#{cc.attrs.afterActionUpdateId}" disabled="#{cc.attrs.duplicatedCompetitorFlag}"/>
+                </p:column>
+            </p:row>
+        </p:panelGrid>
+        <p:messages showDetail="true" id="msg" />
+    </composite:implementation>
+
+</html>
+

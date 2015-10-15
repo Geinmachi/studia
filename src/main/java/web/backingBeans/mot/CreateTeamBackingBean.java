@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package web.backingBeans;
+package web.backingBeans.mot;
 
 import entities.Competitor;
 import entities.Team;
@@ -22,7 +22,7 @@ import javax.inject.Inject;
 import org.primefaces.event.TransferEvent;
 import org.primefaces.model.DualListModel;
 import web.controllers.CompetitionController;
-import web.converters.CompetitorConverterData;
+import web.converters.interfaces.CompetitorConverterData;
 import web.utils.JsfUtils;
 
 /**
@@ -31,19 +31,10 @@ import web.utils.JsfUtils;
  */
 @Named(value = "createTeamBackingBean")
 @ViewScoped
-public class CreateTeamBackingBean implements Serializable, CompetitorConverterData {
+public class CreateTeamBackingBean extends TeamBackingBean implements Serializable, CompetitorConverterData {
 
     private final Team team = new Team();
-
-    private DualListModel competitors;
-
-    private List<Competitor> competitorList;
     
-    private boolean duplicatedCompetitorFlag;
-
-    @Inject
-    private CompetitionController controller;
-
     public Team getTeam() {
         return team;
     }
@@ -101,18 +92,8 @@ public class CreateTeamBackingBean implements Serializable, CompetitorConverterD
         return null;
     }
 
+    @Override
     public void checkDuplicate() {
-        Competitor duplicatedCompetitor = controller.vlidateCompetitorDuplicate((List<Competitor>) competitors.getTarget());
-        
-        if (duplicatedCompetitor != null) {
-            System.out.println("Duplicated competitor");
-            JsfUtils.addErrorMessage("Team contains duplicated competitor" , 
-                    duplicatedCompetitor.getIdPersonalInfo().getFirstName() + " " 
-                            + duplicatedCompetitor.getIdPersonalInfo().getLastName(), null);
-            duplicatedCompetitorFlag = true;
-            return;
-        }
-        
-        duplicatedCompetitorFlag = false;
-    }
+        super.checkDuplicate();
+    };
 }

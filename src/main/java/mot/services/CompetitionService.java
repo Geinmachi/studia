@@ -303,5 +303,11 @@ public class CompetitionService implements CompetitionServiceLocal {
         editingCompetitor = competitionComponentsManager.findCompetitorById(competitor.getIdCompetitor());
         return editingCompetitor;
     }
+
+    @Override
+    public void editCompetitor(Competitor competitor) {
+        competitionComponentsManager.editCompetitor(editingCompetitor, competitor);
+        editingCompetitor = null;
+    }
     
 }

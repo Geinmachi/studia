@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package web.backingBeans;
+package web.backingBeans.mot;
 
 import web.utils.BracketCreation;
 import entities.Competition;
@@ -36,7 +36,7 @@ import org.primefaces.component.picklist.PickList;
 import org.primefaces.event.FlowEvent;
 import org.primefaces.model.DualListModel;
 import web.controllers.CompetitionController;
-import web.converters.CompetitorConverterData;
+import web.converters.interfaces.CompetitorConverterData;
 import web.utils.JsfUtils;
 
 /**
@@ -45,11 +45,7 @@ import web.utils.JsfUtils;
  */
 @Named(value = "createCompetitionBackingBean")
 @ViewScoped
-public class CreateCompetitionBackingBean implements Serializable, CompetitorConverterData {
-
-    @Inject
-    private CompetitionController controller;
-
+public class CreateCompetitionBackingBean extends CompetitionBackingBean implements Serializable, CompetitorConverterData {
     @Inject
     private BracketCreation bracketCreator;
 

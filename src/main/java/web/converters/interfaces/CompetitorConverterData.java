@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package web.converters;
+package web.converters.interfaces;
 
 import entities.Competitor;
 import java.util.List;
