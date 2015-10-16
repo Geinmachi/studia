@@ -1,6 +1,28 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
-                xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
-    <h:outputText value="#{msg.header}"/>
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <h:outputScript library="js" name="topSection.js" />
+    <c:if test="#{not empty request.remoteUser}">
+        <h:form onmouseover="resize()">
+            <p:menubar toggleEvent="hover" >
+                <p:submenu label="#{msg.competition}">
+                    <p:menuitem value="#{msg.createCompetition}" icon="ui-icon-person" url="/organizer/createCompetition.xhtml"/>
+                    <p:menuitem value="#{msg.chooseCompetition}" icon="ui-icon-person" url="/organizer/chooseCompetition.xhtml"/>
+                    <p:menuitem value="#{msg.competitionList}" icon="ui-icon-key" url="/competitionList.xhtml"/>
+                </p:submenu>
+                <p:submenu label="#{msg.team}">
+                    <p:menuitem value="#{msg.addTeam}" url="/organizer/createTeam.xhtml"/>
+                    <p:menuitem value="#{msg.editTeam}" url="/edit/teamList.xhtml"/>
+                </p:submenu>
+                <p:submenu label="#{msg.competitor}">
+                    <p:menuitem value="#{msg.addCompetitor}" icon="ui-icon-person" url="/organizer/addCompetitor.xhtml"/>
+                    <p:menuitem value="#{msg.editCompetitor}" url="/edit/competitorList.xhtml"/>
+                </p:submenu>
+            </p:menubar>
+        </h:form>
+    </c:if>
+<!--    <h:outputText value="#{msg.header}"/>-->
 </ui:composition>
 

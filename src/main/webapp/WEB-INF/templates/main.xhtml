@@ -8,23 +8,24 @@
     <h:head>
         <title><ui:insert name="title"/></title>
         <h:outputStylesheet library="css" name="dashboard.css" />
+        <h:outputStylesheet library="css" name="layout.css" />
     </h:head>
     <h:body>
         <p:layout fullPage="true">
 
-            <p:layoutUnit id="top" position="north">
+            <p:layoutUnit id="top" collapsible="true" gutter="0" position="north" >
                 <ui:include src="headerTemplate.xhtml" />
             </p:layoutUnit>
 
-            <p:layoutUnit position="west">
+            <p:layoutUnit position="west" collapsible="true" gutter="0">
                 <ui:include src="menuTemplate.xhtml"/>
             </p:layoutUnit>
 
-            <p:layoutUnit  id="center" position="center">
+            <p:layoutUnit  id="center" position="center" collapsible="true" gutter="0">
                 <ui:insert name="content"/>
             </p:layoutUnit>
 
-            <p:layoutUnit id="bottom" position="south">
+            <p:layoutUnit id="bottom" position="south" collapsible="true" gutter="0" >
                 <ui:include src="footerTemplate.xhtml" />
             </p:layoutUnit>
 

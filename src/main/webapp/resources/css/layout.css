@@ -1,0 +1,18 @@
+
+.ui-layout-pane-north {
+    background: transparent !important;
+    z-index: 10 !important;
+    border: 0 !important;
+    overflow: hidden !important;
+}
+
+.ui-layout-pane-north > div {
+    background: transparent !important;
+    z-index: 20 !important;
+    overflow: hidden !important;
+}
+
+.ui-layout-pane-north .ui-menu.ui-menubar {
+    border-radius: 0px !important;
+    font-size: 0.7em !important;
+}
