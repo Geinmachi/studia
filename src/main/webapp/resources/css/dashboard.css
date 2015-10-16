@@ -22,16 +22,16 @@
 
 [id*="CompetitionForm:first"].ui-panel {
     margin-top: 80px;
-    height: 160px;
+    height: 140px;
     padding: 0px;
 }
 
 [id*="CompetitionForm:other"].ui-panel {
-    height: 160px;
+    height: 140px;
 }
 
 [id*="CompetitionForm:other2"].ui-panel:nth-child(1) {
-    margin-top: 160px !important;
+    margin-top: 140px !important;
 }
 
 [id*="CompetitionForm:other2"].ui-panel {
@@ -59,13 +59,20 @@
 
 /*fillers*/
 
+[id*="CompetitionForm:filler"] {
+    background-color: #333;
+    background: transparent;
+}
+
 [id*="CompetitionForm:filler0"] {
     height: 120px;
     padding: 0 !important;
 }
+
 [id*="CompetitionForm:filler0"]:nth-child(1) {
     height: 120px !important;
 }
+
 [id*="CompetitionForm:filler0"]:nth-child(3n+1) {
     height: 240px;
     border: 0;
@@ -74,8 +81,9 @@
 [id*="CompetitionForm:filler0"]:nth-child(3n+3) > div{
     position: absolute;
     width: 100px;
-    background-color: #fff;
+    background-color: #333;
     right: 0.1px;
+    top: -2.2px;
 }
 
 [id*="CompetitionForm:filler1"] {
@@ -94,8 +102,9 @@
 [id*="CompetitionForm:filler1"]:nth-child(3n+3) > div{
     position: absolute;
     width: 100px;
-    background-color: #fff;
+    background-color: #333;
     right: 0.1px;
+    top: -2.2px;
 }
 
 [id*="CompetitionForm:filler2"] {
@@ -116,8 +125,9 @@
 [id*="CompetitionForm:filler2"]:nth-child(3n+3) > div{
     position: absolute;
     width: 100px;
-    background-color: #fff;
+    background-color: #333;
     right: 0.1px;
+    top: -1.0px;
     height: 100% !important;
 }
 
@@ -130,7 +140,7 @@
     z-index: 1;
     position: absolute;
     width: 100px;
-    background-color: #fff;
+    background-color: #333;
     right: 0px;
 }
 
@@ -202,4 +212,8 @@ input[id$="scoreInput"] {
 
 .ui-picklist-list {
     width: auto !important;
+}
+
+form > div[id*="CompetitionForm"] {
+    background-color: #333;
 }
