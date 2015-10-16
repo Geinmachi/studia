@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package web.backingBeans.mot;
+package web.backingBeans.mot.competitor;
 
 import entities.Competitor;
 import entities.PersonalInfo;
@@ -14,6 +14,7 @@ import javax.annotation.PostConstruct;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
+import web.backingBeans.mot.competition.CompetitionBackingBean;
 import web.controllers.CompetitionController;
 import web.converters.interfaces.TeamConverterData;
 import web.utils.JsfUtils;

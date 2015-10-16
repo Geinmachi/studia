@@ -19,7 +19,7 @@ import javax.ejb.SessionContext;
 @Remote
 public interface CompetitionComponentsManagerLocal {
     
-    public void createTeam(Team team) throws ApplicationException;
+    public void createTeam(Team team, boolean global) throws ApplicationException;
 
     public List<Competitor> getAllTeamlessCompetitors();
 
@@ -29,9 +29,15 @@ public interface CompetitionComponentsManagerLocal {
     
     public Competitor vlidateCompetitorDuplicate(List<Competitor> competitorList);
 
-    public List<Competitor> getCompetitionsToEdit();
+    public List<Competitor> getCompetitorsToEdit();
 
     public Competitor findCompetitorById(int idCompetitor);
 
     public void editCompetitor(Competitor editingCompetitor, Competitor competitor);
+
+    public List<Team> getTeamsToEdit();
+
+    public Team findTeamById(Integer idTeam);
+
+    public void editTeam(final Team editingTeam, Team team);
 }

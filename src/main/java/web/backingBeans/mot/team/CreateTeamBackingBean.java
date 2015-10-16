@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package web.backingBeans.mot;
+package web.backingBeans.mot.team;
 
 import entities.Competitor;
 import entities.Team;
@@ -31,12 +31,22 @@ import web.utils.JsfUtils;
  */
 @Named(value = "createTeamBackingBean")
 @ViewScoped
-public class CreateTeamBackingBean extends TeamBackingBean implements Serializable, CompetitorConverterData {
+public class CreateTeamBackingBean extends TeamBackingBean implements Serializable {
 
     private final Team team = new Team();
     
+    private boolean isGlobal;
+    
     public Team getTeam() {
         return team;
+    }
+
+    public boolean isIsGlobal() {
+        return isGlobal;
+    }
+
+    public void setIsGlobal(boolean isGlobal) {
+        this.isGlobal = isGlobal;
     }
 
     public DualListModel getCompetitors() {
@@ -79,7 +89,7 @@ public class CreateTeamBackingBean extends TeamBackingBean implements Serializab
 
         try {
             System.out.println("Competitors size BB " + team.getCompetitorList().size());
-            controller.createTeam(team);
+            controller.createTeam(team, isGlobal);
             return "/index.xhtml?faces-redirect=true";
         } catch (TeamCreationException e) {
             System.out.println("TEAMCREATIONEXCEPTION " + e.getLocalizedMessage());

@@ -44,6 +44,8 @@ public class CompetitionController implements Serializable {
     private Competition editingCompetition;
     
     private Competitor editingCompetitor;
+    
+    private Team editingTeam;
 
     private Competition displayedCompetition;
 
@@ -59,6 +61,10 @@ public class CompetitionController implements Serializable {
 
     public Competitor getEditingCompetitor() {
         return editingCompetitor;
+    }
+
+    public Team getEditingTeam() {
+        return editingTeam;
     }
 
     public Competition getDisplayedCompetition(DisplayPageEnum type) {
@@ -176,8 +182,8 @@ public class CompetitionController implements Serializable {
         editingCompetition = service.saveCompetitionGeneralInfo(competition);
     }
 
-    public void createTeam(Team team) throws ApplicationException {
-        service.createTeam(team);
+    public void createTeam(Team team, boolean global) throws ApplicationException {
+        service.createTeam(team, global);
     }
 
     public List<Competitor> getAllTeamlessCompetitors() {
@@ -198,5 +204,17 @@ public class CompetitionController implements Serializable {
 
     public void editCompetitor(Competitor competitor) {
         service.editCompetitor(competitor);
+    }
+
+    public List<Team> getTeamsToEdit() {
+        return service.getTeamsToEdit();
+    }
+    
+    public void storeTeam(Team team) {
+        editingTeam = service.storeTeam(team);
+    }
+
+    public void editTeam(Team team) {
+        service.editTeam(team);
     }
 }

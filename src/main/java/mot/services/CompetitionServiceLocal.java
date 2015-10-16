@@ -77,7 +77,7 @@ public interface CompetitionServiceLocal {
 
     public Competition saveCompetitionGeneralInfo(Competition competition);
 
-    public void createTeam(Team team) throws ApplicationException;
+    public void createTeam(Team team, boolean global) throws ApplicationException;
 
     public List<Competitor> getAllTeamlessCompetitors();
 
@@ -88,4 +88,10 @@ public interface CompetitionServiceLocal {
     public Competitor storeCompetitor(Competitor competitor);
 
     public void editCompetitor(Competitor competitor);
+
+    public List<Team> getTeamsToEdit();
+
+    public Team storeTeam(Team team);
+
+    public void editTeam(Team team);
 }

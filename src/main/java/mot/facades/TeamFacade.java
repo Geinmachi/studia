@@ -5,13 +5,17 @@
  */
 package mot.facades;
 
+import entities.AccessLevel;
+import entities.Competitor;
 import entities.Team;
 import java.util.ArrayList;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -38,6 +42,24 @@ public class TeamFacade extends AbstractFacade<Team> implements TeamFacadeLocal 
         em.flush();
         
         team.setCompetitorList(new ArrayList<>(team.getCompetitorList()));
+        
+        return team;
+    }
+
+    @Override
+    public List<Team> findUserTeams(AccessLevel accessLevel) {
+        Query q = em.createNamedQuery("Team.findUserTeams");
+        q.setParameter("idAccessLevel", accessLevel.getIdAccessLevel());
+        
+        return (List<Team>) q.getResultList();
+    }
+
+    @Override
+    public Team findAndInitializeCompetitors(Integer idTeam) {
+        Team team = em.find(Team.class, idTeam);
+        team.getCompetitorList().size();
+        
+        em.flush();
         
         return team;
     }

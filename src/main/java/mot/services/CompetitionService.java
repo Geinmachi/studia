@@ -71,6 +71,8 @@ public class CompetitionService implements CompetitionServiceLocal {
     private Competition editingCompetition;
     
     private Competitor editingCompetitor;
+    
+    private Team editingTeam;
 
     private List<CMG> storedCMGmappings;
     
@@ -279,8 +281,8 @@ public class CompetitionService implements CompetitionServiceLocal {
     }
 
     @Override
-    public void createTeam(Team team) throws ApplicationException {
-        competitionComponentsManager.createTeam(team);
+    public void createTeam(Team team, boolean global) throws ApplicationException {
+        competitionComponentsManager.createTeam(team, global);
     }
 
     @Override
@@ -295,7 +297,7 @@ public class CompetitionService implements CompetitionServiceLocal {
 
     @Override
     public List<Competitor> getCompetitorsToEdit() {
-        return competitionComponentsManager.getCompetitionsToEdit();
+        return competitionComponentsManager.getCompetitorsToEdit();
     }
 
     @Override
@@ -308,6 +310,23 @@ public class CompetitionService implements CompetitionServiceLocal {
     public void editCompetitor(Competitor competitor) {
         competitionComponentsManager.editCompetitor(editingCompetitor, competitor);
         editingCompetitor = null;
+    }
+
+    @Override
+    public List<Team> getTeamsToEdit() {
+        return competitionComponentsManager.getTeamsToEdit();
+    }
+
+    @Override
+    public Team storeTeam(Team team) {
+        editingTeam = competitionComponentsManager.findTeamById(team.getIdTeam());
+        return editingTeam;
+    }
+
+    @Override
+    public void editTeam(Team team) {
+        competitionComponentsManager.editTeam(editingTeam, team);
+        editingTeam = null;
     }
     
 }

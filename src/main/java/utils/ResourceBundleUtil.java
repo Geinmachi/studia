@@ -17,7 +17,7 @@ public class ResourceBundleUtil {
     
     public static String getResourceBundleBusinessProperty(String propertyName) {
         
-        ResourceBundle rb = ResourceBundle.getBundle("properties.business.business");
+        ResourceBundle rb = ResourceBundle.getBundle("properties.business.business", Locale.ROOT);
         
         return rb.getString(propertyName);
     }

@@ -13,6 +13,7 @@
         <composite:attribute name="competitorDualList" required="true"/>
         <composite:attribute name="checkDuplicate" method-signature="void action()" required="true"/>
         <composite:attribute name="duplicatedCompetitorFlag" required="true"/>
+        <composite:attribute name="isGlobal"/>
         <composite:attribute name="buttonLabel" required="true"/>
         <composite:attribute name="saveAction" method-signature="java.lang.String action()" required="true"/>
     </composite:interface>
@@ -53,6 +54,17 @@
                             </p:outputLabel>
                         </p:column>
                     </p:pickList>
+                </p:column>
+            </p:row>
+            <p:row>
+                <p:column>
+                    <p:outputLabel for="isGlobal" value="#{msg.globalTeam}"/>
+                </p:column>
+                <p:column>
+                    <p:selectBooleanCheckbox id="isGlobal" value="#{cc.attrs.isGlobal}" disabled="#{empty cc.attrs.isGlobal}"/>
+                </p:column>
+                <p:column>
+                    <p:message for="isGlobal"/>
                 </p:column>
             </p:row>
             <p:row>

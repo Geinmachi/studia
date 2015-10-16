@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package web.backingBeans.mot;
+package web.backingBeans.mot.competition;
 
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;

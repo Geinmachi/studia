@@ -15,6 +15,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -35,6 +37,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Team.findAll", query = "SELECT t FROM Team t"),
+    @NamedQuery(name = "Team.findUserTeams", query = "SELECT t FROM Team t WHERE t.idCreator.idAccessLevel = :idAccessLevel"),
     @NamedQuery(name = "Team.findByIdTeam", query = "SELECT t FROM Team t WHERE t.idTeam = :idTeam"),
     @NamedQuery(name = "Team.findByTeamName", query = "SELECT t FROM Team t WHERE t.teamName = :teamName"),
     @NamedQuery(name = "Team.findByVersion", query = "SELECT t FROM Team t WHERE t.version = :version")})
@@ -49,6 +52,9 @@ public class Team implements Serializable {
     @Basic(optional = false)
     @Column(name = "id_team")
     private Integer idTeam;
+    @JoinColumn(name = "id_creator", referencedColumnName = "id_access_level")
+    @ManyToOne
+    private AccessLevel idCreator;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 50)
@@ -85,6 +91,14 @@ public class Team implements Serializable {
 
     public void setIdTeam(Integer idTeam) {
         this.idTeam = idTeam;
+    }
+
+    public AccessLevel getIdCreator() {
+        return idCreator;
+    }
+
+    public void setIdCreator(AccessLevel idCreator) {
+        this.idCreator = idCreator;
     }
 
     public String getTeamName() {

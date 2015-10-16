@@ -20,10 +20,10 @@ import javax.faces.convert.ConverterException;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
-import web.backingBeans.mot.AddCompetitorBackingBean;
-import web.backingBeans.mot.CreateCompetitionBackingBean;
-import web.backingBeans.mot.CreateTeamBackingBean;
-import web.backingBeans.mot.EditCompetitorBackingBean;
+import web.backingBeans.mot.competitor.AddCompetitorBackingBean;
+import web.backingBeans.mot.competition.CreateCompetitionBackingBean;
+import web.backingBeans.mot.team.CreateTeamBackingBean;
+import web.backingBeans.mot.competitor.EditCompetitorBackingBean;
 import web.converters.interfaces.TeamConverterData;
 import web.qualifiers.TeamDataSource;
 
