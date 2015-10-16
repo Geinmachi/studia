@@ -116,7 +116,6 @@ public class ManageCompetitionBackingBean extends CompetitionBackingBean impleme
 //            if (advancedCompetitorMatchVersioned != null) {
 //                bracketCreator.addAdvancedCompetitor(advancedCompetitorMatchVersioned);
 //            }
-
             CompetitorMatch advancedCompetitorMatch = savedMap.get("advanced");
 
             if (advancedCompetitorMatch != null) {
@@ -151,48 +150,47 @@ public class ManageCompetitionBackingBean extends CompetitionBackingBean impleme
 
     public void updateMatchType(DashboardPanel dp) {
 
-        Matchh match = dp.getMatch();
+        try {
+            Matchh match = dp.getMatch();
+            for (MatchMatchType mmt : match.getMatchMatchTypeList()) {
+                if (mmt.getIdMatchType().getMatchTypeName().startsWith("BO")) {
+                    mmt.setIdMatchType(dp.getMatchType());
 
-//        System.out.println("PANEL SERAILZIABLE BLAAAADDD" + dp.getPanel());
-//        dp.setEditable(inactivateMatch.getEditable());
-//        dp.setInplaceEditable(inactivateMatch.isInplaceEditable());
-//        
-//        System.out.println("DP: " + dp);
-//        System.out.println("MATCH IDIDID " + dp.getMatch());
-        for (MatchMatchType mmt : match.getMatchMatchTypeList()) {
-            if (mmt.getIdMatchType().getMatchTypeName().startsWith("BO")) {
-                mmt.setIdMatchType(dp.getMatchType());
-
-                break;
+                    break;
+                }
             }
-        }
 
-        System.out.println("BEFORE matchType updated BB ");
-        match.getMatchMatchTypeList().stream().forEach(p -> System.out.println(" id " + p.getIdMatchMatchType() + " type " + p.getIdMatchType()));
-        MatchMatchType updatedMMT = controller.updateMatchType(match);
-        System.out.println("AFTER matchType updated BB id " + updatedMMT.getIdMatchMatchType() + " typ " + updatedMMT.getIdMatchType());
+            System.out.println("BEFORE matchType updated BB ");
+            match.getMatchMatchTypeList().stream().forEach(p -> System.out.println(" id " + p.getIdMatchMatchType() + " type " + p.getIdMatchType()));
+            MatchMatchType updatedMMT = controller.updateMatchType(match);
+            System.out.println("AFTER matchType updated BB id " + updatedMMT.getIdMatchMatchType() + " typ " + updatedMMT.getIdMatchType());
 
-        for (MatchMatchType mmt : match.getMatchMatchTypeList()) {
-            if (mmt.getIdMatchType().getMatchTypeName().startsWith("BO")) {
-                int mmtIndex = match.getMatchMatchTypeList().indexOf(mmt);
-                match.getMatchMatchTypeList().set(mmtIndex, updatedMMT);
+            for (MatchMatchType mmt : match.getMatchMatchTypeList()) {
+                if (mmt.getIdMatchType().getMatchTypeName().startsWith("BO")) {
+                    int mmtIndex = match.getMatchMatchTypeList().indexOf(mmt);
+                    match.getMatchMatchTypeList().set(mmtIndex, updatedMMT);
 
-                break;
+                    break;
+                }
             }
-        }
 
-        BracketUtil.makeSerializablePanel(dp);
+            BracketUtil.makeSerializablePanel(dp);
 
-        InactivateMatch inactiveMatch = controller.disableMatch(dp);
+            InactivateMatch inactiveMatch = controller.disableMatch(dp);
 //        addAdvancedCompetitor(advancedMatchNumber);
-        if (!inactiveMatch.getEditable()) {
+            if (!inactiveMatch.getEditable()) {
 
-            dp.setEditable(inactiveMatch.getEditable());
-            dp.setInplaceEditable(inactiveMatch.isInplaceEditable());
+                dp.setEditable(inactiveMatch.getEditable());
+                dp.setInplaceEditable(inactiveMatch.isInplaceEditable());
 
-            CompetitorMatch advancedCompetitorMatch = controller.advanceCompetitor(BracketUtil.getMatchWinner(dp.getMatch()));
+                CompetitorMatch advancedCompetitorMatch = controller.advanceCompetitor(BracketUtil.getMatchWinner(dp.getMatch()));
 
-            bracketCreator.addAdvancedCompetitor(advancedCompetitorMatch);
+                bracketCreator.addAdvancedCompetitor(advancedCompetitorMatch);
+            }
+        } catch (ApplicationException e) {
+            JsfUtils.addErrorMessage(e.getLocalizedMessage(), null, null);
+            System.out.println("MangageCompetitonBB#updateMatchType exepton " + e.getLocalizedMessage());
+            e.printStackTrace();
         }
 
         //       init();

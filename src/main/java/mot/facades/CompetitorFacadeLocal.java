@@ -18,9 +18,9 @@ import javax.ejb.Local; import javax.ejb.Remote;
 @Remote
 public interface CompetitorFacadeLocal {
 
-    void create(Competitor competitor);
+    void create(Competitor competitor) throws ApplicationException ;
 
-    void edit(Competitor competitor);
+    void edit(Competitor competitor) throws ApplicationException;
 
     void remove(Competitor competitor);
 

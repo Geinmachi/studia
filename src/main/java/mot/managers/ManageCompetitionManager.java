@@ -218,7 +218,7 @@ public class ManageCompetitionManager implements ManageCompetitionManagerLocal {
     }
 
     @Override
-    public CompetitorMatch advanceCompetitor(CompetitorMatch receivedCompetitorMatch) {
+    public CompetitorMatch advanceCompetitor(CompetitorMatch receivedCompetitorMatch) throws ApplicationException {
         if (receivedCompetitorMatch == null || receivedCompetitorMatch.getIdMatch() == null) {
             throw new IllegalArgumentException("ManageComeptitonManager#advanceCompetitor: "
                     + "competitorMatch or match cannot be null competitorMatch: " + receivedCompetitorMatch);

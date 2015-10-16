@@ -19,67 +19,69 @@
     </composite:interface>
 
     <composite:implementation>
-        <p:panelGrid >
-            <p:row>
-                <p:column>
-                    <p:outputLabel for="teamName" value="#{msg.teamName}"/>
-                </p:column>
-                <p:column>
-                    <p:inputText id="teamName" value="#{cc.attrs.teamName}"/>
-                </p:column>
-            </p:row>
-            <p:row>
-                <p:column colspan="2">
-                    <p:message for="teamName"/>
-                </p:column>
-            </p:row>
-            <p:row>
-                <p:column colspan="2">
-                    <p:pickList id="competitorPickList" value="#{cc.attrs.competitorDualList}" var="competitor"
-                                itemLabel="#{not empty competitor.idCreator ? '*' : ''}#{competitor.idPersonalInfo.firstName} #{competitor.idPersonalInfo.lastName} " 
-                                itemValue="#{competitor}" showCheckbox="true" converter="#{competitorConverter}"
-                                showSourceFilter="true" showTargetFilter="true" filterMatchMode="contains">
+        <div id="#{cc.clientId}">
+            <p:panelGrid >
+                <p:row>
+                    <p:column>
+                        <p:outputLabel for="teamName" value="#{msg.teamName}"/>
+                    </p:column>
+                    <p:column>
+                        <p:inputText id="teamName" value="#{cc.attrs.teamName}"/>
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column colspan="2">
+                        <p:message for="teamName"/>
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column colspan="2">
+                        <p:pickList id="competitorPickList" value="#{cc.attrs.competitorDualList}" var="competitor"
+                                    itemLabel="#{not empty competitor.idCreator ? '*' : ''}#{competitor.idPersonalInfo.firstName} #{competitor.idPersonalInfo.lastName} " 
+                                    itemValue="#{competitor}" showCheckbox="true" converter="#{competitorConverter}"
+                                    showSourceFilter="true" showTargetFilter="true" filterMatchMode="contains">
 
-                        <f:facet name="sourceCaption">#{msg.competitors}</f:facet>
-                        <f:facet name="targetCaption">#{msg.assignedCompetitors}</f:facet>
-                        <p:ajax event="transfer" listener="#{cc.attrs.checkDuplicate}" update="msg submitButton" />
+                            <f:facet name="sourceCaption">#{msg.competitors}</f:facet>
+                            <f:facet name="targetCaption">#{msg.assignedCompetitors}</f:facet>
+                            <p:ajax event="transfer" listener="#{cc.attrs.checkDuplicate}" update="ccMsg submitButton" />
 
-                        <p:column style="width: 100%">
-                            <p:outputLabel>
-                                <ui:fragment rendered="#{not empty competitor.idCreator}">
-                                    *
-                                </ui:fragment>
-                                #{competitor.idPersonalInfo.firstName}
-                                #{competitor.idPersonalInfo.lastName}
-                            </p:outputLabel>
-                        </p:column>
-                    </p:pickList>
-                </p:column>
-            </p:row>
-            <p:row>
-                <p:column>
-                    <p:outputLabel for="isGlobal" value="#{msg.globalTeam}"/>
-                </p:column>
-                <p:column>
-                    <p:selectBooleanCheckbox id="isGlobal" value="#{cc.attrs.isGlobal}" disabled="#{empty cc.attrs.isGlobal}"/>
-                </p:column>
-                <p:column>
-                    <p:message for="isGlobal"/>
-                </p:column>
-            </p:row>
-            <p:row>
-                <p:column colspan="2">
-                    <p:outputLabel>
-                        * - #{msg.competitorAsterisk}
-                    </p:outputLabel>
-                    <br/>
-                    <br/>
-                    <p:commandButton id="submitButton" action="#{cc.attrs.saveAction}"  value="#{cc.attrs.buttonLabel}"
-                                     update="#{cc.attrs.afterActionUpdateId}" disabled="#{cc.attrs.duplicatedCompetitorFlag}"/>
-                </p:column>
-            </p:row>
-        </p:panelGrid>
-        <p:messages showDetail="true" id="msg" />
+                            <p:column style="width: 100%">
+                                <p:outputLabel>
+                                    <ui:fragment rendered="#{not empty competitor.idCreator}">
+                                        *
+                                    </ui:fragment>
+                                    #{competitor.idPersonalInfo.firstName}
+                                    #{competitor.idPersonalInfo.lastName}
+                                </p:outputLabel>
+                            </p:column>
+                        </p:pickList>
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column>
+                        <p:outputLabel for="isGlobal" value="#{msg.globalTeam}"/>
+                    </p:column>
+                    <p:column>
+                        <p:selectBooleanCheckbox id="isGlobal" value="#{cc.attrs.isGlobal}" disabled="#{empty cc.attrs.isGlobal}"/>
+                    </p:column>
+                    <p:column>
+                        <p:message for="isGlobal"/>
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column colspan="2">
+                        <p:outputLabel>
+                            * - #{msg.competitorAsterisk}
+                        </p:outputLabel>
+                        <br/>
+                        <br/>
+                        <p:commandButton id="submitButton" action="#{cc.attrs.saveAction}"  value="#{cc.attrs.buttonLabel}"
+                                         update="#{cc.id}" disabled="#{cc.attrs.duplicatedCompetitorFlag}"/>
+                    </p:column>
+                </p:row>
+            </p:panelGrid>
+            <p:messages autoUpdate="false" showDetail="true" id="ccMsg" globalOnly="true"/>
+        </div>
     </composite:implementation>
 
 </html>

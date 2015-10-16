@@ -33,7 +33,7 @@ public abstract class TeamBackingBean extends CompetitionBackingBean implements 
             System.out.println("Duplicated competitor");
             JsfUtils.addErrorMessage("Team contains duplicated competitor" , 
                     duplicatedCompetitor.getIdPersonalInfo().getFirstName() + " " 
-                            + duplicatedCompetitor.getIdPersonalInfo().getLastName(), "msg");
+                            + duplicatedCompetitor.getIdPersonalInfo().getLastName(), null);
             duplicatedCompetitorFlag = true;
             return;
         }

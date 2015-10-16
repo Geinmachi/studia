@@ -7,13 +7,18 @@ package web.backingBeans.mot.team;
 
 import entities.Competitor;
 import entities.Team;
+import exceptions.ApplicationException;
+import exceptions.TeamCreationException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import org.primefaces.model.DualListModel;
+import web.utils.JsfUtils;
 
 /**
  *
@@ -77,9 +82,12 @@ public class EditTeamBackingBean extends TeamBackingBean implements Serializable
             team.setCompetitorList(competitors.getTarget());
             controller.editTeam(team);
             return "/index.xhtml?faces-redirect=true";
+        } catch (ApplicationException e) {
+            System.out.println("APPECEPTION " + e.getLocalizedMessage());
+            JsfUtils.addErrorMessage(e.getLocalizedMessage(), null, null);
         } catch (Exception e) {
-            System.out.println("EXception " + e.getMessage());
-            e.printStackTrace();
+            System.out.println("Wyjatek przy edycji");
+            Logger.getLogger(EditTeamBackingBean.class.getName()).log(Level.SEVERE, null, e);
         }
         
         return null;

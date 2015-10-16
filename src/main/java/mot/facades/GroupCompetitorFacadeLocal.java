@@ -6,6 +6,7 @@
 package mot.facades;
 
 import entities.GroupCompetitor;
+import exceptions.ApplicationException;
 import java.util.List;
 import javax.ejb.Local;
 import javax.ejb.Remote;
@@ -17,9 +18,9 @@ import javax.ejb.Remote;
 @Remote
 public interface GroupCompetitorFacadeLocal {
 
-    void create(GroupCompetitor groupCompetitor);
+    void create(GroupCompetitor groupCompetitor)  throws ApplicationException;
 
-    void edit(GroupCompetitor groupCompetitor);
+    void edit(GroupCompetitor groupCompetitor) throws ApplicationException;
 
     void remove(GroupCompetitor groupCompetitor);
 

@@ -112,4 +112,21 @@ public class CompetitorFacade extends AbstractFacade<Competitor> implements Comp
         return (Competitor) q.getSingleResult();
     }
 
+    @Override
+    public void create(Competitor entity) throws ApplicationException {
+        competitorConstraints(entity);
+        
+        em.persist(entity);
+        em.flush();
+    }
+
+    @Override
+    public void edit(Competitor entity) throws ApplicationException {
+        competitorConstraints(entity);
+        
+        em.merge(entity);
+        em.flush();
+    }
+
+    
 }

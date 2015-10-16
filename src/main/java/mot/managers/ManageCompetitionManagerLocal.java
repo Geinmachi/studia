@@ -41,7 +41,7 @@ public interface ManageCompetitionManagerLocal {
 
     public CurrentMatchType assignCurrentMatchType(CurrentMatchType cmt);
     
-    CompetitorMatch advanceCompetitor(CompetitorMatch receivedCompetitorMatch);
+    CompetitorMatch advanceCompetitor(CompetitorMatch receivedCompetitorMatch) throws ApplicationException;
 
     public Competition saveCompetitionGeneralInfo(Competition competition, Competition storedCompetition);
 }

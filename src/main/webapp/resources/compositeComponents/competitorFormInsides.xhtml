@@ -14,7 +14,6 @@ and open the template in the editor.
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
 
     <composite:interface componentType="">
-        <composite:attribute name="afterActionUpdateId"/>
         <composite:attribute name="firstName" required="true"/>
         <composite:attribute name="lastName" required="true"/>
         <composite:attribute name="selectedTeam" required="true"/>
@@ -25,61 +24,64 @@ and open the template in the editor.
     </composite:interface>
 
     <composite:implementation>
-        <p:panelGrid>
-            <p:row>
-                <p:column>
-                    <p:outputLabel for="firstName" value="#{msg.firstName}"/>
-                </p:column>
-                <p:column>
-                    <p:inputText id="firstName" value="#{cc.attrs.firstName}"/>
-                </p:column>
-                <p:column>
-                    <p:message for="firstName"/>
-                </p:column>
-            </p:row>
-            <p:row>
-                <p:column>
-                    <p:outputLabel for="lastName" value="#{msg.lastName}"/>
-                </p:column>
-                <p:column>
-                    <p:inputText id="lastName" value="#{cc.attrs.lastName}"/>
-                </p:column>
-                <p:column>
-                    <p:message for="lastName"/>
-                </p:column>
-            </p:row>
-            <p:row>
-                <p:column>
-                    <p:outputLabel for="teamListbox" value="#{msg.team}"/>
-                </p:column>
-                <p:column>
-                    <p:selectOneMenu id="teamListbox" value="#{cc.attrs.selectedTeam}" converter="#{teamConverter}">
-                        <f:selectItem itemValue="#{null}" itemLabel="#{msg.none}" />
-                        <f:selectItems value="#{cc.attrs.teamList}" var="team" itemLabel="#{team.teamName}"/>
-                    </p:selectOneMenu>
-                </p:column>
-                <p:column>
-                    <p:message for="teamListbox"/>
-                </p:column>
-            </p:row>
-            <p:row>
-                <p:column>
-                    <p:outputLabel for="isGlobal" value="#{msg.globalCompetitor}"/>
-                </p:column>
-                <p:column>
-                    <p:selectBooleanCheckbox id="isGlobal" value="#{cc.attrs.isGlobal}" disabled="#{empty cc.attrs.isGlobal}"/>
-                </p:column>
-                <p:column>
-                    <p:message for="isGlobal"/>
-                </p:column>
-            </p:row>
-            <p:row>
-                <p:column colspan="3">
-                    <p:commandButton value="#{cc.attrs.buttonLabel}" action="#{cc.attrs.saveAction}" 
-                                     update="#{cc.attrs.afterActionUpdateId}"/>
-                </p:column>
-            </p:row>
-        </p:panelGrid>
+        <div id="#{cc.clientId}">
+            <p:panelGrid>
+                <p:row>
+                    <p:column>
+                        <p:outputLabel for="firstName" value="#{msg.firstName}"/>
+                    </p:column>
+                    <p:column>
+                        <p:inputText id="firstName" value="#{cc.attrs.firstName}"/>
+                    </p:column>
+                    <p:column>
+                        <p:message for="firstName"/>
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column>
+                        <p:outputLabel for="lastName" value="#{msg.lastName}"/>
+                    </p:column>
+                    <p:column>
+                        <p:inputText id="lastName" value="#{cc.attrs.lastName}"/>
+                    </p:column>
+                    <p:column>
+                        <p:message for="lastName"/>
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column>
+                        <p:outputLabel for="teamListbox" value="#{msg.team}"/>
+                    </p:column>
+                    <p:column>
+                        <p:selectOneMenu id="teamListbox" value="#{cc.attrs.selectedTeam}" converter="#{teamConverter}">
+                            <f:selectItem itemValue="#{null}" itemLabel="#{msg.none}" />
+                            <f:selectItems value="#{cc.attrs.teamList}" var="team" itemLabel="#{team.teamName}"/>
+                        </p:selectOneMenu>
+                    </p:column>
+                    <p:column>
+                        <p:message for="teamListbox"/>
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column>
+                        <p:outputLabel for="isGlobal" value="#{msg.globalCompetitor}"/>
+                    </p:column>
+                    <p:column>
+                        <p:selectBooleanCheckbox id="isGlobal" value="#{cc.attrs.isGlobal}" disabled="#{empty cc.attrs.isGlobal}"/>
+                    </p:column>
+                    <p:column>
+                        <p:message for="isGlobal"/>
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column colspan="3">
+                        <p:commandButton value="#{cc.attrs.buttonLabel}" action="#{cc.attrs.saveAction}" 
+                                         update="#{cc.id}"/>
+                    </p:column>
+                </p:row>
+            </p:panelGrid>
+            <p:messages autoUpdate="false" id="ccMsg" globalOnly="true"/>
+        </div>
     </composite:implementation>
 
 </html>

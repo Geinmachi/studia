@@ -114,7 +114,7 @@ public class CompetitionController implements Serializable {
         return service.validateCompetitorsAmount(amount);
     }
 
-    public void createCompetition(Competition competition, List<CMG> competitorMatchGroupList) {
+    public void createCompetition(Competition competition, List<CMG> competitorMatchGroupList) throws ApplicationException {
         service.createCompetition(competition, competitorMatchGroupList);
     }
 
@@ -174,7 +174,7 @@ public class CompetitionController implements Serializable {
         return service.assignCurrentMatchType(cmt);
     }
 
-    public CompetitorMatch advanceCompetitor(CompetitorMatch competitorMatch) {
+    public CompetitorMatch advanceCompetitor(CompetitorMatch competitorMatch) throws ApplicationException {
         return service.advanceCompetitor(competitorMatch);
     }
 
@@ -202,7 +202,7 @@ public class CompetitionController implements Serializable {
         editingCompetitor = service.storeCompetitor(competitor);
     }
 
-    public void editCompetitor(Competitor competitor) {
+    public void editCompetitor(Competitor competitor) throws ApplicationException {
         service.editCompetitor(competitor);
     }
 
@@ -214,7 +214,7 @@ public class CompetitionController implements Serializable {
         editingTeam = service.storeTeam(team);
     }
 
-    public void editTeam(Team team) {
+    public void editTeam(Team team) throws ApplicationException {
         service.editTeam(team);
     }
 }

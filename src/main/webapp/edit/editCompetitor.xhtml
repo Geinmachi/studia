@@ -16,14 +16,12 @@ and open the template in the editor.
 
         <h:form id="editCompetitorForm">
             <cc:competitorFormInsides
-                afterActionUpdateId="editCompetitorForm"
                 firstName="#{editCompetitorBackingBean.competitor.idPersonalInfo.firstName}"
                 lastName="#{editCompetitorBackingBean.competitor.idPersonalInfo.lastName}"
                 selectedTeam="#{editCompetitorBackingBean.competitor.idTeam}"
                 teamList="#{editCompetitorBackingBean.teamList}"
                 buttonLabel="#{msg.edit}"
                 saveAction="#{editCompetitorBackingBean.edit}"/>
-            <p:messages globalOnly="true"/>
         </h:form>
 
     </ui:define>

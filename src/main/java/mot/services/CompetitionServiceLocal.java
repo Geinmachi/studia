@@ -41,7 +41,7 @@ public interface CompetitionServiceLocal {
     
     public boolean validateCompetitorsAmount(int amount);
     
-    public void createCompetition(Competition competition, List<CMG> competitorMatchGroupList);
+    public void createCompetition(Competition competition, List<CMG> competitorMatchGroupList) throws ApplicationException;
     
     public CompetitionType findCompetitionTypeById(int id);
     
@@ -73,7 +73,7 @@ public interface CompetitionServiceLocal {
 
     public CurrentMatchType assignCurrentMatchType(CurrentMatchType cmt);
     
-    public CompetitorMatch advanceCompetitor(CompetitorMatch competitorMatch);
+    public CompetitorMatch advanceCompetitor(CompetitorMatch competitorMatch) throws ApplicationException;
 
     public Competition saveCompetitionGeneralInfo(Competition competition);
 
@@ -87,11 +87,11 @@ public interface CompetitionServiceLocal {
 
     public Competitor storeCompetitor(Competitor competitor);
 
-    public void editCompetitor(Competitor competitor);
+    public void editCompetitor(Competitor competitor) throws ApplicationException;
 
     public List<Team> getTeamsToEdit();
 
     public Team storeTeam(Team team);
 
-    public void editTeam(Team team);
+    public void editTeam(Team team) throws ApplicationException;
 }

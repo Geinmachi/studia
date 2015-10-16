@@ -6,6 +6,7 @@
 package mot.facades;
 
 import entities.GroupDetails;
+import exceptions.ApplicationException;
 import java.util.List;
 import javax.ejb.Local;
 import javax.ejb.Remote;
@@ -17,9 +18,9 @@ import javax.ejb.Remote;
 @Remote
 public interface GroupDetailsFacadeLocal {
 
-    void create(GroupDetails groupDetails);
+    void create(GroupDetails groupDetails) throws ApplicationException;
 
-    void edit(GroupDetails groupDetails);
+    void edit(GroupDetails groupDetails) throws ApplicationException;
 
     void remove(GroupDetails groupDetails);
 

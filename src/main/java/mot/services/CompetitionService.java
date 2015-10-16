@@ -112,7 +112,7 @@ public class CompetitionService implements CompetitionServiceLocal {
     }
 
     @Override
-    public void createCompetition(Competition competition, List<CMG> competitorMatchGroupList) {
+    public void createCompetition(Competition competition, List<CMG> competitorMatchGroupList) throws ApplicationException {
         createCompetitionManager.createCompetition(competition, competitorMatchGroupList);
     }
 
@@ -250,7 +250,7 @@ public class CompetitionService implements CompetitionServiceLocal {
     }
 
     @Override
-    public CompetitorMatch advanceCompetitor(CompetitorMatch competitorMatch) {
+    public CompetitorMatch advanceCompetitor(CompetitorMatch competitorMatch) throws ApplicationException {
         CompetitorMatch updatedCompetitorMatch = manageCompetitionManager.advanceCompetitor(competitorMatch);
         replaceUpdatedMatch(updatedCompetitorMatch.getIdMatch());
 
@@ -307,7 +307,7 @@ public class CompetitionService implements CompetitionServiceLocal {
     }
 
     @Override
-    public void editCompetitor(Competitor competitor) {
+    public void editCompetitor(Competitor competitor) throws ApplicationException {
         competitionComponentsManager.editCompetitor(editingCompetitor, competitor);
         editingCompetitor = null;
     }
@@ -324,7 +324,7 @@ public class CompetitionService implements CompetitionServiceLocal {
     }
 
     @Override
-    public void editTeam(Team team) {
+    public void editTeam(Team team) throws ApplicationException {
         competitionComponentsManager.editTeam(editingTeam, team);
         editingTeam = null;
     }

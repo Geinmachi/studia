@@ -6,6 +6,7 @@
 package mot.facades;
 
 import entities.AccessLevel;
+import exceptions.ApplicationException;
 import java.util.List;
 import javax.ejb.Local; import javax.ejb.Remote;
 
@@ -16,9 +17,9 @@ import javax.ejb.Local; import javax.ejb.Remote;
 @Remote
 public interface AccessLevelFacadeLocal {
 
-    void create(AccessLevel accessLevel);
+    void create(AccessLevel accessLevel) throws ApplicationException;
 
-    void edit(AccessLevel accessLevel);
+    void edit(AccessLevel accessLevel) throws ApplicationException;
 
     void remove(AccessLevel accessLevel);
 

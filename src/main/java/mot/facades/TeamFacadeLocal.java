@@ -7,6 +7,7 @@ package mot.facades;
 
 import entities.AccessLevel;
 import entities.Team;
+import exceptions.ApplicationException;
 import java.util.List;
 import javax.ejb.Local; import javax.ejb.Remote;
 
@@ -17,9 +18,9 @@ import javax.ejb.Local; import javax.ejb.Remote;
 @Remote
 public interface TeamFacadeLocal {
 
-    void create(Team team);
+    void create(Team team) throws ApplicationException;
 
-    void edit(Team team);
+    void edit(Team team) throws ApplicationException;
 
     void remove(Team team);
 
@@ -31,7 +32,7 @@ public interface TeamFacadeLocal {
 
     int count();
 
-    public Team createWithReturn(Team team);
+    public Team createWithReturn(Team team) throws ApplicationException;
 
     public List<Team> findUserTeams(AccessLevel accessLevel);
 

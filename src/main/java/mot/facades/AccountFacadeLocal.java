@@ -6,6 +6,7 @@
 package mot.facades;
 
 import entities.Account;
+import exceptions.ApplicationException;
 import java.util.List;
 import javax.ejb.Local; import javax.ejb.Remote;
 
@@ -16,9 +17,9 @@ import javax.ejb.Local; import javax.ejb.Remote;
 @Remote
 public interface AccountFacadeLocal {
 
-    void create(Account account);
+    void create(Account account) throws ApplicationException;
 
-    void edit(Account account);
+    void edit(Account account) throws ApplicationException;
 
     void remove(Account account);
 

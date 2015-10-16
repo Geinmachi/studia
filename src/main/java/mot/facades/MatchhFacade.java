@@ -6,6 +6,7 @@
 package mot.facades;
 
 import entities.Matchh;
+import exceptions.ApplicationException;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -30,7 +31,7 @@ public class MatchhFacade extends AbstractFacade<Matchh> implements MatchhFacade
     }
     
     @Override
-    public void create(Matchh entity) {
+    public void create(Matchh entity)  throws ApplicationException {
         em.persist(entity);
         em.flush();
          

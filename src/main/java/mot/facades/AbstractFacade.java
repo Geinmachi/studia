@@ -5,6 +5,7 @@
  */
 package mot.facades;
 
+import exceptions.ApplicationException;
 import java.util.List;
 import javax.persistence.EntityManager;
 
@@ -21,12 +22,12 @@ public abstract class AbstractFacade<T> {
 
     protected abstract EntityManager getEntityManager();
 
-    public void create(T entity) {
+    public void create(T entity) throws ApplicationException {
         getEntityManager().persist(entity);
         getEntityManager().flush();
     }
 
-    public void edit(T entity) {
+    public void edit(T entity) throws ApplicationException {
         getEntityManager().merge(entity);
     }
 

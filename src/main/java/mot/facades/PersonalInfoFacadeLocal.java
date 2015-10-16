@@ -6,6 +6,7 @@
 package mot.facades;
 
 import entities.PersonalInfo;
+import exceptions.ApplicationException;
 import java.util.List;
 import javax.ejb.Local; import javax.ejb.Remote;
 
@@ -16,9 +17,9 @@ import javax.ejb.Local; import javax.ejb.Remote;
 @Remote
 public interface PersonalInfoFacadeLocal {
 
-    void create(PersonalInfo personalInfo);
+    void create(PersonalInfo personalInfo) throws ApplicationException;
 
-    void edit(PersonalInfo personalInfo);
+    void edit(PersonalInfo personalInfo) throws ApplicationException;
 
     void remove(PersonalInfo personalInfo);
 

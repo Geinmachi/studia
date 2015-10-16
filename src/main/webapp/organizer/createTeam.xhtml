@@ -14,11 +14,12 @@ and open the template in the editor.
                 xmlns:c="http://java.sun.com/jsp/jstl/core"
                 xmlns:fn="http://java.sun.com/jsp/jstl/functions"
                 xmlns:cc="http://xmlns.jcp.org/jsf/composite/compositeComponents">
+    
     <ui:define name="title">#{msg.createTeamTitle}</ui:define>
     <ui:define name="content">
+        
         <h:form id="createTeamForm">
             <cc:teamFormInsides
-                afterActionUpdateId="createTeamForm"
                 teamName="#{createTeamBackingBean.team.teamName}"
                 competitorDualList="#{createTeamBackingBean.competitors}"
                 duplicatedCompetitorFlag="#{createTeamBackingBean.duplicatedCompetitorFlag}"
@@ -26,7 +27,7 @@ and open the template in the editor.
                 isGlobal="#{createTeamBackingBean.isGlobal}"
                 buttonLabel="#{msg.add}"
                 saveAction="#{createTeamBackingBean.createTeam()}"/>
-            <p:messages globalOnly="true"/>
         </h:form>
+        
     </ui:define>
 </ui:composition>

@@ -41,6 +41,6 @@ public class TeamListBackingBean extends CompetitionBackingBean implements Seria
     public String show(Team team) {
         controller.storeTeam(team);
         
-        return "/edition/editTeam.xhtml?faces-redirect";
+        return "/edit/editTeam.xhtml?faces-redirect=true";
     }
 }

@@ -33,11 +33,11 @@ public interface CompetitionComponentsManagerLocal {
 
     public Competitor findCompetitorById(int idCompetitor);
 
-    public void editCompetitor(Competitor editingCompetitor, Competitor competitor);
+    public void editCompetitor(Competitor editingCompetitor, Competitor competitor) throws ApplicationException;
 
     public List<Team> getTeamsToEdit();
 
     public Team findTeamById(Integer idTeam);
 
-    public void editTeam(final Team editingTeam, Team team);
+    public void editTeam(final Team editingTeam, Team team) throws ApplicationException;
 }

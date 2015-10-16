@@ -6,6 +6,7 @@
 package mot.facades;
 
 import entities.Matchh;
+import exceptions.ApplicationException;
 import java.util.List;
 import javax.ejb.Local;
 import javax.ejb.Remote;
@@ -17,9 +18,9 @@ import javax.ejb.Remote;
 @Remote
 public interface MatchhFacadeLocal {
 
-    void create(Matchh matchh);
+    void create(Matchh matchh) throws ApplicationException;
 
-    void edit(Matchh matchh);
+    void edit(Matchh matchh) throws ApplicationException;
 
     void remove(Matchh matchh);
 

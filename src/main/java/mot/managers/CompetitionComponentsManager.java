@@ -134,8 +134,6 @@ public class CompetitionComponentsManager implements CompetitionComponentsManage
             competitor.setIdCreator(organizer);
         }
 
-        competitorFacade.competitorConstraints(competitor);
-
         competitorFacade.create(competitor);
     }
 
@@ -161,7 +159,7 @@ public class CompetitionComponentsManager implements CompetitionComponentsManage
     }
 
     @Override
-    public void editCompetitor(Competitor editingCompetitor, Competitor competitor) {
+    public void editCompetitor(Competitor editingCompetitor, Competitor competitor) throws ApplicationException {
         if (editingCompetitor == null || competitor == null) {
             throw new IllegalStateException("There is no object to edit");
         }
@@ -199,7 +197,7 @@ public class CompetitionComponentsManager implements CompetitionComponentsManage
     }
 
     @Override
-    public void editTeam(Team editingTeam, Team team) {
+    public void editTeam(Team editingTeam, Team team) throws ApplicationException{
         if (editingTeam == null || team == null) {
             throw new IllegalStateException("There is no object to edit");
         }
@@ -210,6 +208,8 @@ public class CompetitionComponentsManager implements CompetitionComponentsManage
         
         editingTeam.setTeamName(team.getTeamName());
         editingTeam.setCompetitorList(team.getCompetitorList());
+        
+        vlidateCompetitorDuplicate(editingTeam.getCompetitorList());
         
         for (Competitor c : editingTeam.getCompetitorList()) {
             c.setIdTeam(editingTeam);

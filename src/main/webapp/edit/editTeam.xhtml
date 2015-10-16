@@ -11,14 +11,12 @@
 
         <h:form id="editTeamForm">
             <cc:teamFormInsides
-                afterActionUpdateId="editTeamForm"
                 teamName="#{editTeamBackingBean.team.teamName}"
                 competitorDualList="#{editTeamBackingBean.competitors}"
                 duplicatedCompetitorFlag="#{editTeamBackingBean.duplicatedCompetitorFlag}"
                 checkDuplicate="#{editTeamBackingBean.checkDuplicate()}"
                 buttonLabel="#{msg.edit}"
                 saveAction="#{editTeamBackingBean.editTeam()}"/>
-            <p:messages globalOnly="true"/>
         </h:form>
 
     </ui:define>

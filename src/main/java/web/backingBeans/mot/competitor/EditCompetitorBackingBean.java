@@ -7,6 +7,7 @@ package web.backingBeans.mot.competitor;
 
 import entities.Competitor;
 import entities.Team;
+import exceptions.ApplicationException;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.inject.Named;
@@ -15,6 +16,7 @@ import javax.inject.Inject;
 import web.backingBeans.mot.competition.CompetitionBackingBean;
 import web.controllers.CompetitionController;
 import web.converters.interfaces.TeamConverterData;
+import web.utils.JsfUtils;
 
 /**
  *
@@ -53,10 +55,16 @@ public class EditCompetitorBackingBean extends CompetitionBackingBean implements
         try {
             controller.editCompetitor(competitor);
             return "/index.xhtml?faces-redirect=true";
+        } catch (ApplicationException e) {
+            JsfUtils.addErrorMessage(e.getLocalizedMessage(), null, null);
+            
+            System.out.println("Application Exception ");
         } catch (Exception e) {
-            System.out.println("EXception " + e.getMessage());
+
+            System.out.println("Exception in EditCompetitorBB#edit");
             e.printStackTrace();
         }
+
         
         return null;
     }

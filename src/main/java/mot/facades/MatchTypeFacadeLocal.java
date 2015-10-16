@@ -6,6 +6,7 @@
 package mot.facades;
 
 import entities.MatchType;
+import exceptions.ApplicationException;
 import java.util.List;
 import javax.ejb.Local;
 import javax.ejb.Remote;
@@ -17,9 +18,9 @@ import javax.ejb.Remote;
 @Remote
 public interface MatchTypeFacadeLocal {
 
-    void create(MatchType matchType);
+    void create(MatchType matchType) throws ApplicationException;
 
-    void edit(MatchType matchType);
+    void edit(MatchType matchType) throws ApplicationException;
 
     void remove(MatchType matchType);
 

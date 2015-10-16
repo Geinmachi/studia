@@ -17,7 +17,6 @@ and open the template in the editor.
 
         <h:form id="addCompetitorForm">
             <cc:competitorFormInsides
-                afterActionUpdateId="addCompetitorForm"
                 firstName="#{addCompetitorBackingBean.personalInfo.firstName}"
                 lastName="#{addCompetitorBackingBean.personalInfo.lastName}"
                 selectedTeam="#{addCompetitorBackingBean.selectedTeam}"
@@ -25,7 +24,6 @@ and open the template in the editor.
                 isGlobal="#{addCompetitorBackingBean.isGlobal}"
                 buttonLabel="#{msg.add}"
                 saveAction="#{addCompetitorBackingBean.addCompetitor}"/>
-            <p:messages globalOnly="true"/>
         </h:form>
 
     </ui:define>

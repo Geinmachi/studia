@@ -6,6 +6,7 @@
 package mot.facades;
 
 import entities.Competition;
+import exceptions.ApplicationException;
 import java.util.List;
 import javax.ejb.Local; import javax.ejb.Remote;
 
@@ -16,7 +17,7 @@ import javax.ejb.Local; import javax.ejb.Remote;
 @Remote
 public interface CompetitionFacadeLocal {
 
-    void create(Competition competition);
+    void create(Competition competition) throws ApplicationException;
 
     void edit(Competition competition);
 

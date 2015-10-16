@@ -53,6 +53,7 @@ import utils.ConvertUtil;
 import mot.interfaces.CMG;
 import mot.models.CompetitorMatchGroup;
 import ejbCommon.TrackerInterceptor;
+import exceptions.ApplicationException;
 
 /**
  *
@@ -123,7 +124,7 @@ public class CreateCompetitionManager implements CreateCompetitionManagerLocal {
     }
 
     @Override
-    public void createCompetition(Competition competition, List<CMG> competitorMatchGroupList) {
+    public void createCompetition(Competition competition, List<CMG> competitorMatchGroupList) throws ApplicationException {
         Account loggedUser = accountFacade.findByLogin(sessionContext.getCallerPrincipal().getName());
         AccessLevel organizer = ConvertUtil.getSpecAccessLevelFromAccount(loggedUser, Organizer.class);
         
