@@ -5,6 +5,7 @@
  */
 package web.converters;
 
+import web.converters.interfaces.CompetitorConverterData;
 import entities.CompetitionType;
 import entities.Competitor;
 import java.io.Serializable;
@@ -26,8 +27,9 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.servlet.http.HttpServletRequest;
-import web.backingBeans.CreateCompetitionBackingBean;
-import web.backingBeans.CreateTeamBackingBean;
+import web.backingBeans.mot.competition.CreateCompetitionBackingBean;
+import web.backingBeans.mot.team.CreateTeamBackingBean;
+import web.backingBeans.mot.team.EditTeamBackingBean;
 import web.controllers.CompetitionController;
 import web.qualifiers.CompetitorsDataSource;
 
@@ -48,7 +50,11 @@ public class CompetitorConverter implements Converter, Serializable {
     @Produces
     @CompetitorsDataSource
     @ViewScoped
-    public CompetitorConverterData getDataSource(@Any CreateCompetitionBackingBean competition, @Any CreateTeamBackingBean team) {
+    public CompetitorConverterData getDataSource(
+            @Any CreateCompetitionBackingBean competition, 
+            @Any CreateTeamBackingBean createTeam,
+            @Any EditTeamBackingBean editTeam) {
+        
         System.out.println("PRODUUUUUUUUUUUUUUUUCES");
         
         String viewId = FacesContext.getCurrentInstance().getViewRoot().getViewId();
@@ -56,8 +62,11 @@ public class CompetitorConverter implements Converter, Serializable {
         if (viewId.contains("createCompetition")) {
             return competition;
         } else if (viewId.contains("createTeam")) {
-            return team;
-        } else {
+            return createTeam;
+        } else if (viewId.contains("editTeam")) {
+            return editTeam;
+        }
+        else {
             System.out.println("CompetitorConverter#getDataSource no injection point");
             throw new IllegalStateException("No injection point found in @Produces");
         }

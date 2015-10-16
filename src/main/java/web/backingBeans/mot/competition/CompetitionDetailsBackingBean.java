@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package web.backingBeans;
+package web.backingBeans.mot.competition;
 
 import web.utils.BracketCreation;
 import entities.Competition;
@@ -31,10 +31,7 @@ import web.utils.JsfUtils;
  */
 @Named(value = "competitionDetailsBackingBean")
 @RequestScoped
-public class CompetitionDetailsBackingBean {
-
-    @Inject
-    private CompetitionController controller;
+public class CompetitionDetailsBackingBean  extends CompetitionBackingBean {
     
     @Inject
     private BracketCreation bracketCreator;

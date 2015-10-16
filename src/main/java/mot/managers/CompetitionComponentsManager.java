@@ -14,20 +14,22 @@ import entities.Team;
 import exceptions.ApplicationException;
 import exceptions.TeamCreationException;
 import java.util.Comparator;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import javax.annotation.Resource;
+import javax.annotation.security.DeclareRoles;
 import javax.ejb.EJB;
 import javax.ejb.SessionContext;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.interceptor.Interceptors;
+import javax.persistence.Query;
 import mot.facades.AccountFacadeLocal;
 import mot.facades.CompetitorFacadeLocal;
 import mot.facades.TeamFacadeLocal;
+import mot.services.CompetitionService;
 import utils.ConvertUtil;
+import utils.ResourceBundleUtil;
 
 /**
  *
@@ -36,6 +38,7 @@ import utils.ConvertUtil;
 @Stateless
 @TransactionAttribute(TransactionAttributeType.MANDATORY)
 @Interceptors({TrackerInterceptor.class})
+@DeclareRoles({"Administrator","Organizer"})
 public class CompetitionComponentsManager implements CompetitionComponentsManagerLocal {
 
     @Resource
@@ -51,7 +54,15 @@ public class CompetitionComponentsManager implements CompetitionComponentsManage
     private AccountFacadeLocal accountFacade;
 
     @Override
-    public void createTeam(Team team) throws ApplicationException {
+    public void createTeam(Team team, boolean global) throws ApplicationException {
+        
+        if (!global) {
+            Account loggedUser = accountFacade.findByLogin(sessionContext.getCallerPrincipal().getName());
+            AccessLevel organizer = ConvertUtil.getSpecAccessLevelFromAccount(loggedUser, Organizer.class);
+
+            team.setIdCreator(organizer);
+        }
+        
         team = teamFacade.createWithReturn(team);
 
         System.out.println("Competitors size " + team.getCompetitorList().size());
@@ -128,20 +139,84 @@ public class CompetitionComponentsManager implements CompetitionComponentsManage
         competitorFacade.create(competitor);
     }
 
-//    @Override
-//    public boolean checkCompetitorDuplicate(Competitor competitor, List<Competitor> competitorList) {
-//        for (Competitor c : competitorList) {
-//            if (competitor.getIdPersonalInfo().getFirstName().equals(c.getIdPersonalInfo().getFirstName())
-//                    && competitor.getIdPersonalInfo().getLastName().equals(c.getIdPersonalInfo().getLastName())) {
-//
-//                System.out.println("Competitor duplicated, cant choose "
-//                        + competitor.getIdPersonalInfo().getFirstName() + " "
-//                        + competitor.getIdPersonalInfo().getLastName());
-//
-//                return !competitorList.contains(competitor); // only source list gets disabled
-//            }
-//        }
-//
-//        return false;
-//    }
+    @Override
+    public List<Competitor> getCompetitorsToEdit() {
+        List<Competitor> competitorList = null;
+        
+        if (sessionContext.isCallerInRole(ResourceBundleUtil.getResourceBundleBusinessProperty(CompetitionService.ADMIN_PROPERTY_KEY))) {
+            competitorList = competitorFacade.findAll();
+        } else {
+            Account loggedUser = accountFacade.findByLogin(sessionContext.getCallerPrincipal().getName());
+            AccessLevel organizer = ConvertUtil.getSpecAccessLevelFromAccount(loggedUser, Organizer.class);
+            
+            competitorList = competitorFacade.findUserCompetitors(organizer);
+        }
+        
+        return competitorList;
+    }
+
+    @Override
+    public Competitor findCompetitorById(int idCompetitor) {
+        return competitorFacade.findCompetitorById(idCompetitor);
+    }
+
+    @Override
+    public void editCompetitor(Competitor editingCompetitor, Competitor competitor) {
+        if (editingCompetitor == null || competitor == null) {
+            throw new IllegalStateException("There is no object to edit");
+        }
+        if (!editingCompetitor.getIdCompetitor().equals(competitor.getIdCompetitor())) {
+            throw new IllegalStateException("Wrong object");
+        }
+        
+        editingCompetitor.getIdPersonalInfo().setFirstName(competitor.getIdPersonalInfo().getFirstName());
+        editingCompetitor.getIdPersonalInfo().setLastName(competitor.getIdPersonalInfo().getLastName());
+        editingCompetitor.setIdTeam(competitor.getIdTeam());
+        
+        competitorFacade.edit(editingCompetitor);
+    }
+
+    @Override
+    public List<Team> getTeamsToEdit() {
+        
+         List<Team> teamList = null;
+        
+        if (sessionContext.isCallerInRole(ResourceBundleUtil.getResourceBundleBusinessProperty(CompetitionService.ADMIN_PROPERTY_KEY))) {
+            teamList = teamFacade.findAll();
+        } else {
+            Account loggedUser = accountFacade.findByLogin(sessionContext.getCallerPrincipal().getName());
+            AccessLevel organizer = ConvertUtil.getSpecAccessLevelFromAccount(loggedUser, Organizer.class);
+            
+            teamList = teamFacade.findUserTeams(organizer);
+        }
+        
+        return teamList;
+    }
+
+    @Override
+    public Team findTeamById(Integer idTeam) {
+        return teamFacade.findAndInitializeCompetitors(idTeam);
+    }
+
+    @Override
+    public void editTeam(Team editingTeam, Team team) {
+        if (editingTeam == null || team == null) {
+            throw new IllegalStateException("There is no object to edit");
+        }
+        if (!editingTeam.getIdTeam().equals(team.getIdTeam())) {
+            throw new IllegalStateException("Wrong object");
+        }
+        // jsete final, sprwadzic z new
+        
+        editingTeam.setTeamName(team.getTeamName());
+        editingTeam.setCompetitorList(team.getCompetitorList());
+        
+        for (Competitor c : editingTeam.getCompetitorList()) {
+            c.setIdTeam(editingTeam);
+            competitorFacade.edit(c);
+        }
+        
+        teamFacade.edit(editingTeam);
+    }
+
 }

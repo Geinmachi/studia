@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package web.backingBeans;
+package web.backingBeans.mot.competition;
 
 import entities.Competition;
 import java.io.Serializable;
@@ -21,10 +21,7 @@ import web.controllers.CompetitionController;
  */
 @Named(value = "chooseCompetitionBackingBean")
 @ViewScoped
-public class ChooseCompetitionBackingBean implements Serializable {
-
-    @Inject
-    private CompetitionController controller;
+public class ChooseCompetitionBackingBean extends CompetitionBackingBean implements Serializable {
     
     private List<Competition> loggedUserCompetitions;
     

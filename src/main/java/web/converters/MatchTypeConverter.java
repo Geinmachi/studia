@@ -16,7 +16,7 @@ import javax.faces.convert.ConverterException;
 import javax.faces.convert.FacesConverter;
 import javax.inject.Inject;
 import web.utils.BracketCreation;
-import web.backingBeans.CreateCompetitionBackingBean;
+import web.backingBeans.mot.competition.CreateCompetitionBackingBean;
 import web.controllers.CompetitionController;
 
 /**

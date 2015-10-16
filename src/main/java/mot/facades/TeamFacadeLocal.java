@@ -5,6 +5,7 @@
  */
 package mot.facades;
 
+import entities.AccessLevel;
 import entities.Team;
 import java.util.List;
 import javax.ejb.Local; import javax.ejb.Remote;
@@ -31,5 +32,9 @@ public interface TeamFacadeLocal {
     int count();
 
     public Team createWithReturn(Team team);
+
+    public List<Team> findUserTeams(AccessLevel accessLevel);
+
+    public Team findAndInitializeCompetitors(Integer idTeam);
     
 }

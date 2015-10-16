@@ -95,4 +95,21 @@ public class CompetitorFacade extends AbstractFacade<Competitor> implements Comp
         }
     }
 
+    @Override
+    public List<Competitor> findUserCompetitors(AccessLevel accessLevel) {
+        Query q = em.createNamedQuery("Competitor.findUserCompetitors");
+        q.setParameter("idAccessLevel", accessLevel.getIdAccessLevel());
+        
+        return (List<Competitor>) q.getResultList();
+    }
+
+    @Override
+    public Competitor findCompetitorById(int idCompetitor) {
+        Query q = em.createNamedQuery("Competitor.findByIdCompetitor");
+        
+        q.setParameter("idCompetitor", idCompetitor);
+        
+        return (Competitor) q.getSingleResult();
+    }
+
 }

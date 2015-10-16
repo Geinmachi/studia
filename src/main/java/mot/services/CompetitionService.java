@@ -69,8 +69,14 @@ public class CompetitionService implements CompetitionServiceLocal {
     private MatchTypeFacadeLocal matchTypeFacade;
 
     private Competition editingCompetition;
+    
+    private Competitor editingCompetitor;
+    
+    private Team editingTeam;
 
     private List<CMG> storedCMGmappings;
+    
+    public static String ADMIN_PROPERTY_KEY = "role.admin";
 
     @Override
     public List<Team> findAllTeams() {
@@ -275,8 +281,8 @@ public class CompetitionService implements CompetitionServiceLocal {
     }
 
     @Override
-    public void createTeam(Team team) throws ApplicationException {
-        competitionComponentsManager.createTeam(team);
+    public void createTeam(Team team, boolean global) throws ApplicationException {
+        competitionComponentsManager.createTeam(team, global);
     }
 
     @Override
@@ -288,6 +294,39 @@ public class CompetitionService implements CompetitionServiceLocal {
     public Competitor vlidateCompetitorDuplicate(List<Competitor> competitorList) {
         return competitionComponentsManager.vlidateCompetitorDuplicate(competitorList);
     }
-    
+
+    @Override
+    public List<Competitor> getCompetitorsToEdit() {
+        return competitionComponentsManager.getCompetitorsToEdit();
+    }
+
+    @Override
+    public Competitor storeCompetitor(Competitor competitor) {
+        editingCompetitor = competitionComponentsManager.findCompetitorById(competitor.getIdCompetitor());
+        return editingCompetitor;
+    }
+
+    @Override
+    public void editCompetitor(Competitor competitor) {
+        competitionComponentsManager.editCompetitor(editingCompetitor, competitor);
+        editingCompetitor = null;
+    }
+
+    @Override
+    public List<Team> getTeamsToEdit() {
+        return competitionComponentsManager.getTeamsToEdit();
+    }
+
+    @Override
+    public Team storeTeam(Team team) {
+        editingTeam = competitionComponentsManager.findTeamById(team.getIdTeam());
+        return editingTeam;
+    }
+
+    @Override
+    public void editTeam(Team team) {
+        competitionComponentsManager.editTeam(editingTeam, team);
+        editingTeam = null;
+    }
     
 }

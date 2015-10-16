@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package web.backingBeans;
+package web.backingBeans.mot.competition;
 
 import web.utils.BracketCreation;
 import entities.Competition;
@@ -50,12 +50,9 @@ import web.utils.JsfUtils;
  */
 @Named(value = "manageCompetitionBackingBean")
 @ViewScoped
-public class ManageCompetitionBackingBean implements Serializable {
+public class ManageCompetitionBackingBean extends CompetitionBackingBean implements Serializable {
 
     private static final long serialVersionUID = 7526472295622776147L;
-
-    @Inject
-    private CompetitionController controller;
 
     @Inject
     private BracketCreation bracketCreator;
