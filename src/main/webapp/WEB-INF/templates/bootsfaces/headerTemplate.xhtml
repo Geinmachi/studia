@@ -22,7 +22,7 @@
                                        fieldSize="sm"/>
                     </div>
                     #{' '}
-                    <b:commandButton action="#{loginBackingBean.login}" value="#{msg.signIn}" 
+                    <b:commandButton ajax="true" action="#{loginBackingBean.login}" value="#{msg.signIn}" 
                                      look="success" icon="chevron-right" iconAlign="right"/>
                 </h:form>
             </c:when>
@@ -50,7 +50,7 @@
                     <span class="navbar-text">#{msg.hello}, 
                         <a href="#" class="navbar-link"><b:icon name="user" /> #{request.remoteUser}</a>
                     </span>
-                    <b:commandButton action="#{loginBackingBean.logout()}" value="#{msg.logout}" 
+                    <b:commandButton ajax="true" action="#{loginBackingBean.logout()}" value="#{msg.logout}" 
                                      look="primary" size="xs" icon="log-out" iconAlign="right"
                                      styleClass="navbar-btn"/>
                 </h:form>

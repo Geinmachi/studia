@@ -153,7 +153,7 @@ public class CreateCompetitionBackingBean extends CompetitionBackingBean impleme
         if (event.getOldStep().equals("firstStep")) {
             if (duplicatedCompetitorFlag || !isCompetitorsAmountValid ) {
                 System.out.println("ONFLOW duplicated");
-                return event.getOldStep();
+            //    return event.getOldStep();
             }
             bracketCreator.createEmptyBracket(competitors.getTarget());
 

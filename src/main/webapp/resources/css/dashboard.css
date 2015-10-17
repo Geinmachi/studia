@@ -31,11 +31,11 @@
 }
 
 [id*="CompetitionForm:other2"].ui-panel:nth-child(1) {
-    margin-top: 140px !important;
+    margin-top: 160px !important;
 }
 
 [id*="CompetitionForm:other2"].ui-panel {
-    margin-top: 324px;
+    margin-top: 300px;
     padding: 0px;
 }
 
@@ -65,7 +65,7 @@
 }
 
 [id*="CompetitionForm:filler0"] {
-    height: 120px;
+    height: 110px;
     padding: 0 !important;
 }
 
@@ -74,7 +74,7 @@
 }
 
 [id*="CompetitionForm:filler0"]:nth-child(3n+1) {
-    height: 240px;
+    height: 220px;
     border: 0;
 }
 
@@ -83,11 +83,15 @@
     width: 100px;
     background-color: #333;
     right: 0.1px;
-    top: -2.2px;
+    top: -12.0px;
+}
+
+[id^="createCompetitionForm:filler0"]:nth-child(3n+3) > div{
+    right: 0px;
 }
 
 [id*="CompetitionForm:filler1"] {
-    height: 240px;
+    height: 223px;
     padding: 0 !important;
 }
 
@@ -96,7 +100,7 @@
 }
 
 [id*="CompetitionForm:filler1"]:nth-child(3n+1) {
-    height: 490px;
+    height: 435px;
 }
 
 [id*="CompetitionForm:filler1"]:nth-child(3n+3) > div{
@@ -104,7 +108,7 @@
     width: 100px;
     background-color: #333;
     right: 0.1px;
-    top: -2.2px;
+    top: -19.2px;
 }
 
 [id*="CompetitionForm:filler2"] {
@@ -174,9 +178,14 @@ div[class*="displayCompetitorRow"]:hover {
     top: 83px;
 }
 
-.groupPanel > * {
+.groupPanel * {
     text-align: center;
 }
+
+.groupPanel .ui-panel-title {
+    margin-right: 0 !important;
+}
+
 .editableGroupPanel .hasDatepicker {
     width: 70% !important;
 }
@@ -216,4 +225,15 @@ input[id$="scoreInput"] {
 
 form > div[id*="CompetitionForm"] {
     background-color: #333;
+}
+
+.groupDialog {
+    width: 380px !important;
+}
+.groupDialog .ui-dialog-content {
+    overflow: hidden !important;
+}
+
+.groupDialog .ui-dialog-title {
+    float: none !important;
 }
