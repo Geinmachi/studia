@@ -33,7 +33,7 @@ public interface CompetitionFacadeLocal {
 
     public List<Competition> findUserCompetitionsByIdAccessLevel(Object id);
         
-    Competition createWithReturn(Competition entity);
+    Competition createWithReturn(Competition entity) throws ApplicationException;
 
     public Competition findAndInitializeGD(Integer idCompetition);
 }

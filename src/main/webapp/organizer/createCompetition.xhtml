@@ -25,10 +25,12 @@ and open the template in the editor.
 
         <h:outputScript library="js" name="dashboard.js" />
 
+        <p:growl id="msgs" sticky="true"/>
+
         <h:form id="createCompetitionForm">
             <p:wizard flowListener="#{createCompetitionBackingBean.onFlowProcess}" id="wizard">
                 <p:tab id="firstStep" title="#{msg.generalTab}">
-                    <p:panelGrid>
+                    <p:panelGrid styleClass="firstStepWizard">
                         <p:row>
                             <p:column>
                                 <p:outputLabel for="competitionName" value="#{msg.competitionName}"/>
@@ -82,7 +84,7 @@ and open the template in the editor.
                         </p:row>
                         <p:row>
                             <p:column colspan="3">
-                                <p:pickList id="competitorPickList" value="#{createCompetitionBackingBean.competitors}" var="competitor"
+                                <p:pickList id="competitorPickList" value="#{createCompetitionBackingBean.competitors}" var="competitor" styleClass="pickList"
                                             itemLabel="#{not empty competitor.idCreator ? '*' : ''}#{competitor.idPersonalInfo.firstName} #{competitor.idPersonalInfo.lastName} " 
                                             itemValue="#{competitor}" showCheckbox="true" converter="#{competitorConverter}"
                                             showSourceFilter="true" showTargetFilter="true" filterMatchMode="contains">
@@ -119,10 +121,9 @@ and open the template in the editor.
                     </p:panelGrid>
                 </p:tab>
                 <p:tab id="secondStep" title="#{msg.bracket}">
-                    <p:outputPanel id="groupsHolder">
+                    <p:outputPanel id="groupsHolder" styleClass="groupsHolder">
                         <ui:repeat value="#{createCompetitionBackingBean.bracketCreator.groups}" var="group" id="group">
-                            <p:panel styleClass="groupPanel editableGroupPanel" 
-                                     style="max-width: #{(100/createCompetitionBackingBean.bracketCreator.groups.size())-1}%; display: inline-block;">
+                            <p:panel styleClass="groupPanel editableGroupPanel">
                                 <f:facet name="header">
                                     #{group.idGroupName.groupName}
                                     <br/>
@@ -163,7 +164,8 @@ and open the template in the editor.
                         </ui:repeat>
                     </p:outputPanel>
 
-                    <p:dashboard id="dashboard" model="#{createCompetitionBackingBean.bracketCreator.dashboardModel}" style="width: #{createCompetitionBackingBean.bracketCreator.rounds * 400}px">
+                    <p:dashboard id="dashboard" model="#{createCompetitionBackingBean.bracketCreator.dashboardModel}" 
+                                 style="width: #{createCompetitionBackingBean.bracketCreator.rounds * 300}px" styleClass="dashboard">
                         <c:forEach items="#{createCompetitionBackingBean.bracketCreator.panelList}" var="dashboardPanel" varStatus="panelIndex">
                             <c:choose>
                                 <c:when test="#{not dashboardPanel.filler}">
@@ -209,12 +211,14 @@ and open the template in the editor.
                             </c:choose>
                         </c:forEach>
                     </p:dashboard>
+
+                    <p:outputPanel styleClass="createCompetitionButtonWrapper">
+                        <b:commandButton  value="#{msg.create}" styleClass="createCompetitionButton" look="success"
+                                          action="#{createCompetitionBackingBean.createCompetition()}" size="large"
+                                          update="msgs" ajax="true"/>
+                    </p:outputPanel>
                 </p:tab>
             </p:wizard>
-            <p:commandButton value="#{msg.create}" 
-                             action="#{createCompetitionBackingBean.createCompetition()}"
-                             update="msgs"/>
-            <p:messages id="msgs"/>
         </h:form>
 
     </ui:define>

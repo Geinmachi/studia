@@ -5,6 +5,10 @@
     width: 101px;
 }
 
+.ui-dashboard-column {
+    padding-bottom: 0px !important;
+}
+
 .ui-dashboard {
     position: relative;
 }
@@ -40,16 +44,16 @@
 }
 
 [id*="CompetitionForm:other3"].ui-panel:nth-child(1) {
-    margin-top: 400px !important;
+    margin-top: 390px !important;
 }
 
 [id*="CompetitionForm:other3"].ui-panel {
-    margin-top: 820px;
+    margin-top: 740px;
     padding: 0px;
 }
 
 [id*="CompetitionForm:other4"].ui-panel:nth-child(1) {
-    margin-top: 880px !important;
+    margin-top: 830px !important;
 }
 
 [id*="CompetitionForm:other4"].ui-panel {
@@ -112,14 +116,14 @@
 }
 
 [id*="CompetitionForm:filler2"] {
-    height: 490px;
+    height: 440px;
     padding: 0 !important;
 }
 /*[id*="CompetitionForm:filler2"]:nth-child(7n+1) {
     height: 12em;
 }*/
 [id*="CompetitionForm:filler2"]:nth-child(1) {
-    height: 480px !important;
+    height: 470px !important;
 }
 
 [id*="CompetitionForm:filler2"]:nth-child(3n+1) {
@@ -130,7 +134,7 @@
     position: absolute;
     width: 100px;
     background-color: #333;
-    right: 0.1px;
+    right: 0px;
     top: -1.0px;
     height: 100% !important;
 }
@@ -176,6 +180,23 @@ div[class*="displayCompetitorRow"]:hover {
     position: absolute;
     right: -60px;
     top: 83px;
+}
+
+.ui-wizard-content {
+    overflow: auto;
+}
+
+.dashboard {
+    margin-left: 50px;
+}
+
+.groupsHolder {
+    text-align: center;
+}
+
+.groupPanel {
+    display: inline-block !important;
+    margin-left: 20px;
 }
 
 .groupPanel * {
@@ -236,4 +257,30 @@ form > div[id*="CompetitionForm"] {
 
 .groupDialog .ui-dialog-title {
     float: none !important;
+}
+
+.createCompetitionButtonWrapper {
+    clear: both;
+    float: right;
+    text-align: center;
+    width: 100% !important;
+}
+
+#msgs_container {
+    left: 40%;
+    top: 40%;
+}
+
+.firstStepWizard, .middleTableWrapper {
+    margin: auto;
+}
+
+.ui-wizard-step-titles {
+    width: 30%; 
+    margin: auto !important;
+}
+
+.displayCompetitionForm {
+    overflow: auto;
+    background-color: #333;
 }

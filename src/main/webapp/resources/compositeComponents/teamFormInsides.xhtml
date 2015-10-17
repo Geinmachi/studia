@@ -20,7 +20,7 @@
 
     <composite:implementation>
         <div id="#{cc.clientId}">
-            <p:panelGrid >
+            <p:panelGrid  styleClass="middleTableWrapper">
                 <p:row>
                     <p:column>
                         <p:outputLabel for="teamName" value="#{msg.teamName}"/>
@@ -28,15 +28,13 @@
                     <p:column>
                         <p:inputText id="teamName" value="#{cc.attrs.teamName}"/>
                     </p:column>
-                </p:row>
-                <p:row>
-                    <p:column colspan="2">
+                    <p:column >
                         <p:message for="teamName"/>
                     </p:column>
                 </p:row>
                 <p:row>
-                    <p:column colspan="2">
-                        <p:pickList id="competitorPickList" value="#{cc.attrs.competitorDualList}" var="competitor"
+                    <p:column colspan="3">
+                        <p:pickList id="competitorPickList" value="#{cc.attrs.competitorDualList}" var="competitor" styleClass="pickList"
                                     itemLabel="#{not empty competitor.idCreator ? '*' : ''}#{competitor.idPersonalInfo.firstName} #{competitor.idPersonalInfo.lastName} " 
                                     itemValue="#{competitor}" showCheckbox="true" converter="#{competitorConverter}"
                                     showSourceFilter="true" showTargetFilter="true" filterMatchMode="contains">
@@ -61,15 +59,12 @@
                     <p:column>
                         <p:outputLabel for="isGlobal" value="#{msg.globalTeam}"/>
                     </p:column>
-                    <p:column>
+                    <p:column colspan="2">
                         <p:selectBooleanCheckbox id="isGlobal" value="#{cc.attrs.isGlobal}" disabled="#{empty cc.attrs.isGlobal}"/>
-                    </p:column>
-                    <p:column>
-                        <p:message for="isGlobal"/>
                     </p:column>
                 </p:row>
                 <p:row>
-                    <p:column colspan="2">
+                    <p:column colspan="3">
                         <p:outputLabel>
                             * - #{msg.competitorAsterisk}
                         </p:outputLabel>

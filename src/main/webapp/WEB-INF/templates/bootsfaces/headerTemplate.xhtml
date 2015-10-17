@@ -29,17 +29,17 @@
             <c:otherwise>
                 <b:navbarLinks>
 
-                    <b:dropMenu value="#{msg.competition}">
+                    <b:dropMenu value="#{msg.competitions}">
                         <b:navLink value="#{msg.createCompetition}" href="/organizer/createCompetition.xhtml"></b:navLink>
                         <b:navLink value="#{msg.chooseCompetition}" href="/organizer/chooseCompetition.xhtml"></b:navLink>
                     </b:dropMenu>
 
-                    <b:dropMenu value="#{msg.team}">
+                    <b:dropMenu value="#{msg.teams}">
                         <b:navLink value="#{msg.addTeam}" href="/organizer/createTeam.xhtml"></b:navLink>
                         <b:navLink value="#{msg.editTeam}" href="/edit/teamList.xhtml"></b:navLink>
                     </b:dropMenu>
 
-                    <b:dropMenu value="#{msg.competitor}">
+                    <b:dropMenu value="#{msg.competitors}">
                         <b:navLink value="#{msg.addCompetitor}" href="/organizer/addCompetitor.xhtml"></b:navLink>
                         <b:navLink value="#{msg.editCompetitor}" href="/edit/competitorList.xhtml"></b:navLink>
                     </b:dropMenu>
@@ -47,7 +47,7 @@
                 </b:navbarLinks>
 
                 <h:form styleClass="navbar-right ">
-                    <span class="navbar-text">#{msg.hello}, 
+                    <span class="navbar-text">
                         <a href="#" class="navbar-link"><b:icon name="user" /> #{request.remoteUser}</a>
                     </span>
                     <b:commandButton ajax="true" action="#{loginBackingBean.logout()}" value="#{msg.logout}" 
