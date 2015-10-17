@@ -1,5 +1,5 @@
 .ui-dashboard .hasDatepicker {
-    width: 90px !important;
+    width: 125px !important;
 }
 .ui-dashboard-column:nth-child(2n) {
     width: 101px;
@@ -284,3 +284,4 @@ form > div[id*="CompetitionForm"] {
     overflow: auto;
     background-color: #333;
 }
+

@@ -47,17 +47,17 @@ public class LoginBackingBean {
         this.password = password;
     }
 
-    public String login() {
+    public void login() {
 
         FacesContext context = FacesContext.getCurrentInstance();
         HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
 
         try {
             request.login(username, password);
-            return "/index.xhtml?faces-redirect=true";
+//            return "/index.xhtml?faces-redirect=true";
         } catch (ServletException ex) {
             Logger.getLogger(LoginBackingBean.class.getName()).log(Level.SEVERE, null, ex);
-            return null;
+//            return null;
         }
     }
 
