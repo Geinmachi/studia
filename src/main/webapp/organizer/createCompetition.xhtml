@@ -12,6 +12,7 @@ and open the template in the editor.
                 template="/WEB-INF/templates/main.xhtml"
                 xmlns:f="http://xmlns.jcp.org/jsf/core"
                 xmlns:c="http://java.sun.com/jsp/jstl/core"
+                xmlns:b="http://bootsfaces.net/ui"
                 xmlns:fn="http://java.sun.com/jsp/jstl/functions">
     <ui:define name="title">#{msg.createCompetitionTitle}</ui:define>
     <ui:define name="content">
@@ -23,10 +24,13 @@ and open the template in the editor.
         </p:dialog>
 
         <h:outputScript library="js" name="dashboard.js" />
+
+        <p:growl id="msgs" sticky="true"/>
+
         <h:form id="createCompetitionForm">
-            <p:wizard flowListener="#{createCompetitionBackingBean.onFlowProcess}">
+            <p:wizard flowListener="#{createCompetitionBackingBean.onFlowProcess}" id="wizard">
                 <p:tab id="firstStep" title="#{msg.generalTab}">
-                    <p:panelGrid>
+                    <p:panelGrid styleClass="firstStepWizard shadows">
                         <p:row>
                             <p:column>
                                 <p:outputLabel for="competitionName" value="#{msg.competitionName}"/>
@@ -80,7 +84,7 @@ and open the template in the editor.
                         </p:row>
                         <p:row>
                             <p:column colspan="3">
-                                <p:pickList id="competitorPickList" value="#{createCompetitionBackingBean.competitors}" var="competitor"
+                                <p:pickList id="competitorPickList" value="#{createCompetitionBackingBean.competitors}" var="competitor" styleClass="pickList"
                                             itemLabel="#{not empty competitor.idCreator ? '*' : ''}#{competitor.idPersonalInfo.firstName} #{competitor.idPersonalInfo.lastName} " 
                                             itemValue="#{competitor}" showCheckbox="true" converter="#{competitorConverter}"
                                             showSourceFilter="true" showTargetFilter="true" filterMatchMode="contains">
@@ -103,8 +107,8 @@ and open the template in the editor.
                         </p:row>
                         <p:row>
                             <p:column colspan="3">
-                                <p:outputPanel id="competitorsAmountValidation" >
-                                    <p:outputLabel value="#{msg.assignedCompetitorsMustBePowerOfTwo}" 
+                                <p:outputPanel id="competitorsAmountValidation" styleClass="centeredText" >
+                                    <p:outputLabel value="#{msg.assignedCompetitorsMustBePowerOfTwo}" styleClass="ui-message-error"
                                                    rendered="#{not createCompetitionBackingBean.isCompetitorsAmountValid}"/>
                                 </p:outputPanel>
                             </p:column>
@@ -117,68 +121,113 @@ and open the template in the editor.
                     </p:panelGrid>
                 </p:tab>
                 <p:tab id="secondStep" title="#{msg.bracket}">
-                    <p:outputPanel id="groupsHolder">
-                        <ui:repeat value="#{createCompetitionBackingBean.bracketCreator.groups}" var="group">
-                            <p:panel styleClass="groupPanel editableGroupPanel" 
-                                     style="max-width: #{(100/createCompetitionBackingBean.bracketCreator.groups.size())-1}%; display: inline-block;">
-                                <f:facet name="header">
-                                    #{group.idGroupName.groupName}
-                                    <br/>
-                                    <p:outputLabel value="#{msg.startDate}: "/>
-                                    <p:calendar pattern="MM/dd/yyyy HH:mm:ss" showOn="button" 
-                                                value="#{group.startDate}"/>
-                                    <br/>
-                                    <p:outputLabel value="#{msg.endDate}: "/>
-                                    <p:calendar pattern="MM/dd/yyyy HH:mm:ss" showOn="button" 
-                                                value="#{group.endDate}"/>
-                                </f:facet>
-                                <ui:repeat value="#{createCompetitionBackingBean.bracketCreator.competitorMatchGroupList}"
-                                           var="cmg">
-                                    <p:outputLabel rendered="#{cmg.idGroupName eq group.idGroupName}">
-                                        #{cmg.idCompetitor.idPersonalInfo.firstName} 
-                                        #{cmg.idCompetitor.idPersonalInfo.lastName} 
-                                        <br/>
-                                    </p:outputLabel>
-                                </ui:repeat>
-                            </p:panel>
-                        </ui:repeat>
-                    </p:outputPanel>
+                    <p:panelGrid styleClass="middleTableWrapper centeredText shadows">
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel value="#{msg.groups}"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column>
+                                <p:outputPanel id="groupsHolder" styleClass="groupsHolder">
+                                    <ui:repeat value="#{createCompetitionBackingBean.bracketCreator.groups}" var="group" id="group">
+                                        <p:panel styleClass="groupPanel editableGroupPanel shadows">
+                                            <f:facet name="header">
+                                                #{group.idGroupName.groupName}
+                                                <br/>
 
-                    <p:dashboard id="dashboard" model="#{createCompetitionBackingBean.bracketCreator.dashboardModel}" style="width: #{createCompetitionBackingBean.bracketCreator.rounds * 400}px">
+                                                <b:button look="primary" icon="calendar" iconAlign="right" value="#{msg.dates}" size="xs"
+                                                          onclick="PF('group#{group.idGroupName.groupName}Dialog').show();
+                                                                  return false;"/>
+
+                                                <p:dialog header="#{msg.group} #{group.idGroupName.groupName}" modal="true" dynamic="true" closeOnEscape="true"
+                                                          widgetVar="group#{group.idGroupName.groupName}Dialog"
+                                                          resizable="false" styleClass="groupDialog" focus="focusInDialog">
+                                                    <b:panelGrid colSpans="5,7">
+                                                        <p:outputLabel id="focusInDialog" value="#{msg.startDate}"/>
+                                                        <p:calendar pattern="MM/dd/yyyy HH:mm:ss"
+                                                                    value="#{group.startDate}"/>
+
+                                                        <p:outputLabel value="#{msg.endDate}"/>
+                                                        <p:calendar pattern="MM/dd/yyyy HH:mm:ss" 
+                                                                    value="#{group.endDate}"/>
+                                                    </b:panelGrid>
+                                                </p:dialog>
+
+                                            </f:facet>
+                                            <ui:repeat value="#{createCompetitionBackingBean.bracketCreator.competitorMatchGroupList}"
+                                                       var="cmg">
+                                                <ui:fragment rendered="#{cmg.idGroupName eq group.idGroupName}">
+                                                    <p:outputLabel>
+                                                        <ui:fragment rendered="#{not empty cmg.idCompetitor.idCreator}">
+                                                            *
+                                                        </ui:fragment>
+                                                        #{cmg.idCompetitor.idPersonalInfo.firstName} 
+                                                        #{cmg.idCompetitor.idPersonalInfo.lastName} 
+                                                    </p:outputLabel>
+                                                    <br/>
+                                                </ui:fragment>
+                                            </ui:repeat>
+                                        </p:panel>
+                                    </ui:repeat>
+                                </p:outputPanel>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                    <p:dashboard id="dashboard" model="#{createCompetitionBackingBean.bracketCreator.dashboardModel}" 
+                                 style="width: #{createCompetitionBackingBean.bracketCreator.rounds * 320}px" styleClass="dashboard">
                         <c:forEach items="#{createCompetitionBackingBean.bracketCreator.panelList}" var="dashboardPanel" varStatus="panelIndex">
                             <c:choose>
                                 <c:when test="#{not dashboardPanel.filler}">
                                     <p:panel id="#{dashboardPanel.panel.id}" binding="#{dashboardPanel.panel}"
                                              header="#{msg.matchNumber} #{dashboardPanel.match.matchNumber}">
 
-                                        <c:forEach items="#{dashboardPanel.match.competitorMatchList}"
-                                                   var="cmgFromMatch">
-                                            <c:choose>
-                                                <c:when test="#{not empty cmgFromMatch.idCompetitor}">
-                                                    <!--<c:if test="#{cmgFromMatch.idCompetitor eq competitorr}">-->
-                                                    <p:outputLabel>
-                                                        #{cmgFromMatch.idCompetitor.idPersonalInfo.firstName}
-                                                        #{cmgFromMatch.idCompetitor.idPersonalInfo.lastName} 
-                                                    </p:outputLabel>
-                                                    <br/>
-                                                    <!--</c:if>-->
-                                                </c:when>
-                                                <c:otherwise>
-                                                    #{msg.TBD}
-                                                    <br/>
-                                                </c:otherwise>
-                                            </c:choose>
-                                        </c:forEach>
-                                        <p:outputLabel value="#{msg.date}:"/>
-                                        <p:calendar id="matchDate" pattern="MM/dd/yyyy HH:mm:ss" showOn="button" 
-                                                    value="#{dashboardPanel.match.matchDate}"/><br/>
-                                        <p:outputLabel for="matchType" value="#{msg.matchType}:"/>
-                                        <p:selectOneMenu id="matchType" value="#{dashboardPanel.matchType}"
-                                                         converter="matchTypeConverter">
-                                            <f:selectItems value="#{createCompetitionBackingBean.bracketCreator.matchTypeList}"
-                                                           var="matchType" itemLabel="#{matchType.matchTypeName}"
-                                                           />
-                                        </p:selectOneMenu>
+                                        <p:outputPanel styleClass="centeredText">
+                                            <c:forEach items="#{dashboardPanel.match.competitorMatchList}"
+                                                       var="cmgFromMatch">
+                                                <c:choose>
+                                                    <c:when test="#{not empty cmgFromMatch.idCompetitor}">
+                                                        <!--<c:if test="#{cmgFromMatch.idCompetitor eq competitorr}">-->
+                                                        <p:outputLabel>
+                                                            <ui:fragment rendered="#{not empty cmgFromMatch.idCompetitor.idCreator}">
+                                                                *
+                                                            </ui:fragment>
+                                                            #{cmgFromMatch.idCompetitor.idPersonalInfo.firstName}
+                                                            #{cmgFromMatch.idCompetitor.idPersonalInfo.lastName} 
+                                                        </p:outputLabel>
+                                                        <br/>
+                                                        <!--</c:if>-->
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        #{msg.TBD}
+                                                        <br/>
+                                                    </c:otherwise>
+                                                </c:choose>
+                                            </c:forEach>
+                                        </p:outputPanel>
+
+                                        <b:row>
+                                            <b:column span="2">
+                                                <p:outputLabel value="#{msg.date}:"/>
+                                            </b:column>
+                                            <b:column span="10">
+                                                <p:calendar id="matchDate" pattern="MM/dd/yyyy HH:mm:ss" showOn="button" 
+                                                            value="#{dashboardPanel.match.matchDate}"/>
+                                            </b:column>
+                                        </b:row>
+                                        <b:row>
+                                            <b:column span="2">
+                                                <p:outputLabel for="matchType" value="#{msg.matchType}:"/>
+                                            </b:column>
+                                            <b:column span="10">
+                                                <p:selectOneMenu id="matchType" value="#{dashboardPanel.matchType}"
+                                                                 converter="matchTypeConverter">
+                                                    <f:selectItems value="#{createCompetitionBackingBean.bracketCreator.matchTypeList}"
+                                                                   var="matchType" itemLabel="#{matchType.matchTypeName}"
+                                                                   />
+                                                </p:selectOneMenu>
+                                            </b:column>
+                                        </b:row>
                                     </p:panel>
                                 </c:when>
                                 <c:otherwise>
@@ -187,12 +236,14 @@ and open the template in the editor.
                             </c:choose>
                         </c:forEach>
                     </p:dashboard>
+
+                    <p:outputPanel styleClass="createCompetitionButtonWrapper">
+                        <b:commandButton  value="#{msg.create}" styleClass="createCompetitionButton" look="success"
+                                          action="#{createCompetitionBackingBean.createCompetition()}" size="large"
+                                          update="msgs" ajax="true"/>
+                    </p:outputPanel>
                 </p:tab>
             </p:wizard>
-            <p:commandButton value="#{msg.create}" 
-                             action="#{createCompetitionBackingBean.createCompetition()}"
-                             update="msgs"/>
-            <p:messages id="msgs"/>
         </h:form>
 
     </ui:define>

@@ -4,7 +4,7 @@
 
     <groupId>studia</groupId>
     <artifactId>sem7</artifactId>
-    <version>0.7.6</version>
+    <version>0.8.3</version>
     <packaging>war</packaging>
 
     <name>sem7</name>
@@ -20,6 +20,16 @@
             <artifactId>primefaces</artifactId>
             <version>5.2</version>
         </dependency>
+        <dependency>
+            <groupId>net.bootsfaces</groupId>
+            <artifactId>bootsfaces</artifactId>
+            <version>0.7.0</version>
+        </dependency>
+        <dependency>  
+            <groupId>org.primefaces.themes</groupId>  
+            <artifactId>all-themes</artifactId>  
+            <version>1.0.10</version>  
+        </dependency>  
         <dependency>
             <groupId>javax</groupId>
             <artifactId>javaee-web-api</artifactId>

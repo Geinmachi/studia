@@ -1,0 +1,73 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:b="http://bootsfaces.net/ui"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    
+    <b:navBar id="navbar" brand="#{msg.mainPage}" brandHref="/index.xhtml" 
+              inverse="true" fixed="top">
+        
+        <b:navbarLinks>
+            <b:navLink value="#{msg.competitionList}" href="/competitionList.xhtml"/>
+        </b:navbarLinks>
+
+        <c:choose>
+            <c:when test="#{empty request.remoteUser}">
+                <h:form styleClass="navbar-form navbar-right">
+
+                    <b:button   value="#{msg.signUp}" size="xs"
+                                look="primary" icon="pencil" iconAlign="right"/>
+
+                    &#160;&#160;
+
+                    <div class="input-group">
+                        <b:icon addon="true" name="user"/>
+                        <b:inputText placeholder="#{msg.login}" value="#{loginBackingBean.username}"
+                                     fieldSize="sm"/>
+                    </div>
+                    #{' '}   
+                    <div class="input-group">
+                        <b:icon addon="true" name="lock"/>
+                        <b:inputSecret placeholder="#{msg.password}" value="#{loginBackingBean.password}"
+                                       fieldSize="sm"/>
+                    </div>
+                    #{' '}
+                    <b:commandButton action="#{loginBackingBean.login}" value="#{msg.signIn}" update="navbar"
+                                     look="success" icon="chevron-right" iconAlign="right" size="sm"/>
+                </h:form>
+            </c:when>
+            <c:otherwise>
+                <b:navbarLinks>
+
+                    <b:dropMenu value="#{msg.competitions}">
+                        <b:navLink value="#{msg.createCompetition}" href="/organizer/createCompetition.xhtml"></b:navLink>
+                        <b:navLink value="#{msg.chooseCompetition}" href="/organizer/chooseCompetition.xhtml"></b:navLink>
+                    </b:dropMenu>
+
+                    <b:dropMenu value="#{msg.teams}">
+                        <b:navLink value="#{msg.addTeam}" href="/organizer/createTeam.xhtml"></b:navLink>
+                        <b:navLink value="#{msg.editTeam}" href="/edit/teamList.xhtml"></b:navLink>
+                    </b:dropMenu>
+
+                    <b:dropMenu value="#{msg.competitors}">
+                        <b:navLink value="#{msg.addCompetitor}" href="/organizer/addCompetitor.xhtml"></b:navLink>
+                        <b:navLink value="#{msg.editCompetitor}" href="/edit/competitorList.xhtml"></b:navLink>
+                    </b:dropMenu>
+
+                </b:navbarLinks>
+
+                <h:form styleClass="navbar-right ">
+                    <span class="navbar-text">
+                        <a href="#" class="navbar-link"><b:icon name="user" /> #{request.remoteUser}</a>
+                    </span>
+                    <b:commandButton action="#{loginBackingBean.logout()}" value="#{msg.logout}" 
+                                     look="primary" size="xs" icon="log-out" iconAlign="right" update="navbar"
+                                     styleClass="navbar-btn"/>
+                </h:form>
+
+            </c:otherwise>
+        </c:choose>
+    </b:navBar>
+</ui:composition>
+

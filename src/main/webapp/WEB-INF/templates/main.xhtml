@@ -7,28 +7,19 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
         <title><ui:insert name="title"/></title>
+        <link rel="stylesheet" type="text/css" media="all" href="/resources/css/bootstrap.css"/>
+        <h:outputStylesheet library="css" name="general.css" />
         <h:outputStylesheet library="css" name="dashboard.css" />
     </h:head>
-    <h:body>
-        <p:layout fullPage="true">
+    <h:body style="padding-top: 50px; padding-bottom: 20px;">
 
-            <p:layoutUnit id="top" position="north">
-                <ui:include src="headerTemplate.xhtml" />
-            </p:layoutUnit>
+        <ui:include src="bootsfaces/headerTemplate.xhtml" />
+        <div class="topMargin contentWrapper">
+            <h3 class="header"><ui:insert name="title"/></h3>
+            <ui:insert name="content"/>
+        </div>
+        <ui:include src="footerTemplate.xhtml" />
 
-            <p:layoutUnit position="west">
-                <ui:include src="menuTemplate.xhtml"/>
-            </p:layoutUnit>
-
-            <p:layoutUnit  id="center" position="center">
-                <ui:insert name="content"/>
-            </p:layoutUnit>
-
-            <p:layoutUnit id="bottom" position="south">
-                <ui:include src="footerTemplate.xhtml" />
-            </p:layoutUnit>
-
-        </p:layout>
     </h:body>
 </html>
 

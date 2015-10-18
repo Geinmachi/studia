@@ -16,44 +16,59 @@ and open the template in the editor.
     <ui:define name="content">
         <h:outputScript library="js" name="dashboard.js" />
         <p:messages id="msg" showDetail="true"/>
-        <h:form id="displayCompetitionForm" style="width: #{competitionDetailsBackingBean.bracketCreator.rounds * 400}px">
-            <p:outputLabel value="#{msg.competitionName}: "/>
-            <p:outputLabel value="#{competitionDetailsBackingBean.competition.competitionName}"/>
-            <br/>
+        <h:form id="displayCompetitionForm" styleClass="displayCompetitionForm" >
 
-            <p:outputLabel value="#{msg.groups}"/>
-            <br/>
-            <p:outputPanel style="width: calc(100%/1.5) !important;">
-                <ui:repeat value="#{competitionDetailsBackingBean.competition.groupDetailsList}" 
-                           var="groupDetails">
-                    <p:panel styleClass="groupPanel" 
-                             style="width: #{(100/competitionDetailsBackingBean.competition.groupDetailsList.size())-2}%; display: inline-block;">
+            <p:panelGrid styleClass="middleTableWrapper centeredText shadows">
+                <p:row>
+                    <p:column>
+                        <p:outputLabel value="#{msg.competitionName}"/>
+                    </p:column>
+                    <p:column>
+                        <p:outputLabel styleClass="boldFont" value="#{competitionDetailsBackingBean.competition.competitionName}"/>
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column colspan="2">
+                        <p:outputLabel value="#{msg.groups}"/>
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column colspan="2">
+                        <p:outputPanel styleClass="groupsHolder">
+                            <ui:repeat value="#{competitionDetailsBackingBean.competition.groupDetailsList}" 
+                                       var="groupDetails">
+                                <p:panel styleClass="groupPanel shadows">
 
-                        <f:facet name="header">
-                            #{groupDetails.idGroupName.groupName}
-                        </f:facet>
+                                    <f:facet name="header">
+                                        #{groupDetails.idGroupName.groupName}
+                                    </f:facet>
 
-                        <f:facet name="options">
-                            <p:menu>
-                                <p:menuitem value="#{msg.startDate}: #{groupDetails.startDate}" />
-                                <p:menuitem value="#{msg.endDate}: #{groupDetails.endDate}" />
-                            </p:menu>
-                        </f:facet>
+                                    <f:facet name="options">
+                                        <p:menu>
+                                            <p:menuitem value="#{msg.startDate}: #{groupDetails.startDate}" />
+                                            <p:menuitem value="#{msg.endDate}: #{groupDetails.endDate}" />
+                                        </p:menu>
+                                    </f:facet>
 
-                        <ui:repeat value="#{groupDetails.groupCompetitorList.toArray()}" 
-                                   var="competitorMatchGroup">
-                            <ui:fragment rendered="#{not empty competitorMatchGroup.idCompetitor.idCreator}">
-                                *
-                            </ui:fragment>
-                            #{competitorMatchGroup.idCompetitor.idPersonalInfo.firstName} 
-                            #{competitorMatchGroup.idCompetitor.idPersonalInfo.lastName} 
-                            <br/>
-                        </ui:repeat>
-                    </p:panel>
-                </ui:repeat>
-            </p:outputPanel>
+                                    <ui:repeat value="#{groupDetails.groupCompetitorList.toArray()}" 
+                                               var="competitorMatchGroup">
+                                        <ui:fragment rendered="#{not empty competitorMatchGroup.idCompetitor.idCreator}">
+                                            *
+                                        </ui:fragment>
+                                        #{competitorMatchGroup.idCompetitor.idPersonalInfo.firstName} 
+                                        #{competitorMatchGroup.idCompetitor.idPersonalInfo.lastName} 
+                                        <br/>
+                                    </ui:repeat>
+                                </p:panel>
 
-            <p:dashboard id="dashboard" model="#{competitionDetailsBackingBean.bracketCreator.dashboardModel}">
+                            </ui:repeat>
+                        </p:outputPanel>
+                    </p:column>
+                </p:row>
+            </p:panelGrid>
+
+            <p:dashboard id="dashboard" style="width: #{competitionDetailsBackingBean.bracketCreator.rounds * 300}px"
+                         model="#{competitionDetailsBackingBean.bracketCreator.dashboardModel}" styleClass="dashboard">
                 <c:forEach items="#{competitionDetailsBackingBean.bracketCreator.panelList}" var="dashboardPanel" varStatus="panelIndex">
                     <c:choose>
                         <c:when test="#{not dashboardPanel.filler}">

@@ -5,19 +5,19 @@
  */
 package mot.facades;
 
-import entities.Account;
 import entities.Competition;
-import entities.CompetitorMatch;
 import entities.GroupCompetitor;
 import entities.GroupDetails;
+import exceptions.ApplicationException;
+import exceptions.CompetitorCreationException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
-import javax.persistence.LockModeType;
 import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceException;
 import javax.persistence.Query;
 
 /**
@@ -26,6 +26,7 @@ import javax.persistence.Query;
  */
 @Stateless
 public class CompetitionFacade extends AbstractFacade<Competition> implements CompetitionFacadeLocal {
+
     @PersistenceContext(unitName = "mot_persistence_unit")
     private EntityManager em;
 
@@ -53,40 +54,47 @@ public class CompetitionFacade extends AbstractFacade<Competition> implements Co
 //        }
 //        return managedEntity;
 //    }
-
     @Override
-    public Competition createWithReturn(Competition entity) {
-        em.persist(entity);
-        em.flush();
-        
+    public Competition createWithReturn(Competition entity) throws ApplicationException {
+        try {
+            em.persist(entity);
+            em.flush();
+        } catch (PersistenceException e) {
+            if (e.getMessage().contains("competition_uniq_competition_name")) {
+                throw new CompetitorCreationException("Competition with given name already exists", e.getCause());
+            }
+            
+            throw e;
+        }
+
         return entity;
     }
 
     @Override
     public Competition findAndInitializeGD(Integer idCompetition) {
         Competition entity = em.find(Competition.class, idCompetition);
-   //     entity.getGroupDetailsList().size();
-        for(GroupDetails gd : entity.getGroupDetailsList()) {
-            
+        //     entity.getGroupDetailsList().size();
+        for (GroupDetails gd : entity.getGroupDetailsList()) {
+
             List<GroupCompetitor> gc = new ArrayList<>(gd.getGroupCompetitorList());
-            Collections.sort(gc, new Comparator<GroupCompetitor>(){
+            Collections.sort(gc, new Comparator<GroupCompetitor>() {
 
                 @Override
                 public int compare(GroupCompetitor o1, GroupCompetitor o2) {
                     return o1.getIdCompetitor().getIdPersonalInfo().getLastName().compareTo(
-                        o2.getIdCompetitor().getIdPersonalInfo().getLastName());
+                            o2.getIdCompetitor().getIdPersonalInfo().getLastName());
                 }
-                
+
             });
-            
+
             gd.setGroupCompetitorList(gc);
         }
-        
+
         List<GroupDetails> gdList = new ArrayList<>(entity.getGroupDetailsList());
         Collections.sort(gdList);
-        
+
         entity.setGroupDetailsList(gdList);
-        
+
         return entity;
     }
 
@@ -100,7 +108,7 @@ public class CompetitionFacade extends AbstractFacade<Competition> implements Co
 //        for (CompetitorMatch cm : competitorMatchList) {
 //            em.lock(cm, LockModeType.OPTIMISTIC_FORCE_INCREMENT);
 //        }
-        
+
         em.merge(entity);
         em.flush();
     }

@@ -9,33 +9,25 @@ import web.utils.BracketCreation;
 import entities.Competition;
 import entities.CompetitionType;
 import entities.Competitor;
-import entities.CompetitorMatch;
-import entities.GroupName;
-import entities.Matchh;
+import exceptions.ApplicationException;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.Date;
-import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
-import javax.enterprise.context.SessionScoped;
-import javax.faces.bean.RequestScoped;
-import javax.faces.component.UIComponent;
+import javax.faces.application.FacesMessage;
 import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 //import javax.enterprise.context.RequestScoped;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
-import mot.services.CompetitionService;
-import org.primefaces.component.picklist.PickList;
+import org.primefaces.context.RequestContext;
 import org.primefaces.event.FlowEvent;
 import org.primefaces.model.DualListModel;
-import web.controllers.CompetitionController;
 import web.converters.interfaces.CompetitorConverterData;
 import web.utils.JsfUtils;
 
@@ -46,6 +38,7 @@ import web.utils.JsfUtils;
 @Named(value = "createCompetitionBackingBean")
 @ViewScoped
 public class CreateCompetitionBackingBean extends CompetitionBackingBean implements Serializable, CompetitorConverterData {
+
     @Inject
     private BracketCreation bracketCreator;
 
@@ -151,47 +144,53 @@ public class CreateCompetitionBackingBean extends CompetitionBackingBean impleme
 
     public String onFlowProcess(FlowEvent event) {
         if (event.getOldStep().equals("firstStep")) {
-            if (duplicatedCompetitorFlag || !isCompetitorsAmountValid ) {
+            if (duplicatedCompetitorFlag || !isCompetitorsAmountValid) {
                 System.out.println("ONFLOW duplicated");
-                return event.getOldStep();
+                //    return event.getOldStep();
             }
             bracketCreator.createEmptyBracket(competitors.getTarget());
 
         } else if (event.getNewStep().equals("firstStep")) {
+            
+            RequestContext.getCurrentInstance().update("msgs");
             bracketCreator.clearLists();
         }
         return event.getNewStep();
     }
-    
+
     public String createCompetition() {
         try {
             competition.setIdCompetitionType(selectedCompetitionType);
             bracketCreator.updateBracket();
             controller.createCompetition(competition, bracketCreator.getCompetitorMatchGroupList());
             return "/index.xhtml?faces-redirect=true";
+        } catch (ApplicationException e) {
+            JsfUtils.addErrorMessage(e.getLocalizedMessage(), " ", null);
+            Logger.getLogger(CreateCompetitionBackingBean.class.getName()).log(Level.SEVERE, null, e);
         } catch (Exception e) {
             System.out.println("Wyjatek przy twrzoeniu");
             Logger.getLogger(CreateCompetitionBackingBean.class.getName()).log(Level.SEVERE, null, e);
-            return null;
         }
+
+        return null;
     }
 
     public void checkDuplicate() {
         isCompetitorsAmountValid = controller.validateCompetitorsAmount(competitors.getTarget().size()); // do jsf mesage
 //        JsfUtils.addErrorMessage(null, null, null);
-        
+
         Competitor duplicatedCompetitor = controller.vlidateCompetitorDuplicate((List<Competitor>) competitors.getTarget());
-        
+
         if (duplicatedCompetitor != null) {
             System.out.println("Duplicated competitor");
-            JsfUtils.addErrorMessage("Competition contains duplicated competitor", 
-                    duplicatedCompetitor.getIdPersonalInfo().getFirstName() + " " 
-                            + duplicatedCompetitor.getIdPersonalInfo().getLastName(), null);
+            JsfUtils.addErrorMessage("Competition contains duplicated competitor",
+                    duplicatedCompetitor.getIdPersonalInfo().getFirstName() + " "
+                    + duplicatedCompetitor.getIdPersonalInfo().getLastName(), null);
             duplicatedCompetitorFlag = true;
-            
-            UIInput pickList = (UIInput)FacesContext.getCurrentInstance().getViewRoot().findComponent("createCompetitionForm:competitorPickList");
+
+            UIInput pickList = (UIInput) FacesContext.getCurrentInstance().getViewRoot().findComponent("createCompetitionForm:competitorPickList");
             pickList.setValid(false);
-            
+
             return;
         }
 

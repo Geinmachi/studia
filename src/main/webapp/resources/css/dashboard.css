@@ -1,8 +1,12 @@
 .ui-dashboard .hasDatepicker {
-    width: 90px !important;
+    width: 125px !important;
 }
 .ui-dashboard-column:nth-child(2n) {
     width: 101px;
+}
+
+.ui-dashboard-column {
+    padding-bottom: 0px !important;
 }
 
 .ui-dashboard {
@@ -22,12 +26,12 @@
 
 [id*="CompetitionForm:first"].ui-panel {
     margin-top: 80px;
-    height: 160px;
+    height: 140px;
     padding: 0px;
 }
 
 [id*="CompetitionForm:other"].ui-panel {
-    height: 160px;
+    height: 140px;
 }
 
 [id*="CompetitionForm:other2"].ui-panel:nth-child(1) {
@@ -35,21 +39,21 @@
 }
 
 [id*="CompetitionForm:other2"].ui-panel {
-    margin-top: 324px;
+    margin-top: 300px;
     padding: 0px;
 }
 
 [id*="CompetitionForm:other3"].ui-panel:nth-child(1) {
-    margin-top: 400px !important;
+    margin-top: 390px !important;
 }
 
 [id*="CompetitionForm:other3"].ui-panel {
-    margin-top: 820px;
+    margin-top: 740px;
     padding: 0px;
 }
 
 [id*="CompetitionForm:other4"].ui-panel:nth-child(1) {
-    margin-top: 880px !important;
+    margin-top: 830px !important;
 }
 
 [id*="CompetitionForm:other4"].ui-panel {
@@ -59,27 +63,39 @@
 
 /*fillers*/
 
+[id*="CompetitionForm:filler"] {
+    background-color: #333;
+    background: transparent;
+}
+
 [id*="CompetitionForm:filler0"] {
-    height: 120px;
+    height: 110px;
     padding: 0 !important;
 }
+
 [id*="CompetitionForm:filler0"]:nth-child(1) {
     height: 120px !important;
 }
+
 [id*="CompetitionForm:filler0"]:nth-child(3n+1) {
-    height: 240px;
+    height: 220px;
     border: 0;
 }
 
 [id*="CompetitionForm:filler0"]:nth-child(3n+3) > div{
     position: absolute;
     width: 100px;
-    background-color: #fff;
+    background-color: #333;
     right: 0.1px;
+    top: -12.0px;
+}
+
+[id^="createCompetitionForm:filler0"]:nth-child(3n+3) > div{
+    right: 0px;
 }
 
 [id*="CompetitionForm:filler1"] {
-    height: 240px;
+    height: 223px;
     padding: 0 !important;
 }
 
@@ -88,25 +104,26 @@
 }
 
 [id*="CompetitionForm:filler1"]:nth-child(3n+1) {
-    height: 490px;
+    height: 435px;
 }
 
 [id*="CompetitionForm:filler1"]:nth-child(3n+3) > div{
     position: absolute;
     width: 100px;
-    background-color: #fff;
+    background-color: #333;
     right: 0.1px;
+    top: -19.2px;
 }
 
 [id*="CompetitionForm:filler2"] {
-    height: 490px;
+    height: 440px;
     padding: 0 !important;
 }
 /*[id*="CompetitionForm:filler2"]:nth-child(7n+1) {
     height: 12em;
 }*/
 [id*="CompetitionForm:filler2"]:nth-child(1) {
-    height: 480px !important;
+    height: 470px !important;
 }
 
 [id*="CompetitionForm:filler2"]:nth-child(3n+1) {
@@ -116,8 +133,9 @@
 [id*="CompetitionForm:filler2"]:nth-child(3n+3) > div{
     position: absolute;
     width: 100px;
-    background-color: #fff;
-    right: 0.1px;
+    background-color: #333;
+    right: 0px;
+    top: -1.0px;
     height: 100% !important;
 }
 
@@ -130,7 +148,7 @@
     z-index: 1;
     position: absolute;
     width: 100px;
-    background-color: #fff;
+    background-color: #333;
     right: 0px;
 }
 
@@ -140,8 +158,8 @@
 }
 
 /* -------------------------- */
-.matchWinner {
-    color: green;
+.matchWinner > label[id*="displayCompetitionForm"] {
+    color: green !important;
 }
 
 div[class*="displayCompetitorRow"]:hover {
@@ -149,7 +167,7 @@ div[class*="displayCompetitorRow"]:hover {
 }
 
 .hoveredCompetitor {
-    background-color: yellow;
+    background-color: #800000;
 }
 
 .crown0 {
@@ -164,9 +182,31 @@ div[class*="displayCompetitorRow"]:hover {
     top: 83px;
 }
 
-.groupPanel > * {
+.ui-wizard-content {
+    overflow: auto;
+}
+
+.dashboard {
+    margin-left: 50px;
+}
+
+.groupsHolder {
     text-align: center;
 }
+
+.groupPanel {
+    display: inline-block !important;
+    margin-left: 20px;
+}
+
+.groupPanel * {
+    text-align: center;
+}
+
+.groupPanel .ui-panel-title {
+    margin-right: 0 !important;
+}
+
 .editableGroupPanel .hasDatepicker {
     width: 70% !important;
 }
@@ -202,4 +242,53 @@ input[id$="scoreInput"] {
 
 .ui-picklist-list {
     width: auto !important;
+}
+
+form > div[id*="CompetitionForm"] {
+    background-color: #333;
+}
+
+.groupDialog {
+    width: 380px !important;
+}
+.groupDialog .ui-dialog-content {
+    overflow: hidden !important;
+}
+
+.groupDialog .ui-dialog-title {
+    float: none !important;
+}
+
+.createCompetitionButtonWrapper {
+    clear: both;
+    float: right;
+    text-align: center;
+    width: 100% !important;
+}
+
+#msgs_container {
+    left: 40%;
+    top: 40%;
+}
+
+.firstStepWizard, .middleTableWrapper {
+    margin: auto;
+}
+
+.ui-wizard-step-titles {
+    width: 30%; 
+    margin: auto !important;
+}
+
+.displayCompetitionForm {
+    overflow: auto;
+    background-color: #333;
+}
+
+div[id*="displayCompetitionForm\:first"], div[id*="displayCompetitionForm\:other"] {
+    width: 200px !important;
+}
+
+div[id*="displayCompetitionForm\:first"] > div.ui-widget-header, div[id*="displayCompetitionForm\:other"] > div.ui-widget-header {
+    width: 198px !important;
 }
