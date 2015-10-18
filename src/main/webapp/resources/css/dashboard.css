@@ -158,8 +158,8 @@
 }
 
 /* -------------------------- */
-.matchWinner {
-    color: green;
+.matchWinner > label[id*="displayCompetitionForm"] {
+    color: green !important;
 }
 
 div[class*="displayCompetitorRow"]:hover {
@@ -167,7 +167,7 @@ div[class*="displayCompetitorRow"]:hover {
 }
 
 .hoveredCompetitor {
-    background-color: yellow;
+    background-color: #800000;
 }
 
 .crown0 {
@@ -285,3 +285,10 @@ form > div[id*="CompetitionForm"] {
     background-color: #333;
 }
 
+div[id*="displayCompetitionForm\:first"], div[id*="displayCompetitionForm\:other"] {
+    width: 200px !important;
+}
+
+div[id*="displayCompetitionForm\:first"] > div.ui-widget-header, div[id*="displayCompetitionForm\:other"] > div.ui-widget-header {
+    width: 198px !important;
+}

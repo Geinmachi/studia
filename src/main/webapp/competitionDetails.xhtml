@@ -18,7 +18,7 @@ and open the template in the editor.
         <p:messages id="msg" showDetail="true"/>
         <h:form id="displayCompetitionForm" styleClass="displayCompetitionForm" >
 
-            <p:panelGrid styleClass="middleTableWrapper centeredText">
+            <p:panelGrid styleClass="middleTableWrapper centeredText shadows">
                 <p:row>
                     <p:column>
                         <p:outputLabel value="#{msg.competitionName}"/>
@@ -37,7 +37,7 @@ and open the template in the editor.
                         <p:outputPanel styleClass="groupsHolder">
                             <ui:repeat value="#{competitionDetailsBackingBean.competition.groupDetailsList}" 
                                        var="groupDetails">
-                                <p:panel styleClass="groupPanel">
+                                <p:panel styleClass="groupPanel shadows">
 
                                     <f:facet name="header">
                                         #{groupDetails.idGroupName.groupName}

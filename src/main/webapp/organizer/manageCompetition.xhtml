@@ -11,6 +11,7 @@ and open the template in the editor.
                 xmlns:p="http://primefaces.org/ui"
                 template="/WEB-INF/templates/main.xhtml"
                 xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:b="http://bootsfaces.net/ui"
                 xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
     <ui:define name="title">#{msg.manageCompetitionTitle}</ui:define>
     <ui:define name="content">
@@ -22,18 +23,18 @@ and open the template in the editor.
 
         <h:outputScript library="js" name="dashboard.js" />
         <p:growl for="manageCompetitionForm" id="msg" autoUpdate="true" showDetail="true" life="2000"/>
-        <h:form id="manageCompetitionForm" style="width: #{manageCompetitionBackingBean.bracketCreator.rounds * 400}px">
+        <h:form id="manageCompetitionForm" >
 
-            <p:panelGrid id="generalInfo">
+            <p:panelGrid id="generalInfo" styleClass="middleTableWrapper shadows">
                 <p:row>
                     <p:column>
                         <p:outputLabel for="competitionName" value="#{msg.competitionName} "/>
                     </p:column>
-                    <p:column>
+                    <p:column styleClass="centeredText">
                         <p:inputText id="competitionName" value="#{manageCompetitionBackingBean.competition.competitionName}" required="true"/>
                     </p:column>
-                    <p:column rowspan="3">
-                        <p:commandButton value="#{msg.save}" process="generalInfo" partialSubmit="true"
+                    <p:column rowspan="3" styleClass="centeredText">
+                        <p:commandButton value="#{msg.save}" process="generalInfo" partialSubmit="true" 
                                          update="generalInfo" action="#{manageCompetitionBackingBean.saveGeneralInfo}"/>
                     </p:column>
                 </p:row>
@@ -41,7 +42,7 @@ and open the template in the editor.
                     <p:column>
                         <p:outputLabel for="competitionStartDate" value="#{msg.startDate} "/>
                     </p:column>
-                    <p:column>
+                    <p:column styleClass="centeredText">
                         <p:calendar id="competitionStartDate" pattern="MM/dd/yyyy HH:mm:ss" value="#{manageCompetitionBackingBean.competition.startDate}"/>
                     </p:column>
                 </p:row>
@@ -49,7 +50,7 @@ and open the template in the editor.
                     <p:column>
                         <p:outputLabel for="competitionEndDate" value="#{msg.endDate} "/>
                     </p:column>
-                    <p:column>
+                    <p:column styleClass="centeredText">
                         <p:calendar id="competitionEndDate" pattern="MM/dd/yyyy HH:mm:ss" value="#{manageCompetitionBackingBean.competition.endDate}"/>
                     </p:column>
                 </p:row>
@@ -60,42 +61,60 @@ and open the template in the editor.
                         <p:messages for="competitionName"/>
                     </p:column>
                 </p:row>
+                <p:row>
+                    <p:column colspan="3" styleClass="centeredText">
+                        <p:outputLabel value="#{msg.groups}"/>
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column colspan="3">
+                        <p:outputPanel styleClass="groupsHolder">
+                            <ui:repeat value="#{manageCompetitionBackingBean.groupDetailsList}" 
+                                       var="groupDetails">
+                                <p:panel  styleClass="groupPanel editableGroupPanel shadows">
+                                    <f:facet name="header">
+                                        #{groupDetails.idGroupName.groupName}
+                                        <br/>
+
+                                        <b:button look="primary" icon="calendar" iconAlign="right" value="#{msg.dates}" size="xs"
+                                                  onclick="PF('group#{groupDetails.idGroupName.groupName}Dialog').show();
+                                                          return false;"/>
+
+                                        <p:dialog header="#{msg.group} #{groupDetails.idGroupName.groupName}" modal="true" dynamic="true" closeOnEscape="true"
+                                                  widgetVar="group#{groupDetails.idGroupName.groupName}Dialog"
+                                                  resizable="false" styleClass="groupDialog" focus="focusInDialog">
+                                            <b:panelGrid colSpans="5,7">
+                                                <p:outputLabel id="focusInDialog" value="#{msg.startDate}"/>
+                                                <p:calendar pattern="MM/dd/yyyy HH:mm:ss"
+                                                            value="#{groupDetails.startDate}"/>
+
+                                                <p:outputLabel value="#{msg.endDate}"/>
+                                                <p:calendar pattern="MM/dd/yyyy HH:mm:ss" 
+                                                            value="#{groupDetails.endDate}"/>
+                                            </b:panelGrid>
+                                        </p:dialog>
+
+                                    </f:facet>
+                                    <ui:repeat value="#{groupDetails.groupCompetitorList}" 
+                                               var="competitorMatchGroup">
+                                        #{competitorMatchGroup.idCompetitor.idPersonalInfo.firstName} 
+                                        #{competitorMatchGroup.idCompetitor.idPersonalInfo.lastName} 
+                                        <br/>
+                                    </ui:repeat>
+                                </p:panel>
+                            </ui:repeat>
+                        </p:outputPanel>
+                    </p:column>
+                </p:row>
             </p:panelGrid>
-            
-            <p:outputLabel value="#{msg.groups}"/>
-            <br/>
-            <p:outputPanel style="width: calc(100%/1.5) !important;">
-                <ui:repeat value="#{manageCompetitionBackingBean.groupDetailsList}" 
-                           var="groupDetails">
-                    <p:panel  styleClass="groupPanel editableGroupPanel" 
-                              style="width: #{(100/manageCompetitionBackingBean.groupDetailsList.size())-1}%; display: inline-block;">
-                        <f:facet name="header">
-                            #{groupDetails.idGroupName.groupName}
-                            <br/>
-                            <p:outputLabel value="#{msg.startDate}: "/>
-                            <p:calendar pattern="MM/dd/yyyy HH:mm:ss" showOn="button" 
-                                        value="#{groupDetails.startDate}"/>
-                            <br/>
-                            <p:outputLabel value="#{msg.endDate}: "/>
-                            <p:calendar pattern="MM/dd/yyyy HH:mm:ss" showOn="button" 
-                                        value="#{groupDetails.endDate}"/>
-                        </f:facet>
-                        <ui:repeat value="#{groupDetails.groupCompetitorList}" 
-                                   var="competitorMatchGroup">
-                            #{competitorMatchGroup.idCompetitor.idPersonalInfo.firstName} 
-                            #{competitorMatchGroup.idCompetitor.idPersonalInfo.lastName} 
-                            <br/>
-                        </ui:repeat>
-                    </p:panel>
-                </ui:repeat>
-            </p:outputPanel>
-            <p:dashboard id="dashboard" model="#{manageCompetitionBackingBean.bracketCreator.dashboardModel}">
+            <p:dashboard id="dashboard" model="#{manageCompetitionBackingBean.bracketCreator.dashboardModel}" styleClass="dashboard"
+                         style="width: #{manageCompetitionBackingBean.bracketCreator.rounds * 330}px">
                 <c:forEach items="#{manageCompetitionBackingBean.bracketCreator.panelList}" var="dashboardPanel" varStatus="panelIndex">
                     <c:choose>
                         <c:when test="#{not dashboardPanel.filler}">
                             <p:panel id="#{dashboardPanel.panel.id}" binding="#{dashboardPanel.panel}"
                                      header="#{msg.matchNumber} #{dashboardPanel.match.matchNumber}">
-                                       idMatch = #{dashboardPanel.match} <br/>
+                                idMatch = #{dashboardPanel.match} <br/>
                                 <ui:repeat value="#{dashboardPanel.match.competitorMatchList}" var="cmgFromMatch">
 <!--                                <c:forEach items="#{dashboardPanel.match.competitorMatchList}"
                                           var="cmgFromMatch">-->

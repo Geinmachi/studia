@@ -30,7 +30,7 @@ and open the template in the editor.
         <h:form id="createCompetitionForm">
             <p:wizard flowListener="#{createCompetitionBackingBean.onFlowProcess}" id="wizard">
                 <p:tab id="firstStep" title="#{msg.generalTab}">
-                    <p:panelGrid styleClass="firstStepWizard">
+                    <p:panelGrid styleClass="firstStepWizard shadows">
                         <p:row>
                             <p:column>
                                 <p:outputLabel for="competitionName" value="#{msg.competitionName}"/>
@@ -121,49 +121,59 @@ and open the template in the editor.
                     </p:panelGrid>
                 </p:tab>
                 <p:tab id="secondStep" title="#{msg.bracket}">
-                    <p:outputPanel id="groupsHolder" styleClass="groupsHolder">
-                        <ui:repeat value="#{createCompetitionBackingBean.bracketCreator.groups}" var="group" id="group">
-                            <p:panel styleClass="groupPanel editableGroupPanel">
-                                <f:facet name="header">
-                                    #{group.idGroupName.groupName}
-                                    <br/>
+                    <p:panelGrid styleClass="middleTableWrapper centeredText shadows">
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel value="#{msg.groups}"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column>
+                                <p:outputPanel id="groupsHolder" styleClass="groupsHolder">
+                                    <ui:repeat value="#{createCompetitionBackingBean.bracketCreator.groups}" var="group" id="group">
+                                        <p:panel styleClass="groupPanel editableGroupPanel shadows">
+                                            <f:facet name="header">
+                                                #{group.idGroupName.groupName}
+                                                <br/>
 
-                                    <b:button look="primary" icon="calendar" iconAlign="right" value="#{msg.dates}" size="xs"
-                                              onclick="PF('group#{group.idGroupName.groupName}Dialog').show();
-                                                      return false;"/>
+                                                <b:button look="primary" icon="calendar" iconAlign="right" value="#{msg.dates}" size="xs"
+                                                          onclick="PF('group#{group.idGroupName.groupName}Dialog').show();
+                                                                  return false;"/>
 
-                                    <p:dialog header="#{msg.group} #{group.idGroupName.groupName}" modal="true" dynamic="true" closeOnEscape="true"
-                                              widgetVar="group#{group.idGroupName.groupName}Dialog"
-                                              resizable="false" styleClass="groupDialog" focus="focusInDialog">
-                                        <b:panelGrid colSpans="5,7">
-                                            <p:outputLabel id="focusInDialog" value="#{msg.startDate}"/>
-                                            <p:calendar pattern="MM/dd/yyyy HH:mm:ss"
-                                                        value="#{group.startDate}"/>
+                                                <p:dialog header="#{msg.group} #{group.idGroupName.groupName}" modal="true" dynamic="true" closeOnEscape="true"
+                                                          widgetVar="group#{group.idGroupName.groupName}Dialog"
+                                                          resizable="false" styleClass="groupDialog" focus="focusInDialog">
+                                                    <b:panelGrid colSpans="5,7">
+                                                        <p:outputLabel id="focusInDialog" value="#{msg.startDate}"/>
+                                                        <p:calendar pattern="MM/dd/yyyy HH:mm:ss"
+                                                                    value="#{group.startDate}"/>
 
-                                            <p:outputLabel value="#{msg.endDate}"/>
-                                            <p:calendar pattern="MM/dd/yyyy HH:mm:ss" 
-                                                        value="#{group.endDate}"/>
-                                        </b:panelGrid>
-                                    </p:dialog>
+                                                        <p:outputLabel value="#{msg.endDate}"/>
+                                                        <p:calendar pattern="MM/dd/yyyy HH:mm:ss" 
+                                                                    value="#{group.endDate}"/>
+                                                    </b:panelGrid>
+                                                </p:dialog>
 
-                                </f:facet>
-                                <ui:repeat value="#{createCompetitionBackingBean.bracketCreator.competitorMatchGroupList}"
-                                           var="cmg">
-                                    <ui:fragment rendered="#{cmg.idGroupName eq group.idGroupName}">
-                                        <p:outputLabel>
-                                            <ui:fragment rendered="#{not empty cmg.idCompetitor.idCreator}">
-                                                *
-                                            </ui:fragment>
-                                            #{cmg.idCompetitor.idPersonalInfo.firstName} 
-                                            #{cmg.idCompetitor.idPersonalInfo.lastName} 
-                                        </p:outputLabel>
-                                        <br/>
-                                    </ui:fragment>
-                                </ui:repeat>
-                            </p:panel>
-                        </ui:repeat>
-                    </p:outputPanel>
-
+                                            </f:facet>
+                                            <ui:repeat value="#{createCompetitionBackingBean.bracketCreator.competitorMatchGroupList}"
+                                                       var="cmg">
+                                                <ui:fragment rendered="#{cmg.idGroupName eq group.idGroupName}">
+                                                    <p:outputLabel>
+                                                        <ui:fragment rendered="#{not empty cmg.idCompetitor.idCreator}">
+                                                            *
+                                                        </ui:fragment>
+                                                        #{cmg.idCompetitor.idPersonalInfo.firstName} 
+                                                        #{cmg.idCompetitor.idPersonalInfo.lastName} 
+                                                    </p:outputLabel>
+                                                    <br/>
+                                                </ui:fragment>
+                                            </ui:repeat>
+                                        </p:panel>
+                                    </ui:repeat>
+                                </p:outputPanel>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
                     <p:dashboard id="dashboard" model="#{createCompetitionBackingBean.bracketCreator.dashboardModel}" 
                                  style="width: #{createCompetitionBackingBean.bracketCreator.rounds * 320}px" styleClass="dashboard">
                         <c:forEach items="#{createCompetitionBackingBean.bracketCreator.panelList}" var="dashboardPanel" varStatus="panelIndex">
@@ -195,7 +205,7 @@ and open the template in the editor.
                                                 </c:choose>
                                             </c:forEach>
                                         </p:outputPanel>
-                                        
+
                                         <b:row>
                                             <b:column span="2">
                                                 <p:outputLabel value="#{msg.date}:"/>
