@@ -23,7 +23,7 @@ import web.controllers.CompetitionController;
 @ViewScoped
 public class ChooseCompetitionBackingBean extends CompetitionBackingBean implements Serializable {
     
-    private List<Competition> loggedUserCompetitions;
+    private List<Competition> competitionList;
     
     /**
      * Creates a new instance of ChooseCompetitionBackingBean
@@ -32,18 +32,18 @@ public class ChooseCompetitionBackingBean extends CompetitionBackingBean impleme
     }
 
     public List<Competition> getLoggedUserCompetitions() {
-        return loggedUserCompetitions;
+        return competitionList;
     }
     
     @PostConstruct
     private void init() {
-        loggedUserCompetitions = controller.getLoggedUserCompetitions();
+        competitionList = controller.findAllowedCompetitions();
     }
     
     public String manageCompetition(Competition competition) {
         try {
             controller.storeCompetition(competition);
-            return "manageCompetition?faces-redirect=true";
+            return "/edit/manageCompetition?faces-redirect=true";
         } catch (Exception e) {
             System.out.println("WYJAAAAAAAAAAAAATEK ChooseCompetitionBackingBaen " + e.getMessage());
             e.printStackTrace();

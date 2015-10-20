@@ -33,13 +33,15 @@ and open the template in the editor.
                     <p:panelGrid styleClass="firstStepWizard shadows">
                         <p:row>
                             <p:column>
-                                <p:outputLabel for="competitionName" value="#{msg.competitionName}"/>
+                                <p:outputLabel id="competitionNameLabel" for="competitionName" value="#{msg.competitionName}"/>
                             </p:column>
                             <p:column>
-                                <p:inputText id="competitionName" value="#{createCompetitionBackingBean.competition.competitionName}"/>
+                                <p:inputText required="true" id="competitionName" value="#{createCompetitionBackingBean.competition.competitionName}">
+                                    <f:validator  binding="#{competitionNameValidator}"/>
+                                </p:inputText>
                             </p:column>
-                            <p:column>
-                                <p:message for="competitionName"/>
+                            <p:column style="width: 100px !important;">
+                                <p:message showSummary="true" showDetail="false" id="competitionNameMsg" for="competitionName"/>
                             </p:column>
                         </p:row>
                         <p:row>
@@ -73,13 +75,23 @@ and open the template in the editor.
                         </p:row>
                         <p:row>
                             <p:column>
-                                <p:outputLabel for="endDate" value="#{msg.startDate}"/>
+                                <p:outputLabel for="endDate" value="#{msg.endDate}"/>
                             </p:column>
                             <p:column>
                                 <p:calendar id="endDate" value="#{createCompetitionBackingBean.competition.endDate}" pattern="MM/dd/yyyy HH:mm:ss" />
                             </p:column>
                             <p:column>
                                 <p:message for="endDate"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="isGlobal" value="#{msg.isCompetitionGlobal}"/>
+                            </p:column>
+                            <p:column colspan="2">
+                                <p:selectBooleanCheckbox id="isGlobal" value="#{createCompetitionBackingBean.competition.global}">
+                                    <p:ajax/>
+                                </p:selectBooleanCheckbox>
                             </p:column>
                         </p:row>
                         <p:row>

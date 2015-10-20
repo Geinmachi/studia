@@ -15,6 +15,8 @@ and open the template in the editor.
                 xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
     <ui:define name="title">#{msg.manageCompetitionTitle}</ui:define>
     <ui:define name="content">
+        <b:icon name="bullhorn" size="2x" rendered="#{request.isUserInRole(bsn['role.admin']) and !(manageCompetitionBackingBean.competition.idOrganizer.idAccount.login eq request.userPrincipal.name)}"/>
+
         <p:tooltip />
         <p:ajaxStatus onstart="PF('ajaxStatusDialog').show();" onsuccess="PF('ajaxStatusDialog').hide();"/> 
         <p:dialog styleClass="loadingDialog" showHeader="false" modal="true" widgetVar="ajaxStatusDialog"  resizable="false"  draggable="false" closable="false" >
@@ -22,7 +24,7 @@ and open the template in the editor.
         </p:dialog>
 
         <h:outputScript library="js" name="dashboard.js" />
-        <p:growl for="manageCompetitionForm" id="msg" autoUpdate="true" showDetail="true" life="2000"/>
+        <p:growl for="manageCompetitionForm" id="msg" autoUpdate="true" showDetail="true" life="5000"/>
         <h:form id="manageCompetitionForm" >
 
             <p:panelGrid id="generalInfo" styleClass="middleTableWrapper shadows">
@@ -40,7 +42,9 @@ and open the template in the editor.
                 </p:row>
                 <p:row>
                     <p:column>
-                        <p:outputLabel for="competitionStartDate" value="#{msg.startDate} "/>
+                        <p:outputLabel for="competitionStartDate" value="#{msg.startDate} ">
+                            <f:convertDateTime pattern="dd.MM.yyyy HH:mm" />
+                        </p:outputLabel>
                     </p:column>
                     <p:column styleClass="centeredText">
                         <p:calendar id="competitionStartDate" pattern="MM/dd/yyyy HH:mm:ss" value="#{manageCompetitionBackingBean.competition.startDate}"/>
@@ -48,7 +52,9 @@ and open the template in the editor.
                 </p:row>
                 <p:row>
                     <p:column>
-                        <p:outputLabel for="competitionEndDate" value="#{msg.endDate} "/>
+                        <p:outputLabel for="competitionEndDate" value="#{msg.endDate} ">
+                            <f:convertDateTime pattern="dd.MM.yyyy HH:mm" />
+                        </p:outputLabel>
                     </p:column>
                     <p:column styleClass="centeredText">
                         <p:calendar id="competitionEndDate" pattern="MM/dd/yyyy HH:mm:ss" value="#{manageCompetitionBackingBean.competition.endDate}"/>
@@ -126,7 +132,7 @@ and open the template in the editor.
                                             #{cmgFromMatch.idCompetitor.idPersonalInfo.lastName} 
                                             #{cmgFromMatch.idCompetitor.idCompetitor} 
                                         </p:outputLabel>
-                                        <p:inplace editor="true" disabled="#{!dashboardPanel.inplaceEditable || !dashboardPanel.editable}">
+                                        <p:inplace editor="true" disabled="#{!dashboardPanel.inplaceEditable || !dashboardPanel.editable}" styleClass="scoreInplace">
                                             <p:ajax event="save" listener="#{manageCompetitionBackingBean.saveScore(cmgFromMatch, dashboardPanel)}"
                                                     update=":manageCompetitionForm:dashboard" partialSubmit="true" process="@this"/>
                                             <p:inputText id="scoreInput" value="#{cmgFromMatch.competitorMatchScore}" label="#{msg.score}"
@@ -143,17 +149,29 @@ and open the template in the editor.
                                     <!--</c:choose>-->
                                     <!--</c:forEach>-->
                                 </ui:repeat>
-                                <p:outputLabel value="#{msg.date}:"/>
-                                <p:calendar styleClass="dateCalendarInput" pattern="MM/dd/yyyy HH:mm:ss" showOn="button" 
-                                            value="#{dashboardPanel.match.matchDate}" disabled="#{!dashboardPanel.editable}"/><br/>
-                                <p:outputLabel for="matchType" value="#{msg.matchType}:"/>
-                                <p:selectOneMenu id="matchType" value="#{dashboardPanel.matchType}"
-                                                 converter="matchTypeConverter" disabled="#{!dashboardPanel.editable}">
-                                    <f:selectItems value="#{manageCompetitionBackingBean.bracketCreator.matchTypeList}"
-                                                   var="matchType" itemLabel="#{matchType.matchTypeName}"
-                                                   />
-                                    <p:ajax process="@this" partialSubmit="true" update="@this" listener="#{manageCompetitionBackingBean.updateMatchType(dashboardPanel)}"/>
-                                </p:selectOneMenu>
+                                <b:row>
+                                    <b:column span='2'>
+                                        <p:outputLabel value="#{msg.date}"/>
+                                    </b:column>
+                                    <b:column span='10'>
+                                        <p:calendar styleClass="dateCalendarInput" pattern="MM/dd/yyyy HH:mm:ss" showOn="button" 
+                                                    value="#{dashboardPanel.match.matchDate}" disabled="#{!dashboardPanel.editable}"/><br/>
+                                    </b:column>
+                                </b:row>
+                                <b:row>
+                                    <b:column span="2">
+                                        <p:outputLabel for="matchType" value="#{msg.matchType}"/>
+                                    </b:column>
+                                    <b:column span="10">
+                                        <p:selectOneMenu id="matchType" value="#{dashboardPanel.matchType}"
+                                                         converter="matchTypeConverter" disabled="#{!dashboardPanel.editable}">
+                                            <f:selectItems value="#{manageCompetitionBackingBean.bracketCreator.matchTypeList}"
+                                                           var="matchType" itemLabel="#{matchType.matchTypeName}"
+                                                           />
+                                            <p:ajax process="@this" partialSubmit="true" update="@this" listener="#{manageCompetitionBackingBean.updateMatchType(dashboardPanel)}"/>
+                                        </p:selectOneMenu>
+                                    </b:column>
+                                </b:row>
                             </p:panel>
                         </c:when>
                         <c:otherwise>

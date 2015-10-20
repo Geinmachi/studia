@@ -21,13 +21,12 @@
                         #{msg.globalTeam}
                     </ui:fragment>
                     
-                    #{team.idCreator.idAccount.idPersonalInfo.firstName}
-                    #{team.idCreator.idAccount.idPersonalInfo.lastName}
+                    #{team.idCreator.idAccount.login}
                 </p:column>
 
                 <p:column headerText="#{msg.edition}">
-                    <p:commandButton action="#{teamListBackingBean.show(team)}"
-                                     value="#{msg.edit}"/>
+                    <p:commandButton action="#{teamListBackingBean.show(team)}" value="#{msg.edit}"
+                                     icon="#{request.remoteUser eq team.idCreator.idAccount.login ? ' ' : 'ui-icon-flag'}" iconPos="right"/>
                 </p:column>
 
             </p:dataTable>

@@ -24,13 +24,13 @@
                     <div class="input-group">
                         <b:icon addon="true" name="user"/>
                         <b:inputText placeholder="#{msg.login}" value="#{loginBackingBean.username}"
-                                     fieldSize="sm"/>
+                                     fieldSize="sm" size="15"/>
                     </div>
                     #{' '}   
                     <div class="input-group">
                         <b:icon addon="true" name="lock"/>
                         <b:inputSecret placeholder="#{msg.password}" value="#{loginBackingBean.password}"
-                                       fieldSize="sm"/>
+                                       fieldSize="sm" size="15"/>
                     </div>
                     #{' '}
                     <b:commandButton action="#{loginBackingBean.login}" value="#{msg.signIn}" update="navbar"
@@ -42,7 +42,7 @@
 
                     <b:dropMenu value="#{msg.competitions}">
                         <b:navLink value="#{msg.createCompetition}" href="/organizer/createCompetition.xhtml"></b:navLink>
-                        <b:navLink value="#{msg.chooseCompetition}" href="/organizer/chooseCompetition.xhtml"></b:navLink>
+                        <b:navLink value="#{msg.chooseCompetition}" href="/#{request.isUserInRole(bsn['role.admin']) ? 'admin' : 'organizer'}/chooseCompetition.xhtml"></b:navLink>
                     </b:dropMenu>
 
                     <b:dropMenu value="#{msg.teams}">

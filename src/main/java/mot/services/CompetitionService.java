@@ -192,8 +192,8 @@ public class CompetitionService implements CompetitionServiceLocal {
     }
 
     @Override
-    public List<Competition> findAllCompetitions() {
-        return presentCompetitionManager.findAllCompetitions();
+    public List<Competition> findAllAllowedCompetitions() {
+        return presentCompetitionManager.findAllowedCompetitions();
     }
 
     @Override
@@ -327,6 +327,21 @@ public class CompetitionService implements CompetitionServiceLocal {
     public void editTeam(Team team) throws ApplicationException {
         competitionComponentsManager.editTeam(editingTeam, team);
         editingTeam = null;
+    }
+
+    @Override
+    public List<Competition> findGlobalCompetition() {
+        return presentCompetitionManager.findGlobalCompetitions();
+    }
+
+    @Override
+    public List<Competition> findAllowedCompetitions() {
+        return presentCompetitionManager.findAllowedCompetitions();
+    }
+
+    @Override
+    public void checkCompetitionConstraints(Competition competition) throws ApplicationException {
+        createCompetitionManager.checkCompetitionConstraints(competition);
     }
     
 }

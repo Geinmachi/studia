@@ -33,7 +33,7 @@ label {
     font-weight: bold !important;
 }
 
-.shadows {
+.shadows, .ui-datatable table {
     box-shadow: 0 0 5px 5px #222;
     -moz-box-shadow: 0 0 5px 5px #222;
     -webkit-box-shadow: 0 0 5px 5px #222;
@@ -43,4 +43,19 @@ label {
 
 .header {
     text-align: center;
+}
+
+.ui-datatable table {
+    width: auto !important;
+}
+
+span > i.glyphicon-bullhorn {
+    position: fixed;
+    right: 1%;
+    top: 10%;
+    z-index: 99999;
+}
+
+.ui-growl {
+    top: 70px !important;
 }

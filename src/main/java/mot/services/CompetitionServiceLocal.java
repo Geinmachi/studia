@@ -59,7 +59,7 @@ public interface CompetitionServiceLocal {
 
     public List<CompetitorMatch> findCompeitorMatchByIdMatch(Integer idMatch);
     
-    public List<Competition> findAllCompetitions();
+    public List<Competition> findAllAllowedCompetitions();
 
     public Competition getInitializedCompetition(int idCompetition);
 
@@ -94,4 +94,10 @@ public interface CompetitionServiceLocal {
     public Team storeTeam(Team team);
 
     public void editTeam(Team team) throws ApplicationException;
+
+    public List<Competition> findGlobalCompetition();
+
+    public List<Competition> findAllowedCompetitions();
+
+    public void checkCompetitionConstraints(Competition competition) throws ApplicationException;
 }

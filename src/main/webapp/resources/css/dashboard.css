@@ -271,7 +271,7 @@ form > div[id*="CompetitionForm"] {
     top: 40%;
 }
 
-.firstStepWizard, .middleTableWrapper {
+.firstStepWizard, .middleTableWrapper, .ui-datatable table {
     margin: auto;
 }
 
@@ -291,4 +291,9 @@ div[id*="displayCompetitionForm\:first"], div[id*="displayCompetitionForm\:other
 
 div[id*="displayCompetitionForm\:first"] > div.ui-widget-header, div[id*="displayCompetitionForm\:other"] > div.ui-widget-header {
     width: 198px !important;
+}
+
+.scoreInplace {
+    float: right;
+    padding-right: 10px;
 }

@@ -127,7 +127,7 @@ public class CreateCompetitionManager implements CreateCompetitionManagerLocal {
     public void createCompetition(Competition competition, List<CMG> competitorMatchGroupList) throws ApplicationException {
         Account loggedUser = accountFacade.findByLogin(sessionContext.getCallerPrincipal().getName());
         AccessLevel organizer = ConvertUtil.getSpecAccessLevelFromAccount(loggedUser, Organizer.class);
-        
+
         competition.setIdOrganizer(organizer);
         competition.setCreationDate(new Date());
 
@@ -542,5 +542,17 @@ public class CreateCompetitionManager implements CreateCompetitionManagerLocal {
                 competitorMatchGroupList.add(cmg2);
             }
         }
+    }
+
+    @Override
+    public void checkCompetitionConstraints(Competition competition) throws ApplicationException {
+
+        if (competition.getIdOrganizer() == null) {
+            Account loggedUser = accountFacade.findByLogin(sessionContext.getCallerPrincipal().getName());
+            AccessLevel organizer = ConvertUtil.getSpecAccessLevelFromAccount(loggedUser, Organizer.class);
+
+            competition.setIdOrganizer(organizer);
+        }
+        competitionFacade.competitionContraints(competition);
     }
 }

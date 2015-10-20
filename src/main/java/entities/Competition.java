@@ -41,7 +41,11 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "competition")
 @XmlRootElement
 @NamedQueries({
+    @NamedQuery(name = "Competition.findByCompetitionNamePrivateOrganizer", query = "SELECT c FROM Competition c WHERE c.competitionName = :competitionName AND c.global = false AND c.idOrganizer.idAccessLevel = :idCreator"),
+    @NamedQuery(name = "Competition.findByCompetitionNameGlobal", query = "SELECT c FROM Competition c WHERE c.competitionName = :competitionName AND c.global = true"),
     @NamedQuery(name = "Competition.findByIdAccessLevel", query = "SELECT c FROM Competition c WHERE c.idOrganizer.idAccessLevel = :idAccessLevel"),
+    @NamedQuery(name = "Competition.findGlobalCompetitions", query = "SELECT c FROM Competition c WHERE c.global = true"),
+    @NamedQuery(name = "Competition.findGlobalAndOrganizer", query = "SELECT c FROM Competition c WHERE c.global = true OR c.idOrganizer.idAccessLevel = :idAccessLevel"),
     @NamedQuery(name = "Competition.findAll", query = "SELECT c FROM Competition c"),
     @NamedQuery(name = "Competition.findByIdCompetition", query = "SELECT c FROM Competition c WHERE c.idCompetition = :idCompetition"),
     @NamedQuery(name = "Competition.findByCompetitionName", query = "SELECT c FROM Competition c WHERE c.competitionName = :competitionName"),
@@ -75,6 +79,9 @@ public class Competition implements Serializable {
     @Column(name = "start_date")
     @Temporal(TemporalType.TIMESTAMP)
     private Date startDate;
+    @Basic(optional = false)
+    @Column(name = "is_global")
+    private boolean global;
     @Basic(optional = false)
     @NotNull
     @Column(name = "end_date")
@@ -151,6 +158,14 @@ public class Competition implements Serializable {
 
     public void setStartDate(Date startDate) {
         this.startDate = startDate;
+    }
+
+    public boolean isGlobal() {
+        return global;
+    }
+
+    public void setGlobal(boolean global) {
+        this.global = global;
     }
 
     public Date getEndDate() {

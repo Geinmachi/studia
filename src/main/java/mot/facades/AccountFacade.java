@@ -33,7 +33,11 @@ public class AccountFacade extends AbstractFacade<Account> implements AccountFac
     public Account findByLogin(String login) {
         Query q = em.createNamedQuery("Account.findByLogin");
         q.setParameter("login", login);
-        return (Account) q.getSingleResult();
+        
+        Account entity = (Account)q.getSingleResult();
+        entity.getAccessLevelList().size();
+        
+        return entity;
     }
     
 }

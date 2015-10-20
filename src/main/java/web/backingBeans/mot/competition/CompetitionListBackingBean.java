@@ -39,7 +39,7 @@ public class CompetitionListBackingBean extends CompetitionBackingBean implement
     @PostConstruct
     private void init() {
         
-        competitionList = controller.findAllCompetitions();
+        competitionList = controller.findGlobalCompetitions();
     }
     
     public String displayCompetition(Competition competition, DisplayPageEnum type) { 

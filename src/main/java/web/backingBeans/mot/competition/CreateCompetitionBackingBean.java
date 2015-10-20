@@ -13,14 +13,14 @@ import exceptions.ApplicationException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
-import javax.faces.application.FacesMessage;
 import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
+import javax.faces.event.AjaxBehaviorEvent;
+import javax.faces.event.ValueChangeEvent;
 import javax.inject.Named;
 //import javax.enterprise.context.RequestScoped;
 import javax.faces.view.ViewScoped;
@@ -51,6 +51,8 @@ public class CreateCompetitionBackingBean extends CompetitionBackingBean impleme
     private DualListModel competitors;
 
     private boolean duplicatedCompetitorFlag;
+    
+    private boolean competitionNameConstrains;
 
     private CompetitionType selectedCompetitionType;
 
@@ -67,6 +69,7 @@ public class CreateCompetitionBackingBean extends CompetitionBackingBean impleme
         return competition;
     }
 
+    @Override
     public List<Competitor> getCompetitorList() {
         return competitorList;
     }
@@ -89,6 +92,10 @@ public class CreateCompetitionBackingBean extends CompetitionBackingBean impleme
 
     public boolean isDuplicatedCompetitorFlag() {
         return duplicatedCompetitorFlag;
+    }
+
+    public boolean isCompetitionNameConstrains() {
+        return competitionNameConstrains;
     }
 
     public boolean isIsCompetitorsAmountValid() {
@@ -144,14 +151,14 @@ public class CreateCompetitionBackingBean extends CompetitionBackingBean impleme
 
     public String onFlowProcess(FlowEvent event) {
         if (event.getOldStep().equals("firstStep")) {
-            if (duplicatedCompetitorFlag || !isCompetitorsAmountValid) {
+            if (duplicatedCompetitorFlag || !isCompetitorsAmountValid || !competitionNameConstrains) {
                 System.out.println("ONFLOW duplicated");
-                //    return event.getOldStep();
+        //            return event.getOldStep();
             }
             bracketCreator.createEmptyBracket(competitors.getTarget());
 
         } else if (event.getNewStep().equals("firstStep")) {
-            
+
             RequestContext.getCurrentInstance().update("msgs");
             bracketCreator.clearLists();
         }
@@ -195,5 +202,44 @@ public class CreateCompetitionBackingBean extends CompetitionBackingBean impleme
         }
 
         duplicatedCompetitorFlag = false;
+    }
+
+    public void globalValueChanged (ValueChangeEvent e) {
+        System.out.println("NOWA WARTOSC " + e.getNewValue());
+    }
+    
+    public void competitionConstraints(AjaxBehaviorEvent event) {
+        
+            UIInput input = ((UIInput)FacesContext.getCurrentInstance().getViewRoot().findComponent("createCompetitionForm:competitionName"));
+            
+            System.out.println("Input " + input.getClientId());
+            System.out.println("Input " + input.getValidators());
+            
+            input.processValidators(FacesContext.getCurrentInstance());
+            
+            System.out.println("Competition name ajax " + competition.getCompetitionName());
+            System.out.println("Competition global ajax " + competition.isGlobal());
+            System.out.println("SUBMITTED VALUE " + ((UIInput)event.getComponent()).getSubmittedValue());
+//        event.getComponent().processValidators(FacesContext.getCurrentInstance());
+//        try {
+//            checkCompetitionNameConstraints();
+//            competitionNameConstrains = true;
+//        } catch (ApplicationException ex) {
+//            competitionNameConstrains = false;
+//            
+//            UIInput input = (UIInput) event.getComponent();
+//            input.setValid(false);
+//            
+//            JsfUtils.addErrorMessage(ex.getLocalizedMessage(), " ", input.getClientId());
+//            FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
+//            
+//            Logger.getLogger(CreateCompetitionBackingBean.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+    }
+    
+    public void checkCompetitionNameConstraints(String competitionName) throws ApplicationException {
+//            System.out.println("Competition name throssss " + competition.getCompetitionName());
+        competition.setCompetitionName(competitionName);
+        controller.checkCompetitionConstraints(competition);
     }
 }

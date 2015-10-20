@@ -20,11 +20,14 @@ import javax.ejb.Remote;
 @Remote
 public interface PresentCompetitionManagerLocal {
     
-    List<Competition> findAllCompetitions();
+    List<Competition> findAllowedCompetitions();
 
     public Competition getInitializedCompetition(int idCompetition);
 
     public List<Score> findCompetitionScore(int idCompetition);
 
     public Map<Competitor, Integer> getCompetitionResults(int idCompetition);
+
+    public List<Competition> findGlobalCompetitions();
+
 }

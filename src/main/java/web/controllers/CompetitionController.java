@@ -151,7 +151,7 @@ public class CompetitionController implements Serializable {
     }
 
     public List<Competition> findAllCompetitions() {
-        return service.findAllCompetitions();
+        return service.findAllAllowedCompetitions();
     }
 
     public List<Score> findCompetitionScores(Competition competition) {
@@ -216,5 +216,17 @@ public class CompetitionController implements Serializable {
 
     public void editTeam(Team team) throws ApplicationException {
         service.editTeam(team);
+    }
+
+    public List<Competition> findGlobalCompetitions() {
+        return service.findGlobalCompetition();
+    }
+
+    public List<Competition> findAllowedCompetitions() {
+        return service.findAllowedCompetitions();
+    }
+
+    public void checkCompetitionConstraints(Competition competition) throws ApplicationException {
+        service.checkCompetitionConstraints(competition);
     }
 }
