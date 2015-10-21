@@ -18,7 +18,10 @@ public interface CurrentMatchType {
     
     Matchh getMatch();
     
-    void setMatchType(MatchType matchType);
+    void setMatch(Matchh match);
     
     MatchType getMatchType();
+    
+    void setMatchType(MatchType matchType);
+    
 }

@@ -114,7 +114,7 @@ and open the template in the editor.
                 </p:row>
             </p:panelGrid>
             <p:dashboard id="dashboard" model="#{manageCompetitionBackingBean.bracketCreator.dashboardModel}" styleClass="dashboard"
-                         style="width: #{manageCompetitionBackingBean.bracketCreator.rounds * 330}px">
+                         style="width: #{manageCompetitionBackingBean.bracketCreator.rounds * 350}px">
                 <c:forEach items="#{manageCompetitionBackingBean.bracketCreator.panelList}" var="dashboardPanel" varStatus="panelIndex">
                     <c:choose>
                         <c:when test="#{not dashboardPanel.filler}">
@@ -150,19 +150,19 @@ and open the template in the editor.
                                     <!--</c:forEach>-->
                                 </ui:repeat>
                                 <b:row>
-                                    <b:column span='2'>
+                                    <b:column span='3'>
                                         <p:outputLabel value="#{msg.date}"/>
                                     </b:column>
-                                    <b:column span='10'>
+                                    <b:column span='9'>
                                         <p:calendar styleClass="dateCalendarInput" pattern="MM/dd/yyyy HH:mm:ss" showOn="button" 
                                                     value="#{dashboardPanel.match.matchDate}" disabled="#{!dashboardPanel.editable}"/><br/>
                                     </b:column>
                                 </b:row>
                                 <b:row>
-                                    <b:column span="2">
+                                    <b:column span="3">
                                         <p:outputLabel for="matchType" value="#{msg.matchType}"/>
                                     </b:column>
-                                    <b:column span="10">
+                                    <b:column span="9">
                                         <p:selectOneMenu id="matchType" value="#{dashboardPanel.matchType}"
                                                          converter="matchTypeConverter" disabled="#{!dashboardPanel.editable}">
                                             <f:selectItems value="#{manageCompetitionBackingBean.bracketCreator.matchTypeList}"

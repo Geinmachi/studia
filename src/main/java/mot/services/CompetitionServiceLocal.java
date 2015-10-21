@@ -49,7 +49,7 @@ public interface CompetitionServiceLocal {
 
     public List<MatchType> getEndUserMatchTypes();
 
-    public List<Competition> getLoggedUserCompetitions();
+    public List<Competition> getLoggedUserCompetitions() throws ApplicationException;
 
     public Competition storeCompetition(Competition competition);
 
@@ -59,8 +59,6 @@ public interface CompetitionServiceLocal {
 
     public List<CompetitorMatch> findCompeitorMatchByIdMatch(Integer idMatch);
     
-    public List<Competition> findAllAllowedCompetitions();
-
     public Competition getInitializedCompetition(int idCompetition);
 
     public List<Score> findCompetitionScores(int idCompetition);
@@ -83,13 +81,13 @@ public interface CompetitionServiceLocal {
 
     public Competitor vlidateCompetitorDuplicate(List<Competitor> competitorList);
 
-    public List<Competitor> getCompetitorsToEdit();
+    public List<Competitor> getCompetitorsToEdit() throws ApplicationException;
 
     public Competitor storeCompetitor(Competitor competitor);
 
     public void editCompetitor(Competitor competitor) throws ApplicationException;
 
-    public List<Team> getTeamsToEdit();
+    public List<Team> getTeamsToEdit() throws ApplicationException;
 
     public Team storeTeam(Team team);
 
@@ -97,7 +95,9 @@ public interface CompetitionServiceLocal {
 
     public List<Competition> findGlobalCompetition();
 
-    public List<Competition> findAllowedCompetitions();
+    public List<Competition> findAllowedCompetitions() throws ApplicationException;
 
     public void checkCompetitionConstraints(Competition competition) throws ApplicationException;
+
+    public List<Competition> findCompetitionsToDisplay() throws ApplicationException;
 }

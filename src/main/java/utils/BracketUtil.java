@@ -40,8 +40,7 @@ public class BracketUtil {
 
         short firstMatchIndexInRound = firstMatchIndexInRound(competitorCount / 2, matchData.getRoundd());
 
-        System.out.println("matchesInRound " + matchesInRound + " -- firstMatchIndexInRound"
-                + firstMatchIndexInRound);
+        System.out.println("matchesInRound " + matchesInRound + " -- firstMatchIndexInRound" + firstMatchIndexInRound);
 
         for (short i = 0; i <= matchesInRound; i++) {
             matchCounter += 0.5;

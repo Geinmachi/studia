@@ -40,7 +40,7 @@ public interface CompetitionFacadeLocal {
 
     public List<Competition> findUserCompetitions(Integer idAccessLevel);
 
-    public List<Competition> findGlobalCompetition();
+    public List<Competition> findGlobalCompetitions();
 
     void competitionContraints(Competition competition) throws CompetitorCreationException;
 }

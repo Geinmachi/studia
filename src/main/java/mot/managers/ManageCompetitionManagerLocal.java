@@ -25,7 +25,7 @@ import mot.interfaces.InactivateMatch;
 @Remote
 public interface ManageCompetitionManagerLocal {
 
-    public List<Competition> getLoggedUserCompetition();
+    public List<Competition> getLoggedUserCompetition() throws ApplicationException;
 
     public Competition storeCompetition(Competition competition);
 

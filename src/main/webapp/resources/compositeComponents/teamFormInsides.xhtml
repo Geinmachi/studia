@@ -72,6 +72,8 @@
                         <br/>
                         <p:commandButton id="submitButton" action="#{cc.attrs.saveAction}"  value="#{cc.attrs.buttonLabel}"
                                          update="#{cc.id}" disabled="#{cc.attrs.duplicatedCompetitorFlag}"/>
+                        <p:button styleClass="backButton" value="#{msg.back}" 
+                                  onclick="window.history.back(); return false;"/>
                     </p:column>
                 </p:row>
             </p:panelGrid>

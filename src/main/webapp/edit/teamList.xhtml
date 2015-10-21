@@ -7,10 +7,11 @@
                 template="/WEB-INF/templates/main.xhtml"
                 xmlns:f="http://xmlns.jcp.org/jsf/core"
                 xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
-    <ui:define name="title">#{msg.competitorListTitle}</ui:define>
+    <ui:define name="title">#{msg.teamListTitle}</ui:define>
     <ui:define name="content">
-        <h:form id="competitorListForm">
-            <p:dataTable var="team" value="#{teamListBackingBean.teamList}">
+        <h:form id="teamListForm">
+            <p:dataTable  paginator="true" rows="10" rowsPerPageTemplate="10,25,50" sortMode="multiple" styleClass="shadows"
+                var="team" value="#{teamListBackingBean.teamList}">
 
                 <p:column headerText="#{msg.teamName}">
                     <h:outputText value="#{team.teamName}" />

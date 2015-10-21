@@ -66,7 +66,7 @@ public class TrackerInterceptor {
         message.append("; wartość zwrócona: ");
         message.append(getResultValue(result));
 
-        logger.log(logLevel, message.toString());
+    //    logger.log(logLevel, message.toString());
 
         return result;
     }

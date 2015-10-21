@@ -161,7 +161,7 @@ public class CompetitionFacade extends AbstractFacade<Competition> implements Co
     }
 
     @Override
-    public List<Competition> findGlobalCompetition() {
+    public List<Competition> findGlobalCompetitions() {
         Query q = em.createNamedQuery("Competition.findGlobalCompetitions");
         
         return (List<Competition>) q.getResultList();

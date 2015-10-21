@@ -33,7 +33,7 @@ label {
     font-weight: bold !important;
 }
 
-.shadows, .ui-datatable table {
+.shadows {
     box-shadow: 0 0 5px 5px #222;
     -moz-box-shadow: 0 0 5px 5px #222;
     -webkit-box-shadow: 0 0 5px 5px #222;
@@ -43,6 +43,12 @@ label {
 
 .header {
     text-align: center;
+}
+
+div[id*="Form"].ui-datatable.ui-widget {
+    display: table;
+    margin: auto;
+    width: auto;
 }
 
 .ui-datatable table {
@@ -58,4 +64,8 @@ span > i.glyphicon-bullhorn {
 
 .ui-growl {
     top: 70px !important;
+}
+
+.backButton {
+    float: right;
 }

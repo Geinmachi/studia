@@ -56,6 +56,7 @@ public class DashboardPanel implements InactivateMatch, CurrentMatchType{
         return match;
     }
 
+    @Override
     public void setMatch(Matchh match) {
         this.match = match;
     }

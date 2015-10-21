@@ -14,18 +14,24 @@ and open the template in the editor.
                 xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
     <ui:define name="title">#{msg.competitionListTitle}</ui:define>
     <ui:define name="content">
-        <h:form id="competitionListForm">
-            <p:dataTable var="competition" value="#{competitionListBackingBean.competitionList}">
+        <h:form id="competitionListForm" style="width: auto;">
+            <p:dataTable paginator="true" rows="10" rowsPerPageTemplate="10,25,50" sortMode="multiple" styleClass="shadows"
+                         var="competition" value="#{competitionListBackingBean.competitionList}">
 
-                <p:column headerText="#{msg.competitionName}">
+                <p:column headerText="#{msg.competitionName}" sortBy="#{competition.competitionName}" 
+                          filterMatchMode="contains" filterBy="#{competition.competitionName}">
                     <h:outputText value="#{competition.competitionName}" />
                 </p:column>
 
-                <p:column headerText="#{msg.competitionCreator}"> 
+                <p:column headerText="#{msg.competitionCreator}" sortBy="#{competition.idOrganizer.idAccount.idPersonalInfo.firstName} #{competition.idOrganizer.idAccount.idPersonalInfo.lastName}"
+                          filterMatchMode="contains" filterBy="#{competition.idOrganizer.idAccount.idPersonalInfo.firstName} #{competition.idOrganizer.idAccount.idPersonalInfo.lastName}"> 
                     <p:outputLabel>
                         #{competition.idOrganizer.idAccount.idPersonalInfo.firstName} 
                         #{competition.idOrganizer.idAccount.idPersonalInfo.lastName} 
                     </p:outputLabel>
+                </p:column>
+                <p:column headerText="#{msg.login}" rendered="#{request.isUserInRole(bsn['role.admin'])}" sortBy="#{competition.idOrganizer.idAccount.login}">
+                    <p:outputLabel value="#{competition.idOrganizer.idAccount.login}"/>
                 </p:column>
 
                 <p:column headerText="#{msg.startDate}">
@@ -40,7 +46,12 @@ and open the template in the editor.
                     </h:outputText>
                 </p:column>
 
-                <p:column headerText="#{msg.winner}">
+                <p:column headerText="#{msg.isPrivate}" rendered="#{not empty request.remoteUser}">
+                    <p:selectBooleanCheckbox value="#{!competition.global}" disabled="true"/>
+                </p:column>
+
+                <p:column headerText="#{msg.winner}" sortBy="#{competition.idWinner.idPersonalInfo.firstName} #{competition.idWinner.idPersonalInfo.lastName}"
+                          filterMatchMode="contains" filterBy="#{competition.idWinner.idPersonalInfo.firstName} #{competition.idWinner.idPersonalInfo.lastName}">
                     <p:outputLabel rendered="#{not empty competition.idWinner}">
                         #{competition.idWinner.idPersonalInfo.firstName} 
                         #{competition.idWinner.idPersonalInfo.lastName}
@@ -55,7 +66,7 @@ and open the template in the editor.
                                      value="#{msg.show}"/>
                 </p:column>
 
-                <p:column headerText="#{msg.results}">
+                <p:column headerText="#{msg.results}" sortBy="#{competition.idWinner}">
                     <p:commandButton action="#{competitionListBackingBean.displayCompetition(competition, competitionListBackingBean.getDisplayPageEnum('RESULTS'))}" 
                                      value="#{msg.show}" disabled="#{empty competition.idWinner}"/>
                 </p:column>

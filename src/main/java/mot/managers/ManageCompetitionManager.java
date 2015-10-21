@@ -84,7 +84,7 @@ public class ManageCompetitionManager implements ManageCompetitionManagerLocal {
     private final String BEST_OF_PREFIX = "BO";
 
     @Override
-    public List<Competition> getLoggedUserCompetition() {
+    public List<Competition> getLoggedUserCompetition() throws ApplicationException {
         Account loggedUser = accountFacade.findByLogin(sessionContext.getCallerPrincipal().getName());
         AccessLevel organizer = ConvertUtil.getSpecAccessLevelFromAccount(loggedUser, Organizer.class);
 
@@ -438,6 +438,8 @@ public class ManageCompetitionManager implements ManageCompetitionManagerLocal {
                 //    System.out.println("mmt " + mmt.getIdMatchType().getMatchTypeName());
                 if (mmt.getIdMatchType().getMatchTypeName().startsWith("BO")) {
                     cmt.setMatchType(mmt.getIdMatchType());
+                    
+                    break;
                 }
             }
         }

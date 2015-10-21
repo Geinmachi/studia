@@ -31,5 +31,5 @@ public interface AccountFacadeLocal {
 
     int count();
     
-    Account findByLogin(String login);
+    Account findByLogin(String login) throws ApplicationException;
 }

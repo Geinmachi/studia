@@ -23,6 +23,7 @@ import ejbCommon.TrackerInterceptor;
 import entities.AccessLevel;
 import entities.Account;
 import entities.Organizer;
+import exceptions.ApplicationException;
 import javax.annotation.Resource;
 import javax.annotation.security.DeclareRoles;
 import javax.ejb.SessionContext;
@@ -56,7 +57,7 @@ public class PresentCompetitionManager implements PresentCompetitionManagerLocal
     private ScoreFacadeLocal scoreFacade;
 
     @Override
-    public List<Competition> findAllowedCompetitions() {
+    public List<Competition> findAllowedCompetitions() throws ApplicationException {
 
         List<Competition> competitionList = null;
         
@@ -118,7 +119,29 @@ public class PresentCompetitionManager implements PresentCompetitionManagerLocal
 
     @Override
     public List<Competition> findGlobalCompetitions() {
-        return competitionFacade.findGlobalCompetition();
+        return competitionFacade.findGlobalCompetitions();
+    }
+
+    @Override
+    public List<Competition> findCompetitionsToDisplay() throws ApplicationException {
+        String userLogin = sessionContext.getCallerPrincipal().getName();
+
+        List competitionList = new ArrayList<>();
+        
+        if (userLogin.equals(ResourceBundleUtil.getResourceBundleBusinessProperty(CompetitionService.ANONYMOUS_USER))) {
+            competitionList = competitionFacade.findGlobalCompetitions();
+        } else if (sessionContext.isCallerInRole(ResourceBundleUtil.getResourceBundleBusinessProperty(CompetitionService.ADMIN_PROPERTY_KEY))) {
+            competitionList = competitionFacade.findAll();
+        }
+        else {
+            Account account = accountFacade.findByLogin(userLogin);
+            AccessLevel accessLevel = ConvertUtil.getSpecAccessLevelFromAccount(account, Organizer.class);
+            
+            competitionList = competitionFacade.findGlobalCompetitions();
+            competitionList.addAll(competitionFacade.findUserCompetitionsByIdAccessLevel(accessLevel.getIdAccessLevel()));
+        }
+        
+        return competitionList;
     }
 
 }

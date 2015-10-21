@@ -10,10 +10,10 @@
                 xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
     <ui:define name="title">#{msg.competitorListTitle}</ui:define>
     <ui:define name="content">
-        <b:icon name="bullhorn" size="2x" rendered="#{request.isUserInRole(bsn['role.admin'])}"/>
 
         <h:form id="competitorListForm">
-            <p:dataTable var="competitor" value="#{competitorListBackingBean.competitorList}">
+            <p:dataTable  paginator="true" rows="10" rowsPerPageTemplate="10,25,50" sortMode="multiple" styleClass="shadows"
+                var="competitor" value="#{competitorListBackingBean.competitorList}">
 
                 <p:column headerText="#{msg.competitorFirstName}">
                     <h:outputText value="#{competitor.idPersonalInfo.firstName}" />

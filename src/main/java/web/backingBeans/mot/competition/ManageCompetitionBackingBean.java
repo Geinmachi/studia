@@ -98,7 +98,7 @@ public class ManageCompetitionBackingBean extends CompetitionBackingBean impleme
 
         Collections.sort(groupDetailsList);
 
-        bracketCreator.recreateBracket(competition);
+        bracketCreator.recreateBracketToEdit(competition);
     }
 
     public void saveScore(CompetitorMatch cmg, DashboardPanel dp) {
@@ -161,7 +161,7 @@ public class ManageCompetitionBackingBean extends CompetitionBackingBean impleme
             }
 
             System.out.println("BEFORE matchType updated BB ");
-            match.getMatchMatchTypeList().stream().forEach(p -> System.out.println(" id " + p.getIdMatchMatchType() + " type " + p.getIdMatchType()));
+//            match.getMatchMatchTypeList().stream().forEach(p -> System.out.println(" id " + p.getIdMatchMatchType() + " type " + p.getIdMatchType()));
             MatchMatchType updatedMMT = controller.updateMatchType(match);
             System.out.println("AFTER matchType updated BB id " + updatedMMT.getIdMatchMatchType() + " typ " + updatedMMT.getIdMatchType());
 

@@ -18,6 +18,7 @@ import exceptions.ApplicationException;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import javax.ejb.EJB;
@@ -42,9 +43,9 @@ public class CompetitionController implements Serializable {
     private CompetitionServiceLocal service;
 
     private Competition editingCompetition;
-    
+
     private Competitor editingCompetitor;
-    
+
     private Team editingTeam;
 
     private Competition displayedCompetition;
@@ -55,7 +56,7 @@ public class CompetitionController implements Serializable {
     }
 
     public Competition getEditingCompetition() {
-        System.out.println("FD SIZEEEE " + editingCompetition.getGroupDetailsList().size());
+//        System.out.println("FD SIZEEEE " + editingCompetition.getGroupDetailsList().size());
         return editingCompetition;
     }
 
@@ -130,7 +131,7 @@ public class CompetitionController implements Serializable {
         return service.getEndUserMatchTypes();
     }
 
-    public List<Competition> getLoggedUserCompetitions() {
+    public List<Competition> getLoggedUserCompetitions() throws ApplicationException {
         return service.getLoggedUserCompetitions();
     }
 
@@ -142,18 +143,14 @@ public class CompetitionController implements Serializable {
         return service.getCompetitionCMGMappings(competition);
     }
 
-    public Map<String, CompetitorMatch> saveCompetitorScore(CompetitorMatch cmg)  throws ApplicationException{
+    public Map<String, CompetitorMatch> saveCompetitorScore(CompetitorMatch cmg) throws ApplicationException {
         return service.saveCompetitorScore(cmg);
     }
 
     public List<CompetitorMatch> findCompetitorMatchByIdMatch(Integer idMatch) {
         return service.findCompeitorMatchByIdMatch(idMatch);
     }
-
-    public List<Competition> findAllCompetitions() {
-        return service.findAllAllowedCompetitions();
-    }
-
+    
     public List<Score> findCompetitionScores(Competition competition) {
         return service.findCompetitionScores(competition.getIdCompetition());
     }
@@ -194,7 +191,7 @@ public class CompetitionController implements Serializable {
         return service.vlidateCompetitorDuplicate(competitorList);
     }
 
-    public List<Competitor> getCompetitorsToEdit() {
+    public List<Competitor> getCompetitorsToEdit() throws ApplicationException {
         return service.getCompetitorsToEdit();
     }
 
@@ -206,10 +203,10 @@ public class CompetitionController implements Serializable {
         service.editCompetitor(competitor);
     }
 
-    public List<Team> getTeamsToEdit() {
+    public List<Team> getTeamsToEdit() throws ApplicationException {
         return service.getTeamsToEdit();
     }
-    
+
     public void storeTeam(Team team) {
         editingTeam = service.storeTeam(team);
     }
@@ -222,11 +219,15 @@ public class CompetitionController implements Serializable {
         return service.findGlobalCompetition();
     }
 
-    public List<Competition> findAllowedCompetitions() {
+    public List<Competition> findAllowedCompetitions() throws ApplicationException {
         return service.findAllowedCompetitions();
     }
 
     public void checkCompetitionConstraints(Competition competition) throws ApplicationException {
         service.checkCompetitionConstraints(competition);
+    }
+
+    public List<Competition> findCompetitionsToDisplay() throws ApplicationException {
+        return service.findCompetitionsToDisplay();
     }
 }

@@ -68,7 +68,7 @@ public class CompetitionDetailsBackingBean  extends CompetitionBackingBean {
                 matchCount++;
             }
         }
-        bracketCreator.recreateBracket(competition);
+        bracketCreator.recreateBracketToDisplay(competition);
     }
     
 }
