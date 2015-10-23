@@ -20,7 +20,7 @@ public interface CompetitionFacadeLocal {
 
     void create(Competition competition) throws ApplicationException;
 
-    void edit(Competition competition);
+    void edit(Competition competition) throws ApplicationException;
 
     void remove(Competition competition);
 

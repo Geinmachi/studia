@@ -164,18 +164,25 @@ public class CompetitionController implements Serializable {
     }
 
     public InactivateMatch disableMatch(InactivateMatch inactivateMatch) {
-        return service.disableMatch(inactivateMatch);
+        InactivateMatch dto = new DashboardPanel();
+        dto.setMatch(inactivateMatch.getMatch());
+        
+        return service.disableMatch(dto);
     }
 
     public CurrentMatchType assignCurrentMatchType(CurrentMatchType cmt) {
-        return service.assignCurrentMatchType(cmt);
+        CurrentMatchType dto = new DashboardPanel();
+        dto.setMatch(cmt.getMatch());
+        dto.setMatchType(cmt.getMatchType());
+        
+        return service.assignCurrentMatchType(dto);
     }
 
     public CompetitorMatch advanceCompetitor(CompetitorMatch competitorMatch) throws ApplicationException {
         return service.advanceCompetitor(competitorMatch);
     }
 
-    public void saveCompetitionGeneralInfo(Competition competition) {
+    public void saveCompetitionGeneralInfo(Competition competition) throws ApplicationException {
         editingCompetition = service.saveCompetitionGeneralInfo(competition);
     }
 

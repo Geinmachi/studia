@@ -79,19 +79,15 @@ public class CompetitorFacade extends AbstractFacade<Competitor> implements Comp
         try {
             Competitor c = (Competitor) q.getSingleResult();
             em.flush();
-
+        } catch (NoResultException e) {
+            System.out.println("No existing competitor found with given criteria, entitled to create");
+            return;
+        } catch (NonUniqueResultException e) {
             if (creator == null) {
                 throw new CompetitorCreationException("Global competitor with given first and last name already exists");
             } else {
                 throw new CompetitorCreationException("You have already created private comptetitor with given first and last name");
             }
-        } catch (NoResultException e) {
-            System.out.println("No existing competitor found with given criteria, entitled to create");
-            return;
-        } catch (NonUniqueResultException e) {
-            System.err.println("There exist more than 1 competitor with same criteria - should never happen");
-            e.printStackTrace();
-            throw new CompetitorCreationException("Error code: 3001 - contact admin");
         }
     }
 
@@ -99,34 +95,33 @@ public class CompetitorFacade extends AbstractFacade<Competitor> implements Comp
     public List<Competitor> findUserCompetitors(AccessLevel accessLevel) {
         Query q = em.createNamedQuery("Competitor.findUserCompetitors");
         q.setParameter("idAccessLevel", accessLevel.getIdAccessLevel());
-        
+
         return (List<Competitor>) q.getResultList();
     }
 
     @Override
     public Competitor findCompetitorById(int idCompetitor) {
         Query q = em.createNamedQuery("Competitor.findByIdCompetitor");
-        
+
         q.setParameter("idCompetitor", idCompetitor);
-        
+
         return (Competitor) q.getSingleResult();
     }
 
     @Override
     public void create(Competitor entity) throws ApplicationException {
-        competitorConstraints(entity);
-        
         em.persist(entity);
         em.flush();
+        
+        competitorConstraints(entity);
     }
 
     @Override
     public void edit(Competitor entity) throws ApplicationException {
-        competitorConstraints(entity);
-        
         em.merge(entity);
         em.flush();
+
+        competitorConstraints(entity);
     }
 
-    
 }

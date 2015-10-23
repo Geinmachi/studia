@@ -36,6 +36,8 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "team")
 @XmlRootElement
 @NamedQueries({
+    @NamedQuery(name = "Team.findByTeamNameOrganizer", query = "SELECT t FROM Team t WHERE t.teamName = :teamName AND t.idCreator.idAccessLevel = :idCreator"),
+    @NamedQuery(name = "Team.findByTeamNameGlobal", query = "SELECT t FROM Team t WHERE t.teamName = :teamName AND t.idCreator IS NULL"),
     @NamedQuery(name = "Team.findAll", query = "SELECT t FROM Team t"),
     @NamedQuery(name = "Team.findUserTeams", query = "SELECT t FROM Team t WHERE t.idCreator.idAccessLevel = :idAccessLevel"),
     @NamedQuery(name = "Team.findByIdTeam", query = "SELECT t FROM Team t WHERE t.idTeam = :idTeam"),

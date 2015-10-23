@@ -69,3 +69,7 @@ span > i.glyphicon-bullhorn {
 .backButton {
     float: right;
 }
+
+.groupPanel > :first-child {
+    padding: 0.5em 1em 0.3em; // Primefaces doesnt load style, only after ajax update (ui-panel-titlebar)
+}

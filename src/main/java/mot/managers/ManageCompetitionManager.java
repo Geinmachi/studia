@@ -448,7 +448,7 @@ public class ManageCompetitionManager implements ManageCompetitionManagerLocal {
     }
 
     @Override
-    public Competition saveCompetitionGeneralInfo(Competition competition, Competition storedCompetition) {
+    public Competition saveCompetitionGeneralInfo(Competition competition, Competition storedCompetition) throws ApplicationException {
         if (storedCompetition == null) {
             throw new IllegalArgumentException("There is no stored competition to edit");
         } else if (!competition.equals(storedCompetition)) {

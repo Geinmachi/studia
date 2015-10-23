@@ -73,7 +73,7 @@ public interface CompetitionServiceLocal {
     
     public CompetitorMatch advanceCompetitor(CompetitorMatch competitorMatch) throws ApplicationException;
 
-    public Competition saveCompetitionGeneralInfo(Competition competition);
+    public Competition saveCompetitionGeneralInfo(Competition competition) throws ApplicationException;
 
     public void createTeam(Team team, boolean global) throws ApplicationException;
 

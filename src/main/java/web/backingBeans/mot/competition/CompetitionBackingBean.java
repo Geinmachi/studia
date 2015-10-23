@@ -14,7 +14,7 @@ import web.qualifiers.Logging;
  *
  * @author java
  */
-@Logging
+//@Logging
 public abstract class CompetitionBackingBean {
     
     @Inject

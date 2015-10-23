@@ -18,10 +18,6 @@ and open the template in the editor.
         <b:icon name="bullhorn" size="2x" rendered="#{request.isUserInRole(bsn['role.admin']) and !(manageCompetitionBackingBean.competition.idOrganizer.idAccount.login eq request.userPrincipal.name)}"/>
 
         <p:tooltip />
-        <p:ajaxStatus onstart="PF('ajaxStatusDialog').show();" onsuccess="PF('ajaxStatusDialog').hide();"/> 
-        <p:dialog styleClass="loadingDialog" showHeader="false" modal="true" widgetVar="ajaxStatusDialog"  resizable="false"  draggable="false" closable="false" >
-            <p:graphicImage width="36" height="36" library="img" name="loading_icon.gif"/>
-        </p:dialog>
 
         <h:outputScript library="js" name="dashboard.js" />
         <p:growl for="manageCompetitionForm" id="msg" autoUpdate="true" showDetail="true" life="5000"/>

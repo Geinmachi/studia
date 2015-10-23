@@ -255,7 +255,7 @@ public class CompetitionService implements CompetitionServiceLocal {
     }
 
     @Override
-    public Competition saveCompetitionGeneralInfo(Competition competition) {
+    public Competition saveCompetitionGeneralInfo(Competition competition) throws ApplicationException {
         editingCompetition = manageCompetitionManager.saveCompetitionGeneralInfo(competition, editingCompetition);
         return editingCompetition;
     }

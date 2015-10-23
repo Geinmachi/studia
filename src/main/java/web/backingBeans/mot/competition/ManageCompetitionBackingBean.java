@@ -122,13 +122,26 @@ public class ManageCompetitionBackingBean extends CompetitionBackingBean impleme
                 //        cmgList.add(advancedCompetitorMatch);
                 bracketCreator.addAdvancedCompetitor(advancedCompetitorMatch);
 
-                BracketUtil.makeSerializablePanel(dp);
+//                BracketUtil.makeSerializablePanel(dp);
                 bracketCreator.disableMatch(dp);
 
                 JsfUtils.addSuccessMessage("Competitor advanced", "Name: "
                         + advancedCompetitorMatch.getIdCompetitor().getIdPersonalInfo().getFirstName()
                         + " "
                         + advancedCompetitorMatch.getIdCompetitor().getIdPersonalInfo().getLastName(), "manageCompetitionForm");
+            } else if (BracketUtil.getMatchWinner(savedCompetitorMatch.getIdMatch()) != null) { // finished final
+                for (MatchMatchType mmt : savedCompetitorMatch.getIdMatch().getMatchMatchTypeList()) {
+                    if (mmt.getIdMatchType().getMatchTypeName().equals("final")) {
+                        bracketCreator.disableMatch(dp);
+
+                        JsfUtils.addSuccessMessage("Competitor won the competition", "Name: "
+                                + BracketUtil.getMatchWinner(savedCompetitorMatch.getIdMatch()).getIdCompetitor().getIdPersonalInfo().getFirstName()
+                                + " "
+                                + BracketUtil.getMatchWinner(savedCompetitorMatch.getIdMatch()).getIdCompetitor().getIdPersonalInfo().getLastName(), "manageCompetitionForm");
+
+                        break;
+                    }
+                }
             }
 
             System.out.println("Przeszlo all, advanced id = " + advancedCompetitorMatch);
@@ -174,8 +187,7 @@ public class ManageCompetitionBackingBean extends CompetitionBackingBean impleme
                 }
             }
 
-            BracketUtil.makeSerializablePanel(dp);
-
+//            BracketUtil.makeSerializablePanel(dp);
             InactivateMatch inactiveMatch = controller.disableMatch(dp);
 //        addAdvancedCompetitor(advancedMatchNumber);
             if (!inactiveMatch.getEditable()) {

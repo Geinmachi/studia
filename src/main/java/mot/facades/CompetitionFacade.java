@@ -58,7 +58,6 @@ public class CompetitionFacade extends AbstractFacade<Competition> implements Co
 //        }
 //        return managedEntity;
 //    }
-    
     @Override
     public void competitionContraints(Competition competition) throws CompetitorCreationException {
         Query q = null;
@@ -73,36 +72,32 @@ public class CompetitionFacade extends AbstractFacade<Competition> implements Co
         }
 
         q.setParameter("competitionName", competition.getCompetitionName());
-        
+
         try {
             Competition c = (Competition) q.getSingleResult();
             em.flush();
-
+        } catch (NoResultException e) {
+            System.out.println("No existing competition found with given criteria, entitled to create");
+        } catch (NonUniqueResultException e) {
+//            System.out.println("NONunique " + e.getMessage());
+//            e.printStackTrace();
             if (competition.isGlobal()) {
                 throw new CompetitorCreationException("Global competition with given name already exists");
             } else {
                 throw new CompetitorCreationException("You have already created private competition with given name");
             }
-            
-        } catch (NoResultException e) {
-            System.out.println("No existing competition found with given criteria, entitled to create");
-            return;
-        } catch (NonUniqueResultException e) {
-            System.err.println("There exist more than 1 competition with same criteria - should never happen");
-            e.printStackTrace();
-            throw new CompetitorCreationException("Error code: 4001 - contact admin");
         }
     }
-    
+
     @Override
     public Competition createWithReturn(Competition entity) throws ApplicationException {
-        competitionContraints(entity);
-        
         try {
             em.persist(entity);
             em.flush();
+
+            competitionContraints(entity);
         } catch (PersistenceException e) {
-            
+
             throw e;
         }
 
@@ -138,7 +133,7 @@ public class CompetitionFacade extends AbstractFacade<Competition> implements Co
     }
 
     @Override
-    public void edit(Competition entity) {
+    public void edit(Competition entity) throws ApplicationException {
 //        Query q = em.createNamedQuery("CompetitorMatch.findByCompetitionId");
 //        q.setParameter("idCompetition", entity.getIdCompetition());
 //        
@@ -150,20 +145,22 @@ public class CompetitionFacade extends AbstractFacade<Competition> implements Co
 
         em.merge(entity);
         em.flush();
+
+        competitionContraints(entity);
     }
 
     @Override
     public List<Competition> findUserCompetitions(Integer idAccessLevel) {
         Query q = em.createNamedQuery("Competition.findByIdAccessLevel");
         q.setParameter("idAccessLevel", idAccessLevel);
-        
+
         return (List<Competition>) q.getResultList();
     }
 
     @Override
     public List<Competition> findGlobalCompetitions() {
         Query q = em.createNamedQuery("Competition.findGlobalCompetitions");
-        
+
         return (List<Competition>) q.getResultList();
     }
 

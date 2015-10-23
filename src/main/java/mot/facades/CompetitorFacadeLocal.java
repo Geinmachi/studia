@@ -9,7 +9,8 @@ import entities.AccessLevel;
 import entities.Competitor;
 import exceptions.ApplicationException;
 import java.util.List;
-import javax.ejb.Local; import javax.ejb.Remote;
+import javax.ejb.Local;
+import javax.ejb.Remote;
 
 /**
  *
@@ -18,7 +19,7 @@ import javax.ejb.Local; import javax.ejb.Remote;
 @Remote
 public interface CompetitorFacadeLocal {
 
-    void create(Competitor competitor) throws ApplicationException ;
+    void create(Competitor competitor) throws ApplicationException;
 
     void edit(Competitor competitor) throws ApplicationException;
 
@@ -43,5 +44,5 @@ public interface CompetitorFacadeLocal {
     public List<Competitor> findUserCompetitors(AccessLevel accessLevel);
 
     public Competitor findCompetitorById(int idCompetitor);
-    
+
 }

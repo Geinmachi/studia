@@ -43,5 +43,5 @@ public interface ManageCompetitionManagerLocal {
     
     CompetitorMatch advanceCompetitor(CompetitorMatch receivedCompetitorMatch) throws ApplicationException;
 
-    public Competition saveCompetitionGeneralInfo(Competition competition, Competition storedCompetition);
+    public Competition saveCompetitionGeneralInfo(Competition competition, Competition storedCompetition) throws ApplicationException;
 }

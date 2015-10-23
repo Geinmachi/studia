@@ -58,7 +58,7 @@ import web.qualifiers.Logging;
  */
 //@Named(value = "bracketCreationBackingBean")
 //@ViewScoped
-@Logging
+//@Logging
 @Dependent
 public class BracketCreation implements Serializable {
 
@@ -153,7 +153,7 @@ public class BracketCreation implements Serializable {
         disableFinishedMatches();
         assignCurrentMatchTypes();
     }
-
+    
     public void recreateBracketToDisplay(Competition competition) {
         List<CMG> cmgList = controller.getCompetitionCMGMappings(competition);
 
@@ -440,7 +440,7 @@ public class BracketCreation implements Serializable {
 
                     if (cmg.equals(updatedCompetitorMatch)) {
                         int cmIndex = dp.getMatch().getCompetitorMatchList().indexOf(cmg);
-
+                        
                         System.out.println("VERSION before update " + dp.getMatch().getCompetitorMatchList().get(cmIndex).getVersion());
                         dp.getMatch().getCompetitorMatchList().set(cmIndex, updatedCompetitorMatch);
                         System.out.println("VERSION after update " + dp.getMatch().getCompetitorMatchList().get(cmIndex).getVersion());
@@ -478,12 +478,12 @@ public class BracketCreation implements Serializable {
                     }
 
                     dp.updateCMGwithAdvanced(cmg);
-
+                    
                     System.out.println("PRZED DISABLE");
-                    BracketUtil.makeSerializablePanel(dp);
+//                    BracketUtil.makeSerializablePanel(dp);
                     this.disableMatch(dp);
                     System.out.println("PO DISABLE");
-
+                    
                     System.out.println("ROZMIAR COMPETITOROW POO " + dp.getMatch().getCompetitorMatchList().size());
                     System.out.println("IIIIIIIIIII MATCH SCORE VALUE = " + cmg.getCompetitorMatchScore());
 
@@ -505,11 +505,9 @@ public class BracketCreation implements Serializable {
         for (DashboardPanel dp : panelList) {
 
             //    System.out.println("PANEL SERAILZIABLE " + dp.getPanel());
-       //     BracketUtil.makeSerializablePanel(dp);
-            InactivateMatch dpWrapper = new DashboardPanel();
-            dpWrapper.setMatch(dp.getMatch());
             
-            InactivateMatch updatedMatch = controller.disableMatch(dpWrapper);
+       //     BracketUtil.makeSerializablePanel(dp);
+            InactivateMatch updatedMatch = controller.disableMatch(dp);
 
             dp.setEditable(updatedMatch.getEditable());
             dp.setInplaceEditable(updatedMatch.isInplaceEditable());
@@ -557,18 +555,18 @@ public class BracketCreation implements Serializable {
 
     private void assignCurrentMatchTypes() {
         for (DashboardPanel dp : panelList) {
+            
+//            CurrentMatchType dpWrapper = new DashboardPanel();
+//            
+//            dpWrapper.setMatchType(dp.getMatchType());
+//            dpWrapper.setMatch(dp.getMatch());
 
-            CurrentMatchType dpWrapper = new DashboardPanel();
-
-            dpWrapper.setMatchType(dp.getMatchType());
-            dpWrapper.setMatch(dp.getMatch());
-
-            CurrentMatchType cmt = controller.assignCurrentMatchType(dpWrapper);
+            CurrentMatchType cmt = controller.assignCurrentMatchType(dp);
 
             dp.setMatchType(cmt.getMatchType());
         }
     }
-
+    
     /**
      *
      * @param match
@@ -576,10 +574,10 @@ public class BracketCreation implements Serializable {
      */
     public boolean disableMatch(InactivateMatch match) {
         InactivateMatch disabledMatch = controller.disableMatch(match);
-
+        
         match.setEditable(disabledMatch.getEditable());
         match.setInplaceEditable(disabledMatch.isInplaceEditable());
-
+        
         return disabledMatch.getEditable() || disabledMatch.isInplaceEditable();
     }
 }
