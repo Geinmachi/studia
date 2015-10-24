@@ -77,6 +77,8 @@ public class CompetitionService implements CompetitionServiceLocal {
     private List<CMG> storedCMGmappings;
     
     public static String ADMIN_PROPERTY_KEY = "role.admin";
+    
+    public static String ANONYMOUS_USER = "anonymous";
 
     @Override
     public List<Team> findAllTeams() {
@@ -132,7 +134,7 @@ public class CompetitionService implements CompetitionServiceLocal {
     }
 
     @Override
-    public List<Competition> getLoggedUserCompetitions() {
+    public List<Competition> getLoggedUserCompetitions() throws ApplicationException {
         return manageCompetitionManager.getLoggedUserCompetition();
     }
 
@@ -189,11 +191,6 @@ public class CompetitionService implements CompetitionServiceLocal {
     @Override
     public List<CompetitorMatch> findCompeitorMatchByIdMatch(Integer idMatch) {
         return manageCompetitionManager.findCMGByIdMatch(idMatch);
-    }
-
-    @Override
-    public List<Competition> findAllCompetitions() {
-        return presentCompetitionManager.findAllCompetitions();
     }
 
     @Override
@@ -258,7 +255,7 @@ public class CompetitionService implements CompetitionServiceLocal {
     }
 
     @Override
-    public Competition saveCompetitionGeneralInfo(Competition competition) {
+    public Competition saveCompetitionGeneralInfo(Competition competition) throws ApplicationException {
         editingCompetition = manageCompetitionManager.saveCompetitionGeneralInfo(competition, editingCompetition);
         return editingCompetition;
     }
@@ -296,7 +293,7 @@ public class CompetitionService implements CompetitionServiceLocal {
     }
 
     @Override
-    public List<Competitor> getCompetitorsToEdit() {
+    public List<Competitor> getCompetitorsToEdit() throws ApplicationException {
         return competitionComponentsManager.getCompetitorsToEdit();
     }
 
@@ -313,7 +310,7 @@ public class CompetitionService implements CompetitionServiceLocal {
     }
 
     @Override
-    public List<Team> getTeamsToEdit() {
+    public List<Team> getTeamsToEdit() throws ApplicationException {
         return competitionComponentsManager.getTeamsToEdit();
     }
 
@@ -327,6 +324,26 @@ public class CompetitionService implements CompetitionServiceLocal {
     public void editTeam(Team team) throws ApplicationException {
         competitionComponentsManager.editTeam(editingTeam, team);
         editingTeam = null;
+    }
+
+    @Override
+    public List<Competition> findGlobalCompetition() {
+        return presentCompetitionManager.findGlobalCompetitions();
+    }
+
+    @Override
+    public List<Competition> findAllowedCompetitions() throws ApplicationException {
+        return presentCompetitionManager.findAllowedCompetitions();
+    }
+
+    @Override
+    public void checkCompetitionConstraints(Competition competition) throws ApplicationException {
+        createCompetitionManager.checkCompetitionConstraints(competition);
+    }
+
+    @Override
+    public List<Competition> findCompetitionsToDisplay() throws ApplicationException {
+        return presentCompetitionManager.findCompetitionsToDisplay();
     }
     
 }

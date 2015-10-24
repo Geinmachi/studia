@@ -7,6 +7,7 @@ package mot.facades;
 
 import entities.Competition;
 import exceptions.ApplicationException;
+import exceptions.CompetitorCreationException;
 import java.util.List;
 import javax.ejb.Local; import javax.ejb.Remote;
 
@@ -19,7 +20,7 @@ public interface CompetitionFacadeLocal {
 
     void create(Competition competition) throws ApplicationException;
 
-    void edit(Competition competition);
+    void edit(Competition competition) throws ApplicationException;
 
     void remove(Competition competition);
 
@@ -36,4 +37,12 @@ public interface CompetitionFacadeLocal {
     Competition createWithReturn(Competition entity) throws ApplicationException;
 
     public Competition findAndInitializeGD(Integer idCompetition);
+
+    public List<Competition> findUserCompetitions(Integer idAccessLevel);
+
+    public List<Competition> findGlobalCompetitions();
+
+    void competitionContraints(Competition competition) throws CompetitorCreationException;
+
+    void competitionContraintsNotCommited(Competition competition) throws CompetitorCreationException;
 }

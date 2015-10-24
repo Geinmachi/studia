@@ -8,6 +8,7 @@ package mot.facades;
 import entities.AccessLevel;
 import entities.Team;
 import exceptions.ApplicationException;
+import exceptions.TeamCreationException;
 import java.util.List;
 import javax.ejb.Local; import javax.ejb.Remote;
 
@@ -37,5 +38,7 @@ public interface TeamFacadeLocal {
     public List<Team> findUserTeams(AccessLevel accessLevel);
 
     public Team findAndInitializeCompetitors(Integer idTeam);
+    
+    void teamContraints(Team team) throws TeamCreationException;
     
 }

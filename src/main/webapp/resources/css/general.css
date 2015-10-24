@@ -44,3 +44,57 @@ label {
 .header {
     text-align: center;
 }
+
+div[id*="Form"].ui-datatable.ui-widget {
+    display: table;
+    margin: auto;
+    width: auto;
+}
+
+.ui-datatable table {
+    width: auto !important;
+}
+
+span > i.glyphicon-bullhorn {
+    position: fixed;
+    right: 1%;
+    top: 10%;
+    z-index: 99999;
+}
+
+.ui-growl {
+    top: 70px !important;
+}
+
+.backButton {
+    float: right;
+}
+
+.groupPanel > :first-child {
+    padding: 0.5em 1em 0.3em; // Primefaces doesnt load style, only after ajax update (ui-panel-titlebar)
+}
+
+.loginErrorWrapper {
+    position: relative;
+}
+
+.loginErrorWrapper > label {
+    position: absolute;
+    right: 0;
+    left: 0;
+    text-align: center;
+}
+
+.columnHalfSize {
+    width: 50%;
+}
+
+.doneWrapper {
+    position: relative;
+    text-align: center;
+}
+
+.loneMessage {
+    display: table;
+    margin: auto;
+}

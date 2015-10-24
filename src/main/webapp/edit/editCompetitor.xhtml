@@ -9,12 +9,13 @@ and open the template in the editor.
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui"
+                xmlns:b="http://bootsfaces.net/ui"
                 template="/WEB-INF/templates/main.xhtml"
                 xmlns:cc="http://java.sun.com/jsf/composite/compositeComponents/">
     <ui:define name="title">#{msg.editCompetitorTitle}</ui:define>
     <ui:define name="content">
-
-        <h:form id="editCompetitorForm">
+        <b:icon name="bullhorn" size="2x" rendered="#{request.isUserInRole(bsn['role.admin']) and !(editCompetitorBackingBean.competitor.idCreator.idAccount.login eq request.userPrincipal.name)}"/>
+        <h:form id="editCompetitorForm" rendered="#{not empty editCompetitorBackingBean.competitor}">
             <cc:competitorFormInsides
                 firstName="#{editCompetitorBackingBean.competitor.idPersonalInfo.firstName}"
                 lastName="#{editCompetitorBackingBean.competitor.idPersonalInfo.lastName}"
@@ -24,5 +25,7 @@ and open the template in the editor.
                 saveAction="#{editCompetitorBackingBean.edit}"/>
         </h:form>
 
+        <p:messages showIcon="false" autoUpdate="true" styleClass="loneMessage"
+                    rendered="#{empty editCompetitorBackingBean.competitor}"/>
     </ui:define>
 </ui:composition>

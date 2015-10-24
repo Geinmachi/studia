@@ -26,4 +26,6 @@ public interface CreateCompetitionManagerLocal {
     public void createCompetition(Competition competition, List<CMG> competitorMatchGroupList) throws ApplicationException;
     
     public List<CMG> generateEmptyBracket(List<Competitor> competitors);
+
+    public void checkCompetitionConstraints(Competition competition) throws ApplicationException;
 }

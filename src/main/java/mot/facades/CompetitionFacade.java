@@ -5,7 +5,9 @@
  */
 package mot.facades;
 
+import entities.AccessLevel;
 import entities.Competition;
+import entities.Competitor;
 import entities.GroupCompetitor;
 import entities.GroupDetails;
 import exceptions.ApplicationException;
@@ -16,6 +18,8 @@ import java.util.Comparator;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
+import javax.persistence.NonUniqueResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
 import javax.persistence.Query;
@@ -55,15 +59,79 @@ public class CompetitionFacade extends AbstractFacade<Competition> implements Co
 //        return managedEntity;
 //    }
     @Override
+    public void competitionContraints(Competition competition) throws CompetitorCreationException {
+        Query q = null;
+
+        AccessLevel creator = competition.getIdOrganizer();
+
+        if (competition.isGlobal()) {
+            q = em.createNamedQuery("Competition.findByCompetitionNameGlobal");
+        } else {
+            q = em.createNamedQuery("Competition.findByCompetitionNamePrivateOrganizer");
+            q.setParameter("idCreator", creator.getIdAccessLevel());
+        }
+
+        q.setParameter("competitionName", competition.getCompetitionName());
+
+        try {
+            Competition c = (Competition) q.getSingleResult();
+            em.flush();
+        } catch (NoResultException e) {
+            System.out.println("No existing competition found with given criteria, entitled to create");
+        } catch (NonUniqueResultException e) {
+//            System.out.println("NONunique " + e.getMessage());
+//            e.printStackTrace();
+            if (competition.isGlobal()) {
+                throw new CompetitorCreationException("Global competition with given name already exists");
+            } else {
+                throw new CompetitorCreationException("You have already created private competition with given name");
+            }
+        }
+    }
+
+    @Override
+    public void competitionContraintsNotCommited(Competition competition) throws CompetitorCreationException {
+        Query q = null;
+
+        AccessLevel creator = competition.getIdOrganizer();
+
+        if (competition.isGlobal()) {
+            q = em.createNamedQuery("Competition.findByCompetitionNameGlobal");
+        } else {
+            q = em.createNamedQuery("Competition.findByCompetitionNamePrivateOrganizer");
+            q.setParameter("idCreator", creator.getIdAccessLevel());
+        }
+
+        q.setParameter("competitionName", competition.getCompetitionName());
+
+        try {
+            Competition c = (Competition) q.getSingleResult();
+            em.flush();
+
+            if (competition.isGlobal()) {
+                throw new CompetitorCreationException("Global competition with given name already exists");
+            } else {
+                throw new CompetitorCreationException("You have already created private competition with given name");
+            }
+        } catch (NoResultException e) {
+            System.out.println("No existing competition found with given criteria, entitled to create");
+        } catch (NonUniqueResultException e) {
+//            System.out.println("NONunique " + e.getMessage());
+//            e.printStackTrace();
+            System.out.println("Should never happen - duplicate in competition");
+            throw new CompetitorCreationException("ERROR 1001 - contact admins", e);
+        }
+    }
+
+    @Override
     public Competition createWithReturn(Competition entity) throws ApplicationException {
         try {
             em.persist(entity);
             em.flush();
+
+            competitionContraints(entity);
         } catch (PersistenceException e) {
-            if (e.getMessage().contains("competition_uniq_competition_name")) {
-                throw new CompetitorCreationException("Competition with given name already exists", e.getCause());
-            }
-            
+
             throw e;
         }
 
@@ -99,7 +167,7 @@ public class CompetitionFacade extends AbstractFacade<Competition> implements Co
     }
 
     @Override
-    public void edit(Competition entity) {
+    public void edit(Competition entity) throws ApplicationException {
 //        Query q = em.createNamedQuery("CompetitorMatch.findByCompetitionId");
 //        q.setParameter("idCompetition", entity.getIdCompetition());
 //        
@@ -111,6 +179,23 @@ public class CompetitionFacade extends AbstractFacade<Competition> implements Co
 
         em.merge(entity);
         em.flush();
+
+        competitionContraints(entity);
+    }
+
+    @Override
+    public List<Competition> findUserCompetitions(Integer idAccessLevel) {
+        Query q = em.createNamedQuery("Competition.findByIdAccessLevel");
+        q.setParameter("idAccessLevel", idAccessLevel);
+
+        return (List<Competition>) q.getResultList();
+    }
+
+    @Override
+    public List<Competition> findGlobalCompetitions() {
+        Query q = em.createNamedQuery("Competition.findGlobalCompetitions");
+
+        return (List<Competition>) q.getResultList();
     }
 
 }

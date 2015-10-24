@@ -6,8 +6,11 @@
 package web.backingBeans.mot.team;
 
 import entities.Team;
+import exceptions.ApplicationException;
 import java.io.Serializable;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
@@ -35,7 +38,12 @@ public class TeamListBackingBean extends CompetitionBackingBean implements Seria
     
     @PostConstruct
     private void init() {
-        teamList = controller.getTeamsToEdit();
+        try {
+            teamList = controller.getTeamsToEdit();
+        } catch (ApplicationException ex) {
+            Logger.getLogger(TeamListBackingBean.class.getName()).log(Level.SEVERE, null, ex);
+            throw new IllegalStateException("Cannot init a bean");
+        }
     }
     
     public String show(Team team) {

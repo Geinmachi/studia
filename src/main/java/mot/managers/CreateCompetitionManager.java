@@ -127,7 +127,7 @@ public class CreateCompetitionManager implements CreateCompetitionManagerLocal {
     public void createCompetition(Competition competition, List<CMG> competitorMatchGroupList) throws ApplicationException {
         Account loggedUser = accountFacade.findByLogin(sessionContext.getCallerPrincipal().getName());
         AccessLevel organizer = ConvertUtil.getSpecAccessLevelFromAccount(loggedUser, Organizer.class);
-        
+
         competition.setIdOrganizer(organizer);
         competition.setCreationDate(new Date());
 
@@ -215,8 +215,7 @@ public class CreateCompetitionManager implements CreateCompetitionManagerLocal {
 //        }
 //
 //        competitionFacade.create(competition);
-        System.out.println(
-                "PRZESZLO SZYSTKO");
+        System.out.println("PRZESZLO SZYSTKO");
 //        throw new NullPointerException();
     }
 
@@ -291,7 +290,7 @@ public class CreateCompetitionManager implements CreateCompetitionManagerLocal {
 
         List<GroupName> groups = createGroups(fetchedCompetitors.size());
 
-        groups.forEach(p -> System.out.println("Grupa: " + p.getGroupName()));
+    //    groups.forEach(p -> System.out.println("Grupa: " + p.getGroupName()));
 
         Map<Competitor, GroupName> assignedCompetitorsToGroups = assignCompetitorsToGroups(fetchedCompetitors, groups);
 
@@ -343,7 +342,7 @@ public class CreateCompetitionManager implements CreateCompetitionManagerLocal {
     private Map<Competitor, GroupName> assignCompetitorsToGroups(List<Competitor> competitors, List<GroupName> groups) {
         Map<Competitor, GroupName> assignedCompetitors = new HashMap<>();
 
-        System.out.print("competitoros " + competitors.size() + " groups " + groups.size());
+        System.out.println("competitoros " + competitors.size() + " groups " + groups.size());
 
         int groupCounter = 0;
 
@@ -542,5 +541,17 @@ public class CreateCompetitionManager implements CreateCompetitionManagerLocal {
                 competitorMatchGroupList.add(cmg2);
             }
         }
+    }
+
+    @Override
+    public void checkCompetitionConstraints(Competition competition) throws ApplicationException {
+
+        if (competition.getIdOrganizer() == null) {
+            Account loggedUser = accountFacade.findByLogin(sessionContext.getCallerPrincipal().getName());
+            AccessLevel organizer = ConvertUtil.getSpecAccessLevelFromAccount(loggedUser, Organizer.class);
+
+            competition.setIdOrganizer(organizer);
+        }
+        competitionFacade.competitionContraintsNotCommited(competition);
     }
 }

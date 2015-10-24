@@ -60,7 +60,7 @@ public class Matchh implements Serializable, Comparable<Matchh>, AdvancingMatchD
     @Column(name = "id_match")
     private Integer idMatch;
     @Basic(optional = false)
-    @NotNull
+//    @NotNull
     @Column(name = "match_date")
     @Temporal(TemporalType.TIMESTAMP)
     private Date matchDate;

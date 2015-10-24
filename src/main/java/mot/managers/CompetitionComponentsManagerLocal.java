@@ -9,6 +9,7 @@ import entities.Competitor;
 import entities.Team;
 import exceptions.ApplicationException;
 import java.util.List;
+import javax.ejb.Local;
 import javax.ejb.Remote;
 import javax.ejb.SessionContext;
 
@@ -29,13 +30,13 @@ public interface CompetitionComponentsManagerLocal {
     
     public Competitor vlidateCompetitorDuplicate(List<Competitor> competitorList);
 
-    public List<Competitor> getCompetitorsToEdit();
+    public List<Competitor> getCompetitorsToEdit() throws ApplicationException;
 
     public Competitor findCompetitorById(int idCompetitor);
 
     public void editCompetitor(Competitor editingCompetitor, Competitor competitor) throws ApplicationException;
 
-    public List<Team> getTeamsToEdit();
+    public List<Team> getTeamsToEdit() throws ApplicationException;
 
     public Team findTeamById(Integer idTeam);
 

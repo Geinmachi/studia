@@ -16,6 +16,8 @@ public interface InactivateMatch {
     
     Matchh getMatch();
     
+    void setMatch(Matchh matach);
+    
     void setInplaceEditable(boolean flag);
     
     boolean isInplaceEditable();

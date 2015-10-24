@@ -25,7 +25,7 @@ import mot.interfaces.InactivateMatch;
 @Remote
 public interface ManageCompetitionManagerLocal {
 
-    public List<Competition> getLoggedUserCompetition();
+    public List<Competition> getLoggedUserCompetition() throws ApplicationException;
 
     public Competition storeCompetition(Competition competition);
 
@@ -43,5 +43,5 @@ public interface ManageCompetitionManagerLocal {
     
     CompetitorMatch advanceCompetitor(CompetitorMatch receivedCompetitorMatch) throws ApplicationException;
 
-    public Competition saveCompetitionGeneralInfo(Competition competition, Competition storedCompetition);
+    public Competition saveCompetitionGeneralInfo(Competition competition, Competition storedCompetition) throws ApplicationException;
 }

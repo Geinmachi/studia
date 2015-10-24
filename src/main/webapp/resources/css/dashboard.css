@@ -173,13 +173,13 @@ div[class*="displayCompetitorRow"]:hover {
 .crown0 {
     position: absolute;
     right: -60px;
-    top: 47px;
+    top: 27px;
 }
 
 .crown1 {
     position: absolute;
     right: -60px;
-    top: 83px;
+    top: 67px;
 }
 
 .ui-wizard-content {
@@ -196,7 +196,8 @@ div[class*="displayCompetitorRow"]:hover {
 
 .groupPanel {
     display: inline-block !important;
-    margin-left: 20px;
+    margin-left: 10px;
+    margin-right: 10px;
 }
 
 .groupPanel * {
@@ -230,10 +231,11 @@ div[id$="CompetitionForm:dashboard"] .ui-sortable-handle {
     padding: 0.5em 1em 0.3em !important;
 }
 
-.loadingDialog {
-    background: transparent;
-    border: 0 none;
-    box-shadow: 0 0 !important;
+.loadingIcon {
+    position: fixed;
+    top: 5px;
+    right: 25px;
+    z-index: 999999;
 }
 
 input[id$="scoreInput"] {
@@ -267,11 +269,11 @@ form > div[id*="CompetitionForm"] {
 }
 
 #msgs_container {
-    left: 40%;
-    top: 40%;
+    left: 40% !important;
+    top: 40% !important;
 }
 
-.firstStepWizard, .middleTableWrapper {
+.firstStepWizard, .middleTableWrapper, .ui-datatable table {
     margin: auto;
 }
 
@@ -291,4 +293,9 @@ div[id*="displayCompetitionForm\:first"], div[id*="displayCompetitionForm\:other
 
 div[id*="displayCompetitionForm\:first"] > div.ui-widget-header, div[id*="displayCompetitionForm\:other"] > div.ui-widget-header {
     width: 198px !important;
+}
+
+.scoreInplace {
+    float: right;
+    padding-right: 10px;
 }

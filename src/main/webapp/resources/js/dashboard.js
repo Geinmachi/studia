@@ -37,19 +37,19 @@ $(document).ready(function () {
 
 });
 
-$("div[id$='CompetitionForm\\:dashboard']").ready(function(){
+$("div[id$='CompetitionForm\\:dashboard']").ready(function () {
     $(this).find(".ui-panel-titlebar").each(function () {
         $(this).removeClass("ui-panel-titlebar");
     });
 });
 
 $(document).on("keypress", "[id$='scoreInput']", function (event) {
-    if (event.which === 13) {
+    if (event.which === 13) { // enter
         event.preventDefault(); // wylacza akcje eventu
         var $saveButton = $(event.target).parent().find("button:first");
         $saveButton.click();
     }
 });
-$(document).on("blur", "[id$='scoreInput']", function () {
-    $(this).parent().find("button:first").click();
-});
+//$(document).on("blur", "[id$='scoreInput']", function () {
+//    $(this).parent().find("button:first").click();
+//});

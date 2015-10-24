@@ -20,8 +20,19 @@ import mot.facades.CompetitionFacadeLocal;
 import mot.facades.ScoreFacadeLocal;
 import utils.SortUtil;
 import ejbCommon.TrackerInterceptor;
+import entities.AccessLevel;
+import entities.Account;
+import entities.Organizer;
+import exceptions.ApplicationException;
+import javax.annotation.Resource;
+import javax.annotation.security.DeclareRoles;
+import javax.ejb.SessionContext;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
+import mot.facades.AccountFacadeLocal;
+import mot.services.CompetitionService;
+import utils.ConvertUtil;
+import utils.ResourceBundleUtil;
 
 /**
  *
@@ -30,7 +41,14 @@ import javax.ejb.TransactionAttributeType;
 @Stateless
 @TransactionAttribute(TransactionAttributeType.MANDATORY)
 @Interceptors({TrackerInterceptor.class})
+@DeclareRoles({"Administrator", "Organizer"})
 public class PresentCompetitionManager implements PresentCompetitionManagerLocal {
+
+    @Resource
+    private SessionContext sessionContext;
+    
+    @EJB
+    private AccountFacadeLocal accountFacade;
 
     @EJB
     private CompetitionFacadeLocal competitionFacade;
@@ -39,9 +57,20 @@ public class PresentCompetitionManager implements PresentCompetitionManagerLocal
     private ScoreFacadeLocal scoreFacade;
 
     @Override
-    public List<Competition> findAllCompetitions() {
+    public List<Competition> findAllowedCompetitions() throws ApplicationException {
 
-        return competitionFacade.findAll();
+        List<Competition> competitionList = null;
+        
+        if (sessionContext.isCallerInRole(ResourceBundleUtil.getResourceBundleBusinessProperty(CompetitionService.ADMIN_PROPERTY_KEY))) {
+            competitionList = competitionFacade.findAll();
+        } else {
+            Account loggedUser = accountFacade.findByLogin(sessionContext.getCallerPrincipal().getName());
+            AccessLevel organizer = ConvertUtil.getSpecAccessLevelFromAccount(loggedUser, Organizer.class);
+
+            competitionList = competitionFacade.findUserCompetitions(organizer.getIdAccessLevel());
+        }
+
+        return competitionList;
     }
 
     @Override
@@ -86,6 +115,33 @@ public class PresentCompetitionManager implements PresentCompetitionManagerLocal
 
         return SortUtil.sortByValue(competitorPositionMap, true);
 
+    }
+
+    @Override
+    public List<Competition> findGlobalCompetitions() {
+        return competitionFacade.findGlobalCompetitions();
+    }
+
+    @Override
+    public List<Competition> findCompetitionsToDisplay() throws ApplicationException {
+        String userLogin = sessionContext.getCallerPrincipal().getName();
+
+        List competitionList = new ArrayList<>();
+        
+        if (userLogin.equals(ResourceBundleUtil.getResourceBundleBusinessProperty(CompetitionService.ANONYMOUS_USER))) {
+            competitionList = competitionFacade.findGlobalCompetitions();
+        } else if (sessionContext.isCallerInRole(ResourceBundleUtil.getResourceBundleBusinessProperty(CompetitionService.ADMIN_PROPERTY_KEY))) {
+            competitionList = competitionFacade.findAll();
+        }
+        else {
+            Account account = accountFacade.findByLogin(userLogin);
+            AccessLevel accessLevel = ConvertUtil.getSpecAccessLevelFromAccount(account, Organizer.class);
+            
+            competitionList = competitionFacade.findGlobalCompetitions();
+            competitionList.addAll(competitionFacade.findUserCompetitionsByIdAccessLevel(accessLevel.getIdAccessLevel()));
+        }
+        
+        return competitionList;
     }
 
 }

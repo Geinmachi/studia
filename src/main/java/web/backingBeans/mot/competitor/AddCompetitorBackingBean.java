@@ -80,7 +80,8 @@ public class AddCompetitorBackingBean extends CompetitionBackingBean implements 
         try {
             competitor.setIdTeam(selectedTeam);
             controller.addCompetitor(competitor, isGlobal);
-            return "/index.xhtml?faces-redirect=true";
+            
+            return CompetitionController.getSUCCESS_PAGE();
         } catch (ApplicationException e) {
             JsfUtils.addErrorMessage(e.getLocalizedMessage(), null, null);
             

@@ -5,37 +5,43 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui"
                 template="/WEB-INF/templates/main.xhtml"
+                xmlns:b="http://bootsfaces.net/ui"
                 xmlns:f="http://xmlns.jcp.org/jsf/core"
                 xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
     <ui:define name="title">#{msg.competitorListTitle}</ui:define>
     <ui:define name="content">
-        <h:form id="competitorListForm">
-            <p:dataTable var="competitor" value="#{competitorListBackingBean.competitorList}">
 
-                <p:column headerText="#{msg.competitorFirstName}">
+        <h:form id="competitorListForm">
+            <p:dataTable  paginator="true" rows="10" rowsPerPageTemplate="10,25,50" sortMode="multiple" styleClass="shadows"
+                var="competitor" value="#{competitorListBackingBean.competitorList}">
+
+                <p:column headerText="#{msg.competitorFirstName}" sortBy="#{competitor.idPersonalInfo.firstName}"
+                          filterBy="#{competitor.idPersonalInfo.firstName}" filterMatchMode="contains">
                     <h:outputText value="#{competitor.idPersonalInfo.firstName}" />
                 </p:column>
 
-                <p:column headerText="#{msg.competitorLastName}">
+                <p:column headerText="#{msg.competitorLastName}" sortBy="#{competitor.idPersonalInfo.lastName}"
+                          filterBy="#{competitor.idPersonalInfo.lastName}" filterMatchMode="contains">
                     <h:outputText value="#{competitor.idPersonalInfo.lastName}" />
                 </p:column>
 
-                <p:column headerText="#{msg.team}">
+                <p:column headerText="#{msg.team}" sortBy="#{competitor.idTeam.teamName}"
+                          filterBy="#{competitor.idTeam.teamName}" filterMatchMode="contains">
                     <h:outputText value="#{competitor.idTeam.teamName}" />
                 </p:column>
 
-                <p:column headerText="#{msg.creator}" rendered="#{request.isUserInRole(bsn['role.admin'])}">
+                <p:column headerText="#{msg.creator}" rendered="#{request.isUserInRole(bsn['role.admin'])}"
+                          sortBy="#{competitor.idCreator.idAccount.login}" filterBy="#{competitor.idCreator.idAccount.login}" filterMatchMode="contains">
                     <ui:fragment rendered="#{empty competitor.idCreator}">
                         #{msg.globalCompetitor}
                     </ui:fragment>
-                    
-                    #{competitor.idCreator.idAccount.idPersonalInfo.firstName}
-                    #{competitor.idCreator.idAccount.idPersonalInfo.lastName}
+
+                    #{competitor.idCreator.idAccount.login}
                 </p:column>
 
                 <p:column headerText="#{msg.edition}">
-                    <p:commandButton action="#{competitorListBackingBean.show(competitor)}"
-                                     value="#{msg.edit}"/>
+                    <p:commandButton action="#{competitorListBackingBean.show(competitor)}" value="#{msg.edit}"
+                                     icon="#{request.remoteUser eq competitor.idCreator.idAccount.login ? ' ' : 'ui-icon-flag'}" iconPos="right"/>
                 </p:column>
 
             </p:dataTable>

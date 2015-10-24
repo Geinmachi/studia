@@ -13,8 +13,14 @@
     </h:head>
     <h:body style="padding-top: 50px; padding-bottom: 20px;">
 
-        <ui:include src="bootsfaces/headerTemplate.xhtml" />
-        <div class="topMargin contentWrapper">
+        <p:ajaxStatus onstart="$('#loadingIcon').show();" onsuccess="$('#loadingIcon').hide();"/> 
+        <p:graphicImage styleClass="loadingIcon" id="loadingIcon" height="36" width="36" 
+                        library="img" name="loading_icon.gif" style="display: none"/>
+
+        <p:growl id="globalGrowl" showDetail="true" for="globalContainer" life="2000"/>
+
+        <ui:include src="headerTemplate.xhtml" />
+        <div id="globalContainer" class="topMargin contentWrapper">
             <h3 class="header"><ui:insert name="title"/></h3>
             <ui:insert name="content"/>
         </div>

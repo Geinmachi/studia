@@ -13,6 +13,7 @@ import entities.Organizer;
 import entities.Team;
 import exceptions.ApplicationException;
 import exceptions.TeamCreationException;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import javax.annotation.Resource;
@@ -138,8 +139,8 @@ public class CompetitionComponentsManager implements CompetitionComponentsManage
     }
 
     @Override
-    public List<Competitor> getCompetitorsToEdit() {
-        List<Competitor> competitorList = null;
+    public List<Competitor> getCompetitorsToEdit() throws ApplicationException {
+        List<Competitor> competitorList = new ArrayList<>();
         
         if (sessionContext.isCallerInRole(ResourceBundleUtil.getResourceBundleBusinessProperty(CompetitionService.ADMIN_PROPERTY_KEY))) {
             competitorList = competitorFacade.findAll();
@@ -175,7 +176,7 @@ public class CompetitionComponentsManager implements CompetitionComponentsManage
     }
 
     @Override
-    public List<Team> getTeamsToEdit() {
+    public List<Team> getTeamsToEdit() throws ApplicationException {
         
          List<Team> teamList = null;
         

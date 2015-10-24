@@ -6,9 +6,13 @@
 package mot.facades;
 
 import entities.Account;
+import exceptions.AccountException;
+import exceptions.ApplicationException;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceException;
 import javax.persistence.Query;
 
 /**
@@ -17,6 +21,7 @@ import javax.persistence.Query;
  */
 @Stateless
 public class AccountFacade extends AbstractFacade<Account> implements AccountFacadeLocal {
+
     @PersistenceContext(unitName = "mot_persistence_unit")
     private EntityManager em;
 
@@ -30,10 +35,24 @@ public class AccountFacade extends AbstractFacade<Account> implements AccountFac
     }
 
     @Override
-    public Account findByLogin(String login) {
+    public Account findByLogin(String login) throws ApplicationException {
         Query q = em.createNamedQuery("Account.findByLogin");
         q.setParameter("login", login);
-        return (Account) q.getSingleResult();
+
+        Account entity = null;
+        
+        try {
+            entity = (Account) q.getSingleResult();
+            entity.getAccessLevelList().size();
+
+            em.flush();
+        } catch (NoResultException e) {
+            throw new AccountException("User with given name does not exist", e.getCause());
+        } catch (PersistenceException e) {
+            throw e;
+        }
+
+        return entity;
     }
-    
+
 }

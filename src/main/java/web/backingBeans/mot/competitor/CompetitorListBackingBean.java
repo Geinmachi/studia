@@ -6,8 +6,11 @@
 package web.backingBeans.mot.competitor;
 
 import entities.Competitor;
+import exceptions.ApplicationException;
 import java.io.Serializable;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
@@ -37,7 +40,12 @@ public class CompetitorListBackingBean extends CompetitionBackingBean implements
     
     @PostConstruct
     private void init() {
-        competitorList = controller.getCompetitorsToEdit();
+        try {
+            competitorList = controller.getCompetitorsToEdit();
+        } catch (ApplicationException ex) {
+            Logger.getLogger(CompetitorListBackingBean.class.getName()).log(Level.SEVERE, null, ex);
+            throw new IllegalStateException("Cannot init a bean");
+        }
     }
     
     public String show(Competitor competitor) {

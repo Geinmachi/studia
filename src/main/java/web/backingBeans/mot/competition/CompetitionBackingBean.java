@@ -8,11 +8,13 @@ package web.backingBeans.mot.competition;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 import web.controllers.CompetitionController;
+import web.qualifiers.Logging;
 
 /**
  *
  * @author java
  */
+//@Logging
 public abstract class CompetitionBackingBean {
     
     @Inject

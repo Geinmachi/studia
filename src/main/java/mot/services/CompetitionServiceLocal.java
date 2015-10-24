@@ -49,7 +49,7 @@ public interface CompetitionServiceLocal {
 
     public List<MatchType> getEndUserMatchTypes();
 
-    public List<Competition> getLoggedUserCompetitions();
+    public List<Competition> getLoggedUserCompetitions() throws ApplicationException;
 
     public Competition storeCompetition(Competition competition);
 
@@ -59,8 +59,6 @@ public interface CompetitionServiceLocal {
 
     public List<CompetitorMatch> findCompeitorMatchByIdMatch(Integer idMatch);
     
-    public List<Competition> findAllCompetitions();
-
     public Competition getInitializedCompetition(int idCompetition);
 
     public List<Score> findCompetitionScores(int idCompetition);
@@ -75,7 +73,7 @@ public interface CompetitionServiceLocal {
     
     public CompetitorMatch advanceCompetitor(CompetitorMatch competitorMatch) throws ApplicationException;
 
-    public Competition saveCompetitionGeneralInfo(Competition competition);
+    public Competition saveCompetitionGeneralInfo(Competition competition) throws ApplicationException;
 
     public void createTeam(Team team, boolean global) throws ApplicationException;
 
@@ -83,15 +81,23 @@ public interface CompetitionServiceLocal {
 
     public Competitor vlidateCompetitorDuplicate(List<Competitor> competitorList);
 
-    public List<Competitor> getCompetitorsToEdit();
+    public List<Competitor> getCompetitorsToEdit() throws ApplicationException;
 
     public Competitor storeCompetitor(Competitor competitor);
 
     public void editCompetitor(Competitor competitor) throws ApplicationException;
 
-    public List<Team> getTeamsToEdit();
+    public List<Team> getTeamsToEdit() throws ApplicationException;
 
     public Team storeTeam(Team team);
 
     public void editTeam(Team team) throws ApplicationException;
+
+    public List<Competition> findGlobalCompetition();
+
+    public List<Competition> findAllowedCompetitions() throws ApplicationException;
+
+    public void checkCompetitionConstraints(Competition competition) throws ApplicationException;
+
+    public List<Competition> findCompetitionsToDisplay() throws ApplicationException;
 }

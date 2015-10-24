@@ -98,7 +98,7 @@ public class ManageCompetitionBackingBean extends CompetitionBackingBean impleme
 
         Collections.sort(groupDetailsList);
 
-        bracketCreator.recreateBracket(competition);
+        bracketCreator.recreateBracketToEdit(competition);
     }
 
     public void saveScore(CompetitorMatch cmg, DashboardPanel dp) {
@@ -122,13 +122,26 @@ public class ManageCompetitionBackingBean extends CompetitionBackingBean impleme
                 //        cmgList.add(advancedCompetitorMatch);
                 bracketCreator.addAdvancedCompetitor(advancedCompetitorMatch);
 
-                BracketUtil.makeSerializablePanel(dp);
+//                BracketUtil.makeSerializablePanel(dp);
                 bracketCreator.disableMatch(dp);
 
                 JsfUtils.addSuccessMessage("Competitor advanced", "Name: "
                         + advancedCompetitorMatch.getIdCompetitor().getIdPersonalInfo().getFirstName()
                         + " "
                         + advancedCompetitorMatch.getIdCompetitor().getIdPersonalInfo().getLastName(), "manageCompetitionForm");
+            } else if (BracketUtil.getMatchWinner(savedCompetitorMatch.getIdMatch()) != null) { // finished final
+                for (MatchMatchType mmt : savedCompetitorMatch.getIdMatch().getMatchMatchTypeList()) {
+                    if (mmt.getIdMatchType().getMatchTypeName().equals("final")) {
+                        bracketCreator.disableMatch(dp);
+
+                        JsfUtils.addSuccessMessage("Competitor won the competition", "Name: "
+                                + BracketUtil.getMatchWinner(savedCompetitorMatch.getIdMatch()).getIdCompetitor().getIdPersonalInfo().getFirstName()
+                                + " "
+                                + BracketUtil.getMatchWinner(savedCompetitorMatch.getIdMatch()).getIdCompetitor().getIdPersonalInfo().getLastName(), "manageCompetitionForm");
+
+                        break;
+                    }
+                }
             }
 
             System.out.println("Przeszlo all, advanced id = " + advancedCompetitorMatch);
@@ -161,7 +174,7 @@ public class ManageCompetitionBackingBean extends CompetitionBackingBean impleme
             }
 
             System.out.println("BEFORE matchType updated BB ");
-            match.getMatchMatchTypeList().stream().forEach(p -> System.out.println(" id " + p.getIdMatchMatchType() + " type " + p.getIdMatchType()));
+//            match.getMatchMatchTypeList().stream().forEach(p -> System.out.println(" id " + p.getIdMatchMatchType() + " type " + p.getIdMatchType()));
             MatchMatchType updatedMMT = controller.updateMatchType(match);
             System.out.println("AFTER matchType updated BB id " + updatedMMT.getIdMatchMatchType() + " typ " + updatedMMT.getIdMatchType());
 
@@ -174,8 +187,7 @@ public class ManageCompetitionBackingBean extends CompetitionBackingBean impleme
                 }
             }
 
-            BracketUtil.makeSerializablePanel(dp);
-
+//            BracketUtil.makeSerializablePanel(dp);
             InactivateMatch inactiveMatch = controller.disableMatch(dp);
 //        addAdvancedCompetitor(advancedMatchNumber);
             if (!inactiveMatch.getEditable()) {
@@ -205,6 +217,9 @@ public class ManageCompetitionBackingBean extends CompetitionBackingBean impleme
         try {
             controller.saveCompetitionGeneralInfo(competition);
             JsfUtils.addSuccessMessage("Data was successfully saved", null, "manageCompetitionForm");
+        } catch (ApplicationException e) {
+            System.out.println("APPExcpetion ManageCmopBB#saveGeneralInfo " + e.getMessage());
+            JsfUtils.addErrorMessage(e.getLocalizedMessage(), "", "manageCompetitionForm:competitionName");
         } catch (Exception e) {
             System.out.println("ManageCompetitionBackingBean#saveGeneralInfo excpetion " + e.getLocalizedMessage());
             e.printStackTrace();

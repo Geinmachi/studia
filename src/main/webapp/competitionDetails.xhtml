@@ -20,10 +20,10 @@ and open the template in the editor.
 
             <p:panelGrid styleClass="middleTableWrapper centeredText shadows">
                 <p:row>
-                    <p:column>
+                    <p:column styleClass="columnHalfSize">
                         <p:outputLabel value="#{msg.competitionName}"/>
                     </p:column>
-                    <p:column>
+                    <p:column styleClass="columnHalfSize">
                         <p:outputLabel styleClass="boldFont" value="#{competitionDetailsBackingBean.competition.competitionName}"/>
                     </p:column>
                 </p:row>
@@ -45,8 +45,16 @@ and open the template in the editor.
 
                                     <f:facet name="options">
                                         <p:menu>
-                                            <p:menuitem value="#{msg.startDate}: #{groupDetails.startDate}" />
-                                            <p:menuitem value="#{msg.endDate}: #{groupDetails.endDate}" />
+                                            <p:menuitem>
+                                                <p:outputLabel value="#{msg.startDate}: "/>
+                                                <p:outputLabel value="#{groupDetails.startDate}">
+                                                    <f:convertDateTime pattern="dd.MM.yyyy HH:mm" />                                                </p:outputLabel>
+                                            </p:menuitem>
+                                            <p:menuitem>
+                                                <p:outputLabel value="#{msg.endDate}: "/>
+                                                <p:outputLabel value="#{groupDetails.endDate}">
+                                                    <f:convertDateTime pattern="dd.MM.yyyy HH:mm" />                                                </p:outputLabel>
+                                            </p:menuitem>
                                         </p:menu>
                                     </f:facet>
 
@@ -88,7 +96,7 @@ and open the template in the editor.
                                                     #{cmgFromMatch.idCompetitor.idPersonalInfo.firstName}
                                                     #{cmgFromMatch.idCompetitor.idPersonalInfo.lastName} 
                                                 </p:outputLabel>
-                                                <p:outputLabel style="float: right;">
+                                                <p:outputLabel styleClass="scoreInplace">
                                                     #{cmgFromMatch.competitorMatchScore}
                                                 </p:outputLabel>
                                                 <p:graphicImage library="img" value="/resources/img/Crown_Icon.png" class="crown#{index.index}" 
@@ -110,8 +118,13 @@ and open the template in the editor.
 
                                 <f:facet name="options">
                                     <p:menu>
-                                        <p:menuitem value="#{dashboardPanel.match.matchDate}"/>
-                                        <p:menuitem value="#{dashboardPanel.matchType.matchTypeName}"/>
+                                        <p:menuitem>
+                                            <p:outputLabel value="#{msg.date}: "/>
+                                            <p:outputLabel value="#{dashboardPanel.match.matchDate}">
+                                                <f:convertDateTime pattern="dd.MM.yyyy HH:mm" />
+                                            </p:outputLabel>
+                                        </p:menuitem>
+                                        <p:menuitem value="#{msg.matchType}: #{dashboardPanel.matchType.matchTypeName}"/>
                                     </p:menu>
                                 </f:facet>
                             </p:panel>

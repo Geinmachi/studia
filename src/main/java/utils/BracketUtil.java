@@ -6,11 +6,12 @@
 package utils;
 
 import entities.CompetitorMatch;
+import entities.MatchMatchType;
+import entities.MatchType;
 import entities.Matchh;
 import java.util.List;
 import mot.interfaces.AdvancingMatchData;
-import org.primefaces.component.panel.Panel;
-import web.models.DashboardPanel;
+import mot.managers.ManageCompetitionManager;
 
 /**
  *
@@ -40,8 +41,7 @@ public class BracketUtil {
 
         short firstMatchIndexInRound = firstMatchIndexInRound(competitorCount / 2, matchData.getRoundd());
 
-        System.out.println("matchesInRound " + matchesInRound + " -- firstMatchIndexInRound"
-                + firstMatchIndexInRound);
+        System.out.println("matchesInRound " + matchesInRound + " -- firstMatchIndexInRound" + firstMatchIndexInRound);
 
         for (short i = 0; i <= matchesInRound; i++) {
             matchCounter += 0.5;
@@ -78,11 +78,11 @@ public class BracketUtil {
         return (short) (firstMatchIndexInRound(firstRoundMatches / 2, (short) (round - 1)) + firstRoundMatches);
     }
 
-    public static void makeSerializablePanel(DashboardPanel dp) {
-        Panel p = new Panel(); // Panel not serializable excpetion workaround
-        p.setId(dp.getPanel().getId());
-        dp.setPanel(p);
-    }
+//    public static void makeSerializablePanel(DashboardPanel dp) {
+//        Panel p = new Panel(); // Panel not serializable excpetion workaround
+//        p.setId(dp.getPanel().getId());
+//        dp.setPanel(p);
+//    }
 
     public static int matchPositionInRound(int matchNumber, int competitorCount) {
 
@@ -103,10 +103,26 @@ public class BracketUtil {
     }
 
     public static CompetitorMatch getMatchWinner(Matchh match) {
+        int winningScore = 0;
+        
+        for (MatchMatchType mmt : match.getMatchMatchTypeList()) {
+            if (mmt.getIdMatchType().getMatchTypeName().startsWith("BO")) {
+                winningScore = (int)Math.ceil(Double.parseDouble(mmt.getIdMatchType().getMatchTypeName().substring(2))/2);
 
+                break;
+            }
+        }
+       
+        System.err.println("WINNINGSCORE " + winningScore);
+        
         List<CompetitorMatch> cmList = match.getCompetitorMatchList();
         if (cmList.size() == 2 && cmList.get(0).getCompetitorMatchScore() != null
                 && cmList.get(1).getCompetitorMatchScore() != null) {
+            
+            if (cmList.get(0).getCompetitorMatchScore() != winningScore &&
+                    cmList.get(1).getCompetitorMatchScore() != winningScore) { // there is no winner (not enough score to win)
+                return null;
+            }
 
             short firstCompetitorScore = cmList.get(0).getCompetitorMatchScore();
             short secondCompetitorScore = cmList.get(1).getCompetitorMatchScore();
@@ -122,6 +138,6 @@ public class BracketUtil {
             }
         }
         
-        return new CompetitorMatch();
+        return null;
     }
 }

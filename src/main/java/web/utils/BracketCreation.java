@@ -50,6 +50,7 @@ import org.primefaces.model.DefaultDashboardModel;
 import utils.BracketUtil;
 import web.controllers.CompetitionController;
 import web.models.DashboardPanel;
+import web.qualifiers.Logging;
 
 /**
  *
@@ -57,6 +58,7 @@ import web.models.DashboardPanel;
  */
 //@Named(value = "bracketCreationBackingBean")
 //@ViewScoped
+//@Logging
 @Dependent
 public class BracketCreation implements Serializable {
 
@@ -137,12 +139,12 @@ public class BracketCreation implements Serializable {
         createModel();
     }
 
-//    public void recreateBracket(List<CMG> competitorMatchGroupList) {
+//    public void recreateBracketToEdit(List<CMG> competitorMatchGroupList) {
 //        this.competitorMatchGroupList = competitorMatchGroupList;
 //        initializeLists();
 //        createModel();
 //    }
-    public void recreateBracket(Competition competition) {
+    public void recreateBracketToEdit(Competition competition) {
         List<CMG> cmgList = controller.getCompetitionCMGMappings(competition);
 
         this.competitorMatchGroupList = cmgList;
@@ -150,7 +152,15 @@ public class BracketCreation implements Serializable {
         createModel();
         disableFinishedMatches();
         assignCurrentMatchTypes();
-        //    assignMatchTypes();
+    }
+    
+    public void recreateBracketToDisplay(Competition competition) {
+        List<CMG> cmgList = controller.getCompetitionCMGMappings(competition);
+
+        this.competitorMatchGroupList = cmgList;
+        initializeLists();
+        createModel();
+        assignCurrentMatchTypes();
     }
 
     public void updateBracket() {
@@ -176,7 +186,7 @@ public class BracketCreation implements Serializable {
                     System.out.println(mmt.getIdMatchType().getMatchTypeName());
                 }
             } else {
-                System.out.print("Match null");
+                System.out.println("Match null");
             }
         }
     }
@@ -213,8 +223,7 @@ public class BracketCreation implements Serializable {
         Set<Matchh> uniqueOtherMatches = new HashSet();
 
         for (CMG cmg : competitorMatchGroupList) {
-            System.out.println("CMMMMGGG " + cmg.getIdMatch().getMatchNumber() + " round "
-                    + cmg.getIdMatch().getRoundd());
+            System.out.println("CMMMMGGG " + cmg.getIdMatch().getMatchNumber() + " round " + cmg.getIdMatch().getRoundd());
             if (cmg.getIdCompetitor() != null && cmg.getGroupCompetitor() != null && cmg.getIdMatch().getRoundd() == 1) { // bylo cmg.getIdGroup
                 competitorsWithGroups.add(cmg.getIdCompetitor());
             } else {
@@ -302,8 +311,7 @@ public class BracketCreation implements Serializable {
 
         for (int i = 0; i < otherMatches.size(); i++) {
 
-            System.out.println("MAAATTTTTTHCHCHCHCCHCHCHHCHC ++++ " + otherMatches.get(i).getRoundd()
-                    + " number " + otherMatches.get(i).getMatchNumber());
+            System.out.println("MAAATTTTTTHCHCHCHCCHCHCHHCHC ++++ " + otherMatches.get(i).getRoundd() + " number " + otherMatches.get(i).getMatchNumber());
             Panel panel = new Panel();
             System.out.println("Competitors: ");
 
@@ -332,7 +340,7 @@ public class BracketCreation implements Serializable {
 //                dashboardPanel.setMargin(650);
 //            }//590
             dashboardPanel.setMatch(otherMatches.get(i));
-            dashboardPanel.getMatch().setMatchDate(new Date());
+//            dashboardPanel.getMatch().setMatchDate(new Date());
             System.out.println("SOROWANIE INNYCH RUND");
             sortCompetitorsInMatch(otherMatches.get(i));
             for (CompetitorMatch cm : dashboardPanel.getMatch().getCompetitorMatchList()) {
@@ -359,7 +367,7 @@ public class BracketCreation implements Serializable {
 //            dashboardPanel.setMargin(50);
             dashboardPanel.setPanel(panel);
             dashboardPanel.setMatch(firstRoundMatches.get(i));
-            dashboardPanel.getMatch().setMatchDate(new Date());
+//            dashboardPanel.getMatch().setMatchDate(new Date());
             System.out.println("SORTOWANIE PIERWSZEJ RUNDY");
             sortCompetitorsInMatch(firstRoundMatches.get(i));
             for (CompetitorMatch cm : dashboardPanel.getMatch().getCompetitorMatchList()) {
@@ -472,7 +480,7 @@ public class BracketCreation implements Serializable {
                     dp.updateCMGwithAdvanced(cmg);
                     
                     System.out.println("PRZED DISABLE");
-                    BracketUtil.makeSerializablePanel(dp);
+//                    BracketUtil.makeSerializablePanel(dp);
                     this.disableMatch(dp);
                     System.out.println("PO DISABLE");
                     
@@ -497,7 +505,8 @@ public class BracketCreation implements Serializable {
         for (DashboardPanel dp : panelList) {
 
             //    System.out.println("PANEL SERAILZIABLE " + dp.getPanel());
-            BracketUtil.makeSerializablePanel(dp);
+            
+       //     BracketUtil.makeSerializablePanel(dp);
             InactivateMatch updatedMatch = controller.disableMatch(dp);
 
             dp.setEditable(updatedMatch.getEditable());
@@ -546,6 +555,12 @@ public class BracketCreation implements Serializable {
 
     private void assignCurrentMatchTypes() {
         for (DashboardPanel dp : panelList) {
+            
+//            CurrentMatchType dpWrapper = new DashboardPanel();
+//            
+//            dpWrapper.setMatchType(dp.getMatchType());
+//            dpWrapper.setMatch(dp.getMatch());
+
             CurrentMatchType cmt = controller.assignCurrentMatchType(dp);
 
             dp.setMatchType(cmt.getMatchType());

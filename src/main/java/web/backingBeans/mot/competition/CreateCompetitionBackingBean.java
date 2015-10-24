@@ -13,14 +13,14 @@ import exceptions.ApplicationException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
-import javax.faces.application.FacesMessage;
 import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
+import javax.faces.event.AjaxBehaviorEvent;
+import javax.faces.event.ValueChangeEvent;
 import javax.inject.Named;
 //import javax.enterprise.context.RequestScoped;
 import javax.faces.view.ViewScoped;
@@ -52,6 +52,8 @@ public class CreateCompetitionBackingBean extends CompetitionBackingBean impleme
 
     private boolean duplicatedCompetitorFlag;
 
+    private boolean competitionNameConstrains;
+
     private CompetitionType selectedCompetitionType;
 
     private Competitor selectedToRemove;
@@ -67,6 +69,7 @@ public class CreateCompetitionBackingBean extends CompetitionBackingBean impleme
         return competition;
     }
 
+    @Override
     public List<Competitor> getCompetitorList() {
         return competitorList;
     }
@@ -89,6 +92,10 @@ public class CreateCompetitionBackingBean extends CompetitionBackingBean impleme
 
     public boolean isDuplicatedCompetitorFlag() {
         return duplicatedCompetitorFlag;
+    }
+
+    public boolean isCompetitionNameConstrains() {
+        return competitionNameConstrains;
     }
 
     public boolean isIsCompetitorsAmountValid() {
@@ -134,33 +141,36 @@ public class CreateCompetitionBackingBean extends CompetitionBackingBean impleme
         competitors = new DualListModel(competitorsSource, comeptitorsTarget);
 
         competitionTypes = controller.getAllCompetitionTypes();
-        for (int i = 0; i < 16; i++) {
-            comeptitorsTarget.add(competitorList.get(i));
-        }
-        competition.setCompetitionName("ddd");
-        competition.setEndDate(new Date());
-        competition.setStartDate(new Date());
+
+//        for (int i = 0; i < 16; i++) {
+//            comeptitorsTarget.add(competitorList.get(i));
+//        }
+//        competition.setCompetitionName("ddd");
+//        competition.setEndDate(new Date());
+//        competition.setStartDate(new Date());
     }
 
     public String onFlowProcess(FlowEvent event) {
         if (event.getOldStep().equals("firstStep")) {
-            if (duplicatedCompetitorFlag || !isCompetitorsAmountValid) {
-                System.out.println("ONFLOW duplicated");
-                //    return event.getOldStep();
-            }
+//            if (duplicatedCompetitorFlag || !isCompetitorsAmountValid) {
+//                System.out.println("ONFLOW duplicated " + FacesContext.getCurrentInstance().getMessageList().size());
+//                return event.getOldStep();
+//            }
             bracketCreator.createEmptyBracket(competitors.getTarget());
 
         } else if (event.getNewStep().equals("firstStep")) {
-            
             RequestContext.getCurrentInstance().update("msgs");
             bracketCreator.clearLists();
         }
+
         return event.getNewStep();
     }
 
     public String createCompetition() {
         try {
-            competition.setIdCompetitionType(selectedCompetitionType);
+//            competition.setIdCompetitionType(selectedCompetitionType);
+            competition.setIdCompetitionType(competitionTypes.get(0));
+
             bracketCreator.updateBracket();
             controller.createCompetition(competition, bracketCreator.getCompetitorMatchGroupList());
             return "/index.xhtml?faces-redirect=true";
@@ -188,12 +198,29 @@ public class CreateCompetitionBackingBean extends CompetitionBackingBean impleme
                     + duplicatedCompetitor.getIdPersonalInfo().getLastName(), null);
             duplicatedCompetitorFlag = true;
 
-            UIInput pickList = (UIInput) FacesContext.getCurrentInstance().getViewRoot().findComponent("createCompetitionForm:competitorPickList");
-            pickList.setValid(false);
+            System.out.println("CHECK DUP msgs " + FacesContext.getCurrentInstance().getMessageList().size());
+//            UIInput pickList = (UIInput) FacesContext.getCurrentInstance().getViewRoot().findComponent("createCompetitionForm:competitorPickList");
+//            pickList.setValid(false);
 
             return;
         }
 
         duplicatedCompetitorFlag = false;
     }
+
+    public void globalValueChanged(ValueChangeEvent e) {
+        System.out.println("NOWA WARTOSC " + e.getNewValue());
+    }
+
+    public void checkCompetitionConstraints() throws ApplicationException {
+        controller.checkCompetitionConstraints(competition);
+    }
+
+//    public Competitor checkCompetitorDuplicate(List<Competitor> competitorList) {
+//        return controller.vlidateCompetitorDuplicate(competitorList);
+//    }
+//    
+//    public boolean checkCompetitorAmount(int competitorCount) {
+//        return controller.validateCompetitorsAmount(competitorCount);
+//    }
 }
