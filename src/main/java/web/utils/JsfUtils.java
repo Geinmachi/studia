@@ -51,4 +51,10 @@ public class JsfUtils {
     public static Locale getLocale() {
         return context().getRequestLocale();
     }
+    
+    public static String successPageRedirect(String backPage) {
+        context().getFlash().put("donePageBack", backPage);
+        
+        return PageConstants.getPage(PageConstants.ROOT_DONE, true);
+    }
 }

@@ -20,6 +20,8 @@
                 saveAction="#{editTeamBackingBean.editTeam()}"/>
         </h:form>
 
+        <p:messages showIcon="false" autoUpdate="true" styleClass="loneMessage"
+                    rendered="#{empty editTeamBackingBean.team}"/>
     </ui:define>
 </ui:composition>
 

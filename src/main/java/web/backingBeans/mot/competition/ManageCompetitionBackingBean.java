@@ -42,6 +42,7 @@ import utils.BracketUtil;
 import ejbCommon.TrackerInterceptor;
 import web.controllers.CompetitionController;
 import web.models.DashboardPanel;
+import web.utils.CheckUtils;
 import web.utils.JsfUtils;
 
 /**
@@ -90,10 +91,11 @@ public class ManageCompetitionBackingBean extends CompetitionBackingBean impleme
     private void init() {
         System.out.println("INITTTTTTTTTTTTTTTTTTTTT");
         competition = controller.getEditingCompetition();
-        if (competition == null) {
-            throw new IllegalStateException("There is no competition to edit");
+        
+        if (CheckUtils.isCompetitionNull(competition)) {
+            return;
         }
-
+        
         groupDetailsList = new ArrayList<>(competition.getGroupDetailsList());
 
         Collections.sort(groupDetailsList);

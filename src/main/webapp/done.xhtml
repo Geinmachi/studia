@@ -3,10 +3,7 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui"
-                xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:f="http://xmlns.jcp.org/jsf/core"
-                template="/WEB-INF/templates/main.xhtml"
-                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+                template="/WEB-INF/templates/main.xhtml">
     <ui:define name="title">#{msg.done}</ui:define>
     <ui:define name="content">
         <p:outputPanel styleClass="doneWrapper">
@@ -20,8 +17,8 @@
                     <p:column>
                         <p:button outcome="/index.xhtml" value="#{msg.mainPage}"/>
                     </p:column>
-                    <p:column rendered="#{not empty flash['page']}">
-                        <p:button outcome="#{flash['page']}" value="#{msg.back}"/>
+                    <p:column rendered="#{not empty flash['donePageBack']}">
+                        <p:button outcome="#{flash['donePageBack']}" value="#{msg.back}"/>
                     </p:column>
                 </p:row>
             </p:panelGrid>

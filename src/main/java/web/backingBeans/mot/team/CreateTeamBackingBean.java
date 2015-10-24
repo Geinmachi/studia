@@ -24,6 +24,7 @@ import org.primefaces.model.DualListModel;
 import web.controllers.CompetitionController;
 import web.converters.interfaces.CompetitorConverterData;
 import web.utils.JsfUtils;
+import web.utils.PageConstants;
 
 /**
  *
@@ -90,7 +91,8 @@ public class CreateTeamBackingBean extends TeamBackingBean implements Serializab
         try {
             System.out.println("Competitors size BB " + team.getCompetitorList().size());
             controller.createTeam(team, isGlobal);
-            return "/index.xhtml?faces-redirect=true";
+            
+            return JsfUtils.successPageRedirect(PageConstants.ORGANIZER_CREATE_TEAM);
         } catch (TeamCreationException e) {
             System.out.println("TEAMCREATIONEXCEPTION " + e.getLocalizedMessage());
             JsfUtils.addErrorMessage(e.getLocalizedMessage(), null, null);

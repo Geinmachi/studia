@@ -17,6 +17,7 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import web.backingBeans.mot.competition.CompetitionBackingBean;
 import web.controllers.CompetitionController;
+import web.utils.PageConstants;
 
 /**
  *
@@ -51,6 +52,6 @@ public class CompetitorListBackingBean extends CompetitionBackingBean implements
     public String show(Competitor competitor) {
         controller.storeCompetitor(competitor);
         
-        return "editCompetitor.xhtml?faces-redirect=true";
+        return PageConstants.getPage(PageConstants.EDIT_EDIT_COMPETITOR, true);
     }
 }

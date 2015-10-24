@@ -18,6 +18,7 @@ import web.backingBeans.mot.competition.CompetitionBackingBean;
 import web.controllers.CompetitionController;
 import web.converters.interfaces.TeamConverterData;
 import web.utils.JsfUtils;
+import web.utils.PageConstants;
 
 /**
  *
@@ -81,7 +82,7 @@ public class AddCompetitorBackingBean extends CompetitionBackingBean implements 
             competitor.setIdTeam(selectedTeam);
             controller.addCompetitor(competitor, isGlobal);
             
-            return CompetitionController.getSUCCESS_PAGE();
+            return JsfUtils.successPageRedirect(PageConstants.ORGANIZER_ADD_COMPETITOR);
         } catch (ApplicationException e) {
             JsfUtils.addErrorMessage(e.getLocalizedMessage(), null, null);
             

@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import utils.ConvertUtil;
 import utils.ResourceBundleUtil;
 import web.utils.JsfUtils;
+import web.utils.PageConstants;
 
 /**
  *
@@ -68,10 +69,12 @@ public class LoginBackingBean {
         try {
             request.logout();
             System.out.println("Wylogowano");
-            return "/index.xhtml?faces-redirect=true";
+            
+            return PageConstants.getPage(PageConstants.ROOT_INDEX, true);
         } catch (ServletException e) {
             System.out.println("Niewylogowano \n " + e.getMessage());
             context.addMessage(null, new FacesMessage("Logout failed."));
+            
             return null;
         }
     }

@@ -30,6 +30,7 @@ import org.primefaces.event.FlowEvent;
 import org.primefaces.model.DualListModel;
 import web.converters.interfaces.CompetitorConverterData;
 import web.utils.JsfUtils;
+import web.utils.PageConstants;
 
 /**
  *
@@ -173,7 +174,8 @@ public class CreateCompetitionBackingBean extends CompetitionBackingBean impleme
 
             bracketCreator.updateBracket();
             controller.createCompetition(competition, bracketCreator.getCompetitorMatchGroupList());
-            return "/index.xhtml?faces-redirect=true";
+
+            return JsfUtils.successPageRedirect(PageConstants.ORGANIZER_CREATE_COMPETITION);
         } catch (ApplicationException e) {
             JsfUtils.addErrorMessage(e.getLocalizedMessage(), " ", null);
             Logger.getLogger(CreateCompetitionBackingBean.class.getName()).log(Level.SEVERE, null, e);
