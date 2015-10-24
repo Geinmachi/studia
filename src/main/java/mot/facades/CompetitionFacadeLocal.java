@@ -43,4 +43,6 @@ public interface CompetitionFacadeLocal {
     public List<Competition> findGlobalCompetitions();
 
     void competitionContraints(Competition competition) throws CompetitorCreationException;
+
+    void competitionContraintsNotCommited(Competition competition) throws CompetitorCreationException;
 }

@@ -15,6 +15,8 @@ import javax.faces.context.FacesContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import utils.ConvertUtil;
+import utils.ResourceBundleUtil;
+import web.utils.JsfUtils;
 
 /**
  *
@@ -51,13 +53,12 @@ public class LoginBackingBean {
 
         FacesContext context = FacesContext.getCurrentInstance();
         HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
-
+//        System.out.println("URI " + FacesContext.getCurrentInstance().getViewRoot().getViewId());
         try {
             request.login(username, password);
-//            return "/index.xhtml?faces-redirect=true";
         } catch (ServletException ex) {
             Logger.getLogger(LoginBackingBean.class.getName()).log(Level.SEVERE, null, ex);
-//            return null;
+            JsfUtils.addErrorMessage("Login failed", "Incorrect login or password", "globalContainer");
         }
     }
 

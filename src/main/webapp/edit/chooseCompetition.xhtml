@@ -17,18 +17,25 @@ and open the template in the editor.
 
         <h:form id="chooseCompetitionForm">
             <p:dataTable  paginator="true" rows="10" rowsPerPageTemplate="10,25,50" sortMode="multiple" styleClass="shadows"
-                var="competition" value="#{chooseCompetitionBackingBean.competitionList}">
-                <p:column headerText="#{msg.competitionName}">
+                          var="competition" value="#{chooseCompetitionBackingBean.competitionList}">
+                <p:column headerText="#{msg.competitionName}" filterBy="#{competition.competitionName}"
+                          sortBy="#{competition.competitionName}" filterMatchMode="contains">
                     <p:outputLabel value="#{competition.competitionName}"/>
                 </p:column>
-                <p:column headerText="#{msg.competitionCreator}" rendered="#{request.isUserInRole(bsn['role.admin'])}">
+                <p:column headerText="#{msg.competitionCreator}" rendered="#{request.isUserInRole(bsn['role.admin'])}"
+                          sortBy="#{competition.idOrganizer.idAccount.login}" filterMatchMode="contains"
+                          filterBy="#{competition.idOrganizer.idAccount.login}">
                     <p:outputLabel>
-                        ${competition.idOrganizer.idAccount.idPersonalInfo.firstName} 
-                        ${competition.idOrganizer.idAccount.idPersonalInfo.lastName} 
+                        #{competition.idOrganizer.idAccount.login}
                     </p:outputLabel>
                 </p:column>
                 <p:column headerText="#{msg.isGlobal}" rendered="#{request.isUserInRole(bsn['role.admin'])}">
                     <p:selectBooleanCheckbox value="#{competition.global}" disabled="true"/>
+                </p:column>
+                <p:column headerText="#{msg.creationDate}" sortBy="#{competition.creationDate}">
+                    <p:outputLabel value="#{competition.creationDate}">
+                        <f:convertDateTime pattern="dd.MM.yyyy HH:mm" />
+                    </p:outputLabel>
                 </p:column>
                 <p:column headerText="#{msg.manageCompetition}">
                     <p:commandButton value="#{msg.manage}" icon="#{request.remoteUser eq competition.idOrganizer.idAccount.login ? ' ' : 'ui-icon-flag'}" iconPos="right"

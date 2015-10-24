@@ -73,3 +73,28 @@ span > i.glyphicon-bullhorn {
 .groupPanel > :first-child {
     padding: 0.5em 1em 0.3em; // Primefaces doesnt load style, only after ajax update (ui-panel-titlebar)
 }
+
+.loginErrorWrapper {
+    position: relative;
+}
+
+.loginErrorWrapper > label {
+    position: absolute;
+    right: 0;
+    left: 0;
+    text-align: center;
+}
+
+.columnHalfSize {
+    width: 50%;
+}
+
+.doneWrapper {
+    position: relative;
+    text-align: center;
+}
+
+.loneMessage {
+    display: table;
+    margin: auto;
+}

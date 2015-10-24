@@ -21,7 +21,7 @@ and open the template in the editor.
         <p:growl id="msgs" sticky="true"/>
 
         <h:form id="createCompetitionForm">
-            <p:wizard flowListener="#{createCompetitionBackingBean.onFlowProcess}" id="wizard">
+            <p:wizard flowListener="#{createCompetitionBackingBean.onFlowProcess}" id="wizard" onnext="console.log(#{facesContext.messageList.size()})">
                 <p:tab id="firstStep" title="#{msg.generalTab}">
                     <p:panelGrid styleClass="firstStepWizard shadows">
                         <p:row>
@@ -37,24 +37,24 @@ and open the template in the editor.
                                 <p:message showSummary="true" showDetail="false" id="competitionNameMsg" for="competitionName"/>
                             </p:column>
                         </p:row>
-                        <p:row>
-                            <p:column>
-                                <p:outputLabel for="competitionType" value="#{msg.competitionType}"/>
-                            </p:column>
-                            <p:column>
-                                <p:selectOneMenu id="competitionType"
-                                                 value="#{createCompetitionBackingBean.selectedCompetitionType}"
-                                                 converter="competitionTypeConverter">
-                                    <f:selectItems value="#{createCompetitionBackingBean.competitionTypes}" 
-                                                   var="competitionType" 
-                                                   itemLabel="#{competitionType.competitionTypeName}"
-                                                   noSelectionValue="#{null}"/>
-                                </p:selectOneMenu>
-                            </p:column>
-                            <p:column>
-                                <p:message for="competitionType"/>
-                            </p:column>
-                        </p:row>
+                        <!--                        <p:row>
+                                                    <p:column>
+                                                        <p:outputLabel for="competitionType" value="#{msg.competitionType}"/>
+                                                    </p:column>
+                                                    <p:column>
+                                                        <p:selectOneMenu id="competitionType"
+                                                                         value="#{createCompetitionBackingBean.selectedCompetitionType}"
+                                                                         converter="competitionTypeConverter">
+                                                            <f:selectItems value="#{createCompetitionBackingBean.competitionTypes}" 
+                                                                           var="competitionType" 
+                                                                           itemLabel="#{competitionType.competitionTypeName}"
+                                                                           noSelectionValue="#{null}"/>
+                                                        </p:selectOneMenu>
+                                                    </p:column>
+                                                    <p:column>
+                                                        <p:message for="competitionType"/>
+                                                    </p:column>
+                                                </p:row>-->
                         <p:row>
                             <p:column>
                                 <p:outputLabel for="startDate" value="#{msg.startDate}"/>
@@ -96,7 +96,7 @@ and open the template in the editor.
 
                                     <f:facet name="sourceCaption">#{msg.competitors}</f:facet>
                                     <f:facet name="targetCaption">#{msg.assignedCompetitors}</f:facet>
-                                    <p:ajax event="transfer" listener="#{createCompetitionBackingBean.checkDuplicate}" update="competitorsAmountValidation msg" />
+                                    <p:ajax event="transfer" partialSubmit="true" process="@this" update="competitorPickListMsg" />
 
                                     <p:column style="width: 100%">
                                         <p:outputLabel>
@@ -107,20 +107,28 @@ and open the template in the editor.
                                             #{competitor.idPersonalInfo.lastName}
                                         </p:outputLabel>
                                     </p:column>
+
+                                    <f:validator binding="#{duplicatedCompetitorsValidator}"/>
+                                    <f:validator binding="#{competitorsAmountValidator}"/>
                                 </p:pickList>
                             </p:column>
                         </p:row>
                         <p:row>
                             <p:column colspan="3">
+                                <p:outputLabel>
+                                    * - #{msg.competitorAsterisk}
+                                </p:outputLabel> 
+<!--                                <br/>
                                 <p:outputPanel id="competitorsAmountValidation" styleClass="centeredText" >
-                                    <p:outputLabel value="#{msg.assignedCompetitorsMustBePowerOfTwo}" styleClass="ui-message-error"
+                                    <p:outputLabel value="#{msg.assignedCompetitorsMustBePowerOfTwo} (#{createCompetitionBackingBean.competitors.target.size()})" 
+                                                   styleClass="ui-message-error ui-message ui-corner-all"
                                                    rendered="#{not createCompetitionBackingBean.isCompetitorsAmountValid}"/>
-                                </p:outputPanel>
+                                </p:outputPanel>-->
                             </p:column>
                         </p:row>
                         <p:row>
                             <p:column colspan="3">
-                                <p:messages showDetail="true" globalOnly="true" id="msg"/>
+                                <p:messages for="competitorPickList" autoUpdate="true" showDetail="true" id="competitorPickListMsg"/>
                             </p:column>
                         </p:row>
                     </p:panelGrid>

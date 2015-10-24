@@ -13,11 +13,13 @@
             <p:dataTable  paginator="true" rows="10" rowsPerPageTemplate="10,25,50" sortMode="multiple" styleClass="shadows"
                 var="team" value="#{teamListBackingBean.teamList}">
 
-                <p:column headerText="#{msg.teamName}">
+                <p:column headerText="#{msg.teamName}" sortBy="#{team.teamName}" filterMatchMode="contains"
+                          filterBy="#{team.teamName}">
                     <h:outputText value="#{team.teamName}" />
                 </p:column>
 
-                <p:column headerText="#{msg.creator}" rendered="#{request.isUserInRole(bsn['role.admin'])}">
+                <p:column headerText="#{msg.creator}" rendered="#{request.isUserInRole(bsn['role.admin'])}"
+                          sortBy="#{team.idCreator.idAccount.login}" filterBy=" #{team.idCreator.idAccount.login}" filterMatchMode="contains">
                     <ui:fragment rendered="#{empty team.idCreator}">
                         #{msg.globalTeam}
                     </ui:fragment>

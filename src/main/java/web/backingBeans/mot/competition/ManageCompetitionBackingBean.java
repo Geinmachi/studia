@@ -217,6 +217,9 @@ public class ManageCompetitionBackingBean extends CompetitionBackingBean impleme
         try {
             controller.saveCompetitionGeneralInfo(competition);
             JsfUtils.addSuccessMessage("Data was successfully saved", null, "manageCompetitionForm");
+        } catch (ApplicationException e) {
+            System.out.println("APPExcpetion ManageCmopBB#saveGeneralInfo " + e.getMessage());
+            JsfUtils.addErrorMessage(e.getLocalizedMessage(), "", "manageCompetitionForm:competitionName");
         } catch (Exception e) {
             System.out.println("ManageCompetitionBackingBean#saveGeneralInfo excpetion " + e.getLocalizedMessage());
             e.printStackTrace();

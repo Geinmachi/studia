@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                template="/WEB-INF/templates/main.xhtml"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <ui:define name="title">#{msg.loginErrorTitle}</ui:define>
+    <ui:define name="content">
+        <p:outputPanel styleClass="loginErrorWrapper">
+            <c:choose>
+                <c:when test="#{request.remoteUser}">
+                    <p:outputLabel value="#{msg.loginErrorContentLogged}"/>
+                </c:when>
+                <c:otherwise>
+                    <p:outputLabel value="#{msg.loginErrorContent}"/>
+                </c:otherwise>
+            </c:choose>
+        </p:outputPanel>
+    </ui:define>
+</ui:composition>

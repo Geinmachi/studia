@@ -12,6 +12,7 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import web.backingBeans.mot.competition.CompetitionBackingBean;
 import web.controllers.CompetitionController;
@@ -48,16 +49,24 @@ public class EditCompetitorBackingBean extends CompetitionBackingBean implements
     @PostConstruct
     private void init() {
         competitor = controller.getEditingCompetitor();
+
+        if (competitor == null) {
+            JsfUtils.addErrorMessage("There is no competitor to edit", " ", null);
+
+            return;
+        }
+
         teamList = controller.findAllTeams();
     }
 
     public String edit() {
         try {
             controller.editCompetitor(competitor);
-            return "/index.xhtml?faces-redirect=true";
+            FacesContext.getCurrentInstance().getExternalContext().getFlash().put("page", "/edit/competitorList.xhtml");
+            return CompetitionController.getSUCCESS_PAGE();
         } catch (ApplicationException e) {
-            JsfUtils.addErrorMessage(e.getLocalizedMessage(), null, null);
-            
+            JsfUtils.addErrorMessage(e.getLocalizedMessage(), " ", null);
+
             System.out.println("Application Exception ");
         } catch (Exception e) {
 
@@ -65,7 +74,6 @@ public class EditCompetitorBackingBean extends CompetitionBackingBean implements
             e.printStackTrace();
         }
 
-        
         return null;
     }
 }

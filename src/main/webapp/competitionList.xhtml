@@ -34,13 +34,13 @@ and open the template in the editor.
                     <p:outputLabel value="#{competition.idOrganizer.idAccount.login}"/>
                 </p:column>
 
-                <p:column headerText="#{msg.startDate}">
+                <p:column headerText="#{msg.startDate}" sortBy="#{competition.startDate}">
                     <h:outputText value="#{competition.startDate}" >
                         <f:convertDateTime pattern="dd.MM.yyyy HH:mm" />
                     </h:outputText>
                 </p:column>
 
-                <p:column headerText="#{msg.endDate}">
+                <p:column headerText="#{msg.endDate}" sortBy="#{competition.endDate}">
                     <h:outputText value="#{competition.endDate}" >
                         <f:convertDateTime pattern="dd.MM.yyyy HH:mm" />
                     </h:outputText>
@@ -66,7 +66,7 @@ and open the template in the editor.
                                      value="#{msg.show}"/>
                 </p:column>
 
-                <p:column headerText="#{msg.results}" sortBy="#{competition.idWinner}">
+                <p:column headerText="#{msg.results}">
                     <p:commandButton action="#{competitionListBackingBean.displayCompetition(competition, competitionListBackingBean.getDisplayPageEnum('RESULTS'))}" 
                                      value="#{msg.show}" disabled="#{empty competition.idWinner}"/>
                 </p:column>

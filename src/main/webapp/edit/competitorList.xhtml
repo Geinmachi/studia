@@ -15,19 +15,23 @@
             <p:dataTable  paginator="true" rows="10" rowsPerPageTemplate="10,25,50" sortMode="multiple" styleClass="shadows"
                 var="competitor" value="#{competitorListBackingBean.competitorList}">
 
-                <p:column headerText="#{msg.competitorFirstName}">
+                <p:column headerText="#{msg.competitorFirstName}" sortBy="#{competitor.idPersonalInfo.firstName}"
+                          filterBy="#{competitor.idPersonalInfo.firstName}" filterMatchMode="contains">
                     <h:outputText value="#{competitor.idPersonalInfo.firstName}" />
                 </p:column>
 
-                <p:column headerText="#{msg.competitorLastName}">
+                <p:column headerText="#{msg.competitorLastName}" sortBy="#{competitor.idPersonalInfo.lastName}"
+                          filterBy="#{competitor.idPersonalInfo.lastName}" filterMatchMode="contains">
                     <h:outputText value="#{competitor.idPersonalInfo.lastName}" />
                 </p:column>
 
-                <p:column headerText="#{msg.team}">
+                <p:column headerText="#{msg.team}" sortBy="#{competitor.idTeam.teamName}"
+                          filterBy="#{competitor.idTeam.teamName}" filterMatchMode="contains">
                     <h:outputText value="#{competitor.idTeam.teamName}" />
                 </p:column>
 
-                <p:column headerText="#{msg.creator}" rendered="#{request.isUserInRole(bsn['role.admin'])}">
+                <p:column headerText="#{msg.creator}" rendered="#{request.isUserInRole(bsn['role.admin'])}"
+                          sortBy="#{competitor.idCreator.idAccount.login}" filterBy="#{competitor.idCreator.idAccount.login}" filterMatchMode="contains">
                     <ui:fragment rendered="#{empty competitor.idCreator}">
                         #{msg.globalCompetitor}
                     </ui:fragment>

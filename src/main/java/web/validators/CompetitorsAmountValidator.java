@@ -5,7 +5,7 @@
  */
 package web.validators;
 
-import exceptions.ApplicationException;
+import entities.Competitor;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
@@ -14,6 +14,8 @@ import javax.faces.validator.Validator;
 import javax.faces.validator.ValidatorException;
 import javax.inject.Inject;
 import javax.inject.Named;
+import org.primefaces.model.DualListModel;
+import utils.ResourceBundleUtil;
 import web.backingBeans.mot.competition.CreateCompetitionBackingBean;
 import web.controllers.CompetitionController;
 
@@ -23,23 +25,28 @@ import web.controllers.CompetitionController;
  */
 @Named
 @RequestScoped
-public class CompetitionNameValidator implements Validator {
+public class CompetitorsAmountValidator implements Validator {
 
     @Inject
     private CreateCompetitionBackingBean createBean;
+    
+    @Inject
+    private CompetitionController controller;
 
     @Override
     public void validate(FacesContext context, UIComponent component, Object value) throws ValidatorException {
-        try {
-            createBean.getCompetition().setCompetitionName(value.toString());
-            createBean.checkCompetitionConstraints();
-        } catch (ApplicationException e) {
+        DualListModel competitors = (DualListModel) value;
+        createBean.setCompetitors(competitors);
+
+        boolean invalid = controller.validateCompetitorsAmount(competitors.getTarget().size());
+        System.out.println("VALL SIZE " + competitors.getTarget().size());
+        if (!invalid) {
             System.out.println("VALIDATOR EXCEPTION ");
 
-            FacesMessage msg = new FacesMessage(e.getLocalizedMessage(), " ");
-            msg.setSeverity(FacesMessage.SEVERITY_ERROR);
+            FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, ResourceBundleUtil.getResourceBundleProperty("assignedCompetitorsMustBePowerOfTwo"),
+                    "(" + competitors.getTarget().size() + ")");
+
             throw new ValidatorException(msg);
         }
     }
-
 }

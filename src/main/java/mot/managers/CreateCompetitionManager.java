@@ -552,6 +552,6 @@ public class CreateCompetitionManager implements CreateCompetitionManagerLocal {
 
             competition.setIdOrganizer(organizer);
         }
-        competitionFacade.competitionContraints(competition);
+        competitionFacade.competitionContraintsNotCommited(competition);
     }
 }

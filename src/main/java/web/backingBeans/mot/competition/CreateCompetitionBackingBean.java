@@ -51,7 +51,7 @@ public class CreateCompetitionBackingBean extends CompetitionBackingBean impleme
     private DualListModel competitors;
 
     private boolean duplicatedCompetitorFlag;
-    
+
     private boolean competitionNameConstrains;
 
     private CompetitionType selectedCompetitionType;
@@ -141,33 +141,36 @@ public class CreateCompetitionBackingBean extends CompetitionBackingBean impleme
         competitors = new DualListModel(competitorsSource, comeptitorsTarget);
 
         competitionTypes = controller.getAllCompetitionTypes();
-        for (int i = 0; i < 16; i++) {
-            comeptitorsTarget.add(competitorList.get(i));
-        }
-        competition.setCompetitionName("ddd");
-        competition.setEndDate(new Date());
-        competition.setStartDate(new Date());
+
+//        for (int i = 0; i < 16; i++) {
+//            comeptitorsTarget.add(competitorList.get(i));
+//        }
+//        competition.setCompetitionName("ddd");
+//        competition.setEndDate(new Date());
+//        competition.setStartDate(new Date());
     }
 
     public String onFlowProcess(FlowEvent event) {
         if (event.getOldStep().equals("firstStep")) {
-            if (duplicatedCompetitorFlag || !isCompetitorsAmountValid || !competitionNameConstrains) {
-                System.out.println("ONFLOW duplicated");
-        //            return event.getOldStep();
-            }
+//            if (duplicatedCompetitorFlag || !isCompetitorsAmountValid) {
+//                System.out.println("ONFLOW duplicated " + FacesContext.getCurrentInstance().getMessageList().size());
+//                return event.getOldStep();
+//            }
             bracketCreator.createEmptyBracket(competitors.getTarget());
 
         } else if (event.getNewStep().equals("firstStep")) {
-
             RequestContext.getCurrentInstance().update("msgs");
             bracketCreator.clearLists();
         }
+
         return event.getNewStep();
     }
 
     public String createCompetition() {
         try {
-            competition.setIdCompetitionType(selectedCompetitionType);
+//            competition.setIdCompetitionType(selectedCompetitionType);
+            competition.setIdCompetitionType(competitionTypes.get(0));
+
             bracketCreator.updateBracket();
             controller.createCompetition(competition, bracketCreator.getCompetitorMatchGroupList());
             return "/index.xhtml?faces-redirect=true";
@@ -195,8 +198,9 @@ public class CreateCompetitionBackingBean extends CompetitionBackingBean impleme
                     + duplicatedCompetitor.getIdPersonalInfo().getLastName(), null);
             duplicatedCompetitorFlag = true;
 
-            UIInput pickList = (UIInput) FacesContext.getCurrentInstance().getViewRoot().findComponent("createCompetitionForm:competitorPickList");
-            pickList.setValid(false);
+            System.out.println("CHECK DUP msgs " + FacesContext.getCurrentInstance().getMessageList().size());
+//            UIInput pickList = (UIInput) FacesContext.getCurrentInstance().getViewRoot().findComponent("createCompetitionForm:competitorPickList");
+//            pickList.setValid(false);
 
             return;
         }
@@ -204,42 +208,19 @@ public class CreateCompetitionBackingBean extends CompetitionBackingBean impleme
         duplicatedCompetitorFlag = false;
     }
 
-    public void globalValueChanged (ValueChangeEvent e) {
+    public void globalValueChanged(ValueChangeEvent e) {
         System.out.println("NOWA WARTOSC " + e.getNewValue());
     }
-    
-    public void competitionConstraints(AjaxBehaviorEvent event) {
-        
-            UIInput input = ((UIInput)FacesContext.getCurrentInstance().getViewRoot().findComponent("createCompetitionForm:competitionName"));
-            
-            System.out.println("Input " + input.getClientId());
-            System.out.println("Input " + input.getValidators());
-            
-            input.processValidators(FacesContext.getCurrentInstance());
-            
-            System.out.println("Competition name ajax " + competition.getCompetitionName());
-            System.out.println("Competition global ajax " + competition.isGlobal());
-            System.out.println("SUBMITTED VALUE " + ((UIInput)event.getComponent()).getSubmittedValue());
-//        event.getComponent().processValidators(FacesContext.getCurrentInstance());
-//        try {
-//            checkCompetitionNameConstraints();
-//            competitionNameConstrains = true;
-//        } catch (ApplicationException ex) {
-//            competitionNameConstrains = false;
-//            
-//            UIInput input = (UIInput) event.getComponent();
-//            input.setValid(false);
-//            
-//            JsfUtils.addErrorMessage(ex.getLocalizedMessage(), " ", input.getClientId());
-//            FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
-//            
-//            Logger.getLogger(CreateCompetitionBackingBean.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-    }
-    
-    public void checkCompetitionNameConstraints(String competitionName) throws ApplicationException {
-//            System.out.println("Competition name throssss " + competition.getCompetitionName());
-        competition.setCompetitionName(competitionName);
+
+    public void checkCompetitionConstraints() throws ApplicationException {
         controller.checkCompetitionConstraints(competition);
     }
+
+//    public Competitor checkCompetitorDuplicate(List<Competitor> competitorList) {
+//        return controller.vlidateCompetitorDuplicate(competitorList);
+//    }
+//    
+//    public boolean checkCompetitorAmount(int competitorCount) {
+//        return controller.validateCompetitorsAmount(competitorCount);
+//    }
 }

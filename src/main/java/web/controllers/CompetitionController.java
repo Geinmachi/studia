@@ -38,6 +38,8 @@ import web.utils.DisplayPageEnum;
 public class CompetitionController implements Serializable {
 
     private static final long serialVersionUID = 645645987823402129L;
+    
+    private static final String SUCCESS_PAGE = "/done.xhtml?faces-redirect=true";
 
     @EJB
     private CompetitionServiceLocal service;
@@ -53,6 +55,10 @@ public class CompetitionController implements Serializable {
     private DisplayPageEnum pageType;
 
     public CompetitionController() {
+    }
+
+    public static String getSUCCESS_PAGE() {
+        return SUCCESS_PAGE;
     }
 
     public Competition getEditingCompetition() {
@@ -208,6 +214,7 @@ public class CompetitionController implements Serializable {
 
     public void editCompetitor(Competitor competitor) throws ApplicationException {
         service.editCompetitor(competitor);
+        editingCompetitor = null;
     }
 
     public List<Team> getTeamsToEdit() throws ApplicationException {
@@ -220,6 +227,7 @@ public class CompetitionController implements Serializable {
 
     public void editTeam(Team team) throws ApplicationException {
         service.editTeam(team);
+        editingTeam = null;
     }
 
     public List<Competition> findGlobalCompetitions() {

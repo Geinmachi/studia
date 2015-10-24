@@ -7,6 +7,7 @@
 package web.utils;
 
 import java.security.Principal;
+import java.util.Locale;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
@@ -17,7 +18,7 @@ import javax.faces.context.FacesContext;
  */
 public class JsfUtils {
 
-    public static ExternalContext getContext() {
+    public static ExternalContext context() {
         return FacesContext.getCurrentInstance().getExternalContext();
     }
 
@@ -33,17 +34,21 @@ public class JsfUtils {
     public static void addErrorMessage(String msg, String details, String componentId) {
         FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_ERROR, msg, details);
         FacesContext.getCurrentInstance().addMessage(componentId, facesMsg);
-        FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
+//        FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
+        
     }
 
     public static void addSuccessMessage(String msg, String details, String componentId) {
         FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_INFO, msg, details);
         FacesContext.getCurrentInstance().addMessage(componentId, facesMsg);
-        FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
+//        FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
     }
 
     public static void invalidateSession() {
-        getContext().invalidateSession();
+        context().invalidateSession();
     }
 
+    public static Locale getLocale() {
+        return context().getRequestLocale();
+    }
 }

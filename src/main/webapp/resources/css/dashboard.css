@@ -196,7 +196,8 @@ div[class*="displayCompetitorRow"]:hover {
 
 .groupPanel {
     display: inline-block !important;
-    margin-left: 20px;
+    margin-left: 10px;
+    margin-right: 10px;
 }
 
 .groupPanel * {
@@ -268,8 +269,8 @@ form > div[id*="CompetitionForm"] {
 }
 
 #msgs_container {
-    left: 40%;
-    top: 40%;
+    left: 40% !important;
+    top: 40% !important;
 }
 
 .firstStepWizard, .middleTableWrapper, .ui-datatable table {

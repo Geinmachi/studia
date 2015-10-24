@@ -90,6 +90,40 @@ public class CompetitionFacade extends AbstractFacade<Competition> implements Co
     }
 
     @Override
+    public void competitionContraintsNotCommited(Competition competition) throws CompetitorCreationException {
+        Query q = null;
+
+        AccessLevel creator = competition.getIdOrganizer();
+
+        if (competition.isGlobal()) {
+            q = em.createNamedQuery("Competition.findByCompetitionNameGlobal");
+        } else {
+            q = em.createNamedQuery("Competition.findByCompetitionNamePrivateOrganizer");
+            q.setParameter("idCreator", creator.getIdAccessLevel());
+        }
+
+        q.setParameter("competitionName", competition.getCompetitionName());
+
+        try {
+            Competition c = (Competition) q.getSingleResult();
+            em.flush();
+
+            if (competition.isGlobal()) {
+                throw new CompetitorCreationException("Global competition with given name already exists");
+            } else {
+                throw new CompetitorCreationException("You have already created private competition with given name");
+            }
+        } catch (NoResultException e) {
+            System.out.println("No existing competition found with given criteria, entitled to create");
+        } catch (NonUniqueResultException e) {
+//            System.out.println("NONunique " + e.getMessage());
+//            e.printStackTrace();
+            System.out.println("Should never happen - duplicate in competition");
+            throw new CompetitorCreationException("ERROR 1001 - contact admins", e);
+        }
+    }
+
+    @Override
     public Competition createWithReturn(Competition entity) throws ApplicationException {
         try {
             em.persist(entity);

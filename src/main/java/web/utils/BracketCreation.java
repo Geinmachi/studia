@@ -340,7 +340,7 @@ public class BracketCreation implements Serializable {
 //                dashboardPanel.setMargin(650);
 //            }//590
             dashboardPanel.setMatch(otherMatches.get(i));
-            dashboardPanel.getMatch().setMatchDate(new Date());
+//            dashboardPanel.getMatch().setMatchDate(new Date());
             System.out.println("SOROWANIE INNYCH RUND");
             sortCompetitorsInMatch(otherMatches.get(i));
             for (CompetitorMatch cm : dashboardPanel.getMatch().getCompetitorMatchList()) {
@@ -367,7 +367,7 @@ public class BracketCreation implements Serializable {
 //            dashboardPanel.setMargin(50);
             dashboardPanel.setPanel(panel);
             dashboardPanel.setMatch(firstRoundMatches.get(i));
-            dashboardPanel.getMatch().setMatchDate(new Date());
+//            dashboardPanel.getMatch().setMatchDate(new Date());
             System.out.println("SORTOWANIE PIERWSZEJ RUNDY");
             sortCompetitorsInMatch(firstRoundMatches.get(i));
             for (CompetitorMatch cm : dashboardPanel.getMatch().getCompetitorMatchList()) {

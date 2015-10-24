@@ -8,6 +8,7 @@ package utils;
 import java.util.Enumeration;
 import java.util.Locale;
 import java.util.ResourceBundle;
+import web.utils.JsfUtils;
 
 /**
  *
@@ -16,8 +17,13 @@ import java.util.ResourceBundle;
 public class ResourceBundleUtil {
     
     public static String getResourceBundleBusinessProperty(String propertyName) {
-        
         ResourceBundle rb = ResourceBundle.getBundle("properties.business.business", Locale.ROOT);
+        
+        return rb.getString(propertyName);
+    }
+    
+    public static String getResourceBundleProperty(String propertyName) {
+        ResourceBundle rb = ResourceBundle.getBundle("properties.language.locale", JsfUtils.getLocale());
         
         return rb.getString(propertyName);
     }
