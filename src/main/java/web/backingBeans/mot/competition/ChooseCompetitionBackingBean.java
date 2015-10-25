@@ -15,6 +15,7 @@ import javax.enterprise.context.Dependent;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import web.controllers.CompetitionController;
+import web.utils.PageConstants;
 
 /**
  *
@@ -48,11 +49,17 @@ public class ChooseCompetitionBackingBean extends CompetitionBackingBean impleme
     public String manageCompetition(Competition competition) {
         try {
             controller.storeCompetition(competition);
-            return "/edit/manageCompetition?faces-redirect=true";
+
+            return PageConstants.getPage(PageConstants.EDIT_MANAGE_COMPETITION, true);
         } catch (Exception e) {
             System.out.println("WYJAAAAAAAAAAAAATEK ChooseCompetitionBackingBaen " + e.getMessage());
             e.printStackTrace();
+            
             return null;
         }
+    }
+    
+    public String generateCode(int competitionId) {
+        return controller.encodeCompetitionId(competitionId);
     }
 }

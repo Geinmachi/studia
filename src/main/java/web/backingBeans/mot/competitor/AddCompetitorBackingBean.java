@@ -10,6 +10,8 @@ import entities.PersonalInfo;
 import entities.Team;
 import exceptions.ApplicationException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
@@ -18,6 +20,7 @@ import web.backingBeans.mot.competition.CompetitionBackingBean;
 import web.controllers.CompetitionController;
 import web.converters.interfaces.TeamConverterData;
 import web.utils.JsfUtils;
+import web.utils.PageConstants;
 
 /**
  *
@@ -72,8 +75,13 @@ public class AddCompetitorBackingBean extends CompetitionBackingBean implements 
     @PostConstruct
     private void init() {
         competitor.setIdPersonalInfo(personalInfo);
-//        personalInfo.setCompetitor(competitor);
-        teamList = controller.findAllTeams();
+        try {
+            //        personalInfo.setCompetitor(competitor);
+            teamList = controller.findUserAllowedTeams();
+        } catch (ApplicationException ex) {
+            ex.printStackTrace();
+            Logger.getLogger(AddCompetitorBackingBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public String addCompetitor() {
@@ -81,7 +89,7 @@ public class AddCompetitorBackingBean extends CompetitionBackingBean implements 
             competitor.setIdTeam(selectedTeam);
             controller.addCompetitor(competitor, isGlobal);
             
-            return CompetitionController.getSUCCESS_PAGE();
+            return JsfUtils.successPageRedirect(PageConstants.ORGANIZER_ADD_COMPETITOR);
         } catch (ApplicationException e) {
             JsfUtils.addErrorMessage(e.getLocalizedMessage(), null, null);
             

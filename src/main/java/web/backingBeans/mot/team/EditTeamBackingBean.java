@@ -19,6 +19,7 @@ import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import org.primefaces.model.DualListModel;
 import web.utils.JsfUtils;
+import web.utils.PageConstants;
 
 /**
  *
@@ -61,8 +62,18 @@ public class EditTeamBackingBean extends TeamBackingBean implements Serializable
     private void init() {
         System.out.println("EditTeamBackingBean#init() " + this);
         team = controller.getEditingTeam();
+        
+        if (team == null) {
+            JsfUtils.addErrorMessage("There is no team to edit", " ", null);
 
-        competitorList = controller.getAllTeamlessCompetitors();
+            return;
+        }
+
+        try {
+            competitorList = controller.getAllAllowedTeamlessCompetitors();
+        } catch (ApplicationException ex) {
+            Logger.getLogger(EditTeamBackingBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
         List<Competitor> competitorsSource = new ArrayList<>(competitorList); // competitorList will also include selected competitors
         List<Competitor> comeptitorsTarget = team.getCompetitorList();
@@ -81,7 +92,8 @@ public class EditTeamBackingBean extends TeamBackingBean implements Serializable
         try {
             team.setCompetitorList(competitors.getTarget());
             controller.editTeam(team);
-            return "/index.xhtml?faces-redirect=true";
+
+            return JsfUtils.successPageRedirect(PageConstants.EDIT_TEAM_LIST);
         } catch (ApplicationException e) {
             System.out.println("APPECEPTION " + e.getLocalizedMessage());
             JsfUtils.addErrorMessage(e.getLocalizedMessage(), null, null);

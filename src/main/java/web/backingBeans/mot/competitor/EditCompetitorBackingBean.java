@@ -9,6 +9,8 @@ import entities.Competitor;
 import entities.Team;
 import exceptions.ApplicationException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
@@ -18,6 +20,7 @@ import web.backingBeans.mot.competition.CompetitionBackingBean;
 import web.controllers.CompetitionController;
 import web.converters.interfaces.TeamConverterData;
 import web.utils.JsfUtils;
+import web.utils.PageConstants;
 
 /**
  *
@@ -56,17 +59,20 @@ public class EditCompetitorBackingBean extends CompetitionBackingBean implements
             return;
         }
 
-        teamList = controller.findAllTeams();
+        try {
+            teamList = controller.findUserAllowedTeams();
+        } catch (ApplicationException ex) {
+            ex.printStackTrace();
+            Logger.getLogger(EditCompetitorBackingBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public String edit() {
         try {
             controller.editCompetitor(competitor);
-            FacesContext.getCurrentInstance().getExternalContext().getFlash().put("page", "/edit/competitorList.xhtml");
-            return CompetitionController.getSUCCESS_PAGE();
+            return JsfUtils.successPageRedirect(PageConstants.getPage(PageConstants.EDIT_COMPETITOR_LIST, true));
         } catch (ApplicationException e) {
             JsfUtils.addErrorMessage(e.getLocalizedMessage(), " ", null);
-
             System.out.println("Application Exception ");
         } catch (Exception e) {
 

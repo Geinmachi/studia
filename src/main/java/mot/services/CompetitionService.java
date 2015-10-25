@@ -81,8 +81,8 @@ public class CompetitionService implements CompetitionServiceLocal {
     public static String ANONYMOUS_USER = "anonymous";
 
     @Override
-    public List<Team> findAllTeams() {
-        return teamFacade.findAll();
+    public List<Team> findUserAllowedTeams() throws ApplicationException {
+        return competitionComponentsManager.findUserAllowedTeams();
     }
 
     @Override
@@ -283,8 +283,8 @@ public class CompetitionService implements CompetitionServiceLocal {
     }
 
     @Override
-    public List<Competitor> getAllTeamlessCompetitors() {
-        return competitionComponentsManager.getAllTeamlessCompetitors();
+    public List<Competitor> getAllAllowedTeamlessCompetitors() throws ApplicationException {
+        return competitionComponentsManager.getAllAllowedTeamlessCompetitors();
     }
 
     @Override
@@ -344,6 +344,16 @@ public class CompetitionService implements CompetitionServiceLocal {
     @Override
     public List<Competition> findCompetitionsToDisplay() throws ApplicationException {
         return presentCompetitionManager.findCompetitionsToDisplay();
+    }
+
+    @Override
+    public Competition getCompetitionByEncodedId(String encodedId) {
+        return presentCompetitionManager.getCompetitionByEncodedId(encodedId);
+    }
+
+    @Override
+    public String encodeCompetitionId(int competitionId) {
+        return presentCompetitionManager.encodeCompetitionId(competitionId);
     }
     
 }

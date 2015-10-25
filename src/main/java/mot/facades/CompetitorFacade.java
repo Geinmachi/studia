@@ -10,6 +10,7 @@ import entities.Competitor;
 import exceptions.ApplicationException;
 import exceptions.CompetitorCreationException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -41,7 +42,7 @@ public class CompetitorFacade extends AbstractFacade<Competitor> implements Comp
     public Competitor findAndInitializeGroups(Integer idCompetitor) {
         Competitor entity = em.find(Competitor.class, idCompetitor);
         entity.getGroupCompetitorList().size();
-
+        
         return entity;
     }
 
@@ -56,8 +57,11 @@ public class CompetitorFacade extends AbstractFacade<Competitor> implements Comp
     @Override
     public List<Competitor> findAllTeamless() {
         Query q = em.createNamedQuery("Competitor.findAllTeamless");
-
-        return new ArrayList((List<Competitor>) q.getResultList());
+        
+        List<Competitor> sortedCompetitorList = new ArrayList<>((List<Competitor>) q.getResultList());
+        Collections.sort(sortedCompetitorList);
+        
+        return sortedCompetitorList;
     }
 
     @Override
@@ -122,6 +126,17 @@ public class CompetitorFacade extends AbstractFacade<Competitor> implements Comp
         em.flush();
 
         competitorConstraints(entity);
+    }
+
+    @Override
+    public List<Competitor> findAllAllowedTeamless(int idAccessLevel) {
+        Query q = em.createNamedQuery("Competitor.findAllAllowedTeamless");
+        q.setParameter("idAccessLevel", idAccessLevel);
+        
+        List<Competitor> sortedList = new ArrayList<>(q.getResultList());
+        Collections.sort(sortedList);
+        
+        return sortedList;
     }
 
 }

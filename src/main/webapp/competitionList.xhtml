@@ -10,8 +10,7 @@ and open the template in the editor.
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui"
                 template="/WEB-INF/templates/main.xhtml"
-                xmlns:f="http://xmlns.jcp.org/jsf/core"
-                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
     <ui:define name="title">#{msg.competitionListTitle}</ui:define>
     <ui:define name="content">
         <h:form id="competitionListForm" style="width: auto;">
@@ -46,8 +45,8 @@ and open the template in the editor.
                     </h:outputText>
                 </p:column>
 
-                <p:column headerText="#{msg.isPrivate}" rendered="#{not empty request.remoteUser}">
-                    <p:selectBooleanCheckbox value="#{!competition.global}" disabled="true"/>
+                <p:column headerText="#{msg.isGlobal}" rendered="#{not empty request.remoteUser}">
+                    <p:selectBooleanCheckbox value="#{competition.global}" disabled="true"/>
                 </p:column>
 
                 <p:column headerText="#{msg.winner}" sortBy="#{competition.idWinner.idPersonalInfo.firstName} #{competition.idWinner.idPersonalInfo.lastName}"

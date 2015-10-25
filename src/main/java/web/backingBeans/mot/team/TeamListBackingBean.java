@@ -15,6 +15,8 @@ import javax.annotation.PostConstruct;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import web.backingBeans.mot.competition.CompetitionBackingBean;
+import web.utils.JsfUtils;
+import web.utils.PageConstants;
 
 /**
  *
@@ -49,6 +51,6 @@ public class TeamListBackingBean extends CompetitionBackingBean implements Seria
     public String show(Team team) {
         controller.storeTeam(team);
         
-        return "/edit/editTeam.xhtml?faces-redirect=true";
+        return PageConstants.getPage(PageConstants.EDIT_EDIT_TEAM, true);
     }
 }

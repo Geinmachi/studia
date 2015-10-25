@@ -64,8 +64,8 @@
 /*fillers*/
 
 [id*="CompetitionForm:filler"] {
-    background-color: #333;
-    background: transparent;
+    background-color: transparent;
+    background: url("/resources/img/pattern.png") repeat scroll 0 0 rgba(0, 0, 0, 0);;
 }
 
 [id*="CompetitionForm:filler0"] {
@@ -85,7 +85,7 @@
 [id*="CompetitionForm:filler0"]:nth-child(3n+3) > div{
     position: absolute;
     width: 100px;
-    background-color: #333;
+    background: url("/resources/img/pattern.png") repeat scroll 0 0 rgba(0, 0, 0, 0);;
     right: 0.1px;
     top: -12.0px;
 }
@@ -110,7 +110,7 @@
 [id*="CompetitionForm:filler1"]:nth-child(3n+3) > div{
     position: absolute;
     width: 100px;
-    background-color: #333;
+    background: url("/resources/img/pattern.png") repeat scroll 0 0 rgba(0, 0, 0, 0);;
     right: 0.1px;
     top: -19.2px;
 }
@@ -133,7 +133,7 @@
 [id*="CompetitionForm:filler2"]:nth-child(3n+3) > div{
     position: absolute;
     width: 100px;
-    background-color: #333;
+    background: url("/resources/img/pattern.png") repeat scroll 0 0 rgba(0, 0, 0, 0);;
     right: 0px;
     top: -1.0px;
     height: 100% !important;
@@ -148,7 +148,7 @@
     z-index: 1;
     position: absolute;
     width: 100px;
-    background-color: #333;
+    background: url("/resources/img/pattern.png") repeat scroll 0 0 rgba(0, 0, 0, 0);;
     right: 0px;
 }
 
@@ -213,14 +213,7 @@ div[class*="displayCompetitorRow"]:hover {
 }
 
 .dateCalendarInput > .ui-state-disabled {
-    width: 170px;
-}
-
-.resultsTable {
-    width: 40%;
-    margin-left: auto;
-    margin-right: auto;
-    text-align: center;
+    width: 140px;
 }
 
 .ui-icon-gear {
@@ -247,7 +240,7 @@ input[id$="scoreInput"] {
 }
 
 form > div[id*="CompetitionForm"] {
-    background-color: #333;
+    background: url("/resources/img/pattern.png") repeat scroll 0 0 rgba(0, 0, 0, 0);;
 }
 
 .groupDialog {
@@ -282,11 +275,6 @@ form > div[id*="CompetitionForm"] {
     margin: auto !important;
 }
 
-.displayCompetitionForm {
-    overflow: auto;
-    background-color: #333;
-}
-
 div[id*="displayCompetitionForm\:first"], div[id*="displayCompetitionForm\:other"] {
     width: 200px !important;
 }
@@ -296,6 +284,27 @@ div[id*="displayCompetitionForm\:first"] > div.ui-widget-header, div[id*="displa
 }
 
 .scoreInplace {
+    float: right;
+    padding-right: 10px;
+}
+
+.dashboardForm {
+    overflow: auto;
+}
+
+.underDashboardContent {
+    float: right;
+    width: 100% !important;
+    margin-top: 10px;
+    padding-left: 50px;
+}
+
+.dashboardFulForm {
+    overflow-x: auto;
+    overflow-y: hidden;
+}
+
+.scoreTBD {
     float: right;
     padding-right: 10px;
 }

@@ -16,6 +16,8 @@ import exceptions.TeamCreationException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.Resource;
 import javax.annotation.security.DeclareRoles;
 import javax.ejb.EJB;
@@ -39,7 +41,7 @@ import utils.ResourceBundleUtil;
 @Stateless
 @TransactionAttribute(TransactionAttributeType.MANDATORY)
 @Interceptors({TrackerInterceptor.class})
-@DeclareRoles({"Administrator","Organizer"})
+@DeclareRoles({"Administrator", "Organizer"})
 public class CompetitionComponentsManager implements CompetitionComponentsManagerLocal {
 
     @Resource
@@ -56,20 +58,20 @@ public class CompetitionComponentsManager implements CompetitionComponentsManage
 
     @Override
     public void createTeam(Team team, boolean global) throws ApplicationException {
-        
+
         if (!global) {
             Account loggedUser = accountFacade.findByLogin(sessionContext.getCallerPrincipal().getName());
             AccessLevel organizer = ConvertUtil.getSpecAccessLevelFromAccount(loggedUser, Organizer.class);
 
             team.setIdCreator(organizer);
         }
-        
+
         team = teamFacade.createWithReturn(team);
 
         System.out.println("Competitors size " + team.getCompetitorList().size());
         System.out.println("TEAM NAME " + team.getTeamName());
 
-        if(vlidateCompetitorDuplicate(team.getCompetitorList()) != null) {
+        if (vlidateCompetitorDuplicate(team.getCompetitorList()) != null) {
             throw new TeamCreationException("Team can't contain duplicated competitors (private and global)");
         }
 
@@ -96,7 +98,7 @@ public class CompetitionComponentsManager implements CompetitionComponentsManage
      */
     @Override
     public Competitor vlidateCompetitorDuplicate(List<Competitor> competitorList) {
-        
+
         competitorList.sort(new Comparator<Competitor>() {
 
             @Override
@@ -116,13 +118,20 @@ public class CompetitionComponentsManager implements CompetitionComponentsManage
                 return competitorList.get(i);
             }
         }
-        
+
         return null;
     }
 
     @Override
-    public List<Competitor> getAllTeamlessCompetitors() {
-        return competitorFacade.findAllTeamless();
+    public List<Competitor> getAllAllowedTeamlessCompetitors() throws ApplicationException {
+        if (sessionContext.isCallerInRole(ResourceBundleUtil.getResourceBundleBusinessProperty(CompetitionService.ADMIN_PROPERTY_KEY))) {
+            return competitorFacade.findAllTeamless();
+        } else {
+            Account loggedUser = accountFacade.findByLogin(sessionContext.getCallerPrincipal().getName());
+            AccessLevel organizer = ConvertUtil.getSpecAccessLevelFromAccount(loggedUser, Organizer.class);
+
+            return competitorFacade.findAllAllowedTeamless(organizer.getIdAccessLevel());
+        }
     }
 
     @Override
@@ -141,16 +150,16 @@ public class CompetitionComponentsManager implements CompetitionComponentsManage
     @Override
     public List<Competitor> getCompetitorsToEdit() throws ApplicationException {
         List<Competitor> competitorList = new ArrayList<>();
-        
+
         if (sessionContext.isCallerInRole(ResourceBundleUtil.getResourceBundleBusinessProperty(CompetitionService.ADMIN_PROPERTY_KEY))) {
             competitorList = competitorFacade.findAll();
         } else {
             Account loggedUser = accountFacade.findByLogin(sessionContext.getCallerPrincipal().getName());
             AccessLevel organizer = ConvertUtil.getSpecAccessLevelFromAccount(loggedUser, Organizer.class);
-            
+
             competitorList = competitorFacade.findUserCompetitors(organizer);
         }
-        
+
         return competitorList;
     }
 
@@ -167,28 +176,28 @@ public class CompetitionComponentsManager implements CompetitionComponentsManage
         if (!editingCompetitor.getIdCompetitor().equals(competitor.getIdCompetitor())) {
             throw new IllegalStateException("Wrong object");
         }
-        
+
         editingCompetitor.getIdPersonalInfo().setFirstName(competitor.getIdPersonalInfo().getFirstName());
         editingCompetitor.getIdPersonalInfo().setLastName(competitor.getIdPersonalInfo().getLastName());
         editingCompetitor.setIdTeam(competitor.getIdTeam());
-        
+
         competitorFacade.edit(editingCompetitor);
     }
 
     @Override
     public List<Team> getTeamsToEdit() throws ApplicationException {
-        
-         List<Team> teamList = null;
-        
+
+        List<Team> teamList = null;
+
         if (sessionContext.isCallerInRole(ResourceBundleUtil.getResourceBundleBusinessProperty(CompetitionService.ADMIN_PROPERTY_KEY))) {
             teamList = teamFacade.findAll();
         } else {
             Account loggedUser = accountFacade.findByLogin(sessionContext.getCallerPrincipal().getName());
             AccessLevel organizer = ConvertUtil.getSpecAccessLevelFromAccount(loggedUser, Organizer.class);
-            
+
             teamList = teamFacade.findUserTeams(organizer);
         }
-        
+
         return teamList;
     }
 
@@ -198,7 +207,7 @@ public class CompetitionComponentsManager implements CompetitionComponentsManage
     }
 
     @Override
-    public void editTeam(Team editingTeam, Team team) throws ApplicationException{
+    public void editTeam(Team editingTeam, Team team) throws ApplicationException {
         if (editingTeam == null || team == null) {
             throw new IllegalStateException("There is no object to edit");
         }
@@ -206,18 +215,30 @@ public class CompetitionComponentsManager implements CompetitionComponentsManage
             throw new IllegalStateException("Wrong object");
         }
         // jsete final, sprwadzic z new
-        
+
         editingTeam.setTeamName(team.getTeamName());
         editingTeam.setCompetitorList(team.getCompetitorList());
-        
+
         vlidateCompetitorDuplicate(editingTeam.getCompetitorList());
-        
+
         for (Competitor c : editingTeam.getCompetitorList()) {
             c.setIdTeam(editingTeam);
             competitorFacade.edit(c);
         }
-        
+
         teamFacade.edit(editingTeam);
+    }
+
+    @Override
+    public List<Team> findUserAllowedTeams() throws ApplicationException {
+        if (sessionContext.isCallerInRole(ResourceBundleUtil.getResourceBundleBusinessProperty(CompetitionService.ADMIN_PROPERTY_KEY))) {
+            return teamFacade.findAll();
+        } else {
+            Account loggedUser = accountFacade.findByLogin(sessionContext.getCallerPrincipal().getName());
+            AccessLevel organizer = ConvertUtil.getSpecAccessLevelFromAccount(loggedUser, Organizer.class);
+
+            return teamFacade.findAllAllowed(organizer.getIdAccessLevel());
+        }
     }
 
 }

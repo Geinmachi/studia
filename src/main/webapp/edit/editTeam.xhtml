@@ -17,9 +17,13 @@
                 duplicatedCompetitorFlag="#{editTeamBackingBean.duplicatedCompetitorFlag}"
                 checkDuplicate="#{editTeamBackingBean.checkDuplicate()}"
                 buttonLabel="#{msg.edit}"
+                isGlobal="#{not empty editTeamBackingBean.team.idCreator}"
+                isGlobalDisabled="#{true}"
                 saveAction="#{editTeamBackingBean.editTeam()}"/>
         </h:form>
 
+        <p:messages showIcon="false" autoUpdate="true" styleClass="loneMessage"
+                    rendered="#{empty editTeamBackingBean.team}"/>
     </ui:define>
 </ui:composition>
 

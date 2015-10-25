@@ -8,15 +8,14 @@ package web.backingBeans.mok;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.inject.Named;
-import javax.enterprise.context.Dependent;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
-import utils.ConvertUtil;
-import utils.ResourceBundleUtil;
+import utils.Hashids;
 import web.utils.JsfUtils;
+import web.utils.PageConstants;
 
 /**
  *
@@ -49,8 +48,7 @@ public class LoginBackingBean {
         this.password = password;
     }
 
-    public void login() {
-
+    public void login() throws Exception {
         FacesContext context = FacesContext.getCurrentInstance();
         HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
 //        System.out.println("URI " + FacesContext.getCurrentInstance().getViewRoot().getViewId());
@@ -68,10 +66,12 @@ public class LoginBackingBean {
         try {
             request.logout();
             System.out.println("Wylogowano");
-            return "/index.xhtml?faces-redirect=true";
+
+            return PageConstants.getPage(PageConstants.ROOT_INDEX, true);
         } catch (ServletException e) {
             System.out.println("Niewylogowano \n " + e.getMessage());
             context.addMessage(null, new FacesMessage("Logout failed."));
+
             return null;
         }
     }

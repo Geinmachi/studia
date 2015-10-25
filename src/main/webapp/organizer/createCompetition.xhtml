@@ -21,7 +21,7 @@ and open the template in the editor.
         <p:growl id="msgs" sticky="true"/>
 
         <h:form id="createCompetitionForm">
-            <p:wizard flowListener="#{createCompetitionBackingBean.onFlowProcess}" id="wizard" onnext="console.log(#{facesContext.messageList.size()})">
+            <p:wizard flowListener="#{createCompetitionBackingBean.onFlowProcess}" id="wizard">
                 <p:tab id="firstStep" title="#{msg.generalTab}">
                     <p:panelGrid styleClass="firstStepWizard shadows">
                         <p:row>
@@ -60,7 +60,7 @@ and open the template in the editor.
                                 <p:outputLabel for="startDate" value="#{msg.startDate}"/>
                             </p:column>
                             <p:column>
-                                <p:calendar id="startDate" value="#{createCompetitionBackingBean.competition.startDate}" pattern="MM/dd/yyyy HH:mm:ss" />
+                                <p:calendar id="startDate" value="#{createCompetitionBackingBean.competition.startDate}" pattern="MM/dd/yyyy HH:mm" />
                             </p:column>
                             <p:column>
                                 <p:message for="startDate"/>
@@ -71,7 +71,7 @@ and open the template in the editor.
                                 <p:outputLabel for="endDate" value="#{msg.endDate}"/>
                             </p:column>
                             <p:column>
-                                <p:calendar id="endDate" value="#{createCompetitionBackingBean.competition.endDate}" pattern="MM/dd/yyyy HH:mm:ss" />
+                                <p:calendar id="endDate" value="#{createCompetitionBackingBean.competition.endDate}" pattern="MM/dd/yyyy HH:mm" />
                             </p:column>
                             <p:column>
                                 <p:message for="endDate"/>
@@ -158,11 +158,11 @@ and open the template in the editor.
                                                           resizable="false" styleClass="groupDialog" focus="focusInDialog">
                                                     <b:panelGrid colSpans="5,7">
                                                         <p:outputLabel id="focusInDialog" value="#{msg.startDate}"/>
-                                                        <p:calendar pattern="MM/dd/yyyy HH:mm:ss"
+                                                        <p:calendar pattern="MM/dd/yyyy HH:mm"
                                                                     value="#{group.startDate}"/>
 
                                                         <p:outputLabel value="#{msg.endDate}"/>
-                                                        <p:calendar pattern="MM/dd/yyyy HH:mm:ss" 
+                                                        <p:calendar pattern="MM/dd/yyyy HH:mm" 
                                                                     value="#{group.endDate}"/>
                                                     </b:panelGrid>
                                                 </p:dialog>
@@ -224,7 +224,7 @@ and open the template in the editor.
                                                 <p:outputLabel value="#{msg.date}:"/>
                                             </b:column>
                                             <b:column span="10">
-                                                <p:calendar id="matchDate" pattern="MM/dd/yyyy HH:mm:ss" showOn="button" 
+                                                <p:calendar id="matchDate" pattern="MM/dd/yyyy HH:mm" showOn="button" 
                                                             value="#{dashboardPanel.match.matchDate}"/>
                                             </b:column>
                                         </b:row>

@@ -33,4 +33,8 @@ public interface PresentCompetitionManagerLocal {
 
     public List<Competition> findCompetitionsToDisplay() throws ApplicationException;
 
+    public Competition getCompetitionByEncodedId(String encodedId);
+
+    public String encodeCompetitionId(int competitionId);
+
 }

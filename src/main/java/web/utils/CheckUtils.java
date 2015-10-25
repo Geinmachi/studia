@@ -16,7 +16,7 @@ public class CheckUtils {
     public static boolean isCompetitionNull(Competition competition) {
         if(competition == null) {
             System.out.println("Competition jest nullem");
-            JsfUtils.addErrorMessage("Error", "Competition is not loaded, please come here from appropriate button", "msg");
+            JsfUtils.addErrorMessage("Error", "Competition is not loaded, please come here from appropriate button or link", "msg");
             
             return true;
         }

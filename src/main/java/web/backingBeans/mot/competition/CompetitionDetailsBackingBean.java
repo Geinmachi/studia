@@ -7,20 +7,14 @@ package web.backingBeans.mot.competition;
 
 import web.utils.BracketCreation;
 import entities.Competition;
-import entities.Competitor;
 import entities.GroupCompetitor;
 import entities.GroupDetails;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.inject.Named;
-import javax.enterprise.context.Dependent;
 import javax.enterprise.context.RequestScoped;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
-import mot.interfaces.CMG;
-import web.controllers.CompetitionController;
-import web.models.DashboardPanel;
 import web.utils.CheckUtils;
 import web.utils.DisplayPageEnum;
 import web.utils.JsfUtils;
@@ -31,15 +25,15 @@ import web.utils.JsfUtils;
  */
 @Named(value = "competitionDetailsBackingBean")
 @RequestScoped
-public class CompetitionDetailsBackingBean  extends CompetitionBackingBean {
-    
+public class CompetitionDetailsBackingBean extends CompetitionBackingBean {
+
     @Inject
     private BracketCreation bracketCreator;
-    
+
     private Competition competition;
-        
+
     private int matchCount = 0;
-    
+
     public CompetitionDetailsBackingBean() {
     }
 
@@ -54,15 +48,26 @@ public class CompetitionDetailsBackingBean  extends CompetitionBackingBean {
     public int getMatchCount() {
         return matchCount;
     }
-    
+
     @PostConstruct
     private void init() {
-        competition = controller.getDisplayedCompetition(DisplayPageEnum.DETAILS);
+
+        System.out.println("COMpetitinonDetailsBB#init ");
+
+        String encodedCompetitionId = JsfUtils.getCompetitionUrlParameter();
         
+        System.out.println("PARAM " + encodedCompetitionId + " IS NULL " + (encodedCompetitionId == null));
+        
+        if (encodedCompetitionId == null) {
+            competition = controller.getDisplayedCompetition(DisplayPageEnum.DETAILS);
+        } else {
+            competition = controller.getCompetitionByEncodedId(encodedCompetitionId);
+        }
+
         if (CheckUtils.isCompetitionNull(competition)) {
             return;
         }
-        
+
         for (GroupDetails gd : competition.getGroupDetailsList()) {
             for (GroupCompetitor gc : gd.getGroupCompetitorList()) {
                 matchCount++;
@@ -70,5 +75,4 @@ public class CompetitionDetailsBackingBean  extends CompetitionBackingBean {
         }
         bracketCreator.recreateBracketToDisplay(competition);
     }
-    
 }

@@ -13,6 +13,7 @@ import exceptions.ApplicationException;
 import exceptions.CompetitorCreationException;
 import exceptions.TeamCreationException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
@@ -125,6 +126,25 @@ public class TeamFacade extends AbstractFacade<Team> implements TeamFacadeLocal 
 //            }
         }
 
+    }
+
+    @Override
+    public List<Team> findAll() {
+        List<Team> sortedTeamList =  super.findAll();
+        Collections.sort(sortedTeamList);
+        
+        return sortedTeamList;
+    }
+
+    @Override
+    public List<Team> findAllAllowed(int idAccessLevel) {
+        Query q = em.createNamedQuery("Team.findAllAllowed");
+        q.setParameter("idAccessLevel", idAccessLevel);
+        
+        List<Team> sortedTeamList = new ArrayList<>(q.getResultList());
+        Collections.sort(sortedTeamList);
+        
+        return sortedTeamList;
     }
 
 }

@@ -29,7 +29,7 @@ import mot.interfaces.InactivateMatch;
 @Remote
 public interface CompetitionServiceLocal {
     
-    public List<Team> findAllTeams();
+    public List<Team> findUserAllowedTeams() throws ApplicationException;
     
     public void addCompetitor(Competitor competitor, boolean global) throws ApplicationException;
     
@@ -77,7 +77,7 @@ public interface CompetitionServiceLocal {
 
     public void createTeam(Team team, boolean global) throws ApplicationException;
 
-    public List<Competitor> getAllTeamlessCompetitors();
+    public List<Competitor> getAllAllowedTeamlessCompetitors() throws ApplicationException;
 
     public Competitor vlidateCompetitorDuplicate(List<Competitor> competitorList);
 
@@ -100,4 +100,8 @@ public interface CompetitionServiceLocal {
     public void checkCompetitionConstraints(Competition competition) throws ApplicationException;
 
     public List<Competition> findCompetitionsToDisplay() throws ApplicationException;
+
+    public Competition getCompetitionByEncodedId(String encodedId);
+
+    public String encodeCompetitionId(int competitionId);
 }
