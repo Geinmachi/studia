@@ -22,7 +22,7 @@ public interface CompetitionComponentsManagerLocal {
     
     public void createTeam(Team team, boolean global) throws ApplicationException;
 
-    public List<Competitor> getAllTeamlessCompetitors();
+    public List<Competitor> getAllAllowedTeamlessCompetitors() throws ApplicationException;
 
     public void addCompetitor(Competitor competitor, boolean global) throws ApplicationException;
 
@@ -41,4 +41,6 @@ public interface CompetitionComponentsManagerLocal {
     public Team findTeamById(Integer idTeam);
 
     public void editTeam(final Team editingTeam, Team team) throws ApplicationException;
+
+    public List<Team> findUserAllowedTeams() throws ApplicationException;
 }

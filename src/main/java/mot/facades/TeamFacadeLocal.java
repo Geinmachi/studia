@@ -40,5 +40,7 @@ public interface TeamFacadeLocal {
     public Team findAndInitializeCompetitors(Integer idTeam);
     
     void teamContraints(Team team) throws TeamCreationException;
+
+    public List<Team> findAllAllowed(int idAccessLevel);
     
 }

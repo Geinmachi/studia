@@ -58,4 +58,8 @@ public class ChooseCompetitionBackingBean extends CompetitionBackingBean impleme
             return null;
         }
     }
+    
+    public String generateCode(int competitionId) {
+        return controller.encodeCompetitionId(competitionId);
+    }
 }

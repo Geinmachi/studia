@@ -13,7 +13,7 @@ and open the template in the editor.
     <ui:define name="content">
         <p:messages id="msg" showDetail="true"/>
         <p:dataTable value="#{resultsBackingBean.competitorPositionMap.entrySet()}" 
-                     var="competitorPosition" styleClass="resultsTable">
+                     var="competitorPosition" styleClass="resultsTable shadows">
             
             <p:column headerText="#{msg.position}" width="25%">
                 <p:outputLabel value="#{competitorPosition.value}"/>

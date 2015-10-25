@@ -90,9 +90,8 @@ public class CompetitionController implements Serializable {
         this.pageType = pageType;
     }
 
-    public List<Team> findAllTeams() {
-
-        return service.findAllTeams();
+    public List<Team> findUserAllowedTeams() throws ApplicationException {
+        return service.findUserAllowedTeams();
     }
 
     public void addCompetitor(Competitor competitor, boolean global) throws ApplicationException {
@@ -190,8 +189,8 @@ public class CompetitionController implements Serializable {
         service.createTeam(team, global);
     }
 
-    public List<Competitor> getAllTeamlessCompetitors() {
-        return service.getAllTeamlessCompetitors();
+    public List<Competitor> getAllAllowedTeamlessCompetitors() throws ApplicationException {
+        return service.getAllAllowedTeamlessCompetitors();
     }
 
     public Competitor vlidateCompetitorDuplicate(List<Competitor> competitorList) {
@@ -238,5 +237,13 @@ public class CompetitionController implements Serializable {
 
     public List<Competition> findCompetitionsToDisplay() throws ApplicationException {
         return service.findCompetitionsToDisplay();
+    }
+
+    public Competition getCompetitionByEncodedId(String encodedId) {
+        return service.getCompetitionByEncodedId(encodedId);
+    }
+
+    public String encodeCompetitionId(int competitionId) {
+        return service.encodeCompetitionId(competitionId);
     }
 }

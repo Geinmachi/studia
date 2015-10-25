@@ -42,6 +42,10 @@ and open the template in the editor.
                                      disabled="#{not empty competition.idWinner}" >
                     </p:commandButton>
                 </p:column>
+                <p:column headerText="#{msg.competitionCode}">
+                    <p:link target="_blank" outcome="/competitionDetails.xhtml?competition=#{chooseCompetitionBackingBean.generateCode(competition.idCompetition)}" 
+                            value="#{chooseCompetitionBackingBean.generateCode(competition.idCompetition)}"/>
+                </p:column>
             </p:dataTable>
 
         </h:form>

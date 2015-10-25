@@ -69,7 +69,11 @@ public class EditTeamBackingBean extends TeamBackingBean implements Serializable
             return;
         }
 
-        competitorList = controller.getAllTeamlessCompetitors();
+        try {
+            competitorList = controller.getAllAllowedTeamlessCompetitors();
+        } catch (ApplicationException ex) {
+            Logger.getLogger(EditTeamBackingBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
         List<Competitor> competitorsSource = new ArrayList<>(competitorList); // competitorList will also include selected competitors
         List<Competitor> comeptitorsTarget = team.getCompetitorList();

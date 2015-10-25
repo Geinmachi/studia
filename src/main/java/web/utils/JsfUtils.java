@@ -8,6 +8,7 @@ package web.utils;
 
 import java.security.Principal;
 import java.util.Locale;
+import java.util.Map;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
@@ -56,5 +57,10 @@ public class JsfUtils {
         context().getFlash().put("donePageBack", backPage);
         
         return PageConstants.getPage(PageConstants.ROOT_DONE, true);
+    }
+    
+    public static String getCompetitionUrlParameter() {
+        Map<String, String> paramMap = context().getRequestParameterMap();
+        return paramMap.get("competition");
     }
 }

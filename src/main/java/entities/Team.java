@@ -40,10 +40,11 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Team.findByTeamNameGlobal", query = "SELECT t FROM Team t WHERE t.teamName = :teamName AND t.idCreator IS NULL"),
     @NamedQuery(name = "Team.findAll", query = "SELECT t FROM Team t"),
     @NamedQuery(name = "Team.findUserTeams", query = "SELECT t FROM Team t WHERE t.idCreator.idAccessLevel = :idAccessLevel"),
+    @NamedQuery(name = "Team.findAllAllowed", query = "SELECT t FROM Team t WHERE t.idCreator.idAccessLevel = :idAccessLevel OR t.idCreator IS NULL"),
     @NamedQuery(name = "Team.findByIdTeam", query = "SELECT t FROM Team t WHERE t.idTeam = :idTeam"),
     @NamedQuery(name = "Team.findByTeamName", query = "SELECT t FROM Team t WHERE t.teamName = :teamName"),
     @NamedQuery(name = "Team.findByVersion", query = "SELECT t FROM Team t WHERE t.version = :version")})
-public class Team implements Serializable {
+public class Team implements Serializable, Comparable<Team> {
     private static final long serialVersionUID = 1L;
     
     @Transient
@@ -165,6 +166,11 @@ public class Team implements Serializable {
     @Override
     public String toString() {
         return "entities.Team[ idTeam=" + idTeam + " ]";
+    }
+
+    @Override
+    public int compareTo(Team o) {
+        return this.teamName.compareTo(o.getTeamName());
     }
     
 }

@@ -7,6 +7,7 @@ package web.backingBeans.mot.team;
 
 import entities.Competitor;
 import entities.Team;
+import exceptions.ApplicationException;
 import exceptions.TeamCreationException;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -72,7 +73,11 @@ public class CreateTeamBackingBean extends TeamBackingBean implements Serializab
     private void init() {
         System.out.println("CreateTeamBackingBean#init() " + this);
 
-        competitorList = controller.getAllTeamlessCompetitors();
+        try {
+            competitorList = controller.getAllAllowedTeamlessCompetitors();
+        } catch (ApplicationException ex) {
+            Logger.getLogger(CreateTeamBackingBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
         List<Competitor> competitorsSource = competitorList;
         List<Competitor> comeptitorsTarget = new ArrayList<>();
 

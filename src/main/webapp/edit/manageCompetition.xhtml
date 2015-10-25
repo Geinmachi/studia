@@ -110,13 +110,13 @@ and open the template in the editor.
                 </p:row>
             </p:panelGrid>
             <p:dashboard id="dashboard" model="#{manageCompetitionBackingBean.bracketCreator.dashboardModel}" styleClass="dashboard"
-                         style="width: #{manageCompetitionBackingBean.bracketCreator.rounds * 350}px">
+                         style="width: #{manageCompetitionBackingBean.bracketCreator.rounds * 320}px">
                 <c:forEach items="#{manageCompetitionBackingBean.bracketCreator.panelList}" var="dashboardPanel" varStatus="panelIndex">
                     <c:choose>
                         <c:when test="#{not dashboardPanel.filler}">
-                            <p:panel id="#{dashboardPanel.panel.id}" binding="#{dashboardPanel.panel}"
+                            <p:panel id="#{dashboardPanel.panel.id}" binding="#{dashboardPanel.panel}" styleClass="matchPanel"
                                      header="#{msg.matchNumber} #{dashboardPanel.match.matchNumber}">
-                                idMatch = #{dashboardPanel.match} <br/>
+                                <!--idMatch = #{dashboardPanel.match} <br/>-->
                                 <ui:repeat value="#{dashboardPanel.match.competitorMatchList}" var="cmgFromMatch">
 <!--                                <c:forEach items="#{dashboardPanel.match.competitorMatchList}"
                                           var="cmgFromMatch">-->
@@ -126,11 +126,11 @@ and open the template in the editor.
                                         <p:outputLabel>
                                             #{cmgFromMatch.idCompetitor.idPersonalInfo.firstName}
                                             #{cmgFromMatch.idCompetitor.idPersonalInfo.lastName} 
-                                            #{cmgFromMatch.idCompetitor.idCompetitor} 
+                                            <!--#{cmgFromMatch.idCompetitor.idCompetitor}--> 
                                         </p:outputLabel>
                                         <p:inplace editor="true" disabled="#{!dashboardPanel.inplaceEditable || !dashboardPanel.editable}" styleClass="scoreInplace">
                                             <p:ajax event="save" listener="#{manageCompetitionBackingBean.saveScore(cmgFromMatch, dashboardPanel)}"
-                                                    update=":manageCompetitionForm:dashboard" partialSubmit="true" process="@this"/>
+                                                    update="@(.matchPanel)" partialSubmit="true" process="@this"/>
                                             <p:inputText id="scoreInput" value="#{cmgFromMatch.competitorMatchScore}" label="#{msg.score}"
                                                          valueChangeListener="#{manageCompetitionBackingBean.saveOldScore}">
                                             </p:inputText>
@@ -139,32 +139,37 @@ and open the template in the editor.
                                         <br/>
                                     </ui:fragment>
                                     <!--</c:if>-->
-                                    <ui:fragment rendered="#{empty cmgFromMatch.idCompetitor}">                                            #{msg.TBD}
-                                        <br/>
+                                    <ui:fragment rendered="#{empty cmgFromMatch.idCompetitor}">
+                                        <p:outputPanel>
+                                            <p:outputLabel value="#{msg.TBD}"/>
+                                            <p:outputLabel styleClass="scoreTBD">
+                                                -
+                                            </p:outputLabel>
+                                        </p:outputPanel>
                                     </ui:fragment>
                                     <!--</c:choose>-->
                                     <!--</c:forEach>-->
                                 </ui:repeat>
                                 <b:row>
-                                    <b:column span='3'>
+                                    <b:column span='2'>
                                         <p:outputLabel value="#{msg.date}"/>
                                     </b:column>
-                                    <b:column span='9'>
+                                    <b:column span='10'>
                                         <p:calendar styleClass="dateCalendarInput" pattern="MM/dd/yyyy HH:mm" showOn="button" 
                                                     value="#{dashboardPanel.match.matchDate}" disabled="#{!dashboardPanel.editable}"/><br/>
                                     </b:column>
                                 </b:row>
                                 <b:row>
-                                    <b:column span="3">
+                                    <b:column span="2">
                                         <p:outputLabel for="matchType" value="#{msg.matchType}"/>
                                     </b:column>
-                                    <b:column span="9">
-                                        <p:selectOneMenu id="matchType" value="#{dashboardPanel.matchType}"
+                                    <b:column span="10">
+                                        <p:selectOneMenu id="matchType" value="#{dashboardPanel.matchType}" styleClass="matchTypeSelect"
                                                          converter="matchTypeConverter" disabled="#{!dashboardPanel.editable}">
                                             <f:selectItems value="#{manageCompetitionBackingBean.bracketCreator.matchTypeList}"
                                                            var="matchType" itemLabel="#{matchType.matchTypeName}"
                                                            />
-                                            <p:ajax process="@this" partialSubmit="true" update="@this" listener="#{manageCompetitionBackingBean.updateMatchType(dashboardPanel)}"/>
+                                            <p:ajax process="@this" partialSubmit="true" update="@(.matchPanel)" listener="#{manageCompetitionBackingBean.updateMatchType(dashboardPanel)}"/>
                                         </p:selectOneMenu>
                                     </b:column>
                                 </b:row>

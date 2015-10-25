@@ -32,6 +32,7 @@ import javax.ejb.TransactionAttributeType;
 import mot.facades.AccountFacadeLocal;
 import mot.services.CompetitionService;
 import utils.ConvertUtil;
+import utils.Hashids;
 import utils.ResourceBundleUtil;
 
 /**
@@ -46,7 +47,7 @@ public class PresentCompetitionManager implements PresentCompetitionManagerLocal
 
     @Resource
     private SessionContext sessionContext;
-    
+
     @EJB
     private AccountFacadeLocal accountFacade;
 
@@ -56,11 +57,13 @@ public class PresentCompetitionManager implements PresentCompetitionManagerLocal
     @EJB
     private ScoreFacadeLocal scoreFacade;
 
+    private static final Hashids ENCRYPTION = new Hashids("Competition - salt_");
+
     @Override
     public List<Competition> findAllowedCompetitions() throws ApplicationException {
 
         List<Competition> competitionList = null;
-        
+
         if (sessionContext.isCallerInRole(ResourceBundleUtil.getResourceBundleBusinessProperty(CompetitionService.ADMIN_PROPERTY_KEY))) {
             competitionList = competitionFacade.findAll();
         } else {
@@ -127,21 +130,36 @@ public class PresentCompetitionManager implements PresentCompetitionManagerLocal
         String userLogin = sessionContext.getCallerPrincipal().getName();
 
         List competitionList = new ArrayList<>();
-        
+
         if (userLogin.equals(ResourceBundleUtil.getResourceBundleBusinessProperty(CompetitionService.ANONYMOUS_USER))) {
             competitionList = competitionFacade.findGlobalCompetitions();
         } else if (sessionContext.isCallerInRole(ResourceBundleUtil.getResourceBundleBusinessProperty(CompetitionService.ADMIN_PROPERTY_KEY))) {
             competitionList = competitionFacade.findAll();
-        }
-        else {
+        } else {
             Account account = accountFacade.findByLogin(userLogin);
             AccessLevel accessLevel = ConvertUtil.getSpecAccessLevelFromAccount(account, Organizer.class);
-            
+
             competitionList = competitionFacade.findGlobalCompetitions();
             competitionList.addAll(competitionFacade.findUserCompetitionsByIdAccessLevel(accessLevel.getIdAccessLevel()));
         }
-        
+
         return competitionList;
+    }
+
+    @Override
+    public Competition getCompetitionByEncodedId(String encodedId) {
+        String decodedId = ENCRYPTION.decodeHex(encodedId);
+
+        if (!decodedId.isEmpty()) {
+            return competitionFacade.findAndInitializeGD(Integer.parseInt(decodedId));
+        }
+        
+        return null;
+    }
+
+    @Override
+    public String encodeCompetitionId(int competitionId) {
+        return ENCRYPTION.encodeHex(String.valueOf(competitionId));
     }
 
 }

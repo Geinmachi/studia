@@ -213,14 +213,7 @@ div[class*="displayCompetitorRow"]:hover {
 }
 
 .dateCalendarInput > .ui-state-disabled {
-    width: 170px;
-}
-
-.resultsTable {
-    width: 40%;
-    margin-left: auto;
-    margin-right: auto;
-    text-align: center;
+    width: 140px;
 }
 
 .ui-icon-gear {
@@ -309,4 +302,9 @@ div[id*="displayCompetitionForm\:first"] > div.ui-widget-header, div[id*="displa
 .dashboardFulForm {
     overflow-x: auto;
     overflow-y: hidden;
+}
+
+.scoreTBD {
+    float: right;
+    padding-right: 10px;
 }

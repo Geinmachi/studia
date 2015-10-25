@@ -106,3 +106,10 @@ span > i.glyphicon-bullhorn {
     display: table !important;
     margin: auto;
 }
+
+.resultsTable {
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    display: table;
+}

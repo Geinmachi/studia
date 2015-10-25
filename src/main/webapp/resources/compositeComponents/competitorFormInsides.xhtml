@@ -17,6 +17,7 @@ and open the template in the editor.
         <composite:attribute name="selectedTeam" required="true"/>
         <composite:attribute name="teamList" required="true"/>
         <composite:attribute name="isGlobal"/>
+        <composite:attribute name="isGlobalDisabled"/>
         <composite:attribute name="buttonLabel" required="true"/>
         <composite:attribute name="saveAction" method-signature="java.lang.String action()" required="true"/>
     </composite:interface>
@@ -53,7 +54,7 @@ and open the template in the editor.
                     <p:column colspan="2">
                         <p:selectOneMenu id="teamListbox" value="#{cc.attrs.selectedTeam}" converter="#{teamConverter}">
                             <f:selectItem itemValue="#{null}" itemLabel="#{msg.none}" />
-                            <f:selectItems value="#{cc.attrs.teamList}" var="team" itemLabel="#{team.teamName}"/>
+                            <f:selectItems value="#{cc.attrs.teamList}" var="team" itemLabel="#{not empty team.idCreator ? '*' : ''}#{team.teamName}"/>
                         </p:selectOneMenu>
                     </p:column>
                 </p:row>
@@ -62,11 +63,16 @@ and open the template in the editor.
                         <p:outputLabel for="isGlobal" value="#{msg.globalCompetitor}"/>
                     </p:column>
                     <p:column colspan="2">
-                        <p:selectBooleanCheckbox id="isGlobal" value="#{cc.attrs.isGlobal}" disabled="#{empty cc.attrs.isGlobal}"/>
+                        <p:selectBooleanCheckbox id="isGlobal" value="#{cc.attrs.isGlobal}" disabled="#{cc.attrs.isGlobalDisabled}"/>
                     </p:column>
                 </p:row>
                 <p:row>
                     <p:column colspan="3">
+                        <p:outputLabel>
+                            * - #{msg.teamAsterisk}
+                        </p:outputLabel>
+                        <br/>
+                        <br/>
                         <p:commandButton value="#{cc.attrs.buttonLabel}" action="#{cc.attrs.saveAction}" 
                                          update="#{cc.id}"/>
                         <p:button styleClass="backButton" value="#{msg.back}" 

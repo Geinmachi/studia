@@ -14,9 +14,12 @@ and open the template in the editor.
                 xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
     <ui:define name="title">#{msg.competitionDetailsTitle}</ui:define>
     <ui:define name="content">
+        
         <h:outputScript library="js" name="dashboard.js" />
-        <p:messages id="msg" showDetail="true"/>
-        <h:form id="displayCompetitionForm" styleClass="dashboardFulForm" >
+        
+        <p:messages styleClass="loneMessage" id="msg" showDetail="true" rendered="#{empty competitionDetailsBackingBean.competition}"/>
+        
+        <h:form id="displayCompetitionForm" styleClass="dashboardFulForm" rendered="#{not empty competitionDetailsBackingBean.competition}" >
 
             <p:panelGrid styleClass="middleTableWrapper centeredText shadows">
                 <p:row>
@@ -108,7 +111,7 @@ and open the template in the editor.
                                             <br/>
                                             <p:outputPanel>
                                                 <p:outputLabel value="#{msg.TBD}"/>
-                                                <p:outputLabel style="float: right;">
+                                                <p:outputLabel styleClass="scoreTBD">
                                                     -
                                                 </p:outputLabel>
                                             </p:outputPanel>

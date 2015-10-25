@@ -45,8 +45,8 @@ and open the template in the editor.
                     </h:outputText>
                 </p:column>
 
-                <p:column headerText="#{msg.isPrivate}" rendered="#{not empty request.remoteUser}">
-                    <p:selectBooleanCheckbox value="#{!competition.global}" disabled="true"/>
+                <p:column headerText="#{msg.isGlobal}" rendered="#{not empty request.remoteUser}">
+                    <p:selectBooleanCheckbox value="#{competition.global}" disabled="true"/>
                 </p:column>
 
                 <p:column headerText="#{msg.winner}" sortBy="#{competition.idWinner.idPersonalInfo.firstName} #{competition.idWinner.idPersonalInfo.lastName}"

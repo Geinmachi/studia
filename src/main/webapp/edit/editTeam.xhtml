@@ -17,6 +17,8 @@
                 duplicatedCompetitorFlag="#{editTeamBackingBean.duplicatedCompetitorFlag}"
                 checkDuplicate="#{editTeamBackingBean.checkDuplicate()}"
                 buttonLabel="#{msg.edit}"
+                isGlobal="#{not empty editTeamBackingBean.team.idCreator}"
+                isGlobalDisabled="#{true}"
                 saveAction="#{editTeamBackingBean.editTeam()}"/>
         </h:form>
 

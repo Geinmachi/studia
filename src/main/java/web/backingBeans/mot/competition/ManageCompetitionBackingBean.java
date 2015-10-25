@@ -191,6 +191,8 @@ public class ManageCompetitionBackingBean extends CompetitionBackingBean impleme
 
 //            BracketUtil.makeSerializablePanel(dp);
             InactivateMatch inactiveMatch = controller.disableMatch(dp);
+            
+            System.out.println("OINactivate " + inactiveMatch.getEditable() + " inplce " + inactiveMatch.isInplaceEditable());
 //        addAdvancedCompetitor(advancedMatchNumber);
             if (!inactiveMatch.getEditable()) {
 

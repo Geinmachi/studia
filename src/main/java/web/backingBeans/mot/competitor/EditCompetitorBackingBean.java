@@ -9,6 +9,8 @@ import entities.Competitor;
 import entities.Team;
 import exceptions.ApplicationException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
@@ -57,7 +59,12 @@ public class EditCompetitorBackingBean extends CompetitionBackingBean implements
             return;
         }
 
-        teamList = controller.findAllTeams();
+        try {
+            teamList = controller.findUserAllowedTeams();
+        } catch (ApplicationException ex) {
+            ex.printStackTrace();
+            Logger.getLogger(EditCompetitorBackingBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public String edit() {
