@@ -46,7 +46,7 @@ public class MatchMatchTypeFacade extends AbstractFacade<MatchMatchType> impleme
             entity = em.merge(matchMatchType);
             em.flush();
         } catch (OptimisticLockException e) {
-            throw new MatchOptimisticLockException("Match data affecting your change has been changed",e);
+            throw MatchOptimisticLockException.optimisticLock(e);
         }
         System.out.println("VERSION aaa " + matchMatchType.getIdMatch().getCompetitorMatchList().get(0).getVersion());
         return entity;

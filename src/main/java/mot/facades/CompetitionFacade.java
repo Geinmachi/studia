@@ -61,7 +61,7 @@ public class CompetitionFacade extends AbstractFacade<Competition> implements Co
 //        return managedEntity;
 //    }
     @Override
-    public void competitionContraints(Competition competition) throws CompetitorCreationException {
+    public void competitionContraints(Competition competition) throws CompetitionGeneralnfoException {
         Query q = null;
 
         AccessLevel creator = competition.getIdOrganizer();
@@ -84,15 +84,15 @@ public class CompetitionFacade extends AbstractFacade<Competition> implements Co
 //            System.out.println("NONunique " + e.getMessage());
 //            e.printStackTrace();
             if (competition.isGlobal()) {
-                throw new CompetitorCreationException("Global competition with given name already exists");
+                throw CompetitionGeneralnfoException.globalDuplicate(e);
             } else {
-                throw new CompetitorCreationException("You have already created private competition with given name");
+                throw CompetitionGeneralnfoException.privateDuplicate(e);
             }
         }
     }
 
     @Override
-    public void competitionContraintsNotCommited(Competition competition) throws CompetitorCreationException {
+    public void competitionContraintsNotCommited(Competition competition) throws CompetitionGeneralnfoException {
         Query q = null;
 
         AccessLevel creator = competition.getIdOrganizer();
@@ -111,9 +111,9 @@ public class CompetitionFacade extends AbstractFacade<Competition> implements Co
             em.flush();
 
             if (competition.isGlobal()) {
-                throw new CompetitorCreationException("Global competition with given name already exists");
+                throw CompetitionGeneralnfoException.globalDuplicate();
             } else {
-                throw new CompetitorCreationException("You have already created private competition with given name");
+                throw CompetitionGeneralnfoException.privateDuplicate();
             }
         } catch (NoResultException e) {
             System.out.println("No existing competition found with given criteria, entitled to create");
@@ -121,7 +121,7 @@ public class CompetitionFacade extends AbstractFacade<Competition> implements Co
 //            System.out.println("NONunique " + e.getMessage());
 //            e.printStackTrace();
             System.out.println("Should never happen - duplicate in competition");
-            throw new CompetitorCreationException("ERROR 1001 - contact admins", e);
+            throw CompetitionGeneralnfoException.databaseDuplicate(e);
         }
     }
 
@@ -208,7 +208,7 @@ public class CompetitionFacade extends AbstractFacade<Competition> implements Co
             
             return entity;
         } catch (OptimisticLockException e) {
-            throw new CompetitionGeneralnfoException("Competition was edited, refresh page", e);
+            throw CompetitionGeneralnfoException.optimisticLock(e);
         }
     }
 

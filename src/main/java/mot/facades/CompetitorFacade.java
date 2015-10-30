@@ -88,9 +88,9 @@ public class CompetitorFacade extends AbstractFacade<Competitor> implements Comp
             return;
         } catch (NonUniqueResultException e) {
             if (creator == null) {
-                throw new CompetitorCreationException("Global competitor with given first and last name already exists");
+                throw CompetitorCreationException.globalDuplicate(e);
             } else {
-                throw new CompetitorCreationException("You have already created private comptetitor with given first and last name");
+                throw CompetitorCreationException.privateDuplicate(e);
             }
         }
     }

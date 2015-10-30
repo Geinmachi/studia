@@ -159,8 +159,9 @@ public class ManageCompetitionBackingBean extends CompetitionBackingBean impleme
             JsfUtils.addErrorMessage(ise, "manageCompetitionForm");
         } catch (MatchOptimisticLockException e) {
             System.out.println("MatchoptimiscitExcpetion#saveScoere " + e.getLocalizedMessage());
-            JsfUtils.addErrorMessage(e.getLocalizedMessage(), "", "manageCompetitionForm");
+            JsfUtils.addErrorMessage(e, "manageCompetitionForm");
         } catch (ApplicationException ae) {
+            JsfUtils.addErrorMessage(ae, "manageCompetitionForm");
             System.out.println("ManageCompetitonBackingBean#saceScore exception" + ae.getMessage());
             ae.printStackTrace();
         }
@@ -221,9 +222,9 @@ public class ManageCompetitionBackingBean extends CompetitionBackingBean impleme
 
         } catch (MatchOptimisticLockException e) {
             System.out.println("MatchoptimiscitExcpetion#udateScore " + e.getLocalizedMessage());
-            JsfUtils.addErrorMessage(e.getLocalizedMessage(), "", "manageCompetitionForm");
+            JsfUtils.addErrorMessage(e, "manageCompetitionForm");
         } catch (ApplicationException e) {
-            JsfUtils.addErrorMessage(e.getLocalizedMessage(), null, null);
+            JsfUtils.addErrorMessage(e, null);
             System.out.println("MangageCompetitonBB#updateMatchType exepton " + e.getLocalizedMessage());
             e.printStackTrace();
         }
@@ -242,7 +243,7 @@ public class ManageCompetitionBackingBean extends CompetitionBackingBean impleme
             JsfUtils.addSuccessMessage("Data was successfully saved", null, "manageCompetitionForm");
         } catch (ApplicationException e) {
             System.out.println("APPExcpetion ManageCmopBB#saveGeneralInfo " + e.getMessage());
-            JsfUtils.addErrorMessage(e.getLocalizedMessage(), "", "manageCompetitionForm");
+            JsfUtils.addErrorMessage(e, "manageCompetitionForm");
             controller.storeCompetition(competition);
         } catch (Exception e) {
             System.out.println("ManageCompetitionBackingBean#saveGeneralInfo excpetion " + e.getLocalizedMessage());

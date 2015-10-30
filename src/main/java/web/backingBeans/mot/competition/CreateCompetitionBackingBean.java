@@ -179,7 +179,7 @@ public class CreateCompetitionBackingBean extends CompetitionBackingBean impleme
 
             return JsfUtils.successPageRedirect(PageConstants.ORGANIZER_CREATE_COMPETITION);
         } catch (ApplicationException e) {
-            JsfUtils.addErrorMessage(e.getLocalizedMessage(), " ", null);
+            JsfUtils.addErrorMessage(e, null);
             Logger.getLogger(CreateCompetitionBackingBean.class.getName()).log(Level.SEVERE, null, e);
         } catch (Exception e) {
             System.out.println("Wyjatek przy twrzoeniu");

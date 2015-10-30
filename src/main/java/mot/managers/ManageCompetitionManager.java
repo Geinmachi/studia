@@ -197,7 +197,7 @@ public class ManageCompetitionManager implements ManageCompetitionManagerLocal {
 
     private void validateScore(Matchh match, CompetitorMatch receivedCompetitorMatch) throws ApplicationException {
         if (receivedCompetitorMatch == null || receivedCompetitorMatch.getCompetitorMatchScore() == null) {
-            throw new InvalidScoreException("Can't be null");
+            throw InvalidScoreException.empty();
         }
 
         for (MatchMatchType mmt : match.getMatchMatchTypeList()) {
@@ -206,9 +206,9 @@ public class ManageCompetitionManager implements ManageCompetitionManagerLocal {
                 if (receivedCompetitorMatch.getCompetitorMatchScore() > ((bestOfDigit + 1) / 2)) {
                     System.out.println("IIIDDDDDDDDDDD --- match " + receivedCompetitorMatch.getIdMatch().getIdMatch());
 //                    throw new InvalidScoreException("Too big number");
-                    throw new InvalidScoreException();
+                    throw InvalidScoreException.tooBigNumber();
                 } else if (receivedCompetitorMatch.getCompetitorMatchScore() < 0) {
-                    throw new InvalidScoreException("Score can't be lower than 0");
+                    throw InvalidScoreException.belowZero();
                 }
 
                 break;

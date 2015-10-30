@@ -11,6 +11,8 @@ package exceptions;
  */
 public class MatchOptimisticLockException extends ApplicationException {
 
+    public static final String OPTIMISTIC_LOCK = "EXCEPTION.MATCH_OPTIMISTIC_LOCK_EXCEPTION";
+    
     public MatchOptimisticLockException() {
     }
 
@@ -20,6 +22,10 @@ public class MatchOptimisticLockException extends ApplicationException {
 
     public MatchOptimisticLockException(String message, Throwable cause) {
         super(message, cause);
+    }
+    
+    public static MatchOptimisticLockException optimisticLock(Throwable cause) {
+        return new MatchOptimisticLockException(OPTIMISTIC_LOCK, cause);
     }
 
 }

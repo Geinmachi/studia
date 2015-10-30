@@ -96,7 +96,7 @@ public class EditTeamBackingBean extends TeamBackingBean implements Serializable
             return JsfUtils.successPageRedirect(PageConstants.EDIT_TEAM_LIST);
         } catch (ApplicationException e) {
             System.out.println("APPECEPTION " + e.getLocalizedMessage());
-            JsfUtils.addErrorMessage(e.getLocalizedMessage(), null, null);
+            JsfUtils.addErrorMessage(e, null);
         } catch (Exception e) {
             System.out.println("Wyjatek przy edycji");
             Logger.getLogger(EditTeamBackingBean.class.getName()).log(Level.SEVERE, null, e);

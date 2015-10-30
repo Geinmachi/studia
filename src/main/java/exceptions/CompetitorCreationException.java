@@ -11,6 +11,10 @@ package exceptions;
  */
 public class CompetitorCreationException extends ApplicationException{
 
+    public static final String GLOBAL_DUPLICATE = "EXCEPTION.COMPETITOR_CREATION.GLOBAL_DUPLICATE";
+
+    public static final String PRIVATE_DUPLICATE = "EXCEPTION.COMPETITOR_CREATION.PRIVATE_DUPLICATE";
+    
     public CompetitorCreationException() {
     }
 
@@ -22,4 +26,11 @@ public class CompetitorCreationException extends ApplicationException{
         super(message, cause);
     }
     
+    public static CompetitorCreationException globalDuplicate(Throwable cause) {
+        return new CompetitorCreationException(GLOBAL_DUPLICATE, cause);
+    }
+    
+    public static CompetitorCreationException privateDuplicate(Throwable cause) {
+        return new CompetitorCreationException(PRIVATE_DUPLICATE, cause);
+    }
 }

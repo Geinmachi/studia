@@ -11,10 +11,14 @@ package exceptions;
  */
 public class InvalidScoreException extends ApplicationException {
 
-    public static final String optimisticLock = "EXCEPTION.INVALID_SCORE.TOO_BIG";
-
+    public static final String TOO_BIG = "EXCEPTION.INVALID_SCORE.TOO_BIG";
+    
+    public static final String BELOW_ZERO = "EXCEPTION.INVALID_SCORE.BELOW_ZERO";
+    
+    public static final String EMPTY = "EXCEPTION.INVALID_SCORE.EMPTY";
+    
     public InvalidScoreException() {
-        super(optimisticLock);
+        super();
     }
 
     public InvalidScoreException(String message) {
@@ -25,8 +29,16 @@ public class InvalidScoreException extends ApplicationException {
         super(message, cause);
     }
 
-    public InvalidScoreException(Throwable cause) {
-        super(optimisticLock, cause);
+    public static InvalidScoreException tooBigNumber() {
+        return new InvalidScoreException(TOO_BIG);
     }
 
+    public static InvalidScoreException belowZero() {
+        return new InvalidScoreException(BELOW_ZERO);
+    }
+
+    public static InvalidScoreException empty() {
+        return new InvalidScoreException(EMPTY);
+    }
+    
 }
