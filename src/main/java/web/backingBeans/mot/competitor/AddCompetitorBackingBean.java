@@ -91,11 +91,9 @@ public class AddCompetitorBackingBean extends CompetitionBackingBean implements 
             
             return JsfUtils.successPageRedirect(PageConstants.ORGANIZER_ADD_COMPETITOR);
         } catch (ApplicationException e) {
-            JsfUtils.addErrorMessage(e.getLocalizedMessage(), null, null);
-            
+            JsfUtils.addErrorMessage(e, null);
             System.out.println("Application Exception ");
         } catch (Exception e) {
-
             System.out.println("Exception in AddCompetitorBB#addCompetitor");
             e.printStackTrace();
         }

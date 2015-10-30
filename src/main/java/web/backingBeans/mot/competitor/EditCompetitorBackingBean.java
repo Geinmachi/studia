@@ -72,7 +72,7 @@ public class EditCompetitorBackingBean extends CompetitionBackingBean implements
             controller.editCompetitor(competitor);
             return JsfUtils.successPageRedirect(PageConstants.getPage(PageConstants.EDIT_COMPETITOR_LIST, true));
         } catch (ApplicationException e) {
-            JsfUtils.addErrorMessage(e.getLocalizedMessage(), " ", null);
+            JsfUtils.addErrorMessage(e, null);
             System.out.println("Application Exception ");
         } catch (Exception e) {
 

@@ -67,9 +67,9 @@ public class TeamFacade extends AbstractFacade<Team> implements TeamFacadeLocal 
             System.out.println("No existing team found with given criteria, entitled to create");
         } catch (NonUniqueResultException e) {
             if (creator == null) {
-                throw new TeamCreationException("Global team with given name already exists");
+                throw TeamCreationException.globalDuplicate(e);
             } else {
-                throw new TeamCreationException("You have already created private team with given name");
+                throw TeamCreationException.privateDuplicate(e);
             }
 
         }

@@ -131,7 +131,7 @@ public class CompetitorMatchFacade extends AbstractFacade<CompetitorMatch> imple
             editedCompetitorMatch = em.merge(entity);
             em.flush();
         } catch (OptimisticLockException e) {
-            throw new MatchOptimisticLockException("Match data affecting your change has been changed", e);
+            throw MatchOptimisticLockException.optimisticLock(e);
         }
         
         System.out.println("VERSION AFTER UPDATE CompetitorMatch " + entity.getVersion());

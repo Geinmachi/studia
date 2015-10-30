@@ -72,14 +72,14 @@ public class CompetitionComponentsManager implements CompetitionComponentsManage
         System.out.println("TEAM NAME " + team.getTeamName());
 
         if (vlidateCompetitorDuplicate(team.getCompetitorList()) != null) {
-            throw new TeamCreationException("Team can't contain duplicated competitors (private and global)");
+            throw TeamCreationException.duplicatedCompetitors();
         }
 
         for (Competitor c : team.getCompetitorList()) {
             Competitor fetchedCompetitor = competitorFacade.find(c.getIdCompetitor());
 
             if (fetchedCompetitor.getIdTeam() != null) {
-                throw new TeamCreationException("Competitor has alredy team, cannot add to another one");
+                throw TeamCreationException.teamfulCompetitor();
             }
 
             fetchedCompetitor.setIdTeam(team);
