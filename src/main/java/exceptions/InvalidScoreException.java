@@ -9,9 +9,12 @@ package exceptions;
  *
  * @author java
  */
-public class InvalidScoreException extends ApplicationException{
+public class InvalidScoreException extends ApplicationException {
+
+    public static final String optimisticLock = "EXCEPTION.INVALID_SCORE.TOO_BIG";
 
     public InvalidScoreException() {
+        super(optimisticLock);
     }
 
     public InvalidScoreException(String message) {
@@ -21,5 +24,9 @@ public class InvalidScoreException extends ApplicationException{
     public InvalidScoreException(String message, Throwable cause) {
         super(message, cause);
     }
-    
+
+    public InvalidScoreException(Throwable cause) {
+        super(optimisticLock, cause);
+    }
+
 }

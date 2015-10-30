@@ -7,9 +7,12 @@ package mot.facades;
 
 import entities.CompetitorMatch;
 import entities.MatchMatchType;
+import exceptions.ApplicationException;
+import exceptions.MatchOptimisticLockException;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.LockModeType;
+import javax.persistence.OptimisticLockException;
 import javax.persistence.PersistenceContext;
 
 /**
@@ -18,6 +21,7 @@ import javax.persistence.PersistenceContext;
  */
 @Stateless
 public class MatchMatchTypeFacade extends AbstractFacade<MatchMatchType> implements MatchMatchTypeFacadeLocal {
+
     @PersistenceContext(unitName = "mot_persistence_unit")
     private EntityManager em;
 
@@ -31,16 +35,21 @@ public class MatchMatchTypeFacade extends AbstractFacade<MatchMatchType> impleme
     }
 
     @Override
-    public MatchMatchType editWithReturn(MatchMatchType matchMatchType) {
+    public MatchMatchType editWithReturn(MatchMatchType matchMatchType) throws ApplicationException {
         for (CompetitorMatch cm : matchMatchType.getIdMatch().getCompetitorMatchList()) {
             System.out.println("VERSION bbbb " + cm.getVersion());
             em.lock(em.find(CompetitorMatch.class, cm.getIdCompetitorMatch()), LockModeType.OPTIMISTIC_FORCE_INCREMENT);
         }
-        
-        MatchMatchType entity = em.merge(matchMatchType);
-        em.flush();
+
+        MatchMatchType entity;
+        try {
+            entity = em.merge(matchMatchType);
+            em.flush();
+        } catch (OptimisticLockException e) {
+            throw new MatchOptimisticLockException("Match data affecting your change has been changed",e);
+        }
         System.out.println("VERSION aaa " + matchMatchType.getIdMatch().getCompetitorMatchList().get(0).getVersion());
         return entity;
     }
-    
+
 }

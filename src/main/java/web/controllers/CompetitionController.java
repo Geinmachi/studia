@@ -158,7 +158,7 @@ public class CompetitionController implements Serializable {
         return service.getCompetitionResults(competition.getIdCompetition());
     }
 
-    public MatchMatchType updateMatchType(Matchh match) {
+    public MatchMatchType updateMatchType(Matchh match) throws ApplicationException {
         return service.updateMatchType(match);
     }
 

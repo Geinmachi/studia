@@ -162,7 +162,6 @@ public class ManageCompetitionManager implements ManageCompetitionManagerLocal {
         CompetitorMatch storedCompetitorMatch = getStoredCompetitorMatch(receivedCompetitorMatch.getIdCompetitorMatch());
 
     //    Matchh fetchedMatch = matchFacade.findAndInitializeTypes(storedCompetitorMatch.getIdMatch().getIdMatch());
-
 //        System.out.println("MATCH TPYYYYYY");
 //        for (MatchMatchType mt : fetchedMatch.getMatchMatchTypeList()) {
 //            System.out.println("TYYP ::: " + mt.getIdMatchType().getMatchTypeName());
@@ -180,7 +179,7 @@ public class ManageCompetitionManager implements ManageCompetitionManagerLocal {
         Map<String, CompetitorMatch> returnObject = new HashMap<>();
         returnObject.put("saved", storedCompetitorMatch);
         returnObject.put("advanced", advancedCompetitorMatch);
-        
+
 //        if (advancedCompetitoCMG != null) {
 //            for (CompetitorMatch cm : advancedCompetitoCMG.getCompetitorMatchList()) {
 //                if (cm.getIdCompetitor() != null && cm.getIdCompetitor().getIdCompetitor()
@@ -193,7 +192,6 @@ public class ManageCompetitionManager implements ManageCompetitionManagerLocal {
 //        }
 //        returnObject.put("advanced1", advancedCompetitoCMG.getCompetitorMatchList().get(0));
 //        returnObject.put("advanced2", advancedCompetitoCMG.getCompetitorMatchList().get(1));
-
         return returnObject;
     }
 
@@ -207,7 +205,8 @@ public class ManageCompetitionManager implements ManageCompetitionManagerLocal {
                 int bestOfDigit = Integer.valueOf(mmt.getIdMatchType().getMatchTypeName().substring(2));
                 if (receivedCompetitorMatch.getCompetitorMatchScore() > ((bestOfDigit + 1) / 2)) {
                     System.out.println("IIIDDDDDDDDDDD --- match " + receivedCompetitorMatch.getIdMatch().getIdMatch());
-                    throw new InvalidScoreException("Too big number");
+//                    throw new InvalidScoreException("Too big number");
+                    throw new InvalidScoreException();
                 } else if (receivedCompetitorMatch.getCompetitorMatchScore() < 0) {
                     throw new InvalidScoreException("Score can't be lower than 0");
                 }
@@ -287,7 +286,7 @@ public class ManageCompetitionManager implements ManageCompetitionManagerLocal {
                             storedCompetitorMatch.setIdCompetitor(receivedCompetitorMatch.getIdCompetitor());
                             storedCompetitorMatch.setCompetitorMatchScore((short) 0);
                             storedCompetitorMatch.setPlacer(calculatePlacer(matchCounter));
-                            
+
                             Matchh updatedMatch = competitorMatchFacade.editWithReturnAdvancing(storedMatch);
                             for (CompetitorMatch cm : updatedMatch.getCompetitorMatchList()) {
                                 if (cm.getIdCompetitor() != null && cm.getIdCompetitor().getIdCompetitor()
@@ -329,7 +328,7 @@ public class ManageCompetitionManager implements ManageCompetitionManagerLocal {
     }
 
     @Override
-    public MatchMatchType updateMatchType(Matchh match, List<CMG> storedCMGmappings) {
+    public MatchMatchType updateMatchType(Matchh match, List<CMG> storedCMGmappings) throws ApplicationException {
         this.storedCMGmappings = storedCMGmappings;
 
         Matchh storedMatch = getStoredMatch(match.getIdMatch());
@@ -438,7 +437,7 @@ public class ManageCompetitionManager implements ManageCompetitionManagerLocal {
                 //    System.out.println("mmt " + mmt.getIdMatchType().getMatchTypeName());
                 if (mmt.getIdMatchType().getMatchTypeName().startsWith("BO")) {
                     cmt.setMatchType(mmt.getIdMatchType());
-                    
+
                     break;
                 }
             }
@@ -459,7 +458,7 @@ public class ManageCompetitionManager implements ManageCompetitionManagerLocal {
         storedCompetition.setStartDate(competition.getStartDate());
         storedCompetition.setEndDate(competition.getEndDate());
 
-        competitionFacade.edit(storedCompetition);
+        storedCompetition = competitionFacade.editWithReturn(storedCompetition);
 
         return storedCompetition;
     }

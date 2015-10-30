@@ -45,4 +45,6 @@ public interface CompetitionFacadeLocal {
     void competitionContraints(Competition competition) throws CompetitorCreationException;
 
     void competitionContraintsNotCommited(Competition competition) throws CompetitorCreationException;
+
+    public Competition editWithReturn(Competition storedCompetition) throws ApplicationException;
 }

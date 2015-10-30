@@ -35,7 +35,7 @@ public interface ManageCompetitionManagerLocal {
 
     public List<CompetitorMatch> findCMGByIdMatch(Integer idMatch);
 
-    public MatchMatchType updateMatchType(Matchh match, List<CMG> storedCMGmappings);
+    public MatchMatchType updateMatchType(Matchh match, List<CMG> storedCMGmappings) throws ApplicationException;
 
     public InactivateMatch disableMatch(InactivateMatch inactivateMatch);
 

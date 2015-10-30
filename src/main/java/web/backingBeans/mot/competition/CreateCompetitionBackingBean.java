@@ -31,6 +31,7 @@ import org.primefaces.model.DualListModel;
 import web.converters.interfaces.CompetitorConverterData;
 import web.utils.JsfUtils;
 import web.utils.PageConstants;
+import web.validators.CompetitorsDualListSetter;
 
 /**
  *
@@ -38,7 +39,7 @@ import web.utils.PageConstants;
  */
 @Named(value = "createCompetitionBackingBean")
 @ViewScoped
-public class CreateCompetitionBackingBean extends CompetitionBackingBean implements Serializable, CompetitorConverterData {
+public class CreateCompetitionBackingBean extends CompetitionBackingBean implements Serializable, CompetitorConverterData, CompetitorsDualListSetter {
 
     @Inject
     private BracketCreation bracketCreator;
@@ -56,10 +57,10 @@ public class CreateCompetitionBackingBean extends CompetitionBackingBean impleme
     private boolean competitionNameConstrains;
 
     private CompetitionType selectedCompetitionType;
-
-    private Competitor selectedToRemove;
-
-    private Competitor selectedToAdd;
+//
+//    private Competitor selectedToRemove;
+//
+//    private Competitor selectedToAdd;
 
     private boolean isCompetitorsAmountValid;
 
@@ -87,6 +88,7 @@ public class CreateCompetitionBackingBean extends CompetitionBackingBean impleme
         return competitors;
     }
 
+    @Override
     public void setCompetitors(DualListModel competitors) {
         this.competitors = competitors;
     }
@@ -107,21 +109,21 @@ public class CreateCompetitionBackingBean extends CompetitionBackingBean impleme
         this.selectedCompetitionType = selectedCompetitionType;
     }
 
-    public Competitor getSelectedToRemove() {
-        return selectedToRemove;
-    }
-
-    public void setSelectedToRemove(Competitor selectedToRemove) {
-        this.selectedToRemove = selectedToRemove;
-    }
-
-    public Competitor getSelectedToAdd() {
-        return selectedToAdd;
-    }
-
-    public void setSelectedToAdd(Competitor selectedToAdd) {
-        this.selectedToAdd = selectedToAdd;
-    }
+//    public Competitor getSelectedToRemove() {
+//        return selectedToRemove;
+//    }
+//
+//    public void setSelectedToRemove(Competitor selectedToRemove) {
+//        this.selectedToRemove = selectedToRemove;
+//    }
+//
+//    public Competitor getSelectedToAdd() {
+//        return selectedToAdd;
+//    }
+//
+//    public void setSelectedToAdd(Competitor selectedToAdd) {
+//        this.selectedToAdd = selectedToAdd;
+//    }
 
     public boolean getIsCompetitorsAmountValid() {
         return isCompetitorsAmountValid;

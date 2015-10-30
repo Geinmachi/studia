@@ -78,6 +78,23 @@
         </user-data-constraint>
     </security-constraint>
     <security-constraint>
+        <display-name>Organizer-Administrator-constraint</display-name>
+        <web-resource-collection>
+            <web-resource-name>Organizer and Administrator pages</web-resource-name>
+            <description/>
+            <url-pattern>/edit/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <description/>
+            <role-name>Organizer</role-name>
+            <role-name>Administrator</role-name>
+        </auth-constraint>
+        <user-data-constraint>
+            <description/>
+            <transport-guarantee>CONFIDENTIAL</transport-guarantee>
+        </user-data-constraint>
+    </security-constraint>
+    <security-constraint>
         <display-name>secure-connection</display-name>
         <web-resource-collection>
             <web-resource-name>App-scope ssl</web-resource-name>

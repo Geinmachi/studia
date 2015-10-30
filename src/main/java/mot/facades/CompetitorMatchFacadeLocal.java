@@ -45,7 +45,7 @@ public interface CompetitorMatchFacadeLocal {
 
     public List<CompetitorMatch> findByIdMatch(Integer idMatch);
     
-    public CompetitorMatch editWithReturn(CompetitorMatch entity);
+    public CompetitorMatch editWithReturn(CompetitorMatch entity) throws ApplicationException;
     
     public Matchh editWithReturnAdvancing(Matchh storedMtch);
 }

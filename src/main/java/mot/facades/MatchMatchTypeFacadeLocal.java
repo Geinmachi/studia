@@ -32,5 +32,5 @@ public interface MatchMatchTypeFacadeLocal {
 
     int count();
     
-    MatchMatchType editWithReturn(MatchMatchType matchMatchType);
+    MatchMatchType editWithReturn(MatchMatchType matchMatchType) throws ApplicationException;
 }
