@@ -41,7 +41,7 @@
 
                             <f:facet name="sourceCaption">#{msg.competitors}</f:facet>
                             <f:facet name="targetCaption">#{msg.assignedCompetitors}</f:facet>
-                            <p:ajax event="transfer" listener="#{cc.attrs.checkDuplicate}" update="ccMsg submitButton" />
+                            <p:ajax event="transfer" listener="#{cc.attrs.checkDuplicate}" update="ccMsg submitButton competitorPickListMsg" />
 
                             <p:column style="width: 100%">
                                 <p:outputLabel>
@@ -52,6 +52,9 @@
                                     #{competitor.idPersonalInfo.lastName}
                                 </p:outputLabel>
                             </p:column>
+
+                            <f:validator binding="#{duplicatedCompetitorsValidator}"/>
+                            <!--<f:validator binding="#{competitorsAmountValidator}"/>-->
                         </p:pickList>
                     </p:column>
                 </p:row>
@@ -80,6 +83,7 @@
                 <p:row>
                     <p:column colspan="3">
                         <p:messages autoUpdate="false" id="ccMsg" globalOnly="true"/>
+                        <p:messages for="competitorPickList" autoUpdate="true" showDetail="true" id="competitorPickListMsg"/>
                     </p:column>
                 </p:row>
             </p:panelGrid>

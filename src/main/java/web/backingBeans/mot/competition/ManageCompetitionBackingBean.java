@@ -40,6 +40,8 @@ import org.primefaces.component.selectonemenu.SelectOneMenu;
 import org.primefaces.context.RequestContext;
 import utils.BracketUtil;
 import ejbCommon.TrackerInterceptor;
+import exceptions.CompetitionGeneralnfoException;
+import exceptions.MatchOptimisticLockException;
 import web.controllers.CompetitionController;
 import web.models.DashboardPanel;
 import web.utils.CheckUtils;
@@ -91,11 +93,11 @@ public class ManageCompetitionBackingBean extends CompetitionBackingBean impleme
     private void init() {
         System.out.println("INITTTTTTTTTTTTTTTTTTTTT");
         competition = controller.getEditingCompetition();
-        
+
         if (CheckUtils.isCompetitionNull(competition)) {
             return;
         }
-        
+
         groupDetailsList = new ArrayList<>(competition.getGroupDetailsList());
 
         Collections.sort(groupDetailsList);
@@ -150,21 +152,26 @@ public class ManageCompetitionBackingBean extends CompetitionBackingBean impleme
             RequestContext.getCurrentInstance().update(":manageCompetitionForm:dashboard");
             System.out.println("Po odswiezeniu");
 
+            JsfUtils.addSuccessMessage("Data successfully saved", "", "manageCompetitionForm");
+            return;
+
         } catch (InvalidScoreException ise) {
-            cmg.setCompetitorMatchScore(competitorOldScore);
-            bracketCreator.updateScores(cmg);
-            JsfUtils.addErrorMessage(ise.getLocalizedMessage(), "", "manageCompetitionForm");
+            JsfUtils.addErrorMessage(ise, "manageCompetitionForm");
+        } catch (MatchOptimisticLockException e) {
+            System.out.println("MatchoptimiscitExcpetion#saveScoere " + e.getLocalizedMessage());
+            JsfUtils.addErrorMessage(e.getLocalizedMessage(), "", "manageCompetitionForm");
         } catch (ApplicationException ae) {
             System.out.println("ManageCompetitonBackingBean#saceScore exception" + ae.getMessage());
             ae.printStackTrace();
         }
 
+        cmg.setCompetitorMatchScore(competitorOldScore);
+        bracketCreator.updateScores(cmg);
         //       init();
         //    refreshPage();
     }
 
     public void updateMatchType(DashboardPanel dp) {
-
         try {
             Matchh match = dp.getMatch();
             for (MatchMatchType mmt : match.getMatchMatchTypeList()) {
@@ -191,7 +198,7 @@ public class ManageCompetitionBackingBean extends CompetitionBackingBean impleme
 
 //            BracketUtil.makeSerializablePanel(dp);
             InactivateMatch inactiveMatch = controller.disableMatch(dp);
-            
+
             System.out.println("OINactivate " + inactiveMatch.getEditable() + " inplce " + inactiveMatch.isInplaceEditable());
 //        addAdvancedCompetitor(advancedMatchNumber);
             if (!inactiveMatch.getEditable()) {
@@ -202,7 +209,19 @@ public class ManageCompetitionBackingBean extends CompetitionBackingBean impleme
                 CompetitorMatch advancedCompetitorMatch = controller.advanceCompetitor(BracketUtil.getMatchWinner(dp.getMatch()));
 
                 bracketCreator.addAdvancedCompetitor(advancedCompetitorMatch);
+
+                JsfUtils.addSuccessMessage("Competitor advanced", "Name: "
+                        + advancedCompetitorMatch.getIdCompetitor().getIdPersonalInfo().getFirstName()
+                        + " "
+                        + advancedCompetitorMatch.getIdCompetitor().getIdPersonalInfo().getLastName(), "manageCompetitionForm");
             }
+
+            JsfUtils.addSuccessMessage("Data successfully saved", "", "manageCompetitionForm");
+            return;
+
+        } catch (MatchOptimisticLockException e) {
+            System.out.println("MatchoptimiscitExcpetion#udateScore " + e.getLocalizedMessage());
+            JsfUtils.addErrorMessage(e.getLocalizedMessage(), "", "manageCompetitionForm");
         } catch (ApplicationException e) {
             JsfUtils.addErrorMessage(e.getLocalizedMessage(), null, null);
             System.out.println("MangageCompetitonBB#updateMatchType exepton " + e.getLocalizedMessage());
@@ -223,7 +242,8 @@ public class ManageCompetitionBackingBean extends CompetitionBackingBean impleme
             JsfUtils.addSuccessMessage("Data was successfully saved", null, "manageCompetitionForm");
         } catch (ApplicationException e) {
             System.out.println("APPExcpetion ManageCmopBB#saveGeneralInfo " + e.getMessage());
-            JsfUtils.addErrorMessage(e.getLocalizedMessage(), "", "manageCompetitionForm:competitionName");
+            JsfUtils.addErrorMessage(e.getLocalizedMessage(), "", "manageCompetitionForm");
+            controller.storeCompetition(competition);
         } catch (Exception e) {
             System.out.println("ManageCompetitionBackingBean#saveGeneralInfo excpetion " + e.getLocalizedMessage());
             e.printStackTrace();

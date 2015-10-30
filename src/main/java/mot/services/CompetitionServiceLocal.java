@@ -65,7 +65,7 @@ public interface CompetitionServiceLocal {
 
     public Map<Competitor, Integer> getCompetitionResults(Integer idCompetition);
 
-    public MatchMatchType updateMatchType(Matchh match);
+    public MatchMatchType updateMatchType(Matchh match) throws ApplicationException;
 
     public InactivateMatch disableMatch(InactivateMatch inactivateMatch);
 

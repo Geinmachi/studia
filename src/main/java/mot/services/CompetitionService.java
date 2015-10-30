@@ -209,7 +209,7 @@ public class CompetitionService implements CompetitionServiceLocal {
     }
 
     @Override
-    public MatchMatchType updateMatchType(Matchh match) {
+    public MatchMatchType updateMatchType(Matchh match) throws ApplicationException {
         MatchMatchType updatedMMT = manageCompetitionManager.updateMatchType(match, storedCMGmappings);
         replaceUpdatedMatch(updatedMMT.getIdMatch());
 

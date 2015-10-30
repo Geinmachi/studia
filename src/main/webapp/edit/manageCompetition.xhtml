@@ -131,6 +131,7 @@ and open the template in the editor.
                                         <p:inplace editor="true" disabled="#{!dashboardPanel.inplaceEditable || !dashboardPanel.editable}" styleClass="scoreInplace">
                                             <p:ajax event="save" listener="#{manageCompetitionBackingBean.saveScore(cmgFromMatch, dashboardPanel)}"
                                                     update="@(.matchPanel)" partialSubmit="true" process="@this"/>
+                                            <!--<p:ajax event="cancel" update="@(.matchPanel)" process="@none"/>-->
                                             <p:inputText id="scoreInput" value="#{cmgFromMatch.competitorMatchScore}" label="#{msg.score}"
                                                          valueChangeListener="#{manageCompetitionBackingBean.saveOldScore}">
                                             </p:inputText>

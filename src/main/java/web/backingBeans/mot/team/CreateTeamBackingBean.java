@@ -26,6 +26,7 @@ import web.controllers.CompetitionController;
 import web.converters.interfaces.CompetitorConverterData;
 import web.utils.JsfUtils;
 import web.utils.PageConstants;
+import web.validators.CompetitorsDualListSetter;
 
 /**
  *
@@ -33,7 +34,7 @@ import web.utils.PageConstants;
  */
 @Named(value = "createTeamBackingBean")
 @ViewScoped
-public class CreateTeamBackingBean extends TeamBackingBean implements Serializable {
+public class CreateTeamBackingBean extends TeamBackingBean implements Serializable, CompetitorsDualListSetter {
 
     private final Team team = new Team();
     
@@ -55,6 +56,7 @@ public class CreateTeamBackingBean extends TeamBackingBean implements Serializab
         return competitors;
     }
 
+    @Override
     public void setCompetitors(DualListModel competitors) {
         this.competitors = competitors;
     }

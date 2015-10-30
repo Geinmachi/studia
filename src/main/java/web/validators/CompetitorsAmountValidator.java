@@ -7,17 +7,24 @@ package web.validators;
 
 import entities.Competitor;
 import javax.enterprise.context.RequestScoped;
+import javax.enterprise.inject.Any;
+import javax.enterprise.inject.Produces;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.validator.Validator;
 import javax.faces.validator.ValidatorException;
+import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import org.primefaces.model.DualListModel;
 import utils.ResourceBundleUtil;
 import web.backingBeans.mot.competition.CreateCompetitionBackingBean;
+import web.backingBeans.mot.team.CreateTeamBackingBean;
 import web.controllers.CompetitionController;
+import web.converters.interfaces.CompetitorConverterData;
+import web.qualifiers.CompetitorsDataSource;
+import web.qualifiers.CompetitorsDualList;
 
 /**
  *
@@ -28,10 +35,30 @@ import web.controllers.CompetitionController;
 public class CompetitorsAmountValidator implements Validator {
 
     @Inject
-    private CreateCompetitionBackingBean createBean;
-    
+    @ViewScoped
+    @CompetitorsDualList
+    private CompetitorsDualListSetter createBean;
+
     @Inject
     private CompetitionController controller;
+
+    @Produces
+    @CompetitorsDualList
+    public CompetitorsDualListSetter getDataSource(
+            @Any CreateCompetitionBackingBean competition,
+            @Any CreateTeamBackingBean createTeam) {
+
+        String viewId = FacesContext.getCurrentInstance().getViewRoot().getViewId();
+
+        if (viewId.contains("createCompetition")) {
+            return competition;
+        } else if (viewId.contains("createTeam")) {
+            return createTeam;
+        } else {
+            System.out.println("CompetitorConverter#getDataSource no injection point");
+            throw new IllegalStateException("No injection point found in @Produces");
+        }
+    }
 
     @Override
     public void validate(FacesContext context, UIComponent component, Object value) throws ValidatorException {

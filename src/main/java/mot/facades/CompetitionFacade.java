@@ -11,6 +11,7 @@ import entities.Competitor;
 import entities.GroupCompetitor;
 import entities.GroupDetails;
 import exceptions.ApplicationException;
+import exceptions.CompetitionGeneralnfoException;
 import exceptions.CompetitorCreationException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -20,6 +21,7 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.NonUniqueResultException;
+import javax.persistence.OptimisticLockException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
 import javax.persistence.Query;
@@ -196,6 +198,18 @@ public class CompetitionFacade extends AbstractFacade<Competition> implements Co
         Query q = em.createNamedQuery("Competition.findGlobalCompetitions");
 
         return (List<Competition>) q.getResultList();
+    }
+
+    @Override
+    public Competition editWithReturn(Competition storedCompetition) throws ApplicationException {
+        try {
+            Competition entity = em.merge(storedCompetition);
+            em.flush();
+            
+            return entity;
+        } catch (OptimisticLockException e) {
+            throw new CompetitionGeneralnfoException("Competition was edited, refresh page", e);
+        }
     }
 
 }

@@ -18,6 +18,9 @@ import javax.persistence.LockModeType;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import ejbCommon.TrackerInterceptor;
+import exceptions.ApplicationException;
+import exceptions.MatchOptimisticLockException;
+import javax.persistence.OptimisticLockException;
 
 /**
  *
@@ -101,29 +104,36 @@ public class CompetitorMatchFacade extends AbstractFacade<CompetitorMatch> imple
     }
 
     @Override
-    public CompetitorMatch editWithReturn(CompetitorMatch entity) {
+    public CompetitorMatch editWithReturn(CompetitorMatch entity) throws ApplicationException {
         for (MatchMatchType mmt : entity.getIdMatch().getMatchMatchTypeList()) {
             em.lock(em.find(MatchMatchType.class, mmt.getIdMatchMatchType()), LockModeType.OPTIMISTIC_FORCE_INCREMENT);
         }
-        
+
         Query q = em.createNamedQuery("CompetitorMatch.findOtherByIdMatch");
         q.setParameter("idMatch", entity.getIdMatch().getIdMatch());
         q.setParameter("idCompetitorMatch", entity.getIdCompetitorMatch());
-        
+
         CompetitorMatch otherCompetitorMatch = (CompetitorMatch) q.getSingleResult();
         System.out.println("otherCompetitorMatch ID " + otherCompetitorMatch.getIdCompetitorMatch());
         em.lock(otherCompetitorMatch, LockModeType.OPTIMISTIC_FORCE_INCREMENT);
-        
+
         for (CompetitorMatch cm : entity.getIdMatch().getCompetitorMatchList()) {
             if (cm.getIdCompetitorMatch().equals(otherCompetitorMatch.getIdCompetitorMatch())) {
                 int index = entity.getIdMatch().getCompetitorMatchList().indexOf(cm);
                 entity.getIdMatch().getCompetitorMatchList().set(index, otherCompetitorMatch);
             }
         }
-        
+
         System.out.println("VERSION BEFORE UPDATE CompetitorMatch " + entity.getVersion());
-        CompetitorMatch editedCompetitorMatch = em.merge(entity);
-        em.flush();
+        CompetitorMatch editedCompetitorMatch;
+
+        try {
+            editedCompetitorMatch = em.merge(entity);
+            em.flush();
+        } catch (OptimisticLockException e) {
+            throw new MatchOptimisticLockException("Match data affecting your change has been changed", e);
+        }
+        
         System.out.println("VERSION AFTER UPDATE CompetitorMatch " + entity.getVersion());
 
         return editedCompetitorMatch;
