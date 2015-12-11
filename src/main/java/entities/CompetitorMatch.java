@@ -43,12 +43,13 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "CompetitorMatch.findByIdCompetitorMatch", query = "SELECT c FROM CompetitorMatch c WHERE c.idCompetitorMatch = :idCompetitorMatch"),
     @NamedQuery(name = "CompetitorMatch.findByCompetitorMatchScore", query = "SELECT c FROM CompetitorMatch c WHERE c.competitorMatchScore = :competitorMatchScore"),
     @NamedQuery(name = "CompetitorMatch.findByVersion", query = "SELECT c FROM CompetitorMatch c WHERE c.version = :version")})
-public class CompetitorMatch implements Serializable{
+public class CompetitorMatch implements Serializable, Comparable<CompetitorMatch> {
+
     private static final long serialVersionUID = 1L;
-    
+
     @Transient
     private UUID uuid;
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
@@ -79,6 +80,7 @@ public class CompetitorMatch implements Serializable{
     public CompetitorMatch(UUID uuid) {
         this.uuid = uuid;
     }
+
     public CompetitorMatch(Integer idCompetitorMatch) {
         this.idCompetitorMatch = idCompetitorMatch;
     }
@@ -130,7 +132,6 @@ public class CompetitorMatch implements Serializable{
 //    public void setIdGroup(GroupName idGroup) {
 //        this.idGroup = idGroup;
 //    }
-
     public Matchh getIdMatch() {
         return idMatch;
     }
@@ -156,7 +157,7 @@ public class CompetitorMatch implements Serializable{
             return false;
         }
         final CompetitorMatch other = (CompetitorMatch) obj;
-        
+
         if (this.uuid != null && other.uuid != null) {
             if (Objects.equals(this.uuid, other.uuid)) {
                 return true;
@@ -164,20 +165,45 @@ public class CompetitorMatch implements Serializable{
                 return false;
             }
         }
-        
+
         if (!Objects.equals(this.idCompetitorMatch, other.idCompetitorMatch)) {
             return false;
         }
         return true;
     }
 
-    
-
-    
-
     @Override
     public String toString() {
         return "entities.CompetitorMatch[ idCompetitorMatch=" + idCompetitorMatch + " ]";
     }
-    
+
+    @Override
+    public int compareTo(CompetitorMatch o) {
+        System.out.println("COMPARATOR");
+
+        if (this.placer == null && o.getPlacer() == null) {
+            System.out.println("OBA NULE");
+            return 0;
+        }
+        if (this.placer == null) {
+            System.out.println("PIerwszy null + placer o.getPlacer " + o.getPlacer());
+            System.out.println("warunek: " + o.getPlacer().equals(1));
+            if (o.getPlacer().equals((short)1)) {
+                return 1;
+            } else {
+                return -1;
+            }
+        }
+        if (o.getPlacer() == null) {
+            System.out.println("drugi null + placer this,plcare " + this.placer);
+            System.out.println("warunek: " + this.placer.equals(1));
+            if (this.placer.equals((short)1)) {
+                return -1;
+            } else {
+                return 1;
+            }
+        }
+        return this.placer.compareTo(o.getPlacer());
+    }
+
 }

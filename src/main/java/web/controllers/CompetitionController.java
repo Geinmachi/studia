@@ -193,7 +193,7 @@ public class CompetitionController implements Serializable {
         return service.getAllAllowedTeamlessCompetitors();
     }
 
-    public Competitor vlidateCompetitorDuplicate(List<Competitor> competitorList) {
+    public Competitor validateCompetitorDuplicate(List<Competitor> competitorList) {
         return service.vlidateCompetitorDuplicate(competitorList);
     }
 

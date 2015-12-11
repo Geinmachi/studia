@@ -20,6 +20,7 @@ import javax.faces.view.ViewScoped;
 import org.primefaces.model.DualListModel;
 import web.utils.JsfUtils;
 import web.utils.PageConstants;
+import web.validators.DuplicatedCompetitors;
 
 /**
  *
@@ -27,7 +28,7 @@ import web.utils.PageConstants;
  */
 @Named(value = "editTeamBackingBean")
 @ViewScoped
-public class EditTeamBackingBean extends TeamBackingBean implements Serializable {
+public class EditTeamBackingBean extends TeamBackingBean implements Serializable, DuplicatedCompetitors {
 
     private Team team;
 
@@ -103,5 +104,10 @@ public class EditTeamBackingBean extends TeamBackingBean implements Serializable
         }
         
         return null;
+    }
+
+    @Override
+    public void setDuplicatedCompetitorFlag(boolean duplicatedCompetitorFlag) {
+        this.duplicatedCompetitorFlag = duplicatedCompetitorFlag;
     }
 }

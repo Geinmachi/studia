@@ -36,9 +36,8 @@
                     #{competitor.idCreator.idAccount.login}
                 </p:column>
 
-                <p:column headerText="#{msg.edition}">
-                    <p:commandButton action="#{competitorListBackingBean.show(competitor)}" value="#{msg.edit}"
-                                     icon="#{request.remoteUser eq competitor.idCreator.idAccount.login ? ' ' : 'ui-icon-flag'}" iconPos="right"/>
+                <p:column headerText="#{msg.actions}">
+                    <p:commandLink styleClass="actionLink" action="#{competitorListBackingBean.show(competitor)}" value="#{msg.edit}"/>
                 </p:column>
 
             </p:dataTable>

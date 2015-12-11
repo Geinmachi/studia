@@ -153,7 +153,7 @@ public class BracketCreation implements Serializable {
         disableFinishedMatches();
         assignCurrentMatchTypes();
     }
-    
+
     public void recreateBracketToDisplay(Competition competition) {
         List<CMG> cmgList = controller.getCompetitionCMGMappings(competition);
 
@@ -391,29 +391,33 @@ public class BracketCreation implements Serializable {
 
     private void sortCompetitorsInMatch(Matchh match) {
         if (match != null && match.getCompetitorMatchList().size() > 1) {
+            System.out.println("SOrtowanie CM meczu nr " + match.getMatchNumber());
             for (CompetitorMatch cmg : match.getCompetitorMatchList()) {
                 System.out.println("Prowownanie cmg.placer = " + cmg.getPlacer());
                 System.out.println("cmop " + cmg.getIdCompetitor());
             }
-            Collections.sort(match.getCompetitorMatchList(), new Comparator<CompetitorMatch>() {
 
-                @Override
-                public int compare(CompetitorMatch o1, CompetitorMatch o2) {
-                    System.out.println("ooo1 placer = " + o1.getPlacer() + " 00002 placer" + o2.getPlacer());
-                    System.out.println("o1 = " + o1.getIdCompetitor() + " o2 " + o2.getIdCompetitor());
-                    if (o1.getPlacer() != null) {
-                        System.out.println("o1 placer rozny od null");
-                        return placerPosition(o1.getPlacer());
-                    }
-                    if (o2.getPlacer() != null) {
-                        System.out.println("o2 placer rozny od null");
-                        return placerPosition(o2.getPlacer());
-                    }
+            Collections.sort(match.getCompetitorMatchList());
 
-                    return 0;
-                }
-
-            });
+//            Collections.sort(match.getCompetitorMatchList(), new Comparator<CompetitorMatch>() {
+//
+//                @Override
+//                public int compare(CompetitorMatch o1, CompetitorMatch o2) {
+//                    System.out.println("ooo1 placer = " + o1.getPlacer() + " 00002 placer" + o2.getPlacer());
+//                    System.out.println("o1 = " + o1.getIdCompetitor() + " o2 " + o2.getIdCompetitor());
+//                    if (o1.getPlacer() != null) {
+//                        System.out.println("o1 placer rozny od null");
+//                        return placerPosition(o1.getPlacer());
+//                    }
+//                    if (o2.getPlacer() != null) {
+//                        System.out.println("o2 placer rozny od null");
+//                        return placerPosition(o2.getPlacer());
+//                    }
+//
+//                    return 0;
+//                }
+//
+//            });
         }
     }
 
@@ -440,7 +444,7 @@ public class BracketCreation implements Serializable {
 
                     if (cmg.equals(updatedCompetitorMatch)) {
                         int cmIndex = dp.getMatch().getCompetitorMatchList().indexOf(cmg);
-                        
+
                         System.out.println("VERSION before update " + dp.getMatch().getCompetitorMatchList().get(cmIndex).getVersion());
                         dp.getMatch().getCompetitorMatchList().set(cmIndex, updatedCompetitorMatch);
                         System.out.println("VERSION after update " + dp.getMatch().getCompetitorMatchList().get(cmIndex).getVersion());
@@ -478,12 +482,12 @@ public class BracketCreation implements Serializable {
                     }
 
                     dp.updateCMGwithAdvanced(cmg);
-                    
+
                     System.out.println("PRZED DISABLE");
 //                    BracketUtil.makeSerializablePanel(dp);
                     this.disableMatch(dp);
                     System.out.println("PO DISABLE");
-                    
+
                     System.out.println("ROZMIAR COMPETITOROW POO " + dp.getMatch().getCompetitorMatchList().size());
                     System.out.println("IIIIIIIIIII MATCH SCORE VALUE = " + cmg.getCompetitorMatchScore());
 
@@ -505,8 +509,7 @@ public class BracketCreation implements Serializable {
         for (DashboardPanel dp : panelList) {
 
             //    System.out.println("PANEL SERAILZIABLE " + dp.getPanel());
-            
-       //     BracketUtil.makeSerializablePanel(dp);
+            //     BracketUtil.makeSerializablePanel(dp);
             InactivateMatch updatedMatch = controller.disableMatch(dp);
 
             dp.setEditable(updatedMatch.getEditable());
@@ -555,18 +558,17 @@ public class BracketCreation implements Serializable {
 
     private void assignCurrentMatchTypes() {
         for (DashboardPanel dp : panelList) {
-            
+
 //            CurrentMatchType dpWrapper = new DashboardPanel();
 //            
 //            dpWrapper.setMatchType(dp.getMatchType());
 //            dpWrapper.setMatch(dp.getMatch());
-
             CurrentMatchType cmt = controller.assignCurrentMatchType(dp);
 
             dp.setMatchType(cmt.getMatchType());
         }
     }
-    
+
     /**
      *
      * @param match
@@ -574,10 +576,10 @@ public class BracketCreation implements Serializable {
      */
     public boolean disableMatch(InactivateMatch match) {
         InactivateMatch disabledMatch = controller.disableMatch(match);
-        
+
         match.setEditable(disabledMatch.getEditable());
         match.setInplaceEditable(disabledMatch.isInplaceEditable());
-        
+
         return disabledMatch.getEditable() || disabledMatch.isInplaceEditable();
     }
 }

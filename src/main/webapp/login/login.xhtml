@@ -5,13 +5,9 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui"
                 template="/WEB-INF/templates/main.xhtml">
-    <ui:define name="title">#{msg.loginTitle}</ui:define>
+    <ui:define name="title">#{msg.loginRequiredTitle}</ui:define>
     <ui:define name="content">
-        <h:form>
-            #{msg.login}: <p:inputText value="#{loginBackingBean.username}"/><br />
-            #{msg.password} <p:password value="#{loginBackingBean.password}"/><br />
-            <p:commandButton value="#{msg.signIn}" action="#{loginBackingBean.login()}"/>
-        </h:form>
+        <p:outputLabel value="#{msg.loginRequiredContent}" styleClass="centeredLabel"/>
     </ui:define>
 </ui:composition>
 

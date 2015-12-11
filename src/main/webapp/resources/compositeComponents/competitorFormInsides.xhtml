@@ -52,10 +52,12 @@ and open the template in the editor.
                         <p:outputLabel for="teamListbox" value="#{msg.team}"/>
                     </p:column>
                     <p:column colspan="2">
-                        <p:selectOneMenu id="teamListbox" value="#{cc.attrs.selectedTeam}" converter="#{teamConverter}">
+                        <p:selectOneMenu id="teamListbox" value="#{cc.attrs.selectedTeam}" converter="#{teamConverter}" >
                             <f:selectItem itemValue="#{null}" itemLabel="#{msg.none}" />
-                            <f:selectItems value="#{cc.attrs.teamList}" var="team" itemLabel="#{not empty team.idCreator ? '*' : ''}#{team.teamName}"/>
+                            <f:selectItems value="#{cc.attrs.teamList}" var="team" itemValue="#{team}"
+                                           itemLabel="#{not empty team.idCreator ? '*' : ''}#{team.teamName}"/>
                         </p:selectOneMenu>
+                        <p:messages/>
                     </p:column>
                 </p:row>
                 <p:row>

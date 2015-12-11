@@ -12,6 +12,9 @@ import entities.Matchh;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import mot.interfaces.CurrentMatchType;
@@ -22,7 +25,7 @@ import org.primefaces.component.panel.Panel;
  *
  * @author java
  */
-public class DashboardPanel implements InactivateMatch, CurrentMatchType{
+public class DashboardPanel implements InactivateMatch, CurrentMatchType {
 
     private Panel panel;
 
@@ -33,9 +36,9 @@ public class DashboardPanel implements InactivateMatch, CurrentMatchType{
     private MatchType matchType;
 
     private List<Competitor> competitorList = new ArrayList<>(2);
-    
+
     private boolean editable = true;
-    
+
     private boolean inplaceEditable = true;
 
     public DashboardPanel() {
@@ -83,7 +86,7 @@ public class DashboardPanel implements InactivateMatch, CurrentMatchType{
     public boolean getEditable() {
         return this.editable;
     }
-    
+
     @Override
     public void setEditable(boolean editable) {
         this.editable = editable;
@@ -98,12 +101,11 @@ public class DashboardPanel implements InactivateMatch, CurrentMatchType{
     public void setInplaceEditable(boolean inplaceEditable) {
         this.inplaceEditable = inplaceEditable;
     }
-    
-    
+
     /**
      *
      * @return New List with competitors. To add competitors use method
- updateCMGwithAdvanced
+     * updateCMGwithAdvanced
      */
     public List<Competitor> getCompetitorList() {
         return new ArrayList<>(competitorList);
@@ -119,32 +121,42 @@ public class DashboardPanel implements InactivateMatch, CurrentMatchType{
      * @param competitor
      * @param index
      */
-    public void updateCMGwithAdvanced(CompetitorMatch cmg) {
+    public void updateCMGwithAdvanced(CompetitorMatch cm) {
         List<CompetitorMatch> cmgList = this.match.getCompetitorMatchList();
 
         MatchType mt = new MatchType();
         mt.setEndUser(true);
         mt.setMatchTypeName("BO3");
-        
+
         this.matchType = mt;
-        
+
         for (CompetitorMatch c : cmgList) {
-            if (cmg.equals(c)) {
-                
+            if (cm.equals(c)) {
+
             }
             System.out.println("Przed insertem: " + c.getIdCompetitor());
         }
 //        competitorList.add(competitor);
 
         for (CompetitorMatch c : cmgList) {
-            if (cmg.equals(c)) {
-                c.setIdCompetitor(cmg.getIdCompetitor());
-                c.setCompetitorMatchScore(cmg.getCompetitorMatchScore());
-                System.err.println("JJJAKI PLACER " + cmg.getPlacer());
+            if (cm.equals(c)) {
+                c.setIdCompetitor(cm.getIdCompetitor());
+                c.setCompetitorMatchScore(cm.getCompetitorMatchScore());
+                c.setPlacer(cm.getPlacer());
+                System.err.println("JJJAKI PLACER " + cm.getPlacer());
                 System.out.println("Compedtitori  " + c.getIdCompetitor());
                 System.out.println("CMMM ID " + c);
                 System.out.println("MATCH ID " + c.getIdMatch());
             }
+        }
+
+        System.out.println("MECZ nr " + this.match.getMatchNumber());
+        for (int i = 0; i < cmgList.size(); i++) {
+            System.out.println("Competuitor " + cmgList.get(i).getIdCompetitor() + " index " + i);
+        }
+        
+        if (cmgList.size() > 1) {
+            Collections.sort(cmgList);
         }
 //        cmgList.get(index).setIdCompetitor(competitor);
 
@@ -171,10 +183,9 @@ public class DashboardPanel implements InactivateMatch, CurrentMatchType{
 ////        competitorList.remove(null);
 ////        competitorList.add(competitor);
 //    }
-
     @Override
     public String toString() {
         return "DashboardPanel{" + "panel=" + panel + ", match=" + match + ", filler=" + filler + ", matchType=" + matchType + ", competitorList=" + competitorList + ", editable=" + editable + ", inplaceEditable=" + inplaceEditable + '}';
     }
-    
+
 }

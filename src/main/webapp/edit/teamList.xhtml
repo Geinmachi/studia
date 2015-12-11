@@ -25,9 +25,8 @@
                     #{team.idCreator.idAccount.login}
                 </p:column>
 
-                <p:column headerText="#{msg.edition}">
-                    <p:commandButton action="#{teamListBackingBean.show(team)}" value="#{msg.edit}"
-                                     icon="#{request.remoteUser eq team.idCreator.idAccount.login ? ' ' : 'ui-icon-flag'}" iconPos="right"/>
+                <p:column headerText="#{msg.actions}">
+                    <p:commandLink styleClass="actionLink" action="#{teamListBackingBean.show(team)}" value="#{msg.edit}"/>
                 </p:column>
 
             </p:dataTable>

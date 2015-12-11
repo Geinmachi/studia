@@ -56,6 +56,7 @@ div[id*="Form"].ui-datatable.ui-widget {
 
 .ui-datatable table {
     width: auto !important;
+    min-width: 100% !important;
 }
 
 span > i.glyphicon-bullhorn {
@@ -112,4 +113,10 @@ span > i.glyphicon-bullhorn {
     margin-right: auto;
     text-align: center;
     display: table;
+}
+
+.actionLink {
+    color: #b92c28 !important;
+    text-align: center;
+    display: block;
 }

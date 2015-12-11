@@ -27,7 +27,7 @@ public abstract class TeamBackingBean extends CompetitionBackingBean implements 
     protected List<Competitor> competitorList;
     
     protected void checkDuplicate() {
-        Competitor duplicatedCompetitor = controller.vlidateCompetitorDuplicate((List<Competitor>) competitors.getTarget());
+        Competitor duplicatedCompetitor = controller.validateCompetitorDuplicate((List<Competitor>) competitors.getTarget());
         
         if (duplicatedCompetitor != null) {
             System.out.println("Duplicated competitor");

@@ -140,14 +140,18 @@ public class CompetitorMatchFacade extends AbstractFacade<CompetitorMatch> imple
     }
 
     @Override
-    public Matchh editWithReturnAdvancing(Matchh storedMatch) {
+    public Matchh editWithReturnAdvancing(Matchh storedMatch) throws ApplicationException {
 
+        try {
         for (int i = 0; i < storedMatch.getCompetitorMatchList().size(); i++) {
             storedMatch.getCompetitorMatchList().set(i, em.merge(storedMatch.getCompetitorMatchList().get(i)));
         }
 
 //        em.lock(em.find(Matchh.class, storedMatch.getIdMatch()), LockModeType.OPTIMISTIC_FORCE_INCREMENT);
         em.flush();
+        } catch (OptimisticLockException e) {
+            throw MatchOptimisticLockException.optimisticLock(e);
+        }
 
         return storedMatch;
     }

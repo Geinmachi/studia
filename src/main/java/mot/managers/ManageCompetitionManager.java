@@ -43,6 +43,8 @@ import mot.interfaces.InactivateMatch;
 import utils.BracketUtil;
 import utils.ConvertUtil;
 import ejbCommon.TrackerInterceptor;
+import java.util.Collection;
+import java.util.Collections;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 
@@ -112,6 +114,7 @@ public class ManageCompetitionManager implements ManageCompetitionManagerLocal {
         Set<CMG> cmgSet = new HashSet<>();
         System.out.println("GROUPCOMPETITOR SSS " + groupCompetitorList.size());
         System.out.println("COMPETITORMATCH SSS " + competitorMatchList.size());
+        
         for (CompetitorMatch cm : competitorMatchList) {
             //    if (Short.compare(cm.getIdMatch().getRoundd(), Short.parseShort("1")) == 0) {
             System.out.println("RUNDA 11111111111111");
@@ -161,7 +164,7 @@ public class ManageCompetitionManager implements ManageCompetitionManagerLocal {
 
         CompetitorMatch storedCompetitorMatch = getStoredCompetitorMatch(receivedCompetitorMatch.getIdCompetitorMatch());
 
-    //    Matchh fetchedMatch = matchFacade.findAndInitializeTypes(storedCompetitorMatch.getIdMatch().getIdMatch());
+        //    Matchh fetchedMatch = matchFacade.findAndInitializeTypes(storedCompetitorMatch.getIdMatch().getIdMatch());
 //        System.out.println("MATCH TPYYYYYY");
 //        for (MatchMatchType mt : fetchedMatch.getMatchMatchTypeList()) {
 //            System.out.println("TYYP ::: " + mt.getIdMatchType().getMatchTypeName());
@@ -371,7 +374,9 @@ public class ManageCompetitionManager implements ManageCompetitionManagerLocal {
     }
 
     private Matchh getStoredMatch(int idMatch) {
-
+        if (storedCMGmappings == null) {
+            return null;
+        }
         for (CMG cmg : storedCMGmappings) {
             if (cmg.getIdMatch() != null && cmg.getIdMatch().getIdMatch() == idMatch) {
                 return cmg.getIdMatch();
@@ -383,15 +388,15 @@ public class ManageCompetitionManager implements ManageCompetitionManagerLocal {
 
     @Override
     public InactivateMatch disableMatch(InactivateMatch inactivateMatch) {
-
         try {
             if (inactivateMatch.getMatch() != null) {
-
                 for (CompetitorMatch cm : inactivateMatch.getMatch().getCompetitorMatchList()) {
                     if (cm.getIdCompetitor() == null) { // no competitor in match
                         inactivateMatch.setInplaceEditable(false);
                         System.out.println("PUSTY COMEPTITOR, INPLACE EDITABLE false " + cm);
-
+                        if (inactivateMatch.getMatch().getRoundd() == 1) { // disables auto-win matches
+                            inactivateMatch.setEditable(false);
+                        }
                         break;
                     } else {
                         inactivateMatch.setInplaceEditable(true);

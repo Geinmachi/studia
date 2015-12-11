@@ -25,23 +25,23 @@ import mot.interfaces.InactivateMatch;
 @Remote
 public interface ManageCompetitionManagerLocal {
 
-    public List<Competition> getLoggedUserCompetition() throws ApplicationException;
+    List<Competition> getLoggedUserCompetition() throws ApplicationException;
 
-    public Competition storeCompetition(Competition competition);
+    Competition storeCompetition(Competition competition);
 
-    public List<CMG> getCompetitionCMGMappings(Competition competition);
+    List<CMG> getCompetitionCMGMappings(Competition competition);
 
-    public Map<String,CompetitorMatch> saveCompetitorScore(CompetitorMatch cmg, List<CMG> storedCMGmappings)  throws ApplicationException;
+    Map<String,CompetitorMatch> saveCompetitorScore(CompetitorMatch cmg, List<CMG> storedCMGmappings)  throws ApplicationException;
 
-    public List<CompetitorMatch> findCMGByIdMatch(Integer idMatch);
+    List<CompetitorMatch> findCMGByIdMatch(Integer idMatch);
 
-    public MatchMatchType updateMatchType(Matchh match, List<CMG> storedCMGmappings) throws ApplicationException;
+    MatchMatchType updateMatchType(Matchh match, List<CMG> storedCMGmappings) throws ApplicationException;
 
-    public InactivateMatch disableMatch(InactivateMatch inactivateMatch);
+    InactivateMatch disableMatch(InactivateMatch inactivateMatch);
 
-    public CurrentMatchType assignCurrentMatchType(CurrentMatchType cmt);
+    CurrentMatchType assignCurrentMatchType(CurrentMatchType cmt);
     
     CompetitorMatch advanceCompetitor(CompetitorMatch receivedCompetitorMatch) throws ApplicationException;
-
-    public Competition saveCompetitionGeneralInfo(Competition competition, Competition storedCompetition) throws ApplicationException;
+    
+    Competition saveCompetitionGeneralInfo(Competition competition, Competition storedCompetition) throws ApplicationException;
 }

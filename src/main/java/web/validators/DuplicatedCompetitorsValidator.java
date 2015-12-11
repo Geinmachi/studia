@@ -6,19 +6,23 @@
 package web.validators;
 
 import entities.Competitor;
-import exceptions.ApplicationException;
 import javax.enterprise.context.RequestScoped;
+import javax.enterprise.inject.Any;
+import javax.enterprise.inject.Produces;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.validator.Validator;
 import javax.faces.validator.ValidatorException;
+import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
-import org.primefaces.component.picklist.PickList;
 import org.primefaces.model.DualListModel;
 import web.backingBeans.mot.competition.CreateCompetitionBackingBean;
+import web.backingBeans.mot.team.CreateTeamBackingBean;
+import web.backingBeans.mot.team.EditTeamBackingBean;
 import web.controllers.CompetitionController;
+import web.qualifiers.DuplicatedCompetitorsData;
 
 /**
  *
@@ -29,25 +33,51 @@ import web.controllers.CompetitionController;
 public class DuplicatedCompetitorsValidator implements Validator {
 
     @Inject
-    private CreateCompetitionBackingBean createBean;
-    
+    @ViewScoped
+    @DuplicatedCompetitorsData
+    private DuplicatedCompetitors createBean;
+
     @Inject
     private CompetitionController controller;
+
+    @Produces
+    @DuplicatedCompetitorsData
+    public DuplicatedCompetitors getDataSource(
+            @Any CreateCompetitionBackingBean competition,
+            @Any CreateTeamBackingBean createTeam,
+            @Any EditTeamBackingBean editTeam) {
+
+        String viewId = FacesContext.getCurrentInstance().getViewRoot().getViewId();
+
+        if (viewId.contains("createCompetition")) {
+            return competition;
+        } else if (viewId.contains("createTeam")) {
+            return createTeam;
+        } else if (viewId.contains("editTeam")) {
+            return editTeam;
+        } else {
+            System.out.println("CompetitorConverter#getDataSource no injection point");
+            throw new IllegalStateException("No injection point found in @Produces");
+        }
+    }
 
     @Override
     public void validate(FacesContext context, UIComponent component, Object value) throws ValidatorException {
         DualListModel competitors = (DualListModel) value;
         createBean.setCompetitors(competitors);
-        
-        Competitor duplicatedCompetitor = controller.vlidateCompetitorDuplicate(competitors.getTarget());
+
+        Competitor duplicatedCompetitor = controller.validateCompetitorDuplicate(competitors.getTarget());
         if (duplicatedCompetitor != null) {
             System.out.println("VALIDATOR EXCEPTION ");
 
             FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Competition contains duplicated competitor",
                     duplicatedCompetitor.getIdPersonalInfo().getFirstName() + " "
                     + duplicatedCompetitor.getIdPersonalInfo().getLastName());
-            
+
+            createBean.setDuplicatedCompetitorFlag(true);
             throw new ValidatorException(msg);
         }
+        
+        createBean.setDuplicatedCompetitorFlag(false);
     }
 }

@@ -33,7 +33,7 @@ import web.qualifiers.TeamDataSource;
  */
 @Named(value = "teamConverter")
 @ApplicationScoped
-public class TeamConverter implements Converter, Serializable  {
+public class TeamConverter implements Converter, Serializable {
 
     @Inject
     @TeamDataSource
@@ -45,7 +45,7 @@ public class TeamConverter implements Converter, Serializable  {
     @ViewScoped
     public TeamConverterData getDataSource(@Any AddCompetitorBackingBean add, @Any EditCompetitorBackingBean edit) {
         System.out.println("PRODUUUUUUUUUUUUUUUUCES");
-        
+
         String viewId = FacesContext.getCurrentInstance().getViewRoot().getViewId();
 
         if (viewId.contains("add")) {
@@ -62,15 +62,9 @@ public class TeamConverter implements Converter, Serializable  {
     @Override
     public Object getAsObject(FacesContext context, UIComponent component, String value) {
         try {
-//            return fetchedData.findCompetitionTypeById(Integer.parseInt(value));
             List<Team> teamList = fetchedData.getTeamList();
-            for (Team t : teamList) {
-                if (Integer.compare(t.getIdTeam(), Integer.valueOf(value)) == 0) {
-                    return t;
-                }
-            }
-
-            throw new IllegalArgumentException("Nie ma takiego team");
+            
+            return teamList.get(Integer.valueOf(value));
         } catch (Exception e) {
             System.out.println("TeamConverter#getAsObject WYjatekgetAsObject " + e.getMessage());
             e.printStackTrace();
@@ -81,11 +75,14 @@ public class TeamConverter implements Converter, Serializable  {
     @Override
     public String getAsString(FacesContext context, UIComponent component, Object value) {
         try {
-//            System.out.println("ID z konwertera " + String.valueOf(((Competitor) value).getIdCompetitor()));
-            if (value != null) {
-                return String.valueOf(((Team) value).getIdTeam());
+            if (value == null) {
+                return "";
             }
-            
+
+            if (value instanceof Team) {
+                return String.valueOf(fetchedData.getTeamList().indexOf(((Team) value)));
+            }
+
             return "";
         } catch (Exception e) {
             System.out.println("WYjatekgetAsString " + e.getLocalizedMessage());

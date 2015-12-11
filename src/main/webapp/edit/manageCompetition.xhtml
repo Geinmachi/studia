@@ -141,12 +141,20 @@ and open the template in the editor.
                                     </ui:fragment>
                                     <!--</c:if>-->
                                     <ui:fragment rendered="#{empty cmgFromMatch.idCompetitor}">
-                                        <p:outputPanel>
-                                            <p:outputLabel value="#{msg.TBD}"/>
-                                            <p:outputLabel styleClass="scoreTBD">
-                                                -
-                                            </p:outputLabel>
-                                        </p:outputPanel>
+                                        <ui:fragment rendered="#{dashboardPanel.match.roundd != 1}">
+                                            <p:outputPanel>
+                                                <p:outputLabel value="#{msg.TBD}"/>
+                                                <p:outputLabel styleClass="scoreTBD">
+                                                    -
+                                                </p:outputLabel>
+                                            </p:outputPanel>
+                                        </ui:fragment>
+
+                                        <ui:fragment rendered="#{dashboardPanel.match.roundd == 1}">
+                                            <p:outputPanel styleClass="centeredText">
+                                                <p:outputLabel value="-"/>
+                                            </p:outputPanel>
+                                        </ui:fragment>
                                     </ui:fragment>
                                     <!--</c:choose>-->
                                     <!--</c:forEach>-->

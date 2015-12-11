@@ -11,7 +11,7 @@ package exceptions;
  */
 public class MatchOptimisticLockException extends ApplicationException {
 
-    public static final String OPTIMISTIC_LOCK = "EXCEPTION.MATCH_OPTIMISTIC_LOCK_EXCEPTION";
+    public static final String OPTIMISTIC_LOCK = "EXCEPTION.MATCH_OPTIMISTIC_LOCK_EXCEPTION.OPTIMISTIC_LOCK";
     
     public MatchOptimisticLockException() {
     }

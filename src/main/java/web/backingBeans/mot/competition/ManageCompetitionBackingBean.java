@@ -42,6 +42,7 @@ import utils.BracketUtil;
 import ejbCommon.TrackerInterceptor;
 import exceptions.CompetitionGeneralnfoException;
 import exceptions.MatchOptimisticLockException;
+import utils.ResourceBundleUtil;
 import web.controllers.CompetitionController;
 import web.models.DashboardPanel;
 import web.utils.CheckUtils;
@@ -129,8 +130,8 @@ public class ManageCompetitionBackingBean extends CompetitionBackingBean impleme
 //                BracketUtil.makeSerializablePanel(dp);
                 bracketCreator.disableMatch(dp);
 
-                JsfUtils.addSuccessMessage("Competitor advanced", "Name: "
-                        + advancedCompetitorMatch.getIdCompetitor().getIdPersonalInfo().getFirstName()
+                JsfUtils.addSuccessMessage(ResourceBundleUtil.getResourceBundleProperty("competitorAdvanced"),
+                        advancedCompetitorMatch.getIdCompetitor().getIdPersonalInfo().getFirstName()
                         + " "
                         + advancedCompetitorMatch.getIdCompetitor().getIdPersonalInfo().getLastName(), "manageCompetitionForm");
             } else if (BracketUtil.getMatchWinner(savedCompetitorMatch.getIdMatch()) != null) { // finished final
@@ -138,8 +139,8 @@ public class ManageCompetitionBackingBean extends CompetitionBackingBean impleme
                     if (mmt.getIdMatchType().getMatchTypeName().equals("final")) {
                         bracketCreator.disableMatch(dp);
 
-                        JsfUtils.addSuccessMessage("Competitor won the competition", "Name: "
-                                + BracketUtil.getMatchWinner(savedCompetitorMatch.getIdMatch()).getIdCompetitor().getIdPersonalInfo().getFirstName()
+                        JsfUtils.addSuccessMessage(ResourceBundleUtil.getResourceBundleProperty("competitorWonCompetition"),
+                                BracketUtil.getMatchWinner(savedCompetitorMatch.getIdMatch()).getIdCompetitor().getIdPersonalInfo().getFirstName()
                                 + " "
                                 + BracketUtil.getMatchWinner(savedCompetitorMatch.getIdMatch()).getIdCompetitor().getIdPersonalInfo().getLastName(), "manageCompetitionForm");
 
@@ -152,7 +153,7 @@ public class ManageCompetitionBackingBean extends CompetitionBackingBean impleme
             RequestContext.getCurrentInstance().update(":manageCompetitionForm:dashboard");
             System.out.println("Po odswiezeniu");
 
-            JsfUtils.addSuccessMessage("Data successfully saved", "", "manageCompetitionForm");
+            JsfUtils.addSuccessMessage(ResourceBundleUtil.getResourceBundleProperty("dataSaved"), "", "manageCompetitionForm");
             return;
 
         } catch (InvalidScoreException ise) {
@@ -211,13 +212,13 @@ public class ManageCompetitionBackingBean extends CompetitionBackingBean impleme
 
                 bracketCreator.addAdvancedCompetitor(advancedCompetitorMatch);
 
-                JsfUtils.addSuccessMessage("Competitor advanced", "Name: "
-                        + advancedCompetitorMatch.getIdCompetitor().getIdPersonalInfo().getFirstName()
+                JsfUtils.addSuccessMessage(ResourceBundleUtil.getResourceBundleProperty("competitorAdvanced"),
+                        advancedCompetitorMatch.getIdCompetitor().getIdPersonalInfo().getFirstName()
                         + " "
                         + advancedCompetitorMatch.getIdCompetitor().getIdPersonalInfo().getLastName(), "manageCompetitionForm");
             }
 
-            JsfUtils.addSuccessMessage("Data successfully saved", "", "manageCompetitionForm");
+            JsfUtils.addSuccessMessage(ResourceBundleUtil.getResourceBundleProperty("dataSaved"), "", "manageCompetitionForm");
             return;
 
         } catch (MatchOptimisticLockException e) {
@@ -240,7 +241,7 @@ public class ManageCompetitionBackingBean extends CompetitionBackingBean impleme
     public void saveGeneralInfo() {
         try {
             controller.saveCompetitionGeneralInfo(competition);
-            JsfUtils.addSuccessMessage("Data was successfully saved", null, "manageCompetitionForm");
+            JsfUtils.addSuccessMessage(ResourceBundleUtil.getResourceBundleProperty("dataSaved"), " ", "manageCompetitionForm");
         } catch (ApplicationException e) {
             System.out.println("APPExcpetion ManageCmopBB#saveGeneralInfo " + e.getMessage());
             JsfUtils.addErrorMessage(e, "manageCompetitionForm");

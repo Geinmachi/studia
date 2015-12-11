@@ -109,7 +109,7 @@ and open the template in the editor.
                                     </p:column>
 
                                     <f:validator binding="#{duplicatedCompetitorsValidator}"/>
-                                    <f:validator binding="#{competitorsAmountValidator}"/>
+                                    <!--<f:validator binding="#{competitorsAmountValidator}"/>-->
                                 </p:pickList>
                             </p:column>
                         </p:row>
@@ -212,7 +212,12 @@ and open the template in the editor.
                                                         <!--</c:if>-->
                                                     </c:when>
                                                     <c:otherwise>
-                                                        #{msg.TBD}
+                                                        <c:if test="#{dashboardPanel.match.roundd != 1}">
+                                                            #{msg.TBD}
+                                                        </c:if>
+                                                        <c:if test="#{dashboardPanel.match.roundd == 1}">
+                                                            -
+                                                        </c:if>
                                                         <br/>
                                                     </c:otherwise>
                                                 </c:choose>

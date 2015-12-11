@@ -22,15 +22,32 @@ public class BracketUtil {
     public static int numberOfRounds(int competitorsAmount) {
         byte result = 1;
 
+        while (!isPowerOfTwo(competitorsAmount)) {
+            competitorsAmount++;
+        }
+        
         while (Math.pow(2, (double) result) != competitorsAmount) {
             if (result == Byte.MAX_VALUE) {
-                throw new IllegalStateException("Nie jest potega 2 competitiorsamount = " + competitorsAmount);
+                throw new IllegalStateException("Cos poszlo nie tak " + competitorsAmount);
             }
             result++;
         }
 
         return result;
     }
+    
+//    public static int numberOfRoundsWithGaps(int competitorsAmount) {
+//        byte result = 1;
+//
+//        while (Math.pow(2, (double) result) != competitorsAmount) {
+//            if (result == Byte.MAX_VALUE) {
+//                throw new IllegalStateException("Cos poszlo nie tak = " + competitorsAmount);
+//            }
+//            result++;
+//        }
+//
+//        return result;
+//    }
 
     public static int advancedMatchNumber(AdvancingMatchData matchData, int competitorCount) {
 
@@ -139,5 +156,9 @@ public class BracketUtil {
         }
         
         return null;
+    }
+    
+    public static boolean isPowerOfTwo(int number) { //bitwise-AND
+        return (number & (number - 1)) == 0;
     }
 }

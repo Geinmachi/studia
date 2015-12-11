@@ -29,9 +29,11 @@ import org.primefaces.context.RequestContext;
 import org.primefaces.event.FlowEvent;
 import org.primefaces.model.DualListModel;
 import web.converters.interfaces.CompetitorConverterData;
+import web.qualifiers.DuplicatedCompetitorsData;
 import web.utils.JsfUtils;
 import web.utils.PageConstants;
 import web.validators.CompetitorsDualListSetter;
+import web.validators.DuplicatedCompetitors;
 
 /**
  *
@@ -39,7 +41,7 @@ import web.validators.CompetitorsDualListSetter;
  */
 @Named(value = "createCompetitionBackingBean")
 @ViewScoped
-public class CreateCompetitionBackingBean extends CompetitionBackingBean implements Serializable, CompetitorConverterData, CompetitorsDualListSetter {
+public class CreateCompetitionBackingBean extends CompetitionBackingBean implements Serializable, CompetitorConverterData, CompetitorsDualListSetter, DuplicatedCompetitors {
 
     @Inject
     private BracketCreation bracketCreator;
@@ -97,6 +99,10 @@ public class CreateCompetitionBackingBean extends CompetitionBackingBean impleme
         return duplicatedCompetitorFlag;
     }
 
+    public void setDuplicatedCompetitorFlag(boolean duplicatedCompetitorFlag) {
+        this.duplicatedCompetitorFlag = duplicatedCompetitorFlag;
+    }
+
     public boolean isCompetitionNameConstrains() {
         return competitionNameConstrains;
     }
@@ -145,12 +151,12 @@ public class CreateCompetitionBackingBean extends CompetitionBackingBean impleme
 
         competitionTypes = controller.getAllCompetitionTypes();
 
-//        for (int i = 0; i < 16; i++) {
-//            comeptitorsTarget.add(competitorList.get(i));
-//        }
-//        competition.setCompetitionName("ddd");
-//        competition.setEndDate(new Date());
-//        competition.setStartDate(new Date());
+        for (int i = 0; i < 9; i++) {
+            comeptitorsTarget.add(competitorList.get(i));
+        }
+        competition.setCompetitionName("dd345d");
+        competition.setEndDate(new Date());
+        competition.setStartDate(new Date());
     }
 
     public String onFlowProcess(FlowEvent event) {
@@ -193,7 +199,7 @@ public class CreateCompetitionBackingBean extends CompetitionBackingBean impleme
         isCompetitorsAmountValid = controller.validateCompetitorsAmount(competitors.getTarget().size()); // do jsf mesage
 //        JsfUtils.addErrorMessage(null, null, null);
 
-        Competitor duplicatedCompetitor = controller.vlidateCompetitorDuplicate((List<Competitor>) competitors.getTarget());
+        Competitor duplicatedCompetitor = controller.validateCompetitorDuplicate((List<Competitor>) competitors.getTarget());
 
         if (duplicatedCompetitor != null) {
             System.out.println("Duplicated competitor");
@@ -221,7 +227,7 @@ public class CreateCompetitionBackingBean extends CompetitionBackingBean impleme
     }
 
 //    public Competitor checkCompetitorDuplicate(List<Competitor> competitorList) {
-//        return controller.vlidateCompetitorDuplicate(competitorList);
+//        return controller.validateCompetitorDuplicate(competitorList);
 //    }
 //    
 //    public boolean checkCompetitorAmount(int competitorCount) {

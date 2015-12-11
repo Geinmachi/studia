@@ -27,6 +27,7 @@ import web.converters.interfaces.CompetitorConverterData;
 import web.utils.JsfUtils;
 import web.utils.PageConstants;
 import web.validators.CompetitorsDualListSetter;
+import web.validators.DuplicatedCompetitors;
 
 /**
  *
@@ -34,7 +35,7 @@ import web.validators.CompetitorsDualListSetter;
  */
 @Named(value = "createTeamBackingBean")
 @ViewScoped
-public class CreateTeamBackingBean extends TeamBackingBean implements Serializable, CompetitorsDualListSetter {
+public class CreateTeamBackingBean extends TeamBackingBean implements Serializable, CompetitorsDualListSetter, DuplicatedCompetitors {
 
     private final Team team = new Team();
     
@@ -63,6 +64,10 @@ public class CreateTeamBackingBean extends TeamBackingBean implements Serializab
 
     public boolean isDuplicatedCompetitorFlag() {
         return duplicatedCompetitorFlag;
+    }
+
+    public void setDuplicatedCompetitorFlag(boolean duplicatedCompetitorFlag) {
+        this.duplicatedCompetitorFlag = duplicatedCompetitorFlag;
     }
 
     /**
