@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/templates/main.xhtml">
+    <ui:define name="title">#{msg.competitorReportsTitle}</ui:define>
+    <ui:define name="content">
+        <h:form id="competitorListForm" style="width: auto;">
+            <p:dataTable paginator="true" rows="10" rowsPerPageTemplate="10,25,50" sortMode="multiple" styleClass="shadows"
+                         var="competitor" value="#{competitorReportsBackingBean.competitorList}" >
+
+                <p:column headerText="#{msg.competitorFirstName}" sortBy="#{competitor.idPersonalInfo.firstName}" 
+                          filterMatchMode="contains" filterBy="#{competitor.idPersonalInfo.firstName}">
+                    <h:outputText value="#{competitor.idPersonalInfo.firstName}" />
+                </p:column>
+                
+                <p:column headerText="#{msg.competitorLastName}" sortBy="#{competitor.idPersonalInfo.lastName}" 
+                          filterMatchMode="contains" filterBy="#{competitor.idPersonalInfo.lastName}">
+                    <h:outputText value="#{competitor.idPersonalInfo.lastName}" />
+                </p:column>
+                
+                <p:column headerText="#{msg.team}" sortBy="#{competitor.idTeam.teamName}" 
+                          filterMatchMode="contains" filterBy="#{competitor.idTeam.teamName}">
+                    <h:outputText value="#{competitor.idTeam.teamName}" />
+                </p:column>
+
+                <p:column headerText="#{msg.actions}">
+                    <p:commandLink action="#{competitorReportsBackingBean.displayPlacementReport(competitor)}" 
+                                   value="#{msg.placements}" styleClass="actionLink"/>
+                </p:column>
+            </p:dataTable>
+        </h:form>
+    </ui:define>
+</ui:composition>

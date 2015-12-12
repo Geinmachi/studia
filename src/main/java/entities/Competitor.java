@@ -44,6 +44,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Competitor.findByFirstnameLastnameCreator", query = "SELECT c FROM Competitor c WHERE c.idPersonalInfo.firstName = :firstName AND c.idPersonalInfo.lastName = :lastName AND c.idCreator.idAccessLevel = :idCreator"),
     @NamedQuery(name = "Competitor.findAllTeamless", query = "SELECT c FROM Competitor c WHERE c.idTeam IS NULL"),
     @NamedQuery(name = "Competitor.findAllAllowedTeamless", query = "SELECT c FROM Competitor c WHERE c.idTeam IS NULL AND (c.idCreator.idAccessLevel = :idAccessLevel OR c.idCreator IS NULL)"),
+    @NamedQuery(name = "Competitor.findGlobalCompetitors", query = "SELECT c FROM Competitor c WHERE c.idCreator IS NULL"),
     @NamedQuery(name = "Competitor.findByIdCompetitor", query = "SELECT c FROM Competitor c WHERE c.idCompetitor = :idCompetitor")}) 
 public class Competitor implements Serializable, Comparable<Competitor> {
 

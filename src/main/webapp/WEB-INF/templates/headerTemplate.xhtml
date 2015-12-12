@@ -4,12 +4,18 @@
                 xmlns:b="http://bootsfaces.net/ui"
                 xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
 
-    
+
     <b:navBar id="navbar" brand="#{msg.mainPage}" brandHref="/index.xhtml" 
               inverse="true" fixed="top">
-        
+
         <b:navbarLinks>
             <b:navLink value="#{msg.competitionList}" href="/competitionList.xhtml"/>
+        </b:navbarLinks>
+
+        <b:navbarLinks>
+            <b:dropMenu value="#{msg.reports}">
+                <b:navLink value="#{msg.competitors}" href="/competitorReports.xhtml"/>
+            </b:dropMenu>
         </b:navbarLinks>
 
         <c:choose>

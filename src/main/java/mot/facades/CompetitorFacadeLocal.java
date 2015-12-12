@@ -47,4 +47,6 @@ public interface CompetitorFacadeLocal {
 
     public List<Competitor> findAllAllowedTeamless(int idAccessLevel);
 
+    public List<Competitor> findGlobalCompetitors();
+
 }

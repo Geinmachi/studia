@@ -21,6 +21,7 @@ import javax.ejb.Local; import javax.ejb.Remote;
 import mot.interfaces.CMG;
 import mot.interfaces.CurrentMatchType;
 import mot.interfaces.InactivateMatch;
+import mot.interfaces.ReportPlacementData;
 
 /**
  *
@@ -104,4 +105,8 @@ public interface CompetitionServiceLocal {
     public Competition getCompetitionByEncodedId(String encodedId);
 
     public String encodeCompetitionId(int competitionId);
+
+    public List<Competitor> getGlobalCompetitors() throws ApplicationException;
+
+    public ReportPlacementData getReportPlacements(Competitor competitor) throws ApplicationException;
 }

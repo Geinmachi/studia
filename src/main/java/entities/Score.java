@@ -33,6 +33,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Score.findByIdCompetitionAndIdCompetitor", query = "SELECT s FROM Score s WHERE s.idCompetition.idCompetition = :idCompetition AND s.idCompetitor.idCompetitor = :idCompetitor"),
     @NamedQuery(name = "Score.findAll", query = "SELECT s FROM Score s"),
     @NamedQuery(name = "Score.findByIdScore", query = "SELECT s FROM Score s WHERE s.idScore = :idScore"),
+    @NamedQuery(name = "Score.findPlacementCount", query = "SELECT COUNT(s) FROM Score s WHERE s.idCompetitor.idCompetitor = :idCompetitor AND s.place = :place AND s.idCompetition.global = true"),
+    @NamedQuery(name = "Score.findCompetitorOccuranceCount", query = "SELECT COUNT(s) FROM Score s WHERE s.idCompetitor.idCompetitor = :idCompetitor AND s.idCompetition.global = true"),
     @NamedQuery(name = "Score.findByScore", query = "SELECT s FROM Score s WHERE s.score = :score")})
 public class Score implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -49,6 +51,8 @@ public class Score implements Serializable {
     @JoinColumn(name = "id_competitor", referencedColumnName = "id_competitor")
     @ManyToOne(optional = false)
     private Competitor idCompetitor;
+    @Column(name = "place")
+    private short place;
     @Basic(optional = false)
     @NotNull
     @Column(name = "version")
@@ -92,6 +96,14 @@ public class Score implements Serializable {
 
     public void setIdCompetitor(Competitor idCompetitor) {
         this.idCompetitor = idCompetitor;
+    }
+
+    public short getPlace() {
+        return place;
+    }
+
+    public void setPlace(short place) {
+        this.place = place;
     }
 
     @Override

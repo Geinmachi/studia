@@ -90,30 +90,32 @@ public class PresentCompetitionManager implements PresentCompetitionManagerLocal
     public Map<Competitor, Integer> getCompetitionResults(int idCompetition) {
         List<Score> scoreList = new ArrayList<>(scoreFacade.findScoreByIdCompetition(idCompetition));
 
-        scoreList.sort(new Comparator<Score>() {
-
-            @Override
-            public int compare(Score o1, Score o2) {
-                return Short.compare(o2.getScore(), o1.getScore());
-            }
-
-        });
-
-        Map<Short, Integer> positionScoreMap = new HashMap<>();
-
-        int positionCounter = 1;
-        for (int i = 0; i < scoreList.size() - 1; i++) {
-            if (Short.compare(scoreList.get(i).getScore(), scoreList.get(i + 1).getScore()) != 0) {
-                positionScoreMap.put(scoreList.get(i).getScore(), positionCounter++);
-            }
-        }
-
-        positionScoreMap.put((short) 0, positionCounter);
+//        scoreList.sort(new Comparator<Score>() {
+//
+//            @Override
+//            public int compare(Score o1, Score o2) {
+//                return Short.compare(o2.getScore(), o1.getScore());
+//            }
+//
+//        });
+//
+//        Map<Short, Integer> positionScoreMap = new HashMap<>();
+//
+//        int positionCounter = 1;
+//        for (int i = 0; i < scoreList.size() - 1; i++) {
+//            if (Short.compare(scoreList.get(i).getScore(), scoreList.get(i + 1).getScore()) != 0) {
+//                positionScoreMap.put(scoreList.get(i).getScore(), positionCounter++);
+//            }
+//        }
+//
+//        positionScoreMap.put((short) 0, positionCounter);
 
         Map<Competitor, Integer> competitorPositionMap = new HashMap<>();
 
         for (Score s : scoreList) {
-            competitorPositionMap.put(s.getIdCompetitor(), positionScoreMap.get(s.getScore()));
+            competitorPositionMap.put(s.getIdCompetitor(), (int)s.getPlace());
+//            competitorPositionMap.put(s.getIdCompetitor(), positionScoreMap.get(s.getScore()));
+            
         }
 
         return SortUtil.sortByValue(competitorPositionMap, true);
