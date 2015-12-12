@@ -139,4 +139,10 @@ public class CompetitorFacade extends AbstractFacade<Competitor> implements Comp
         return sortedList;
     }
 
+    @Override
+    public List<Competitor> findGlobalCompetitors() {
+        Query q = em.createNamedQuery("Competitor.findGlobalCompetitors");
+        
+        return (List<Competitor>) q.getResultList();
+    }
 }

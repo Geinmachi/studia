@@ -27,6 +27,7 @@ import mot.services.CompetitionService;
 import mot.services.CompetitionServiceLocal;
 import mot.interfaces.CurrentMatchType;
 import mot.interfaces.InactivateMatch;
+import mot.interfaces.ReportPlacementData;
 import web.models.DashboardPanel;
 import web.utils.DisplayPageEnum;
 
@@ -245,5 +246,13 @@ public class CompetitionController implements Serializable {
 
     public String encodeCompetitionId(int competitionId) {
         return service.encodeCompetitionId(competitionId);
+    }
+
+    public List<Competitor> getGlobalCompetitors() throws ApplicationException {
+        return service.getGlobalCompetitors();
+    }
+
+    public ReportPlacementData getReportPlacements(Competitor competitor) throws ApplicationException {
+        return service.getReportPlacements(competitor);
     }
 }

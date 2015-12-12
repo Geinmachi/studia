@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/templates/main.xhtml">
+    <ui:define name="title">#{msg.placementReportTitle}</ui:define>
+    <ui:define name="content">
+        <h:form id="competitionListForm" style="width: auto;">
+            <p:panelGrid styleClass="resultsTable shadows">
+                <p:row>
+                    <p:column>
+                        <p:outputLabel value="#{msg.firstName} #{msg.lastName}"/>
+                    </p:column>
+                    <p:column>
+                        <p:outputLabel value="#{placementReportBackingBean.selectedCompetitor.idPersonalInfo.firstName} 
+                                       #{placementReportBackingBean.selectedCompetitor.idPersonalInfo.lastName}"/>
+                    </p:column>
+                </p:row>
+                
+                <p:row>
+                    <p:column>
+                        <p:outputLabel value="#{msg.team}"/>
+                    </p:column>
+                    <p:column>
+                        <p:outputLabel value="#{placementReportBackingBean.selectedCompetitor.idTeam.teamName}"/>
+                    </p:column>
+                </p:row>
+                
+                <p:row>
+                    <p:column>
+                        <p:outputLabel value="#{msg.firstPlaces}"/>
+                    </p:column>
+                    <p:column>
+                        <p:outputLabel value="#{placementReportBackingBean.reportPlacements.firstPlaces}"/>
+                    </p:column>
+                </p:row>
+                
+                <p:row>
+                    <p:column>
+                        <p:outputLabel value="#{msg.secondPlaces}"/>
+                    </p:column>
+                    <p:column>
+                        <p:outputLabel value="#{placementReportBackingBean.reportPlacements.secondPlaces}"/>
+                    </p:column>
+                </p:row>
+                
+                <p:row>
+                    <p:column>
+                        <p:outputLabel value="#{msg.thirdPlaces}"/>
+                    </p:column>
+                    <p:column>
+                        <p:outputLabel value="#{placementReportBackingBean.reportPlacements.thirdPlaces}"/>
+                    </p:column>
+                </p:row>
+                
+                <p:row>
+                    <p:column>
+                        <p:outputLabel value="#{msg.participateCount}"/>
+                    </p:column>
+                    <p:column>
+                        <p:outputLabel value="#{placementReportBackingBean.reportPlacements.participateCount}"/>
+                    </p:column>
+                </p:row>
+                
+                <p:row>
+                    <p:column colspan="2">
+                        <p:button style="float: right;" value="#{msg.back}" onclick="window.history.back();return false;"/>
+                    </p:column>
+                </p:row>
+            </p:panelGrid>
+        </h:form>
+    </ui:define>
+</ui:composition>

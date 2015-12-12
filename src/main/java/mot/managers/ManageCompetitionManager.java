@@ -45,8 +45,10 @@ import utils.ConvertUtil;
 import ejbCommon.TrackerInterceptor;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
+import utils.SortUtil;
 
 /**
  *
@@ -275,7 +277,8 @@ public class ManageCompetitionManager implements ManageCompetitionManagerLocal {
                                 if (mmt2.getIdMatchType().getMatchTypeName().equals("final")) { // if final there is no advancing
                                     fetchedMatch.getCompetition().setIdWinner(receivedCompetitorMatch.getIdCompetitor());
                                     competitionFacade.edit(fetchedMatch.getCompetition());
-
+                                    saveCompetitorsPlace(fetchedMatch.getCompetition().getIdCompetition());
+                                    
                                     return null;
                                 }
                             }
@@ -320,6 +323,39 @@ public class ManageCompetitionManager implements ManageCompetitionManagerLocal {
         }
     }
 
+    private void saveCompetitorsPlace(int idCompetition) throws ApplicationException {
+        List<Score> scoreList = new ArrayList<>(scoreFacade.findScoreByIdCompetition(idCompetition));
+
+        scoreList.sort(new Comparator<Score>() {
+
+            @Override
+            public int compare(Score o1, Score o2) {
+                return Short.compare(o2.getScore(), o1.getScore());
+            }
+
+        });
+
+        Map<Short, Integer> positionScoreMap = new HashMap<>();
+
+        int positionCounter = 1;
+        for (int i = 0; i < scoreList.size() - 1; i++) {
+            if (Short.compare(scoreList.get(i).getScore(), scoreList.get(i + 1).getScore()) != 0) {
+                positionScoreMap.put(scoreList.get(i).getScore(), positionCounter++);
+            }
+        }
+
+        positionScoreMap.put((short) 0, positionCounter);
+
+        Map<Competitor, Integer> competitorPositionMap = new HashMap<>();
+        
+        System.out.println();
+        for (Score s : scoreList) {
+            s.setPlace(positionScoreMap.get(s.getScore()).shortValue());
+            scoreFacade.edit(s);
+//            competitorPositionMap.put(s.getIdCompetitor(), positionScoreMap.get(s.getScore()));
+        }
+    }
+    
     @Override
     public List<CompetitorMatch> findCMGByIdMatch(Integer idMatch) {
         List<CompetitorMatch> found = competitorMatchFacade.findCMGByIdMatch(idMatch);

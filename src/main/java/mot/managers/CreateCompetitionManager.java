@@ -152,7 +152,17 @@ public class CreateCompetitionManager implements CreateCompetitionManagerLocal {
                     Score score = new Score();
                     score.setIdCompetition(competition);
                     score.setIdCompetitor(cmg.getIdCompetitor());
-                    score.setScore((short) 0);
+
+                    short scoreScore = 0;
+                    CompetitorMatch autoAdvancedCompeitorMatch = null;
+
+                    if (cmg.getIdMatch().getRoundd() == 1 // if auto-advance from round 1 then got score 1
+                            && (autoAdvancedCompeitorMatch = checkMatchNullCompetitor(cmg.getIdMatch())) != null // if there is auto-advanced competitor in match
+                            && autoAdvancedCompeitorMatch.getIdCompetitor().equals(cmg.getIdCompetitor())) { // if current object in iteration is auto-advanced competitor (could be null if object is missing opponent)
+                        scoreScore = 1;
+                    }
+
+                    score.setScore(scoreScore);
 
                     scoreFacade.create(score);
                 }
@@ -223,7 +233,7 @@ public class CreateCompetitionManager implements CreateCompetitionManagerLocal {
         System.out.println("PRZESZLO SZYSTKO");
 //        throw new NullPointerException();
     }
-    
+
     private List<GroupDetails> getUniqueGroupDetails(List<CMG> competitorMatchGroupList) {
         Set<GroupDetails> groups = new HashSet<>();
 
@@ -418,7 +428,7 @@ public class CreateCompetitionManager implements CreateCompetitionManagerLocal {
         }
 
         System.out.println("HashSetowe matches " + firstRoundMatches.size());
-        
+
         for (Matchh match : firstRoundMatches) {
             CompetitorMatch cmToAdvance = null;
             if ((cmToAdvance = checkMatchNullCompetitor(match)) != null) {
@@ -439,7 +449,7 @@ public class CreateCompetitionManager implements CreateCompetitionManagerLocal {
 //        }
         return cmgMappings;
     }
-    
+
     private CompetitorMatch checkMatchNullCompetitor(Matchh match) {
         CompetitorMatch competitorMatch = null;
         boolean hasNull = false;
@@ -454,7 +464,7 @@ public class CreateCompetitionManager implements CreateCompetitionManagerLocal {
 
         return hasNull ? competitorMatch : null;
     }
-    
+
     private void autoAdvanceCompetitor(CompetitorMatch cm, List<CompetitorMatch> competitorMatchList) {
         Map<String, Double> matchData = getAdvancedMatchNumber(competitorMatchList.size() / 2, cm.getIdMatch());
         short advancedMatchNumber = matchData.get("matchNumber").shortValue();

@@ -33,7 +33,9 @@ import mot.managers.PresentCompetitionManagerLocal;
 import mot.interfaces.CurrentMatchType;
 import mot.interfaces.InactivateMatch;
 import ejbCommon.TrackerInterceptor;
+import mot.interfaces.ReportPlacementData;
 import mot.managers.CompetitionComponentsManagerLocal;
+import mot.managers.ReportsManagerLocal;
 
 /**
  *
@@ -55,6 +57,9 @@ public class CompetitionService implements CompetitionServiceLocal {
     
     @EJB
     private CompetitionComponentsManagerLocal competitionComponentsManager;
+    
+    @EJB
+    private ReportsManagerLocal reportsManager;
 
     @EJB
     private TeamFacadeLocal teamFacade;
@@ -355,5 +360,14 @@ public class CompetitionService implements CompetitionServiceLocal {
     public String encodeCompetitionId(int competitionId) {
         return presentCompetitionManager.encodeCompetitionId(competitionId);
     }
-    
+
+    @Override
+    public List<Competitor> getGlobalCompetitors() throws ApplicationException {
+        return reportsManager.getGlobalCompetitors();
+    }
+
+    @Override
+    public ReportPlacementData getReportPlacements(Competitor competitor) throws ApplicationException {
+        return reportsManager.getReportPlacements(competitor);
+    }
 }

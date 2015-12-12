@@ -35,5 +35,8 @@ public interface ScoreFacadeLocal {
     public Score findByIdCompetitorAndIdCompetition(Integer idCompetition, Integer idCompetitor);
 
     public List<Score> findScoreByIdCompetition(int idCompetition);
-    
+
+    public int findPlacementCount(int idCompetitor, int place);
+
+    public int findParticipateCount(int idCompetitor);
 }
