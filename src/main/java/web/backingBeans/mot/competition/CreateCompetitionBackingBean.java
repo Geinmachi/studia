@@ -154,7 +154,7 @@ public class CreateCompetitionBackingBean extends CompetitionBackingBean impleme
         for (int i = 0; i < 9; i++) {
             comeptitorsTarget.add(competitorList.get(i));
         }
-        competition.setCompetitionName("dd345d");
+        competition.setCompetitionName("223232dd345d");
         competition.setEndDate(new Date());
         competition.setStartDate(new Date());
     }

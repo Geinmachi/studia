@@ -7,6 +7,8 @@ package mot.facades;
 
 import entities.AccessLevel;
 import javax.ejb.Stateless;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
@@ -14,7 +16,8 @@ import javax.persistence.PersistenceContext;
  *
  * @author java
  */
-@Stateless
+@Stateless(name = "motAccessLevelFacade")
+@TransactionAttribute(TransactionAttributeType.MANDATORY)
 public class AccessLevelFacade extends AbstractFacade<AccessLevel> implements AccessLevelFacadeLocal {
     @PersistenceContext(unitName = "mot_persistence_unit")
     private EntityManager em;

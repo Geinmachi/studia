@@ -3,29 +3,30 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package mot.facades;
+package mok.facades;
 
+import entities.AccessLevel;
 import entities.Account;
-import exceptions.AccountDoesNotExistsException;
+import exceptions.AccessLevelEditException;
 import exceptions.ApplicationException;
+import java.util.ArrayList;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
-import javax.persistence.PersistenceException;
 import javax.persistence.Query;
 
 /**
  *
  * @author java
  */
-@Stateless(name = "motAccountFacade")
+@Stateless(name = "mokAccountFacade")
 @TransactionAttribute(TransactionAttributeType.MANDATORY)
 public class AccountFacade extends AbstractFacade<Account> implements AccountFacadeLocal {
 
-    @PersistenceContext(unitName = "mot_persistence_unit")
+    @PersistenceContext(unitName = "mok_persistence_unit")
     private EntityManager em;
 
     @Override
@@ -38,24 +39,27 @@ public class AccountFacade extends AbstractFacade<Account> implements AccountFac
     }
 
     @Override
-    public Account findByLogin(String login) throws ApplicationException {
-        Query q = em.createNamedQuery("Account.findByLogin");
-        q.setParameter("login", login);
-
-        Account entity = null;
+    public Account createWithReturn(Account newAccount) throws ApplicationException {
+        em.persist(newAccount);
+        em.flush();
         
-        try {
-            entity = (Account) q.getSingleResult();
-            entity.getAccessLevelList().size();
+        return newAccount;
+    }
 
-            em.flush();
-        } catch (NoResultException e) {
-            throw new AccountDoesNotExistsException("User with given name does not exist", e.getCause());
-        } catch (PersistenceException e) {
-            throw e;
-        }
+    @Override
+    public Account findAndInitializeAccessLevels(int idAccount) {
+        Account entity = em.find(Account.class, idAccount);
+        entity.getAccessLevelList().size();
 
         return entity;
+    }
+
+    @Override
+    public List<AccessLevel> findAccountAccessLevelList(int idAccount) {
+        Query q = em.createNamedQuery("Account.findByIdAccount");
+
+        q.setParameter("idAccount", idAccount);
+        return new ArrayList<>(((Account) q.getSingleResult()).getAccessLevelList());
     }
 
 }

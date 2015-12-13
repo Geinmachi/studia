@@ -18,6 +18,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import javax.ejb.Stateless;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.NonUniqueResultException;
@@ -31,6 +33,7 @@ import javax.persistence.Query;
  * @author java
  */
 @Stateless
+@TransactionAttribute(TransactionAttributeType.MANDATORY)
 public class CompetitionFacade extends AbstractFacade<Competition> implements CompetitionFacadeLocal {
 
     @PersistenceContext(unitName = "mot_persistence_unit")

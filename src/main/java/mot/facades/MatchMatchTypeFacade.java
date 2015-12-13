@@ -10,6 +10,8 @@ import entities.MatchMatchType;
 import exceptions.ApplicationException;
 import exceptions.MatchOptimisticLockException;
 import javax.ejb.Stateless;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 import javax.persistence.EntityManager;
 import javax.persistence.LockModeType;
 import javax.persistence.OptimisticLockException;
@@ -20,6 +22,7 @@ import javax.persistence.PersistenceContext;
  * @author java
  */
 @Stateless
+@TransactionAttribute(TransactionAttributeType.MANDATORY)
 public class MatchMatchTypeFacade extends AbstractFacade<MatchMatchType> implements MatchMatchTypeFacadeLocal {
 
     @PersistenceContext(unitName = "mot_persistence_unit")

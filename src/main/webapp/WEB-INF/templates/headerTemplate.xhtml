@@ -3,8 +3,6 @@
                 xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
                 xmlns:b="http://bootsfaces.net/ui"
                 xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
-
-
     <b:navBar id="navbar" brand="#{msg.mainPage}" brandHref="/index.xhtml" 
               inverse="true" fixed="top">
 
@@ -22,7 +20,7 @@
             <c:when test="#{empty request.remoteUser}">
                 <h:form styleClass="navbar-form navbar-right">
 
-                    <b:button   value="#{msg.signUp}" size="xs"
+                    <b:button   value="#{msg.signUp}" size="xs" outcome="/register.xhtml"
                                 look="primary" icon="pencil" iconAlign="right"/>
 
                     &#160;&#160;
@@ -74,6 +72,11 @@
 
             </c:otherwise>
         </c:choose>
+        <c:if test="#{request.isUserInRole(bsn['role.admin'])}">
+            <b:navbarLinks>
+                <b:navLink value="#{msg.users}" href="/admin/usersList.xhtml"/>
+            </b:navbarLinks>
+        </c:if>
     </b:navBar>
 </ui:composition>
 
