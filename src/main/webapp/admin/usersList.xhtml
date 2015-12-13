@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/templates/main.xhtml"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:define name="title">#{msg.usersListTitle}</ui:define>
+    <ui:define name="content">
+        <h:form id="usersListForm" style="width: auto;">
+            <p:dataTable paginator="true" rows="10" rowsPerPageTemplate="10,25,50" sortMode="multiple" styleClass="shadows"
+                         var="user" value="#{usersListBackingBean.accountList}">
+
+                <p:column headerText="#{msg.login}" sortBy="#{user.login}" 
+                          filterMatchMode="contains" filterBy="#{user.login}">
+                    <h:outputText value="#{user.login}" />
+                </p:column>
+                
+                <p:column headerText="#{msg.firstName}" sortBy="#{user.idPersonalInfo.firstName}" 
+                          filterMatchMode="contains" filterBy="#{user.idPersonalInfo.firstName}">
+                    <h:outputText value="#{user.idPersonalInfo.firstName}" />
+                </p:column>
+                
+                <p:column headerText="#{msg.lastName}" sortBy="#{user.idPersonalInfo.lastName}" 
+                          filterMatchMode="contains" filterBy="#{user.idPersonalInfo.lastName}">
+                    <h:outputText value="#{user.idPersonalInfo.lastName}" />
+                </p:column>
+
+                <p:column headerText="#{msg.email}" sortBy="#{user.idPersonalInfo.email}" 
+                          filterMatchMode="contains" filterBy="#{user.idPersonalInfo.email}">
+                    <h:outputText value="#{user.idPersonalInfo.email}" />
+                </p:column>
+
+                <p:column headerText="#{msg.active}">
+                    <p:selectBooleanCheckbox value="#{user.isActive}" disabled="true" />
+                </p:column>
+
+                <p:column headerText="#{msg.confirmed}">
+                    <p:selectBooleanCheckbox value="#{user.isConfirmed}" disabled="true" />
+                </p:column>
+
+<!--                <p:column headerText="#{msg.administrator}">
+                    <h:outputText value="#{user.login}" />
+                </p:column>-->
+
+                <p:column headerText="#{msg.actions}">
+                    <p:commandLink action="#{usersListBackingBean.changeAccessLevel(user)}" 
+                                     value="#{msg.changeAccessLevel}" styleClass="actionLink"/>
+                    <p:commandLink action="#{competitionListBackingBean.edit(user)}" 
+                                   value="#{msg.edit}" styleClass="actionLink"/>
+                </p:column>
+<!--                <p:column headerText="#{msg.details}">
+                    <p:commandButton action="#{competitionListBackingBean.displayCompetition(competition, competitionListBackingBean.getDisplayPageEnum('DETAILS'))}" 
+                                     value="#{msg.show}"/>
+                </p:column>
+
+                <p:column headerText="#{msg.results}">
+                    <p:commandButton action="#{competitionListBackingBean.displayCompetition(competition, competitionListBackingBean.getDisplayPageEnum('RESULTS'))}" 
+                                     value="#{msg.show}" disabled="#{empty competition.idWinner}"/>
+                </p:column>-->
+
+            </p:dataTable>
+        </h:form>
+    </ui:define>
+</ui:composition>

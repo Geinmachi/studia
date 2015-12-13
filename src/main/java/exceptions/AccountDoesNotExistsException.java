@@ -9,16 +9,16 @@ package exceptions;
  *
  * @author java
  */
-public class AccountException extends ApplicationException {
+public class AccountDoesNotExistsException extends ApplicationException {
 
-    public AccountException() {
+    public AccountDoesNotExistsException() {
     }
 
-    public AccountException(String message) {
+    public AccountDoesNotExistsException(String message) {
         super(message);
     }
 
-    public AccountException(String message, Throwable cause) {
+    public AccountDoesNotExistsException(String message, Throwable cause) {
         super(message, cause);
     }
     

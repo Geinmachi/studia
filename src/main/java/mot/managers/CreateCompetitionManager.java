@@ -294,12 +294,15 @@ public class CreateCompetitionManager implements CreateCompetitionManagerLocal {
 
     @Override
     public List<CMG> generateEmptyBracket(List<Competitor> competitors) {
+                System.out.println("-----------generateEmptyBracket------------111111");
+
         List<Competitor> fetchedCompetitors = new ArrayList<>();
 
         for (Competitor c : competitors) {
             fetchedCompetitors.add(competitorFacade.findAndInitializeGroups(c.getIdCompetitor()));
         }
 
+                System.out.println("-----------generateEmptyBracket------------2222222");
         Collections.shuffle(fetchedCompetitors);
 
         List<GroupName> groups = createGroups(fetchedCompetitors.size());
@@ -315,6 +318,7 @@ public class CreateCompetitionManager implements CreateCompetitionManagerLocal {
 //    }
 
     private List<GroupName> createGroups(int competitorsAmount) {
+        System.out.println("-----------createGroups------------");
         int asciiValue = 65;
 //        double numberOfGroups = Math.sqrt((double) competitorsAmount);
         int numberOfGroups = computeGroupNumber(competitorsAmount);

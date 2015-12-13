@@ -3,9 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package mot.facades;
+package mok.facades;
 
-import entities.PersonalInfo;
+import entities.AccessLevel;
+import entities.Administrator;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
@@ -16,10 +17,10 @@ import javax.persistence.PersistenceContext;
  *
  * @author java
  */
-@Stateless(name = "motPersonalInfoFacade")
+@Stateless(name = "mokAdministratorFacade")
 @TransactionAttribute(TransactionAttributeType.MANDATORY)
-public class PersonalInfoFacade extends AbstractFacade<PersonalInfo> implements PersonalInfoFacadeLocal {
-    @PersistenceContext(unitName = "mot_persistence_unit")
+public class AdministratorFacade extends AbstractFacade<Administrator> implements AdministratorFacadeLocal {
+    @PersistenceContext(unitName = "mok_persistence_unit")
     private EntityManager em;
 
     @Override
@@ -27,8 +28,16 @@ public class PersonalInfoFacade extends AbstractFacade<PersonalInfo> implements 
         return em;
     }
 
-    public PersonalInfoFacade() {
-        super(PersonalInfo.class);
+    public AdministratorFacade() {
+        super(Administrator.class);
+    }
+
+    @Override
+    public AccessLevel createWithReturn(Administrator administrator) {
+        em.persist(administrator);
+        em.flush();
+        
+        return administrator;
     }
     
 }

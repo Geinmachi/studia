@@ -20,6 +20,8 @@ import javax.persistence.Query;
 import ejbCommon.TrackerInterceptor;
 import exceptions.ApplicationException;
 import exceptions.MatchOptimisticLockException;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 import javax.persistence.OptimisticLockException;
 
 /**
@@ -27,8 +29,7 @@ import javax.persistence.OptimisticLockException;
  * @author java
  */
 @Stateless
-@Interceptors({TrackerInterceptor.class})
-
+@TransactionAttribute(TransactionAttributeType.MANDATORY)
 public class CompetitorMatchFacade extends AbstractFacade<CompetitorMatch> implements CompetitorMatchFacadeLocal {
 
     @PersistenceContext(unitName = "mot_persistence_unit")

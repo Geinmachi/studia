@@ -12,6 +12,7 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -23,8 +24,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.persistence.Version;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -54,7 +55,6 @@ public class AccessLevel implements Serializable {
     @Column(name = "id_access_level")
     private Integer idAccessLevel;
     @Basic(optional = false)
-    @NotNull
     @Size(min = 1, max = 50)
     @Column(name = "access_level")
     private String accessLevel;
@@ -135,7 +135,14 @@ public class AccessLevel implements Serializable {
     public void setIdAccount(Account idAccount) {
         this.idAccount = idAccount;
     }
+    
+    @Transient
+    public String getDiscriminatorValue(){
+        DiscriminatorValue val = this.getClass().getAnnotation( DiscriminatorValue.class );
 
+        return val == null ? null : val.value();
+    }
+    
     @Override
     public int hashCode() {
         int hash = 0;

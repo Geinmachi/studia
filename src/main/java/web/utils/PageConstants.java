@@ -31,6 +31,8 @@ public class PageConstants {
     
     public static final String ROOT_LOGIN_ERROR = "/loginError.xhtml";
     
+    public static final String ROOT_REGISTER = "/register.xhtml";
+    
     // edit folder
     
     public static final String EDIT_FOLDER = "/edit";
@@ -56,6 +58,14 @@ public class PageConstants {
     public static final String ORGANIZER_CREATE_COMPETITION = ORGANIZER_FOLDER + "/createCompetition.xhtml";
     
     public static final String ORGANIZER_CREATE_TEAM = ORGANIZER_FOLDER + "/createTeam.xhtml";
+    
+    // admin folder
+    
+    public static final String ADMIN_FOLDER = "/admin";
+    
+    public static final String ADMIN_EDIT_ACCESS_LEVEL = ADMIN_FOLDER + "/editAccessLevel.xhtml";
+    
+    public static final String ADMIN_USERS_LIST = ADMIN_FOLDER + "/usersList.xhtml";
     
     
     public static String getPage(String pageConstant, boolean redirect) {

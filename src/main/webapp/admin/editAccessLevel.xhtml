@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:b="http://bootsfaces.net/ui"
+                template="/WEB-INF/templates/main.xhtml">
+    <ui:define name="title">#{msg.editAccessLevelTitle}</ui:define>
+    <ui:define name="content">
+        <p:growl for="editAccessLevelForm"/>
+        <h:form id="editAccessLevelForm" style="width: auto;">
+            <p:panelGrid styleClass="resultsTable shadows">
+                <p:row>
+                    <p:column>
+                        <p:outputLabel value="#{msg.login}"/>
+                    </p:column>
+                    <p:column>
+                        <p:outputLabel value="#{editAccessLevelBackingBean.editingAccount.login}"/>
+                    </p:column>
+                </p:row>
+
+                <p:row>
+                    <p:column>
+                        <p:outputLabel value="#{msg.firstName} #{msg.lastName}"/>
+                    </p:column>
+                    <p:column>
+                        <p:outputLabel value="#{editAccessLevelBackingBean.editingAccount.idPersonalInfo.firstName} 
+                                       #{editAccessLevelBackingBean.editingAccount.idPersonalInfo.lastName}"/>
+                    </p:column>
+                </p:row>
+
+                <p:row>
+                    <p:column>
+                        <p:outputLabel value="#{msg.accessLevels}"/>
+                    </p:column>
+                    <p:column style="text-align: left; position: relative;">
+                        <ui:repeat var="accessLevel" value="#{editAccessLevelBackingBean.allAccessLevelsList}">
+                            <b:panelGrid colSpans="7,5" style="margin-left: 0; margin-right: 0;">
+                                <p:outputLabel value="#{accessLevel.discriminatorValue}"/>
+                                <p:inputSwitch value="#{accessLevel.isActive}" style="" />
+                            </b:panelGrid>
+                        </ui:repeat>
+                    </p:column>
+                </p:row>
+
+                <p:row>
+                    <p:column colspan="2">
+                        <p:commandButton style="float: left;" action="#{editAccessLevelBackingBean.saveAccessLevels}" value="#{msg.save}"/>
+                        <p:button style="float: right;" value="#{msg.back}" onclick="window.history.back();
+                                return false;"/>
+                    </p:column>
+                </p:row>
+            </p:panelGrid>
+        </h:form>
+    </ui:define>
+</ui:composition>
