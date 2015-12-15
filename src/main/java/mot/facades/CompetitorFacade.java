@@ -42,10 +42,13 @@ public class CompetitorFacade extends AbstractFacade<Competitor> implements Comp
     }
 
     @Override
-    public Competitor findAndInitializeGroups(Integer idCompetitor) {
+    public Competitor findAndInitializeEmptyGroups(Integer idCompetitor) {
         Competitor entity = em.find(Competitor.class, idCompetitor);
-//        entity.getGroupCompetitorList().size();
-        
+        System.out.println("Before set ");
+//        entity.setGroupCompetitorList(new ArrayList<>());
+        System.out.print("After set lazy list size ");
+//        System.out.print(entity.getGroupCompetitorList().size());
+
         return entity;
     }
 

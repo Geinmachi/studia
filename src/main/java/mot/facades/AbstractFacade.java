@@ -5,14 +5,17 @@
  */
 package mot.facades;
 
+import ejbCommon.TrackerInterceptor;
 import exceptions.ApplicationException;
 import java.util.List;
+import javax.interceptor.Interceptors;
 import javax.persistence.EntityManager;
 
 /**
  *
  * @author java
  */
+@Interceptors({TrackerInterceptor.class})
 public abstract class AbstractFacade<T> {
     private Class<T> entityClass;
 
@@ -60,6 +63,10 @@ public abstract class AbstractFacade<T> {
         cq.select(getEntityManager().getCriteriaBuilder().count(rt));
         javax.persistence.Query q = getEntityManager().createQuery(cq);
         return ((Long) q.getSingleResult()).intValue();
+    }
+    
+    public void flush() {
+        getEntityManager().flush();
     }
     
 }

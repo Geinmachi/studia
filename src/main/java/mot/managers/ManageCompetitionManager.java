@@ -56,7 +56,6 @@ import utils.SortUtil;
  */
 @Stateless
 @TransactionAttribute(TransactionAttributeType.MANDATORY)
-@Interceptors({TrackerInterceptor.class})
 public class ManageCompetitionManager implements ManageCompetitionManagerLocal {
 
     @Resource
@@ -475,12 +474,12 @@ public class ManageCompetitionManager implements ManageCompetitionManagerLocal {
     public CurrentMatchType assignCurrentMatchType(CurrentMatchType cmt) {
         if (cmt.getMatch() != null) {
             for (MatchMatchType mmt : cmt.getMatch().getMatchMatchTypeList()) {
-                //    System.out.println("mmt " + mmt.getIdMatchType().getMatchTypeName());
-                if (mmt.getIdMatchType().getMatchTypeName().startsWith("BO")) {
-                    cmt.setMatchType(mmt.getIdMatchType());
-
-                    break;
-                }
+                    System.out.println("-----mmt " + mmt.getIdMatchType().getMatchTypeName() + " match nr " + cmt.getMatch().getMatchNumber());
+//                if (mmt.getIdMatchType().getMatchTypeName().startsWith("BO")) {
+//                    cmt.setMatchType(mmt.getIdMatchType());
+//
+//                    break;
+//                }
             }
         }
 

@@ -229,7 +229,7 @@ and open the template in the editor.
                                                 <p:outputLabel value="#{msg.date}:"/>
                                             </b:column>
                                             <b:column span="10">
-                                                <p:calendar id="matchDate" pattern="MM/dd/yyyy HH:mm" showOn="button" 
+                                                <p:calendar id="matchDate" pattern="MM/dd/yyyy HH:mm" showOn="button" disabled="#{!dashboardPanel.editable}"
                                                             value="#{dashboardPanel.match.matchDate}"/>
                                             </b:column>
                                         </b:row>
@@ -238,7 +238,7 @@ and open the template in the editor.
                                                 <p:outputLabel for="matchType" value="#{msg.matchType}:"/>
                                             </b:column>
                                             <b:column span="10">
-                                                <p:selectOneMenu id="matchType" value="#{dashboardPanel.matchType}"
+                                                <p:selectOneMenu id="matchType" value="#{dashboardPanel.matchType}" disabled="#{!dashboardPanel.editable}"
                                                                  converter="matchTypeConverter">
                                                     <f:selectItems value="#{createCompetitionBackingBean.bracketCreator.matchTypeList}"
                                                                    var="matchType" itemLabel="#{matchType.matchTypeName}"

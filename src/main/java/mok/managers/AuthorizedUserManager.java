@@ -30,7 +30,6 @@ import mok.facades.AccountFacadeLocal;
  */
 @Stateless
 @TransactionAttribute(TransactionAttributeType.MANDATORY)
-@Interceptors({TrackerInterceptor.class})
 public class AuthorizedUserManager implements AuthorizedUserManagerLocal {
 
     @EJB

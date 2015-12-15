@@ -5,12 +5,14 @@
  */
 package mok.services;
 
+import ejbCommon.AbstractService;
 import ejbCommon.TrackerInterceptor;
 import entities.AccessLevel;
 import entities.Account;
 import exceptions.ApplicationException;
 import java.util.List;
 import javax.ejb.EJB;
+import javax.ejb.SessionSynchronization;
 import javax.ejb.Stateful;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
@@ -25,7 +27,7 @@ import mok.managers.UnathorizedUserManagerLocal;
 @Stateful
 @Interceptors({TrackerInterceptor.class})
 @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
-public class AccountService implements AccountServiceLocal {
+public class AccountService extends AbstractService implements AccountServiceLocal {
 
     @EJB
     private UnathorizedUserManagerLocal unathorizedUserManager;

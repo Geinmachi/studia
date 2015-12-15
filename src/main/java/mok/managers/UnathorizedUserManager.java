@@ -25,7 +25,6 @@ import utils.ConvertUtil;
  */
 @Stateless
 @TransactionAttribute(TransactionAttributeType.MANDATORY)
-@Interceptors({TrackerInterceptor.class})
 public class UnathorizedUserManager implements UnathorizedUserManagerLocal {
 
     @EJB

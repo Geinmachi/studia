@@ -54,6 +54,7 @@ import mot.models.CompetitorMatchGroup;
 import ejbCommon.TrackerInterceptor;
 import exceptions.ApplicationException;
 import java.util.Iterator;
+import javax.ejb.Asynchronous;
 
 /**
  *
@@ -61,7 +62,6 @@ import java.util.Iterator;
  */
 @Stateless
 @TransactionAttribute(TransactionAttributeType.MANDATORY)
-@Interceptors({TrackerInterceptor.class})
 public class CreateCompetitionManager implements CreateCompetitionManagerLocal {
 
     @Resource
@@ -183,6 +183,8 @@ public class CreateCompetitionManager implements CreateCompetitionManagerLocal {
         List<Matchh> matchWithIdentityList = new ArrayList<>();
 
         //      assignSameGroupsToCompetitors(competitorMatchList, groupDetailsWithIdentityList);
+        long start = System.currentTimeMillis();
+        System.out.println("---------------matchWithIdentity--------111111111");
         for (Matchh m : matchList) {
 //            m.setCompetition(competition);
             for (CompetitorMatch cmg : m.getCompetitorMatchList()) {
@@ -197,9 +199,13 @@ public class CreateCompetitionManager implements CreateCompetitionManagerLocal {
             }
 
             m.setCompetition(competition);
-            matchWithIdentityList.add(matchFacade.createWithReturn(m));
+//            matchWithIdentityList.add(matchFacade.createWithReturn(m));
+            matchFacade.create(m);
 //            System.out.println("MMAMAMAMAMAMAM " + m + "  number " + m.getMatchNumber());
         }
+        System.out.println("---------------matchWithIdentity-------2222222 czas: " + (System.currentTimeMillis() - start));
+
+        System.out.println();
 
 //        for (Matchh m : matchWithIdentityList) {
 //            System.out.println("Runda " + m.getRoundd() + " MAtch nr " + m.getMatchNumber());
@@ -294,15 +300,19 @@ public class CreateCompetitionManager implements CreateCompetitionManagerLocal {
 
     @Override
     public List<CMG> generateEmptyBracket(List<Competitor> competitors) {
-                System.out.println("-----------generateEmptyBracket------------111111");
+        System.out.println("-----------generateEmptyBracket------------111111");
 
         List<Competitor> fetchedCompetitors = new ArrayList<>();
 
+        long start = System.currentTimeMillis();
         for (Competitor c : competitors) {
-            fetchedCompetitors.add(competitorFacade.findAndInitializeGroups(c.getIdCompetitor()));
+            System.out.println("PRZED FOR");
+            fetchedCompetitors.add(competitorFacade.find(c.getIdCompetitor()));
+            System.out.println("PO FOR");
         }
+        System.out.println("LAczny czas: " + (System.currentTimeMillis() - start));
 
-                System.out.println("-----------generateEmptyBracket------------2222222");
+        System.out.println("-----------generateEmptyBracket------------2222222");
         Collections.shuffle(fetchedCompetitors);
 
         List<GroupName> groups = createGroups(fetchedCompetitors.size());
@@ -316,14 +326,16 @@ public class CreateCompetitionManager implements CreateCompetitionManagerLocal {
 //    private GroupCompetition createBracket(List<Competitor> competitors) {
 //        
 //    }
-
+    
     private List<GroupName> createGroups(int competitorsAmount) {
-        System.out.println("-----------createGroups------------");
+        long start = System.currentTimeMillis();
+        System.out.println("-----------createGroups------------11111");
         int asciiValue = 65;
 //        double numberOfGroups = Math.sqrt((double) competitorsAmount);
         int numberOfGroups = computeGroupNumber(competitorsAmount);
         List<GroupName> existingGroups = groupNameFacade.findAll();
         Collections.sort(existingGroups);
+        System.out.println("-----------createGroups------------222222, czas: " + (System.currentTimeMillis() - start));
 
         int groupsInDatabase = existingGroups.size();
 
@@ -346,6 +358,7 @@ public class CreateCompetitionManager implements CreateCompetitionManagerLocal {
                 groups.add(groupNameFacade.createWithReturn(group));
             }
         }
+        System.out.println("-----------createGroups------------333333");
 //        for (int i = 0; i < numberOfGroups; i++) {
 //            GroupName group = new GroupName(UUID.randomUUID());
 //            group.setGroupName((char) (asciiValue + i));
@@ -442,6 +455,7 @@ public class CreateCompetitionManager implements CreateCompetitionManagerLocal {
             }
         }
 
+//        System.out.println("Przed zwroceniem")
 //        for (int i = 0; i < competitorMatchList.size(); i++) {
 //            System.out.println("iiiiiiiiiiiiii = " + i);
 //            System.out.println("Kto = " + competitorMatchList.get(i).getIdCompetitor());
@@ -484,7 +498,19 @@ public class CreateCompetitionManager implements CreateCompetitionManagerLocal {
                 advancedCm.setIdCompetitor(cm.getIdCompetitor());
                 advancedCm.setCompetitorMatchScore((short) 0);
                 advancedCm.setPlacer(calculatePlacer(advancedMatchCounter));
-
+                
+                MatchType autoAdvanceType = matchTypeFacade.findAutoAdvanceType();
+                
+                MatchMatchType mmt = new MatchMatchType();
+                mmt.setIdMatch(cm.getIdMatch());
+                mmt.setIdMatchType(autoAdvanceType);
+                
+                cm.getIdMatch().getMatchMatchTypeList().add(mmt);
+//                System.out.println("Po ddoaniu ");
+//                for (MatchMatchType ma : cm.getIdMatch().getMatchMatchTypeList()) {
+//                    System.out.println("Mecz nr " + ma.getIdMatch().getMatchNumber());
+//                    System.out.println("Typ: " + ma.getIdMatchType().getMatchTypeName());
+//                }
                 break;
             }
         }
@@ -560,7 +586,12 @@ public class CreateCompetitionManager implements CreateCompetitionManagerLocal {
                 groupCompetitorList.add(gc);
 
 //                System.out.println("CCCCCC " + c + " scroelist " + c.getScoreList().size());
-                c.getGroupCompetitorList().add(gc);
+                System.out.println("CCC czy null");
+                if (c.getGroupCompetitorList() == null) {
+                    System.out.println("TAAAAAK null");
+                    c.setGroupCompetitorList(new ArrayList<>());
+                }
+//                c.getGroupCompetitorList().add(gc);
             }
         }
 

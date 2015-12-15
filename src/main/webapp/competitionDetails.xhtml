@@ -14,11 +14,11 @@ and open the template in the editor.
                 xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
     <ui:define name="title">#{msg.competitionDetailsTitle}</ui:define>
     <ui:define name="content">
-        
+
         <h:outputScript library="js" name="dashboard.js" />
-        
+
         <p:messages styleClass="loneMessage" id="msg" showDetail="true" rendered="#{empty competitionDetailsBackingBean.competition}"/>
-        
+
         <h:form id="displayCompetitionForm" styleClass="dashboardFulForm" rendered="#{not empty competitionDetailsBackingBean.competition}" >
 
             <p:panelGrid styleClass="middleTableWrapper centeredText shadows">
@@ -109,11 +109,18 @@ and open the template in the editor.
                                         </c:when>
                                         <c:otherwise>
                                             <br/>
-                                            <p:outputPanel>
-                                                <p:outputLabel value="#{msg.TBD}"/>
-                                                <p:outputLabel styleClass="scoreTBD">
+                                            <c:if test="#{dashboardPanel.match.roundd != 1}">
+                                                <p:outputPanel>
+                                                    <p:outputLabel value="#{msg.TBD}"/>
+                                                    <p:outputLabel styleClass="scoreTBD">
+                                                        -
+                                                    </p:outputLabel>
+                                                </p:outputPanel>
+                                            </c:if>
+                                            <p:outputPanel styleClass="centeredText">
+                                                <c:if test="#{dashboardPanel.match.roundd == 1}">
                                                     -
-                                                </p:outputLabel>
+                                                </c:if>
                                             </p:outputPanel>
                                         </c:otherwise>
                                     </c:choose>

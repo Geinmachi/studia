@@ -124,11 +124,11 @@ public class DashboardPanel implements InactivateMatch, CurrentMatchType {
     public void updateCMGwithAdvanced(CompetitorMatch cm) {
         List<CompetitorMatch> cmgList = this.match.getCompetitorMatchList();
 
-        MatchType mt = new MatchType();
-        mt.setEndUser(true);
-        mt.setMatchTypeName("BO3");
-
-        this.matchType = mt;
+//        MatchType mt = new MatchType();
+//        mt.setEndUser(true);
+//        mt.setMatchTypeName("BO3");
+//
+//        this.matchType = mt;
 
         for (CompetitorMatch c : cmgList) {
             if (cm.equals(c)) {

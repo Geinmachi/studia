@@ -29,54 +29,48 @@ public class TrackerInterceptor {
     private SessionContext sctx;
 
     private static final Logger logger = Logger.getLogger(TrackerInterceptor.class.getName());
-    private static final Level logLevel = Level.SEVERE;
+    private static final Level logLevel = Level.INFO;
 
-    /**
-     * *
-     * Metoda przechwytująca wywołanie metody i zapis tego faktu do dziennika
-     * zdarzeń
-     *
-     * @param ictx
-     * @return Object
-     * @throws Exception
-     */
     @AroundInvoke
     public Object traceInvoke(InvocationContext ictx) throws Exception {
-
         Object result;
-        StringBuilder message = new StringBuilder("wywołanie metody: ");
+        StringBuilder message = new StringBuilder("METHOD: ");
 
         message.append(ictx.getMethod());
 
-        message.append("; użytkownik: ");
+        message.append(" ||  USER: ");
         message.append(sctx.getCallerPrincipal().getName());
 
-        message.append("; wartości parametrów: ");
+        message.append(" || PARAMETERS: ");
         message.append(getParametrsValues(ictx));
 
+        long start = System.currentTimeMillis();
+        long end;
         try {
             result = ictx.proceed();
+            end = System.currentTimeMillis();
         } catch (Exception e) {
-            message.append("; zakończone wyjątkiem: ");
+            end = System.currentTimeMillis();
+            message.append("|| THREW EXCEPTION: ");
             message.append(e.toString());
+            message.append("|| EXECUTION TIME: ");
+            message.append(end - start);
+            message.append("ms");
             logger.log(logLevel, message.toString());
             throw e;
         }
 
-        message.append("; wartość zwrócona: ");
+        message.append(" ||RESULT: ");
         message.append(getResultValue(result));
+        message.append("|| EXECUTION TIME: ");
+        message.append(end - start);
+        message.append("ms");
 
-    //    logger.log(logLevel, message.toString());
+        logger.log(logLevel, message.toString());
 
         return result;
     }
 
-    /**
-     * Metoda zwraca parametry wywołania metody
-     *
-     * @param ictx
-     * @return String
-     */
     private String getParametrsValues(InvocationContext ictx) {
         StringBuilder msg = new StringBuilder();
 
@@ -96,13 +90,6 @@ public class TrackerInterceptor {
         return msg.toString();
     }
 
-    /**
-     * *
-     * Metoda zwraca rezultat wywołania metody
-     *
-     * @param result
-     * @return String
-     */
     private String getResultValue(Object result) {
         String outputMsg;
 

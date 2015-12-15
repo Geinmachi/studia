@@ -40,7 +40,6 @@ import utils.ResourceBundleUtil;
  */
 @Stateless
 @TransactionAttribute(TransactionAttributeType.MANDATORY)
-@Interceptors({TrackerInterceptor.class})
 @DeclareRoles({"Administrator", "Organizer"})
 public class CompetitionComponentsManager implements CompetitionComponentsManagerLocal {
 

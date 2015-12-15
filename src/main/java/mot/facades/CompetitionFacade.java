@@ -108,7 +108,6 @@ public class CompetitionFacade extends AbstractFacade<Competition> implements Co
         }
 
         q.setParameter("competitionName", competition.getCompetitionName());
-
         try {
             Competition c = (Competition) q.getSingleResult();
             em.flush();
@@ -206,6 +205,7 @@ public class CompetitionFacade extends AbstractFacade<Competition> implements Co
     @Override
     public Competition editWithReturn(Competition storedCompetition) throws ApplicationException {
         try {
+            competitionContraintsNotCommited(storedCompetition);
             Competition entity = em.merge(storedCompetition);
             em.flush();
             

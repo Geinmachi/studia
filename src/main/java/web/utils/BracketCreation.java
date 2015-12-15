@@ -134,9 +134,20 @@ public class BracketCreation implements Serializable {
     }
 
     public void createEmptyBracket(List<Competitor> competitors) {
+        System.out.println("Panels size0000 " + panelList.size());
         competitorMatchGroupList = controller.generateEmptyBracket(competitors);
+        System.out.println("Zrocone mappingi ");
+        for (CMG cmg : competitorMatchGroupList) {
+            System.out.println("Mecz nr " + cmg.getIdMatch().getMatchNumber());
+            for (MatchMatchType mmt : cmg.getIdMatch().getMatchMatchTypeList()) {
+                System.out.println("TYp " + mmt.getIdMatchType().getMatchTypeName());
+            }
+        }
+        System.out.println("Panels size1111 " + panelList.size());
         initializeLists();
+        System.out.println("Panels size2222 " + panelList.size());
         createModel();
+        System.out.println("Panels size3333 " + panelList.size());
     }
 
 //    public void recreateBracketToEdit(List<CMG> competitorMatchGroupList) {
@@ -367,6 +378,12 @@ public class BracketCreation implements Serializable {
 //            dashboardPanel.setMargin(50);
             dashboardPanel.setPanel(panel);
             dashboardPanel.setMatch(firstRoundMatches.get(i));
+            
+            for (MatchMatchType mmt : firstRoundMatches.get(i).getMatchMatchTypeList()) { // sets auto_advanced type
+                System.out.println("Ustawia auto_Advanced, mecz nr " + mmt.getIdMatch().getMatchNumber() + " na typ " + mmt.getIdMatchType().getMatchTypeName());
+                dashboardPanel.setMatchType(mmt.getIdMatchType());
+                dashboardPanel.setEditable(false);
+            }
 //            dashboardPanel.getMatch().setMatchDate(new Date());
             System.out.println("SORTOWANIE PIERWSZEJ RUNDY");
             sortCompetitorsInMatch(firstRoundMatches.get(i));
@@ -506,6 +523,8 @@ public class BracketCreation implements Serializable {
 //        for (int i = 0; i < panelList.size(); i++) {
 //            Collections.sw
 //        }
+        long start = System.currentTimeMillis();
+        System.out.println("SDISABLING start---------");
         for (DashboardPanel dp : panelList) {
 
             //    System.out.println("PANEL SERAILZIABLE " + dp.getPanel());
@@ -516,47 +535,13 @@ public class BracketCreation implements Serializable {
             dp.setInplaceEditable(updatedMatch.isInplaceEditable());
             dp.setMatch(updatedMatch.getMatch());
 
-            /*    dp_block:
-             {
-             if (dp.getMatch() != null) {
-                    
-             for (CompetitorMatch cm : dp.getMatch().getCompetitorMatchList()) {
-             if(cm.getIdCompetitor() == null) {
-             System.out.println("Nie ma jakiegos competitora w metch, wylacza edycje");
-             dp.setInplaceEditable(false);
-                            
-             continue;
-             }
-             }
-                    
-             for (MatchMatchType mmt : dp.getMatch().getMatchMatchTypeList()) {
-             System.out.println("mmt " + mmt.getIdMatchType().getMatchTypeName());
-             if (mmt.getIdMatchType().getMatchTypeName().startsWith("BO")) {
-             dp.setMatchType(mmt.getIdMatchType());
-                            
-             for (CompetitorMatch cm : dp.getMatch().getCompetitorMatchList()) {
-             if (cm.getCompetitorMatchScore() != null && ((Integer.valueOf(mmt.getIdMatchType().getMatchTypeName().substring(2)) + 1) / 2) == cm.getCompetitorMatchScore()) {
-             System.out.println("WYLACZA " + dp.getMatch());
-                                    
-             System.out.println("idMatch =  " + dp.getMatch().getIdMatch() + " COMPETITORRRRRRRRRRRRRRRRx " + cm.getIdCompetitor() + "   ---   idCompetitorMatch " + cm.getIdCompetitorMatch());
-                                    
-             dp.setEditable(false);
-             break dp_block;
-             }
-             }
-             }
-             }
-             System.out.println("TYP : " + dp.getMatch().getMatchMatchTypeList());
-             }
-             //    for (CompetitorMatch cm : dp.getMatch().getCompetitorMatchList()) {
-             // if (cm.getCompetitorMatchScore() == cm.ge)
-             //   }
-             }
-             */
         }
+        System.out.println("DIsabling czas-------___: " + (System.currentTimeMillis() - start));
     }
 
     private void assignCurrentMatchTypes() {
+        System.out.println("-------------Start wczytywania--------");
+        long start = System.currentTimeMillis();
         for (DashboardPanel dp : panelList) {
 
 //            CurrentMatchType dpWrapper = new DashboardPanel();
@@ -567,6 +552,7 @@ public class BracketCreation implements Serializable {
 
             dp.setMatchType(cmt.getMatchType());
         }
+        System.out.println("-------------Koniec wczytywania--------, czas: " + (System.currentTimeMillis() - start));
     }
 
     /**

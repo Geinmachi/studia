@@ -33,7 +33,7 @@ public interface CompetitorFacadeLocal {
 
     int count();
 
-    public Competitor findAndInitializeGroups(Integer idCompetitor);
+    public Competitor findAndInitializeEmptyGroups(Integer idCompetitor);
 
     public Competitor editWithReturn(Competitor competitor);
 
@@ -49,4 +49,5 @@ public interface CompetitorFacadeLocal {
 
     public List<Competitor> findGlobalCompetitors();
 
+    public void flush();
 }

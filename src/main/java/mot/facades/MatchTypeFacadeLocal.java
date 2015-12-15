@@ -35,4 +35,6 @@ public interface MatchTypeFacadeLocal {
     List<MatchType> findEndUserMatchTypes();
     
     MatchType findByMatchTypeName(String name);
+
+    public MatchType findAutoAdvanceType();
 }

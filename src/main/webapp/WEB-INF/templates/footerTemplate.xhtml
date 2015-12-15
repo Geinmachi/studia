@@ -4,6 +4,9 @@
     <p:outputPanel styleClass="footerContainer">
         <p:outputPanel styleClass="footerRightsContainer">
             <p:outputLabel value="#{msg.footer}" styleClass="footerRights"/>
+            <p:outputLabel style="float: right;">
+                render time: #{counter.elapsedTime / 1000000}ms
+            </p:outputLabel>
         </p:outputPanel>
     </p:outputPanel>
 </ui:composition>

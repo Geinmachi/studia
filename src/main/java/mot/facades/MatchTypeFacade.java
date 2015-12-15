@@ -22,6 +22,8 @@ import javax.persistence.Query;
 @Stateless
 @TransactionAttribute(TransactionAttributeType.MANDATORY)
 public class MatchTypeFacade extends AbstractFacade<MatchType> implements MatchTypeFacadeLocal {
+    
+    private static final String AUTO_ADVANCE_TYPE = "auto_advance";
 
     @PersistenceContext(unitName = "mot_persistence_unit")
     private EntityManager em;
@@ -50,4 +52,11 @@ public class MatchTypeFacade extends AbstractFacade<MatchType> implements MatchT
         return (MatchType)q.getSingleResult();
     }
 
+    @Override
+    public MatchType findAutoAdvanceType() {
+        Query q = em.createNamedQuery("MatchType.findByMatchTypeName");
+        
+        q.setParameter("matchTypeName", AUTO_ADVANCE_TYPE);
+        return (MatchType)q.getSingleResult();
+    }
 }

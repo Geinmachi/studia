@@ -114,4 +114,12 @@
             <form-error-page>/login/fail.xhtml</form-error-page>
         </form-login-config>
     </login-config>
+    <filter>
+        <filter-name>Counter</filter-name>
+        <filter-class>test.CountingFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>Counter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
 </web-app>

@@ -5,6 +5,7 @@
  */
 package mot.services;
 
+import ejbCommon.AbstractService;
 import entities.Competition;
 import entities.CompetitionType;
 import entities.Competitor;
@@ -33,6 +34,7 @@ import mot.managers.PresentCompetitionManagerLocal;
 import mot.interfaces.CurrentMatchType;
 import mot.interfaces.InactivateMatch;
 import ejbCommon.TrackerInterceptor;
+import javax.ejb.SessionSynchronization;
 import mot.interfaces.ReportPlacementData;
 import mot.managers.CompetitionComponentsManagerLocal;
 import mot.managers.ReportsManagerLocal;
@@ -44,7 +46,7 @@ import mot.managers.ReportsManagerLocal;
 @Stateful
 @Interceptors({TrackerInterceptor.class})
 @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
-public class CompetitionService implements CompetitionServiceLocal {
+public class CompetitionService extends AbstractService implements CompetitionServiceLocal {
 
     @EJB
     private CreateCompetitionManagerLocal createCompetitionManager;
