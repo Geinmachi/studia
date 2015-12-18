@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 import javax.ejb.Local; import javax.ejb.Remote;
 import mot.interfaces.CMG;
+import mot.interfaces.CompetitionPodiumData;
 import mot.interfaces.CurrentMatchType;
 import mot.interfaces.InactivateMatch;
 import mot.interfaces.ReportPlacementData;
@@ -109,4 +110,6 @@ public interface CompetitionServiceLocal {
     public List<Competitor> getGlobalCompetitors() throws ApplicationException;
 
     public ReportPlacementData getReportPlacements(Competitor competitor) throws ApplicationException;
+
+    public List<? extends CompetitionPodiumData> generateCompetitionPodiumStatistics() throws ApplicationException;
 }

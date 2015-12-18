@@ -48,4 +48,6 @@ public interface CompetitionFacadeLocal {
     void competitionContraintsNotCommited(Competition competition) throws CompetitionGeneralnfoException;
 
     public Competition editWithReturn(Competition storedCompetition) throws ApplicationException;
+
+    public List<Object[]> getCompetitionPodiumStatistics();
 }

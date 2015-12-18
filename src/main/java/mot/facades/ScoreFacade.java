@@ -53,7 +53,6 @@ public class ScoreFacade extends AbstractFacade<Score> implements ScoreFacadeLoc
     @Override
     public int findPlacementCount(int idCompetitor, int place) {
         Query q = em.createNamedQuery("Score.findPlacementCount");
-        
         q.setParameter("idCompetitor", idCompetitor);
         q.setParameter("place", place);
         
@@ -62,9 +61,16 @@ public class ScoreFacade extends AbstractFacade<Score> implements ScoreFacadeLoc
 
     @Override
     public int findParticipateCount(int idCompetitor) {
-        Query q = em.createNamedQuery("Score.findCompetitorOccuranceCount");
-        
+        Query q = em.createNamedQuery("Score.findCompetitorOccuranceCount");  
         q.setParameter("idCompetitor", idCompetitor);
+        
+        return ((Long)q.getSingleResult()).intValue();
+    }
+
+    @Override
+    public int findCompetitorsCountByGlobalCompetitionName(String competitionName) {
+        Query q = em.createNamedQuery("Score.findCompetitorsCountByGlobalCompetitionName");
+        q.setParameter("competitionName", competitionName);
         
         return ((Long)q.getSingleResult()).intValue();
     }

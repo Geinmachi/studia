@@ -16,6 +16,7 @@ import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
+import mot.interfaces.CompetitionPodiumData;
 import web.backingBeans.mot.competition.CompetitionBackingBean;
 import web.controllers.CompetitionController;
 import web.utils.PageConstants;

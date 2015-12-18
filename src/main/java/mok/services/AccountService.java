@@ -11,14 +11,18 @@ import entities.AccessLevel;
 import entities.Account;
 import exceptions.ApplicationException;
 import java.util.List;
+import java.util.logging.Level;
+import javax.ejb.AsyncResult;
+import javax.ejb.Asynchronous;
 import javax.ejb.EJB;
-import javax.ejb.SessionSynchronization;
 import javax.ejb.Stateful;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.interceptor.Interceptors;
 import mok.managers.AuthorizedUserManagerLocal;
 import mok.managers.UnathorizedUserManagerLocal;
+import org.primefaces.component.message.Message;
+import java.util.concurrent.Future;
 
 /**
  *
@@ -31,10 +35,10 @@ public class AccountService extends AbstractService implements AccountServiceLoc
 
     @EJB
     private UnathorizedUserManagerLocal unathorizedUserManager;
-    
+
     @EJB
     private AuthorizedUserManagerLocal authorizedUserManager;
-    
+
     private Account editingAccount;
 
     @Override
@@ -58,5 +62,5 @@ public class AccountService extends AbstractService implements AccountServiceLoc
         authorizedUserManager.editAccessLevels(accessLevelList, editingAccount);
         editingAccount = null;
     }
-    
+
 }

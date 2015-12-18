@@ -35,6 +35,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Score.findByIdScore", query = "SELECT s FROM Score s WHERE s.idScore = :idScore"),
     @NamedQuery(name = "Score.findPlacementCount", query = "SELECT COUNT(s) FROM Score s WHERE s.idCompetitor.idCompetitor = :idCompetitor AND s.place = :place AND s.idCompetition.global = true"),
     @NamedQuery(name = "Score.findCompetitorOccuranceCount", query = "SELECT COUNT(s) FROM Score s WHERE s.idCompetitor.idCompetitor = :idCompetitor AND s.idCompetition.global = true"),
+    @NamedQuery(name = "Score.findCompetitorsCountByGlobalCompetitionName", query = "SELECT COUNT(s) FROM Score s WHERE s.idCompetition.competitionName = :competitionName and s.idCompetition.global = TRUE"),
     @NamedQuery(name = "Score.findByScore", query = "SELECT s FROM Score s WHERE s.score = :score")})
 public class Score implements Serializable {
     private static final long serialVersionUID = 1L;

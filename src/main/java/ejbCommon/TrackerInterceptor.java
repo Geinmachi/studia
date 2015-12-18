@@ -5,6 +5,9 @@
  */
 package ejbCommon;
 
+import exceptions.ApplicationException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.Resource;
@@ -53,6 +56,7 @@ public class TrackerInterceptor {
             end = System.currentTimeMillis();
             message.append("|| THREW EXCEPTION: ");
             message.append(e.toString());
+            message.append(getExceptionFields(e));
             message.append("|| EXECUTION TIME: ");
             message.append(end - start);
             message.append("ms");
@@ -100,5 +104,34 @@ public class TrackerInterceptor {
         }
 
         return outputMsg;
+    }
+
+    private String getExceptionFields(Exception e) {
+        StringBuilder msg = new StringBuilder();
+
+        if (!(e instanceof ApplicationException)) {
+            msg.append("|| NOT APPLICATION EXCEPTION");
+
+            return msg.toString();
+        }
+
+        msg.append("|| FIELDS: ");
+        Method[] allMethods = e.getClass().getDeclaredMethods();
+        for (Method m : allMethods) {
+            String methodName = m.getName();
+
+            if (methodName.startsWith("get")) {
+                msg.append(methodName.substring(3));
+                msg.append("= ");
+                try {
+                    msg.append(m.invoke(e, new Object[]{}));
+                    msg.append(", ");
+                } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
+                    Logger.getLogger(TrackerInterceptor.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+
+        return msg.toString();
     }
 }

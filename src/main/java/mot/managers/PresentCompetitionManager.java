@@ -9,27 +9,28 @@ import entities.Competition;
 import entities.Competitor;
 import entities.Score;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
-import javax.interceptor.Interceptors;
 import mot.facades.CompetitionFacadeLocal;
 import mot.facades.ScoreFacadeLocal;
 import utils.SortUtil;
-import ejbCommon.TrackerInterceptor;
 import entities.AccessLevel;
 import entities.Account;
 import entities.Organizer;
 import exceptions.ApplicationException;
+import java.util.LinkedHashSet;
+import java.util.Set;
 import javax.annotation.Resource;
 import javax.annotation.security.DeclareRoles;
 import javax.ejb.SessionContext;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import mot.facades.AccountFacadeLocal;
+import mot.interfaces.CompetitionPodiumData;
+import mot.models.CompetitionPodium;
 import mot.services.CompetitionService;
 import utils.ConvertUtil;
 import utils.Hashids;
@@ -108,13 +109,12 @@ public class PresentCompetitionManager implements PresentCompetitionManagerLocal
 //        }
 //
 //        positionScoreMap.put((short) 0, positionCounter);
-
         Map<Competitor, Integer> competitorPositionMap = new HashMap<>();
 
         for (Score s : scoreList) {
-            competitorPositionMap.put(s.getIdCompetitor(), (int)s.getPlace());
+            competitorPositionMap.put(s.getIdCompetitor(), (int) s.getPlace());
 //            competitorPositionMap.put(s.getIdCompetitor(), positionScoreMap.get(s.getScore()));
-            
+
         }
 
         return SortUtil.sortByValue(competitorPositionMap, true);
@@ -154,7 +154,7 @@ public class PresentCompetitionManager implements PresentCompetitionManagerLocal
         if (!decodedId.isEmpty()) {
             return competitionFacade.findAndInitializeGD(Integer.parseInt(decodedId));
         }
-        
+
         return null;
     }
 
@@ -162,5 +162,5 @@ public class PresentCompetitionManager implements PresentCompetitionManagerLocal
     public String encodeCompetitionId(int competitionId) {
         return ENCRYPTION.encodeHex(String.valueOf(competitionId));
     }
-
+    
 }

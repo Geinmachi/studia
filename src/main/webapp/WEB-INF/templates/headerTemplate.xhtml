@@ -7,12 +7,13 @@
               inverse="true" fixed="top">
 
         <b:navbarLinks>
-            <b:navLink value="#{msg.competitionList}" href="/competitionList.xhtml"/>
+            <b:navLink value="#{msg.competitionList}" href="/competitionList.xhtml"></b:navLink>
         </b:navbarLinks>
 
         <b:navbarLinks>
             <b:dropMenu value="#{msg.reports}">
-                <b:navLink value="#{msg.competitors}" href="/competitorReports.xhtml"/>
+                <b:navLink value="#{msg.competitors}" href="/competitorReports.xhtml"></b:navLink>
+                <b:navLink value="#{msg.competitions}" href="/competitionsReports.xhtml"></b:navLink>
             </b:dropMenu>
         </b:navbarLinks>
 
@@ -74,7 +75,7 @@
         </c:choose>
         <c:if test="#{request.isUserInRole(bsn['role.admin'])}">
             <b:navbarLinks>
-                <b:navLink value="#{msg.users}" href="/admin/usersList.xhtml"/>
+                <b:navLink value="#{msg.users}" href="/admin/usersList.xhtml"></b:navLink>
             </b:navbarLinks>
         </c:if>
     </b:navBar>

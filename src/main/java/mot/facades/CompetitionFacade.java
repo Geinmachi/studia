@@ -215,4 +215,11 @@ public class CompetitionFacade extends AbstractFacade<Competition> implements Co
         }
     }
 
+    @Override
+    public List<Object[]> getCompetitionPodiumStatistics() {
+        Query q = em.createNamedQuery("Competition.getCompetitionPodiumStatistics");
+        
+        return (List<Object[]>)q.getResultList();
+    }
+
 }

@@ -52,6 +52,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Competition.findByCreationDate", query = "SELECT c FROM Competition c WHERE c.creationDate = :creationDate"),
     @NamedQuery(name = "Competition.findByStartDate", query = "SELECT c FROM Competition c WHERE c.startDate = :startDate"),
     @NamedQuery(name = "Competition.findByEndDate", query = "SELECT c FROM Competition c WHERE c.endDate = :endDate"),
+    @NamedQuery(name = "Competition.getCompetitionPodiumStatistics", query = "SELECT c.competitionName, s.place, s.idCompetitor FROM Competition c, Score s WHERE c.idCompetition = s.idCompetition.idCompetition AND (s.place = 1 OR s.place = 2 OR s.place = 3) AND c.global = TRUE"),
     @NamedQuery(name = "Competition.findByVersion", query = "SELECT c FROM Competition c WHERE c.version = :version")})
 public class Competition implements Serializable {
     private static final long serialVersionUID = 1L;

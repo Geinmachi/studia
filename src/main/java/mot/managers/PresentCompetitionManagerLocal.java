@@ -11,8 +11,8 @@ import entities.Score;
 import exceptions.ApplicationException;
 import java.util.List;
 import java.util.Map;
-import javax.ejb.Local;
 import javax.ejb.Remote;
+import mot.interfaces.CompetitionPodiumData;
 
 /**
  *

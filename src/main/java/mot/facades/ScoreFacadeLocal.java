@@ -39,4 +39,6 @@ public interface ScoreFacadeLocal {
     public int findPlacementCount(int idCompetitor, int place);
 
     public int findParticipateCount(int idCompetitor);
+
+    public int findCompetitorsCountByGlobalCompetitionName(String competitionName);
 }

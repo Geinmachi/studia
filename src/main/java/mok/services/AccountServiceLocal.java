@@ -10,6 +10,7 @@ import entities.Account;
 import exceptions.ApplicationException;
 import java.util.List;
 import javax.ejb.Remote;
+import java.util.concurrent.Future;
 
 /**
  *
@@ -24,5 +25,5 @@ public interface AccountServiceLocal {
 
     public Account getAccountToEdit(int idAccount);
 
-    public void editAccessLevels(List<AccessLevel> accessLevelList) throws ApplicationException;
+    public void editAccessLevels(List<AccessLevel> accessLevelList) throws ApplicationException;    
 }

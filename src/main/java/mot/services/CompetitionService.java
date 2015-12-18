@@ -35,6 +35,7 @@ import mot.interfaces.CurrentMatchType;
 import mot.interfaces.InactivateMatch;
 import ejbCommon.TrackerInterceptor;
 import javax.ejb.SessionSynchronization;
+import mot.interfaces.CompetitionPodiumData;
 import mot.interfaces.ReportPlacementData;
 import mot.managers.CompetitionComponentsManagerLocal;
 import mot.managers.ReportsManagerLocal;
@@ -56,10 +57,10 @@ public class CompetitionService extends AbstractService implements CompetitionSe
 
     @EJB
     private PresentCompetitionManagerLocal presentCompetitionManager;
-    
+
     @EJB
     private CompetitionComponentsManagerLocal competitionComponentsManager;
-    
+
     @EJB
     private ReportsManagerLocal reportsManager;
 
@@ -76,15 +77,15 @@ public class CompetitionService extends AbstractService implements CompetitionSe
     private MatchTypeFacadeLocal matchTypeFacade;
 
     private Competition editingCompetition;
-    
+
     private Competitor editingCompetitor;
-    
+
     private Team editingTeam;
 
     private List<CMG> storedCMGmappings;
-    
+
     public static String ADMIN_PROPERTY_KEY = "role.admin";
-    
+
     public static String ANONYMOUS_USER = "anonymous";
 
     @Override
@@ -122,8 +123,8 @@ public class CompetitionService extends AbstractService implements CompetitionSe
 
     @Override
     public void createCompetition(Competition competition, List<CMG> competitorMatchGroupList) throws ApplicationException {
-        createCompetitionManager.createCompetition(competition, competitorMatchGroupList);
-    }
+            createCompetitionManager.createCompetition(competition, competitorMatchGroupList);
+        }
 
     @Override
     public CompetitionType findCompetitionTypeById(int id) {
@@ -163,7 +164,7 @@ public class CompetitionService extends AbstractService implements CompetitionSe
 
         for (CompetitorMatch cm : returnMap.values()) {
 //            System.out.println("VERSION in service " + cm + " " + cm.getVersion());
-            
+
             if (cm != null) {
                 replaceUpdatedMatch(cm.getIdMatch());
             }
@@ -371,5 +372,10 @@ public class CompetitionService extends AbstractService implements CompetitionSe
     @Override
     public ReportPlacementData getReportPlacements(Competitor competitor) throws ApplicationException {
         return reportsManager.getReportPlacements(competitor);
+    }
+
+    @Override
+    public List<? extends CompetitionPodiumData> generateCompetitionPodiumStatistics() throws ApplicationException {
+        return reportsManager.generateCompetitionPodiumStatistics();
     }
 }

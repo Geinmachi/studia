@@ -13,7 +13,8 @@ import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
-import web.backingBeans.mot.competition.CreateCompetitionBackingBean;
+import javax.faces.context.FacesContext;
+import test.CopyWriter;
 import web.utils.JsfUtils;
 import web.utils.PageConstants;
 
@@ -46,6 +47,9 @@ public class RegisterBackingBean extends AccountBackingBean {
         account = new Account();
         PersonalInfo personalInfo = new PersonalInfo();
         account.setIdPersonalInfo(personalInfo);
+//        
+//        CopyWriter c = (CopyWriter)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("copyWriter");
+//        System.out.println("zawartosc: " + c.getCopy());
     }
     
     public String register() {

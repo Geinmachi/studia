@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Map;
 import javax.ejb.EJB;
 import mot.interfaces.CMG;
+import mot.interfaces.CompetitionPodiumData;
 import mot.services.CompetitionService;
 import mot.services.CompetitionServiceLocal;
 import mot.interfaces.CurrentMatchType;
@@ -254,5 +255,9 @@ public class CompetitionController implements Serializable {
 
     public ReportPlacementData getReportPlacements(Competitor competitor) throws ApplicationException {
         return service.getReportPlacements(competitor);
+    }
+
+    public List<? extends CompetitionPodiumData> generateCompetitionPodiumStatistics() throws ApplicationException {
+        return service.generateCompetitionPodiumStatistics();
     }
 }
