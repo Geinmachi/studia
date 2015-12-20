@@ -12,6 +12,7 @@ and open the template in the editor.
                 template="/WEB-INF/templates/main.xhtml">
     <ui:define name="title">#{msg.competitorReportsTitle}</ui:define>
     <ui:define name="content">
+        <p:growl id="growl" for="competitorListForm" showDetail="true" life="3000"/>
         <h:form id="competitorListForm" style="width: auto;">
             <p:dataTable paginator="true" rows="10" rowsPerPageTemplate="10,25,50" sortMode="multiple" styleClass="shadows"
                          var="competitor" value="#{competitorReportsBackingBean.competitorList}" >
@@ -34,6 +35,8 @@ and open the template in the editor.
                 <p:column headerText="#{msg.actions}">
                     <p:commandLink action="#{competitorReportsBackingBean.displayPlacementReport(competitor)}" 
                                    value="#{msg.placements}" styleClass="actionLink"/>
+                    <p:commandLink action="#{competitorReportsBackingBean.displayMatchesReport(competitor)}" 
+                                   value="#{msg.matchesStatistics}" update="growl" styleClass="actionLink"/>
                 </p:column>
             </p:dataTable>
         </h:form>

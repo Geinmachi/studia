@@ -5,21 +5,20 @@
  */
 package mot.facades;
 
-import entities.Account;
 import entities.CompetitorMatch;
 import entities.MatchMatchType;
 import entities.Matchh;
 import java.util.List;
-import javax.ejb.LockType;
 import javax.ejb.Stateless;
-import javax.interceptor.Interceptors;
 import javax.persistence.EntityManager;
 import javax.persistence.LockModeType;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import ejbCommon.TrackerInterceptor;
 import exceptions.ApplicationException;
 import exceptions.MatchOptimisticLockException;
+import java.util.concurrent.Future;
+import javax.ejb.AsyncResult;
+import javax.ejb.Asynchronous;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.persistence.OptimisticLockException;
@@ -48,6 +47,7 @@ public class CompetitorMatchFacade extends AbstractFacade<CompetitorMatch> imple
     public CompetitorMatch createWithReturn(CompetitorMatch entity) {
         em.persist(entity);
         em.flush();
+
         return entity;
     }
 
@@ -55,6 +55,7 @@ public class CompetitorMatchFacade extends AbstractFacade<CompetitorMatch> imple
     public List<CompetitorMatch> getCompetitionCMGMappingsByCompetitionId(Integer idCompetition) {
         Query q = em.createNamedQuery("CompetitorMatch.findByCompetitionId");
         q.setParameter("idCompetition", idCompetition);
+
         return (List<CompetitorMatch>) q.getResultList();
     }
 
@@ -63,6 +64,7 @@ public class CompetitorMatchFacade extends AbstractFacade<CompetitorMatch> imple
         Query q = em.createNamedQuery("CompetitorMatch.findByMatchNumberAndIdCompetition");
         q.setParameter("matchNumber", matchNumber);
         q.setParameter("idCompetition", idCompetition);
+
         return (List<CompetitorMatch>) q.getResultList();
     }
 
@@ -70,6 +72,7 @@ public class CompetitorMatchFacade extends AbstractFacade<CompetitorMatch> imple
     public List<CompetitorMatch> findCMGByIdMatch(Integer idMatch) {
         Query q = em.createNamedQuery("CompetitorMatch.findByIdMatch");
         q.setParameter("idMatch", idMatch);
+
         return (List<CompetitorMatch>) q.getResultList();
     }
 
@@ -93,7 +96,6 @@ public class CompetitorMatchFacade extends AbstractFacade<CompetitorMatch> imple
     public void edit(CompetitorMatch entity) {
         em.merge(entity);
         em.flush();
-
     }
 
     @Override
@@ -134,7 +136,7 @@ public class CompetitorMatchFacade extends AbstractFacade<CompetitorMatch> imple
         } catch (OptimisticLockException e) {
             throw MatchOptimisticLockException.optimisticLock(e);
         }
-        
+
         System.out.println("VERSION AFTER UPDATE CompetitorMatch " + entity.getVersion());
 
         return editedCompetitorMatch;
@@ -142,18 +144,30 @@ public class CompetitorMatchFacade extends AbstractFacade<CompetitorMatch> imple
 
     @Override
     public Matchh editWithReturnAdvancing(Matchh storedMatch) throws ApplicationException {
-
         try {
-        for (int i = 0; i < storedMatch.getCompetitorMatchList().size(); i++) {
-            storedMatch.getCompetitorMatchList().set(i, em.merge(storedMatch.getCompetitorMatchList().get(i)));
-        }
+            for (int i = 0; i < storedMatch.getCompetitorMatchList().size(); i++) {
+                storedMatch.getCompetitorMatchList().set(i, em.merge(storedMatch.getCompetitorMatchList().get(i)));
+            }
 
 //        em.lock(em.find(Matchh.class, storedMatch.getIdMatch()), LockModeType.OPTIMISTIC_FORCE_INCREMENT);
-        em.flush();
+            em.flush();
         } catch (OptimisticLockException e) {
             throw MatchOptimisticLockException.optimisticLock(e);
         }
 
         return storedMatch;
+    }
+
+    @Override
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+    public List<CompetitorMatch> findCompetitorMatchStatistics(int idCompetitor) {
+        Query q = em.createNamedQuery("CompetitorMatch.findCompetitorMatchesStatistics");
+        q.setParameter("idCompetitor", idCompetitor);
+
+//        Future<List<CompetitorMatch>> asyncResult = new AsyncResult<>((List<CompetitorMatch>) q.getResultList());
+        for (int i = 0; i < 30; i++) {
+            q.getResultList();
+        }
+        return (List<CompetitorMatch>) q.getResultList();
     }
 }

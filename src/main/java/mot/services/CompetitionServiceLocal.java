@@ -17,36 +17,41 @@ import entities.Team;
 import exceptions.ApplicationException;
 import java.util.List;
 import java.util.Map;
-import javax.ejb.Local; import javax.ejb.Remote;
+import java.util.concurrent.Future;
+import javax.ejb.Local;
+import javax.ejb.Remote;
+import javax.enterprise.event.Observes;
+import javax.enterprise.event.TransactionPhase;
 import mot.interfaces.CMG;
 import mot.interfaces.CompetitionPodiumData;
 import mot.interfaces.CurrentMatchType;
 import mot.interfaces.InactivateMatch;
 import mot.interfaces.ReportPlacementData;
+import mot.models.CompetitorMatchesStatisticsMarkerEvent;
 
 /**
  *
  * @author java
  */
-@Remote
+@Local
 public interface CompetitionServiceLocal {
-    
+
     public List<Team> findUserAllowedTeams() throws ApplicationException;
-    
+
     public void addCompetitor(Competitor competitor, boolean global) throws ApplicationException;
-    
+
     public List<Competitor> getAllCompetitors();
-    
+
     public List<CompetitionType> getAllCompetitionTypes();
-    
+
     public Competitor findCopetitorById(Integer id);
-    
+
     public boolean validateCompetitorsAmount(int amount);
-    
+
     public void createCompetition(Competition competition, List<CMG> competitorMatchGroupList) throws ApplicationException;
-    
+
     public CompetitionType findCompetitionTypeById(int id);
-    
+
     public List<CMG> generateEmptyBracket(List<Competitor> competitors);
 
     public List<MatchType> getEndUserMatchTypes();
@@ -57,10 +62,10 @@ public interface CompetitionServiceLocal {
 
     public List<CMG> getCompetitionCMGMappings(Competition competition);
 
-    public Map<String, CompetitorMatch> saveCompetitorScore(CompetitorMatch cmg)  throws ApplicationException;
+    public Map<String, CompetitorMatch> saveCompetitorScore(CompetitorMatch cmg) throws ApplicationException;
 
     public List<CompetitorMatch> findCompeitorMatchByIdMatch(Integer idMatch);
-    
+
     public Competition getInitializedCompetition(int idCompetition);
 
     public List<Score> findCompetitionScores(int idCompetition);
@@ -72,7 +77,7 @@ public interface CompetitionServiceLocal {
     public InactivateMatch disableMatch(InactivateMatch inactivateMatch);
 
     public CurrentMatchType assignCurrentMatchType(CurrentMatchType cmt);
-    
+
     public CompetitorMatch advanceCompetitor(CompetitorMatch competitorMatch) throws ApplicationException;
 
     public Competition saveCompetitionGeneralInfo(Competition competition) throws ApplicationException;
@@ -112,4 +117,11 @@ public interface CompetitionServiceLocal {
     public ReportPlacementData getReportPlacements(Competitor competitor) throws ApplicationException;
 
     public List<? extends CompetitionPodiumData> generateCompetitionPodiumStatistics() throws ApplicationException;
+
+    public Future<List<CompetitorMatch>> generateCompetitorMatchesStatistics(Competitor competitor);
+
+    public boolean isCompetitorMatchesStatisticsFetched();
+
+    public Future<String> asyncTest();
+
 }

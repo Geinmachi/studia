@@ -9,7 +9,7 @@ import entities.CompetitorMatch;
 import entities.Matchh;
 import exceptions.ApplicationException;
 import java.util.List;
-import javax.ejb.Local;
+import java.util.concurrent.Future;
 import javax.ejb.Remote;
 
 /**
@@ -48,4 +48,6 @@ public interface CompetitorMatchFacadeLocal {
     public CompetitorMatch editWithReturn(CompetitorMatch entity) throws ApplicationException;
     
     public Matchh editWithReturnAdvancing(Matchh storedMtch) throws ApplicationException;
+
+    public List<CompetitorMatch> findCompetitorMatchStatistics(int idCompetitor);
 }

@@ -38,6 +38,7 @@ public class AccountFacade extends AbstractFacade<Account> implements AccountFac
     }
 
     @Override
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public Account findByLogin(String login) throws ApplicationException {
         Query q = em.createNamedQuery("Account.findByLogin");
         q.setParameter("login", login);

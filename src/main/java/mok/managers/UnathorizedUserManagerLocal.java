@@ -7,13 +7,13 @@ package mok.managers;
 
 import entities.Account;
 import exceptions.ApplicationException;
-import javax.ejb.Local;
+import javax.ejb.Remote;
 
 /**
  *
  * @author java
  */
-@Local
+@Remote
 public interface UnathorizedUserManagerLocal {
 
     public void register(Account account) throws ApplicationException;

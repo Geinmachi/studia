@@ -19,6 +19,7 @@ import javax.inject.Inject;
 import mot.interfaces.CompetitionPodiumData;
 import web.backingBeans.mot.competition.CompetitionBackingBean;
 import web.controllers.CompetitionController;
+import web.utils.JsfUtils;
 import web.utils.PageConstants;
 
 /**
@@ -28,22 +29,25 @@ import web.utils.PageConstants;
 @Named(value = "competitorReportsBackingBean")
 @ViewScoped
 public class CompetitorReportsBackingBean extends CompetitionBackingBean implements Serializable {
-    
+
     @Inject
     private PlacementReportBackingBean placementReport;
-    
+
+    @Inject
+    private MatchesReportBackingBean matchesReport;
+
     private List<Competitor> competitorList;
 
     public List<Competitor> getCompetitorList() {
         return competitorList;
     }
-    
+
     /**
      * Creates a new instance of CompetitorReportsBackingBean
      */
     public CompetitorReportsBackingBean() {
     }
-    
+
     @PostConstruct
     private void init() {
         try {
@@ -53,11 +57,22 @@ public class CompetitorReportsBackingBean extends CompetitionBackingBean impleme
             throw new IllegalStateException("Cannot init a bean");
         }
     }
-    
+
     public String displayPlacementReport(Competitor competitor) {
         placementReport.initValues(competitor);
 //        FacesContext.getCurrentInstance().getExternalContext().getFlash().put("competitor", competitor);
 //        System.out.println("Competitor z puta " + ((Competitor) FacesContext.getCurrentInstance().getExternalContext().getRequestMap().get("competitor")).getIdPersonalInfo().getFirstName());
         return PageConstants.getPage(PageConstants.ROOT_PLACEMENT_REPORT, true);
+    }
+
+    public String displayMatchesReport(Competitor competitor) {
+        if (matchesReport.initValues(competitor)) {
+            return PageConstants.getPage(PageConstants.ROOT_MATCHES_REPORT, true);
+        } else {
+            return null;
+        }
+//        FacesContext.getCurrentInstance().getExternalContext().getFlash().put("competitor", competitor);
+//        System.out.println("Competitor z puta " + ((Competitor) FacesContext.getCurrentInstance().getExternalContext().getRequestMap().get("competitor")).getIdPersonalInfo().getFirstName());
+//        return PageConstants.getPage(PageConstants.ROOT_PLACEMENT_REPORT, true);
     }
 }

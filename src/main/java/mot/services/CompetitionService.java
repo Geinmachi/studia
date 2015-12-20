@@ -34,6 +34,13 @@ import mot.managers.PresentCompetitionManagerLocal;
 import mot.interfaces.CurrentMatchType;
 import mot.interfaces.InactivateMatch;
 import ejbCommon.TrackerInterceptor;
+import java.util.concurrent.Future;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.annotation.Resource;
+import javax.ejb.AsyncResult;
+import javax.ejb.Asynchronous;
+import javax.ejb.SessionContext;
 import javax.ejb.SessionSynchronization;
 import mot.interfaces.CompetitionPodiumData;
 import mot.interfaces.ReportPlacementData;
@@ -47,8 +54,11 @@ import mot.managers.ReportsManagerLocal;
 @Stateful
 @Interceptors({TrackerInterceptor.class})
 @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
-public class CompetitionService extends AbstractService implements CompetitionServiceLocal {
+public class CompetitionService extends AbstractService implements CompetitionServiceLocal, SessionSynchronization {
 
+    @Resource
+    SessionContext sessionContext;
+    
     @EJB
     private CreateCompetitionManagerLocal createCompetitionManager;
 
@@ -84,10 +94,30 @@ public class CompetitionService extends AbstractService implements CompetitionSe
 
     private List<CMG> storedCMGmappings;
 
-    public static String ADMIN_PROPERTY_KEY = "role.admin";
+    private List<CompetitorMatch> competitorMatchStatistics;
+    
+//    private long identity = System.currentTimeMillis();
 
-    public static String ANONYMOUS_USER = "anonymous";
+    public static final String ADMIN_PROPERTY_KEY = "role.admin";
 
+    public static final String ANONYMOUS_USER = "anonymous";
+
+    @Override
+    public boolean isCompetitorMatchesStatisticsFetched() {
+        return (competitorMatchStatistics != null);
+//        if (competitorMatchStatistics == null) {
+//            System.out.println("Future jest nullem");
+//            return false;
+//        }
+//        System.out.println("Future nie jest nullem");
+//        return competitorMatchStatistics.isDone();
+    }
+    
+//    @Override
+//    public long getIdentity() {
+//        return identity;
+//    }
+    
     @Override
     public List<Team> findUserAllowedTeams() throws ApplicationException {
         return competitionComponentsManager.findUserAllowedTeams();
@@ -123,8 +153,8 @@ public class CompetitionService extends AbstractService implements CompetitionSe
 
     @Override
     public void createCompetition(Competition competition, List<CMG> competitorMatchGroupList) throws ApplicationException {
-            createCompetitionManager.createCompetition(competition, competitorMatchGroupList);
-        }
+        createCompetitionManager.createCompetition(competition, competitorMatchGroupList);
+    }
 
     @Override
     public CompetitionType findCompetitionTypeById(int id) {
@@ -350,6 +380,7 @@ public class CompetitionService extends AbstractService implements CompetitionSe
     }
 
     @Override
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public List<Competition> findCompetitionsToDisplay() throws ApplicationException {
         return presentCompetitionManager.findCompetitionsToDisplay();
     }
@@ -377,5 +408,26 @@ public class CompetitionService extends AbstractService implements CompetitionSe
     @Override
     public List<? extends CompetitionPodiumData> generateCompetitionPodiumStatistics() throws ApplicationException {
         return reportsManager.generateCompetitionPodiumStatistics();
+    }
+
+    @Override
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+    public Future<List<CompetitorMatch>> generateCompetitorMatchesStatistics(Competitor competitor) {System.out.println("Sprawdeznie w servicie2222 ");
+//        System.out.println("Identity: " + getIdentity());
+//        System.out.println("Sprawdeznie w servicie1111 ----- ");
+//        isCompetitorMatchesStatisticsFetched();
+//        System.out.println("Sprawdeznie w servicie1111 +++++ ");
+//        System.out.println("Faces context " + FacesContext.getCurrentInstance().getApplication());
+        competitorMatchStatistics = null; // clears previous result of the call to this method for timer
+//        competitorMatchStatistics = reportsManager.generateCompetitorMatchesStatistics(competitor);
+//        System.out.println("Sprawdeznie w servicie2222 ----");
+//        isCompetitorMatchesStatisticsFetched();
+//        System.out.println("Sprawdeznie w servicie2222 ++++");
+        return reportsManager.generateCompetitorMatchesStatistics(competitor);
+    }
+    
+    @Override
+    public Future<String> asyncTest() {
+        return reportsManager.asyncTest();
     }
 }

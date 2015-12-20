@@ -9,13 +9,13 @@ import entities.AccessLevel;
 import entities.Account;
 import exceptions.ApplicationException;
 import java.util.List;
-import javax.ejb.Local;
+import javax.ejb.Remote;
 
 /**
  *
  * @author java
  */
-@Local
+@Remote
 public interface AuthorizedUserManagerLocal {
 
     public List<Account> getUserList();
