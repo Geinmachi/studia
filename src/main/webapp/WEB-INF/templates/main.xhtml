@@ -8,6 +8,7 @@
         <title><ui:insert name="title"/></title>
         <link rel="stylesheet" type="text/css" media="all" href="/resources/css/bootstrap.css"/>
         <h:outputStylesheet library="css" name="general.css" />
+        <h:outputStylesheet library="css" name="inbox.css" />
         <h:outputStylesheet library="css" name="dashboard.css" />
     </h:head>
     <h:body style="padding-top: 50px; padding-bottom: 20px;">
@@ -19,7 +20,7 @@
         <p:growl id="globalGrowl" autoUpdate="true" showDetail="true" for="globalContainer" life="2000"/>
         <p:growl id="pollGrowl" showDetail="true" sticky="true"/>
         <h:form id="pollForm">
-            <p:poll id="poll" interval="#{pollListener.INTERVAL}" listener="#{pollListener.checkData}" 
+            <p:poll id="poll" interval="#{pollListener.INTERVAL}" listener="#{pollListener.checkData}"
                     update="pollGrowl" autoStart="true" stop="#{pollListener.taskListEmpty}" 
                     global="false"/>
         </h:form>

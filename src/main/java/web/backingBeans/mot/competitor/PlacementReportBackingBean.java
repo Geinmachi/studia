@@ -17,6 +17,7 @@ import mot.interfaces.ReportPlacementData;
 import web.backingBeans.async.AsynchronousTask;
 import web.backingBeans.async.AsynchronousTaskImpl;
 import web.backingBeans.mot.competition.CompetitionAsyncBackingBean;
+import web.utils.PageConstants;
 
 /**
  *
@@ -62,7 +63,7 @@ public class PlacementReportBackingBean extends CompetitionAsyncBackingBean impl
     public void initValues(Competitor competitor) {
         try {
             Future<String> asyncResult = controller.asyncTest();
-            AsynchronousTask asyncTask = new AsynchronousTaskImpl<>(asyncResult, "Asyncs test", "lololo");
+            AsynchronousTask asyncTask = new AsynchronousTaskImpl<>(asyncResult, "Asyncs test", "lololo", PageConstants.ROOT_PLACEMENT_REPORT);
             async.addTask(asyncTask);
             
             selectedCompetitor = competitor;

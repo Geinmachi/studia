@@ -33,7 +33,7 @@ import mot.models.CompetitorMatchesStatisticsMarkerEvent;
  *
  * @author java
  */
-@Local
+@Remote
 public interface CompetitionServiceLocal {
 
     public List<Team> findUserAllowedTeams() throws ApplicationException;
@@ -86,7 +86,7 @@ public interface CompetitionServiceLocal {
 
     public List<Competitor> getAllAllowedTeamlessCompetitors() throws ApplicationException;
 
-    public Competitor vlidateCompetitorDuplicate(List<Competitor> competitorList);
+    public Competitor validateCompetitorDuplicate(List<Competitor> competitorList);
 
     public List<Competitor> getCompetitorsToEdit() throws ApplicationException;
 

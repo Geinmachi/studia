@@ -14,7 +14,6 @@ import javax.annotation.PostConstruct;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.context.FacesContext;
-import test.CopyWriter;
 import web.utils.JsfUtils;
 import web.utils.PageConstants;
 

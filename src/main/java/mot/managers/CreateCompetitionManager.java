@@ -35,7 +35,6 @@ import javax.ejb.SessionContext;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
-import javax.interceptor.Interceptors;
 import mot.facades.AccountFacadeLocal;
 import mot.facades.CompetitionFacadeLocal;
 import mot.facades.CompetitorFacadeLocal;
@@ -51,17 +50,14 @@ import utils.BracketUtil;
 import utils.ConvertUtil;
 import mot.interfaces.CMG;
 import mot.models.CompetitorMatchGroup;
-import ejbCommon.TrackerInterceptor;
 import exceptions.ApplicationException;
-import java.util.Iterator;
-import javax.ejb.Asynchronous;
 
 /**
  *
  * @author java
  */
 @Stateless
-@TransactionAttribute(TransactionAttributeType.MANDATORY)
+//@TransactionAttribute(TransactionAttributeType.MANDATORY)
 public class CreateCompetitionManager implements CreateCompetitionManagerLocal {
 
     @Resource
@@ -706,8 +702,9 @@ public class CreateCompetitionManager implements CreateCompetitionManagerLocal {
     }
 
     @Override
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public void checkCompetitionConstraints(Competition competition) throws ApplicationException {
-
+        
         if (competition.getIdOrganizer() == null) {
             Account loggedUser = accountFacade.findByLogin(sessionContext.getCallerPrincipal().getName());
             AccessLevel organizer = ConvertUtil.getSpecAccessLevelFromAccount(loggedUser, Organizer.class);

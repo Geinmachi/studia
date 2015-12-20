@@ -188,7 +188,7 @@ and open the template in the editor.
                         </p:row>
                     </p:panelGrid>
                     <p:dashboard id="dashboard" model="#{createCompetitionBackingBean.bracketCreator.dashboardModel}" 
-                                 style="width: #{createCompetitionBackingBean.bracketCreator.rounds * 320}px" styleClass="dashboard">
+                                 style="width: #{createCompetitionBackingBean.bracketCreator.rounds * 330}px" styleClass="dashboard">
                         <c:forEach items="#{createCompetitionBackingBean.bracketCreator.panelList}" var="dashboardPanel" varStatus="panelIndex">
                             <c:choose>
                                 <c:when test="#{not dashboardPanel.filler}">

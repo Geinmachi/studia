@@ -115,7 +115,7 @@ public class ManageCompetitionManager implements ManageCompetitionManagerLocal {
         Set<CMG> cmgSet = new HashSet<>();
         System.out.println("GROUPCOMPETITOR SSS " + groupCompetitorList.size());
         System.out.println("COMPETITORMATCH SSS " + competitorMatchList.size());
-        
+
         for (CompetitorMatch cm : competitorMatchList) {
             //    if (Short.compare(cm.getIdMatch().getRoundd(), Short.parseShort("1")) == 0) {
             System.out.println("RUNDA 11111111111111");
@@ -277,7 +277,7 @@ public class ManageCompetitionManager implements ManageCompetitionManagerLocal {
                                     fetchedMatch.getCompetition().setIdWinner(receivedCompetitorMatch.getIdCompetitor());
                                     competitionFacade.edit(fetchedMatch.getCompetition());
                                     saveCompetitorsPlace(fetchedMatch.getCompetition().getIdCompetition());
-                                    
+
                                     return null;
                                 }
                             }
@@ -346,7 +346,7 @@ public class ManageCompetitionManager implements ManageCompetitionManagerLocal {
         positionScoreMap.put((short) 0, positionCounter);
 
         Map<Competitor, Integer> competitorPositionMap = new HashMap<>();
-        
+
         System.out.println();
         for (Score s : scoreList) {
             s.setPlace(positionScoreMap.get(s.getScore()).shortValue());
@@ -354,7 +354,7 @@ public class ManageCompetitionManager implements ManageCompetitionManagerLocal {
 //            competitorPositionMap.put(s.getIdCompetitor(), positionScoreMap.get(s.getScore()));
         }
     }
-    
+
     @Override
     public List<CompetitorMatch> findCMGByIdMatch(Integer idMatch) {
         List<CompetitorMatch> found = competitorMatchFacade.findCMGByIdMatch(idMatch);
@@ -474,12 +474,12 @@ public class ManageCompetitionManager implements ManageCompetitionManagerLocal {
     public CurrentMatchType assignCurrentMatchType(CurrentMatchType cmt) {
         if (cmt.getMatch() != null) {
             for (MatchMatchType mmt : cmt.getMatch().getMatchMatchTypeList()) {
-                    System.out.println("-----mmt " + mmt.getIdMatchType().getMatchTypeName() + " match nr " + cmt.getMatch().getMatchNumber());
-//                if (mmt.getIdMatchType().getMatchTypeName().startsWith("BO")) {
-//                    cmt.setMatchType(mmt.getIdMatchType());
-//
-//                    break;
-//                }
+                System.out.println("-----mmt " + mmt.getIdMatchType().getMatchTypeName() + " match nr " + cmt.getMatch().getMatchNumber());
+                if (mmt.getIdMatchType().getMatchTypeName().startsWith("BO")) {
+                    cmt.setMatchType(mmt.getIdMatchType());
+
+                    break;
+                }
             }
         }
 

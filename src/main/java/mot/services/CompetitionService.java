@@ -34,6 +34,8 @@ import mot.managers.PresentCompetitionManagerLocal;
 import mot.interfaces.CurrentMatchType;
 import mot.interfaces.InactivateMatch;
 import ejbCommon.TrackerInterceptor;
+import entities.AccessLevel;
+import entities.Organizer;
 import java.util.concurrent.Future;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -42,6 +44,8 @@ import javax.ejb.AsyncResult;
 import javax.ejb.Asynchronous;
 import javax.ejb.SessionContext;
 import javax.ejb.SessionSynchronization;
+import javax.ejb.Stateless;
+import mot.facades.CompetitionFacadeLocal;
 import mot.interfaces.CompetitionPodiumData;
 import mot.interfaces.ReportPlacementData;
 import mot.managers.CompetitionComponentsManagerLocal;
@@ -326,8 +330,8 @@ public class CompetitionService extends AbstractService implements CompetitionSe
     }
 
     @Override
-    public Competitor vlidateCompetitorDuplicate(List<Competitor> competitorList) {
-        return competitionComponentsManager.vlidateCompetitorDuplicate(competitorList);
+    public Competitor validateCompetitorDuplicate(List<Competitor> competitorList) {
+        return competitionComponentsManager.validateCompetitorDuplicate(competitorList);
     }
 
     @Override
@@ -375,6 +379,7 @@ public class CompetitionService extends AbstractService implements CompetitionSe
     }
 
     @Override
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public void checkCompetitionConstraints(Competition competition) throws ApplicationException {
         createCompetitionManager.checkCompetitionConstraints(competition);
     }

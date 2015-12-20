@@ -70,7 +70,7 @@ public class CompetitionComponentsManager implements CompetitionComponentsManage
         System.out.println("Competitors size " + team.getCompetitorList().size());
         System.out.println("TEAM NAME " + team.getTeamName());
 
-        if (vlidateCompetitorDuplicate(team.getCompetitorList()) != null) {
+        if (validateCompetitorDuplicate(team.getCompetitorList()) != null) {
             throw TeamCreationException.duplicatedCompetitors();
         }
 
@@ -96,7 +96,7 @@ public class CompetitionComponentsManager implements CompetitionComponentsManage
      * @return Null if validation passes or duplicated competitor when failed
      */
     @Override
-    public Competitor vlidateCompetitorDuplicate(List<Competitor> competitorList) {
+    public Competitor validateCompetitorDuplicate(List<Competitor> competitorList) {
 
         competitorList.sort(new Comparator<Competitor>() {
 
@@ -218,7 +218,7 @@ public class CompetitionComponentsManager implements CompetitionComponentsManage
         editingTeam.setTeamName(team.getTeamName());
         editingTeam.setCompetitorList(team.getCompetitorList());
 
-        vlidateCompetitorDuplicate(editingTeam.getCompetitorList());
+        validateCompetitorDuplicate(editingTeam.getCompetitorList());
 
         for (Competitor c : editingTeam.getCompetitorList()) {
             c.setIdTeam(editingTeam);

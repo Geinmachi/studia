@@ -131,7 +131,7 @@ public class PresentCompetitionManager implements PresentCompetitionManagerLocal
     public List<Competition> findCompetitionsToDisplay() throws ApplicationException {
         String userLogin = sessionContext.getCallerPrincipal().getName();
 
-        List competitionList = new ArrayList<>();
+        List competitionList;
 
         if (userLogin.equals(ResourceBundleUtil.getResourceBundleBusinessProperty(CompetitionService.ANONYMOUS_USER))) {
             competitionList = competitionFacade.findGlobalCompetitions();
