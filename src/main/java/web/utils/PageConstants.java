@@ -25,6 +25,8 @@ public class PageConstants {
     
     public static final String ROOT_PLACEMENT_REPORT = "/placementReport.xhtml";
     
+    public static final String ROOT_MATCHES_REPORT = "/matchesReport.xhtml";
+    
     public static final String ROOT_DONE = "/done.xhtml";
     
     public static final String ROOT_INDEX = "/index.xhtml";

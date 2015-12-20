@@ -6,28 +6,51 @@
 package mot.managers;
 
 import entities.Competitor;
+import entities.CompetitorMatch;
 import exceptions.ApplicationException;
 import exceptions.InvalidPlaceException;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.Future;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.annotation.Resource;
+import javax.ejb.AsyncResult;
+import javax.ejb.Asynchronous;
 import javax.ejb.EJB;
+import javax.ejb.SessionContext;
 import javax.ejb.Stateless;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
+import javax.enterprise.event.Event;
+import javax.inject.Inject;
 import mot.facades.CompetitionFacadeLocal;
 import mot.facades.CompetitorFacadeLocal;
+import mot.facades.CompetitorMatchFacadeLocal;
 import mot.facades.ScoreFacadeLocal;
 import mot.interfaces.CompetitionPodiumData;
 import mot.interfaces.ReportPlacementData;
 import mot.models.CompetitionPodium;
+import mot.models.CompetitorMatchesStatisticsMarkerEvent;
 import mot.models.ReportPlacements;
+import mot.services.CompetitionService;
+import mot.timers.CompetitorMatchesStatisticsTimerLocal;
 
 /**
  *
  * @author java
  */
 @Stateless
+@TransactionAttribute(TransactionAttributeType.MANDATORY)
 public class ReportsManager implements ReportsManagerLocal {
+
+    @Resource
+    SessionContext sessionContext;
+
+    @Inject
+    private Event<CompetitorMatchesStatisticsMarkerEvent> competitorMatchesEvent;
 
     @EJB
     private CompetitorFacadeLocal competitorFacade;
@@ -37,6 +60,12 @@ public class ReportsManager implements ReportsManagerLocal {
 
     @EJB
     private CompetitionFacadeLocal competitionFacade;
+
+    @EJB
+    private CompetitorMatchFacadeLocal competitorMatchFacade;
+
+    @EJB
+    private CompetitorMatchesStatisticsTimerLocal competitorMatchesTimer;
 
     @Override
     public List<Competitor> getGlobalCompetitors() throws ApplicationException {
@@ -65,16 +94,16 @@ public class ReportsManager implements ReportsManagerLocal {
         for (CompetitionPodium cpd : statistics) {
             cpd.setCompetitorsCount(scoreFacade.findCompetitorsCountByGlobalCompetitionName(cpd.getCompetitionName()));
         }
-        
+
         return statistics;
     }
-    
+
     private List<String> getUniqueCompetitionNamesInCompetitionPodiumStatistics(List<Object[]> fetchedData) {
         Set<String> competitionNames = new LinkedHashSet<>();
         for (Object[] obejcts : fetchedData) {
             competitionNames.add((String) obejcts[0]);
         }
-        
+
         return new ArrayList<>(competitionNames);
     }
 
@@ -98,7 +127,53 @@ public class ReportsManager implements ReportsManagerLocal {
                 }
             }
         }
-        
+
         return statistics;
+    }
+
+    @Override
+    @Asynchronous
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+    public Future<List<CompetitorMatch>> generateCompetitorMatchesStatistics(Competitor competitor) {
+//        competitorMatchesTimer.startTimer();
+//        Future<List<CompetitorMatch>> asyncResult = competitorMatchFacade.findCompetitorMatchStatistics(competitor.getIdCompetitor());
+//        System.out.println("Event -----");
+//        competitorMatchesEvent.fire(new CompetitorMatchesStatisticsMarkerEvent());
+//        System.out.println("Event ++++++");
+
+        return new AsyncResult<>(competitorMatchFacade.findCompetitorMatchStatistics(competitor.getIdCompetitor()));
+    }
+
+//    public void creditPayment(@Observes CompetitorMatchesStatisticsMarkerEvent event) {
+//        System.out.println("Przyszedl event w EJB" + event.toString());
+//    }
+//    @Timeout
+//    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+//    public void timeout(Timer timer) {
+//        System.out.println("Timer wykonany");
+//        if (competitorMatchStatistics != null) {
+//            System.out.println("jeszce nie skonczylo pobierac");
+//        } else {
+//            System.out.println("pobieranie zakonczone, wylacza timer");
+//            timer.cancel();
+//
+//        }
+//    }
+    @Override
+    @Asynchronous
+    public Future<String> asyncTest() {
+
+        String result = "test";
+        for (int i = 0; i < 20; i++) {
+            result += i;
+            System.out.println("asyncTest ---- " + i);
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(ReportsManager.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        
+        return new AsyncResult<>(result);
     }
 }

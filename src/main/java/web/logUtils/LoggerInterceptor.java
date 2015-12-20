@@ -5,7 +5,12 @@
  */
 package web.logUtils;
 
+import exceptions.ApplicationException;
 import java.io.Serializable;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.interceptor.AroundInvoke;
 import javax.interceptor.Interceptor;
 import javax.interceptor.InvocationContext;
@@ -19,27 +24,108 @@ import web.qualifiers.Logging;
 @Interceptor
 public class LoggerInterceptor implements Serializable {
 
-    @AroundInvoke
-    public Object logMethodEntry(InvocationContext invocationContext)
-            throws Exception {
-        
-        System.out.println("Entering method: "
-                + invocationContext.getMethod().getName() + " in class "
-                + invocationContext.getMethod().getDeclaringClass().getName());
+    private static final Logger logger = Logger.getLogger(LoggerInterceptor.class.getName());
+    private static final Level logLevel = Level.INFO;
 
-        Object returnObject = null;
+    @AroundInvoke
+    public Object traceInvoke(InvocationContext ictx) throws Exception {
+        Object result;
+        StringBuilder message = new StringBuilder("WEB METHOD: ");
+
+        message.append(ictx.getMethod());
+
+        message.append(" || THREAD NAME: ");
+        message.append(Thread.currentThread().getName());
+
+        message.append(" || PARAMETERS: ");
+        message.append(getParametrsValues(ictx));
+
+        long start = System.currentTimeMillis();
+        long end;
         try {
-            returnObject = invocationContext.proceed();
+            result = ictx.proceed();
+            end = System.currentTimeMillis();
         } catch (Exception e) {
-            System.out.println("Method " + invocationContext.getMethod().getName() + " was finished by the exception: " + e.getMessage());
+            end = System.currentTimeMillis();
+            message.append(" || THREW EXCEPTION: ");
+            message.append(e.toString());
+            message.append(getExceptionFields(e));
+            message.append(" || EXECUTION TIME: ");
+            message.append(end - start);
+            message.append("ms");
+            logger.log(logLevel, message.toString());
             throw e;
         }
-        
-//        System.out.println("Exiting method: "
-//                + invocationContext.getMethod().getName() + " in class "
-//                + invocationContext.getMethod().getDeclaringClass().getName());
-//        
-        return returnObject;
+
+        message.append(" || RESULT: ");
+        message.append(getResultValue(result));
+        message.append(" || EXECUTION TIME: ");
+        message.append(end - start);
+        message.append("ms");
+
+        logger.log(logLevel, message.toString());
+
+        return result;
+    }
+
+    private String getParametrsValues(InvocationContext ictx) {
+        StringBuilder msg = new StringBuilder();
+
+        if (ictx.getParameters() == null) {
+            msg.append("null");
+        } else {
+            for (Object param : ictx.getParameters()) {
+                if (param == null) {
+                    msg.append("null ");
+                } else {
+                    msg.append(param.toString());
+                    msg.append(" ");
+                }
+            }
+        }
+
+        return msg.toString();
+    }
+
+    private String getResultValue(Object result) {
+        String outputMsg;
+
+        if (null == result) {
+            outputMsg = "null";
+        } else {
+            outputMsg = result.toString();
+        }
+
+        return outputMsg;
+    }
+
+    private String getExceptionFields(Exception e) {
+        StringBuilder msg = new StringBuilder();
+
+        if (!(e instanceof ApplicationException)) {
+            msg.append(" || NOT APPLICATION EXCEPTION");
+
+            return msg.toString();
+        }
+
+        msg.append(" || FIELDS: ");
+        Method[] allMethods = e.getClass().getDeclaredMethods();
+        for (Method m : allMethods) {
+            String methodName = m.getName();
+
+            if (methodName.startsWith("get")) {
+                msg.append(methodName.substring(3));
+                msg.append("= ");
+                try {
+                    msg.append(m.invoke(e, new Object[]{}));
+                    msg.append(", ");
+                } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
+                    logger.log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+
+        return msg.toString();
     }
 
 }

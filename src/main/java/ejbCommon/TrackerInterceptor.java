@@ -15,17 +15,6 @@ import javax.ejb.SessionContext;
 import javax.interceptor.AroundInvoke;
 import javax.interceptor.InvocationContext;
 
-/**
- * Klasa interceptora generuje dzienniki zdarzeń uwzględniające każde wywołanie
- * (wraz z wartościami parametrów) oraz każde zakończenie (wraz z wartością
- * zwracaną lub zgłoszonym wyjątkiem) metody, z uwzględnieniem tożsamości
- * użytkownika oraz odpowiednim znacznikiem czasowym. Jeżeli parametrem lub
- * wartością zwracaną metody jest obiekt encji (ew. ich kolekcja), wówczas dla
- * każdego obiektu zapisywana jest jej identyfikator wraz z bieżącym numerem
- * wersji.
- *
- * @author ssbd03
- */
 public class TrackerInterceptor {
 
     @Resource
@@ -37,11 +26,14 @@ public class TrackerInterceptor {
     @AroundInvoke
     public Object traceInvoke(InvocationContext ictx) throws Exception {
         Object result;
-        StringBuilder message = new StringBuilder("METHOD: ");
+        StringBuilder message = new StringBuilder("EJB METHOD: ");
 
         message.append(ictx.getMethod());
 
-        message.append(" ||  USER: ");
+        message.append(" || THREAD NAME: ");
+        message.append(Thread.currentThread().getName());
+
+        message.append(" || USER: ");
         message.append(sctx.getCallerPrincipal().getName());
 
         message.append(" || PARAMETERS: ");
@@ -54,19 +46,19 @@ public class TrackerInterceptor {
             end = System.currentTimeMillis();
         } catch (Exception e) {
             end = System.currentTimeMillis();
-            message.append("|| THREW EXCEPTION: ");
+            message.append(" || THREW EXCEPTION: ");
             message.append(e.toString());
             message.append(getExceptionFields(e));
-            message.append("|| EXECUTION TIME: ");
+            message.append(" || EXECUTION TIME: ");
             message.append(end - start);
             message.append("ms");
             logger.log(logLevel, message.toString());
             throw e;
         }
 
-        message.append(" ||RESULT: ");
+        message.append(" || RESULT: ");
         message.append(getResultValue(result));
-        message.append("|| EXECUTION TIME: ");
+        message.append(" || EXECUTION TIME: ");
         message.append(end - start);
         message.append("ms");
 
@@ -110,12 +102,12 @@ public class TrackerInterceptor {
         StringBuilder msg = new StringBuilder();
 
         if (!(e instanceof ApplicationException)) {
-            msg.append("|| NOT APPLICATION EXCEPTION");
+            msg.append(" || NOT APPLICATION EXCEPTION");
 
             return msg.toString();
         }
 
-        msg.append("|| FIELDS: ");
+        msg.append(" || FIELDS: ");
         Method[] allMethods = e.getClass().getDeclaredMethods();
         for (Method m : allMethods) {
             String methodName = m.getName();

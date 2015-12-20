@@ -49,6 +49,7 @@ public class CompetitionFacade extends AbstractFacade<Competition> implements Co
     }
 
     @Override
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public List<Competition> findUserCompetitionsByIdAccessLevel(Object id) {
         Query q = em.createNamedQuery("Competition.findByIdAccessLevel");
         q.setParameter("idAccessLevel", id);
@@ -196,6 +197,7 @@ public class CompetitionFacade extends AbstractFacade<Competition> implements Co
     }
 
     @Override
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public List<Competition> findGlobalCompetitions() {
         Query q = em.createNamedQuery("Competition.findGlobalCompetitions");
 
@@ -220,6 +222,12 @@ public class CompetitionFacade extends AbstractFacade<Competition> implements Co
         Query q = em.createNamedQuery("Competition.getCompetitionPodiumStatistics");
         
         return (List<Object[]>)q.getResultList();
+    }
+
+    @Override
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+    public List<Competition> findAll() {
+        return super.findAll(); //To change body of generated methods, choose Tools | Templates.
     }
 
 }

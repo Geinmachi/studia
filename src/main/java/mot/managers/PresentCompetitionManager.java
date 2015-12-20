@@ -127,6 +127,7 @@ public class PresentCompetitionManager implements PresentCompetitionManagerLocal
     }
 
     @Override
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public List<Competition> findCompetitionsToDisplay() throws ApplicationException {
         String userLogin = sessionContext.getCallerPrincipal().getName();
 

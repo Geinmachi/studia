@@ -8,20 +8,15 @@ package web.backingBeans.mot.competitor;
 import entities.Competitor;
 import exceptions.ApplicationException;
 import java.io.Serializable;
-import java.util.List;
+import java.util.concurrent.Future;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.annotation.PostConstruct;
-import javax.enterprise.context.RequestScoped;
 import javax.enterprise.context.SessionScoped;
-import javax.faces.context.FacesContext;
 import javax.inject.Named;
-import javax.faces.view.ViewScoped;
-import javax.inject.Inject;
 import mot.interfaces.ReportPlacementData;
-import web.backingBeans.mot.competition.CompetitionBackingBean;
-import web.controllers.CompetitionController;
-import web.utils.PageConstants;
+import web.backingBeans.async.AsynchronousTask;
+import web.backingBeans.async.AsynchronousTaskImpl;
+import web.backingBeans.mot.competition.CompetitionAsyncBackingBean;
 
 /**
  *
@@ -29,7 +24,7 @@ import web.utils.PageConstants;
  */
 @Named(value = "placementReportBackingBean")
 @SessionScoped
-public class PlacementReportBackingBean extends CompetitionBackingBean implements Serializable {
+public class PlacementReportBackingBean extends CompetitionAsyncBackingBean implements Serializable {
 
     private Competitor selectedCompetitor;
 
@@ -66,6 +61,10 @@ public class PlacementReportBackingBean extends CompetitionBackingBean implement
 
     public void initValues(Competitor competitor) {
         try {
+            Future<String> asyncResult = controller.asyncTest();
+            AsynchronousTask asyncTask = new AsynchronousTaskImpl<>(asyncResult, "Asyncs test", "lololo");
+            async.addTask(asyncTask);
+            
             selectedCompetitor = competitor;
             if (selectedCompetitor != null) {
                 reportPlacements = controller.getReportPlacements(selectedCompetitor);

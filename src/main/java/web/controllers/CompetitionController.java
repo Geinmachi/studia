@@ -15,32 +15,38 @@ import entities.Matchh;
 import entities.Score;
 import entities.Team;
 import exceptions.ApplicationException;
-import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Future;
 import javax.ejb.EJB;
+import javax.enterprise.event.Observes;
+import javax.enterprise.event.TransactionPhase;
+import javax.inject.Inject;
 import mot.interfaces.CMG;
 import mot.interfaces.CompetitionPodiumData;
-import mot.services.CompetitionService;
 import mot.services.CompetitionServiceLocal;
 import mot.interfaces.CurrentMatchType;
 import mot.interfaces.InactivateMatch;
 import mot.interfaces.ReportPlacementData;
+import mot.models.CompetitorMatchesStatisticsMarkerEvent;
+import web.backingBeans.async.PollListener;
 import web.models.DashboardPanel;
+import web.qualifiers.Logging;
 import web.utils.DisplayPageEnum;
+import web.utils.JsfUtils;
 
 /**
  *
  * @author java
  */
 @SessionScoped
+@Logging
 public class CompetitionController implements Serializable {
 
     private static final long serialVersionUID = 645645987823402129L;
-    
+
     @EJB
     private CompetitionServiceLocal service;
 
@@ -53,7 +59,7 @@ public class CompetitionController implements Serializable {
     private Competition displayedCompetition;
 
     private DisplayPageEnum pageType;
-
+    
     public CompetitionController() {
     }
 
@@ -151,7 +157,7 @@ public class CompetitionController implements Serializable {
     public List<CompetitorMatch> findCompetitorMatchByIdMatch(Integer idMatch) {
         return service.findCompeitorMatchByIdMatch(idMatch);
     }
-    
+
     public List<Score> findCompetitionScores(Competition competition) {
         return service.findCompetitionScores(competition.getIdCompetition());
     }
@@ -167,7 +173,7 @@ public class CompetitionController implements Serializable {
     public InactivateMatch disableMatch(InactivateMatch inactivateMatch) {
         InactivateMatch dto = new DashboardPanel();
         dto.setMatch(inactivateMatch.getMatch());
-        
+
         return service.disableMatch(dto);
     }
 
@@ -175,7 +181,7 @@ public class CompetitionController implements Serializable {
         CurrentMatchType dto = new DashboardPanel();
         dto.setMatch(cmt.getMatch());
         dto.setMatchType(cmt.getMatchType());
-        
+
         return service.assignCurrentMatchType(dto);
     }
 
@@ -259,5 +265,16 @@ public class CompetitionController implements Serializable {
 
     public List<? extends CompetitionPodiumData> generateCompetitionPodiumStatistics() throws ApplicationException {
         return service.generateCompetitionPodiumStatistics();
+    }
+
+    public Future<List<CompetitorMatch>> generateCompetitorMatchesStatistics(Competitor competitor) {
+//        Future<List<CompetitorMatch>> competitorMatchesStatistics = ;
+//        pollListener.setIncomingData(true);
+        
+        return service.generateCompetitorMatchesStatistics(competitor);
+    }
+
+    public Future<String> asyncTest() {
+        return service.asyncTest();
     }
 }
