@@ -202,7 +202,7 @@ public class CompetitionController implements Serializable {
     }
 
     public Competitor validateCompetitorDuplicate(List<Competitor> competitorList) {
-        return service.vlidateCompetitorDuplicate(competitorList);
+        return service.validateCompetitorDuplicate(competitorList);
     }
 
     public List<Competitor> getCompetitorsToEdit() throws ApplicationException {

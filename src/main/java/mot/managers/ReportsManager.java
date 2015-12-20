@@ -36,7 +36,6 @@ import mot.models.CompetitionPodium;
 import mot.models.CompetitorMatchesStatisticsMarkerEvent;
 import mot.models.ReportPlacements;
 import mot.services.CompetitionService;
-import mot.timers.CompetitorMatchesStatisticsTimerLocal;
 
 /**
  *
@@ -63,9 +62,6 @@ public class ReportsManager implements ReportsManagerLocal {
 
     @EJB
     private CompetitorMatchFacadeLocal competitorMatchFacade;
-
-    @EJB
-    private CompetitorMatchesStatisticsTimerLocal competitorMatchesTimer;
 
     @Override
     public List<Competitor> getGlobalCompetitors() throws ApplicationException {

@@ -13,16 +13,19 @@ import java.util.concurrent.Future;
  */
 public class AsynchronousTaskImpl<V> implements AsynchronousTask {
 
-    private Future<V> futureTask;
+    private final Future<V> futureTask;
     
     private final String message;
     
     private final String details;
     
-    public AsynchronousTaskImpl(Future<V> futureTask, String message, String details) {
+    private final String resultPage;
+    
+    public AsynchronousTaskImpl(Future<V> futureTask, String message, String details, String resultPage) {
         this.futureTask = futureTask;
         this.message = message;
         this.details = details;
+        this.resultPage = resultPage;
     }
 
     @Override
@@ -38,6 +41,11 @@ public class AsynchronousTaskImpl<V> implements AsynchronousTask {
     @Override
     public String details() {
         return details;
+    }
+
+    @Override
+    public String resultPage() {
+        return resultPage;
     }
 
 }

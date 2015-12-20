@@ -1,0 +1,69 @@
+.badge {
+    background-color: red !important;
+}
+
+.inbox-badge {
+    position: absolute;
+    top: 0px;
+    left: 30px;
+}
+
+.inbox-group {
+    position: relative;
+}
+
+.inbox-block {
+    color: white !important;
+    background-color: #333;
+    position: fixed;
+    display: none;
+    left: 248px;
+    width: 250px;
+    height: 300px;
+    z-index: 9999;
+    box-shadow: 0 0 15px 5px #333;
+    overflow: auto;
+}
+
+button.inbox-close {
+    display: block;
+    float: right;
+    background: transparent;
+    width: 1.5em;
+}
+
+.inbox-header {
+    text-align: center;
+    border-bottom: 2px solid #262626;
+}
+
+.inbox-event {
+    display: block;
+    position: relative;
+}
+
+label.inbox-event-date {
+    margin-left: 3px;
+}
+
+.inbox-event-content, .inbox-event-content-unread {
+    border-bottom: 2px dashed #262626;
+    clear: both;
+}
+
+.inbox-event-content-unread {
+    background-color: #404040 !important;
+}
+
+.inbox-title {
+    font-weight: bold !important;
+}
+
+.inbox-date-bar {
+    text-align: right;
+}
+
+.inbox-event-data, .inbox-event-data > label {
+    cursor: pointer;
+}
+

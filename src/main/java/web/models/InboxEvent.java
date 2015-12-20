@@ -3,19 +3,23 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package web.backingBeans.async;
+package web.models;
+
+import java.util.Date;
 
 /**
  *
  * @author java
  */
-public interface AsynchronousTask {
+public interface InboxEvent {
     
-    boolean isDone();
+    Date getDate();
     
-    String message();
+    String getTitle();
     
-    String details();
+    String getDescription();
     
-    String resultPage();
+    boolean isReadStatus();
+    
+    String getRedirectPage();
 }

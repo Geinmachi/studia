@@ -28,7 +28,7 @@ public interface CompetitionComponentsManagerLocal {
 
 //    public boolean checkCompetitorDuplicate(Competitor competitor, List<Competitor> competitorList);
     
-    public Competitor vlidateCompetitorDuplicate(List<Competitor> competitorList);
+    public Competitor validateCompetitorDuplicate(List<Competitor> competitorList);
 
     public List<Competitor> getCompetitorsToEdit() throws ApplicationException;
 

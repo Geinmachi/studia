@@ -25,23 +25,23 @@ import web.utils.DisplayPageEnum;
 @Named(value = "competitionListBackingBean")
 @ViewScoped
 public class CompetitionListBackingBean extends CompetitionBackingBean implements Serializable{
-    
+
     private List<Competition> competitionList;
-    
+
     public CompetitionListBackingBean() {
     }
 
     public List<Competition> getCompetitionList() {
         return competitionList;
     }
-    
+
     public DisplayPageEnum getDisplayPageEnum(String type) {
         return DisplayPageEnum.valueOf(type);
     }
-    
+
     @PostConstruct
     private void init() {
-        
+
         try {
             competitionList = controller.findCompetitionsToDisplay();
         } catch (ApplicationException ex) {
@@ -49,8 +49,8 @@ public class CompetitionListBackingBean extends CompetitionBackingBean implement
             throw new IllegalStateException("CannotInitializeBean");
         }
     }
-    
-    public String displayCompetition(Competition competition, DisplayPageEnum type) { 
+
+    public String displayCompetition(Competition competition, DisplayPageEnum type) {
         controller.setDisplayedCompetition(competition, type);
         System.out.println("ZMIANAA " + Character.toUpperCase(type.toString().toLowerCase().charAt(0)) + type.toString().substring(1).toLowerCase());
         return "competition" + Character.toUpperCase(type.toString().toLowerCase().charAt(0)) + type.toString().substring(1).toLowerCase() + ".xhtml?faces-redirect=true";

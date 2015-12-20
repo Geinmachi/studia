@@ -96,6 +96,7 @@ public class CompetitionFacade extends AbstractFacade<Competition> implements Co
     }
 
     @Override
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public void competitionContraintsNotCommited(Competition competition) throws CompetitionGeneralnfoException {
         Query q = null;
 
@@ -111,7 +112,6 @@ public class CompetitionFacade extends AbstractFacade<Competition> implements Co
         q.setParameter("competitionName", competition.getCompetitionName());
         try {
             Competition c = (Competition) q.getSingleResult();
-            em.flush();
 
             if (competition.isGlobal()) {
                 throw CompetitionGeneralnfoException.globalDuplicate();

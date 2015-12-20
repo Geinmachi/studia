@@ -48,8 +48,6 @@ public class AccountFacade extends AbstractFacade<Account> implements AccountFac
         try {
             entity = (Account) q.getSingleResult();
             entity.getAccessLevelList().size();
-
-            em.flush();
         } catch (NoResultException e) {
             throw new AccountDoesNotExistsException("User with given name does not exist", e.getCause());
         } catch (PersistenceException e) {

@@ -20,6 +20,7 @@ import web.backingBeans.async.AsynchronousTaskImpl;
 import web.backingBeans.mot.competition.CompetitionAsyncBackingBean;
 import web.backingBeans.mot.competition.CompetitionBackingBean;
 import web.utils.JsfUtils;
+import web.utils.PageConstants;
 
 /**
  *
@@ -46,6 +47,13 @@ public class MatchesReportBackingBean extends CompetitionAsyncBackingBean implem
     }
 
     public List<CompetitorMatch> getCompetitorMatchList() {
+        if (competitorMatchList == null && futureCompetitorMatchList != null && futureCompetitorMatchList.isDone()) {
+            try {
+                return futureCompetitorMatchList.get();
+            } catch (InterruptedException | ExecutionException ex) {
+                logger.log(Level.SEVERE, null, ex);
+            }
+        }
         return competitorMatchList;
     }
 
@@ -67,7 +75,7 @@ public class MatchesReportBackingBean extends CompetitionAsyncBackingBean implem
 //
 //                return true;
 //            }
-            
+
             if (competitor.equals(selectedCompetitor)) { // if selected competitor is previous one
                 System.out.println("competitor.equals(selectedCompetitor)");
                 if (checkCompleteStatus()) {
@@ -83,7 +91,7 @@ public class MatchesReportBackingBean extends CompetitionAsyncBackingBean implem
             
             logger.log(Level.INFO, "Pobiera dane asyncrnoicznie111111");
             futureCompetitorMatchList = controller.generateCompetitorMatchesStatistics(competitor);
-            async.addTask(new AsynchronousTaskImpl<>(futureCompetitorMatchList, "Pobralo statystyki", "meczow zawodnika"));
+            async.addTask(new AsynchronousTaskImpl<>(futureCompetitorMatchList, "Pobralo statystyki", "meczow zawodnika", PageConstants.ROOT_MATCHES_REPORT));
 
 //            if (selectedCompetitor == null) { // if first click
 //                logger.log(Level.INFO, "Pobiera dane asyncrnoicznie111111");

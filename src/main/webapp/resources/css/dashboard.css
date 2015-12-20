@@ -57,7 +57,16 @@
 }
 
 [id*="CompetitionForm:other4"].ui-panel {
-    margin-top: 820px;
+    margin-top: 1620px;
+    padding: 0px;
+}
+
+[id*="CompetitionForm:other5"].ui-panel:nth-child(1) {
+    margin-top: 1710px !important;
+}
+
+[id*="CompetitionForm:other5"].ui-panel {
+    margin-top: 2500px;
     padding: 0px;
 }
 
@@ -127,10 +136,32 @@
 }
 
 [id*="CompetitionForm:filler2"]:nth-child(3n+1) {
-    height: 1000px;
+    height: 875px;
 }
 
 [id*="CompetitionForm:filler2"]:nth-child(3n+3) > div{
+    position: absolute;
+    width: 100px;
+    background: url("/resources/img/pattern.png") repeat scroll 0 0 rgba(0, 0, 0, 0);;
+    right: 0px;
+    top: -1.0px;
+    height: 100% !important;
+}
+
+[id*="CompetitionForm:filler3"] {
+    height: 880px;
+    padding: 0 !important;
+}
+
+[id*="CompetitionForm:filler3"]:nth-child(1) {
+    height: 905px !important;
+}
+
+[id*="CompetitionForm:filler3"]:nth-child(3n+1) {
+    height: 1800px;
+}
+
+[id*="CompetitionForm:filler3"]:nth-child(3n+3) > div{
     position: absolute;
     width: 100px;
     background: url("/resources/img/pattern.png") repeat scroll 0 0 rgba(0, 0, 0, 0);;
