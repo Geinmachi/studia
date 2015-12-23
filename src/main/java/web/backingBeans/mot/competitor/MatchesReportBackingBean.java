@@ -6,20 +6,17 @@
 package web.backingBeans.mot.competitor;
 
 import entities.Competitor;
-import entities.CompetitorMatch;
+import exceptions.ApplicationException;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import web.backingBeans.async.AsynchronousTask;
-import web.backingBeans.async.AsynchronousTaskImpl;
-import web.backingBeans.mot.competition.CompetitionAsyncBackingBean;
-import web.backingBeans.mot.competition.CompetitionBackingBean;
-import web.utils.JsfUtils;
+import mot.interfaces.CompetitorMatchesEntryStatistics;
+import utils.ResourceBundleUtil;
+import web.backingBeans.async.BaseAsyncBackingBean;
 import web.utils.PageConstants;
 
 /**
@@ -28,113 +25,51 @@ import web.utils.PageConstants;
  */
 @Named(value = "matchesReportBackingBean")
 @SessionScoped
-public class MatchesReportBackingBean extends CompetitionAsyncBackingBean implements Serializable {
+public class MatchesReportBackingBean extends BaseAsyncBackingBean<List<CompetitorMatchesEntryStatistics>, Competitor> implements Serializable {
 
     private static final Logger logger = Logger.getLogger(MatchesReportBackingBean.class.getName());
 
-    private Future<List<CompetitorMatch>> futureCompetitorMatchList;
-
-    private List<CompetitorMatch> competitorMatchList;
-
-    private Competitor selectedCompetitor;
-
-    public Future<List<CompetitorMatch>> getFutureCompetitorMatchList() {
-        return futureCompetitorMatchList;
+    public Future<List<CompetitorMatchesEntryStatistics>> getFutureCompetitorMatchList() {
+        return super.getFutureResult();
     }
 
-    public void setFutureCompetitorMatchList(Future<List<CompetitorMatch>> futureCompetitorMatchList) {
-        this.futureCompetitorMatchList = futureCompetitorMatchList;
+    public List<CompetitorMatchesEntryStatistics> getCompetitorMatchList() {
+        return super.getActualResult();
     }
 
-    public List<CompetitorMatch> getCompetitorMatchList() {
-        if (competitorMatchList == null && futureCompetitorMatchList != null && futureCompetitorMatchList.isDone()) {
-            try {
-                return futureCompetitorMatchList.get();
-            } catch (InterruptedException | ExecutionException ex) {
-                logger.log(Level.SEVERE, null, ex);
-            }
-        }
-        return competitorMatchList;
+    @Override
+    protected Logger getLogger() {
+        return logger;
     }
 
-    /**
-     * Creates a new instance of MatchesReportBackingBean
-     */
-    public MatchesReportBackingBean() {
+    @Override
+    protected void handleApplicationException(ApplicationException e) {
+        logger.log(Level.SEVERE, "Exception during initializing values");
+        e.printStackTrace();
     }
 
-//    @PostConstruct
-//    private void init() {
-//        competitorMatchList = controller.generateCompetitorMatchesStatistics();
-//    }
-    public boolean initValues(Competitor competitor) {
-        try {
-//            if (selectedCompetitor != null && selectedCompetitor.equals(competitor)) {
-//                competitorMatchList = futureCompetitorMatchList.get();
-//                futureCompetitorMatchList = null;
-//
-//                return true;
-//            }
-
-            if (competitor.equals(selectedCompetitor)) { // if selected competitor is previous one
-                System.out.println("competitor.equals(selectedCompetitor)");
-                if (checkCompleteStatus()) {
-                    return true;
-                }
-            }
-
-            if (selectedCompetitor != null) {
-                JsfUtils.addSuccessMessage("Wybrano nowego zawodnika", "pobiera dane an nowo", "globalContainer");
-            } else {
-                JsfUtils.addSuccessMessage("Dane zostaja pobierane asynchronicznie", "gdy beda gotowe wyskoczy powiadomienie", "globalContainer");
-            }
-            
-            logger.log(Level.INFO, "Pobiera dane asyncrnoicznie111111");
-            futureCompetitorMatchList = controller.generateCompetitorMatchesStatistics(competitor);
-            async.addTask(new AsynchronousTaskImpl<>(futureCompetitorMatchList, "Pobralo statystyki", "meczow zawodnika", PageConstants.ROOT_MATCHES_REPORT));
-
-//            if (selectedCompetitor == null) { // if first click
-//                logger.log(Level.INFO, "Pobiera dane asyncrnoicznie111111");
-//                futureCompetitorMatchList = controller.generateCompetitorMatchesStatistics(competitor);
-//                async.addTask(new AsynchronousTaskImpl(futureCompetitorMatchList, "Pobralo statystyki", "meczow zawodnika"));
-//            } else { // clicked different competitor, should fetch new data
-////                if (futureCompetitorMatchList == null) {
-////                    logger.log(Level.INFO, "Pobiera dane asyncrnoicznie222222");
-////                    futureCompetitorMatchList = controller.generateCompetitorMatchesStatistics(competitor);
-////                    async.addTask(new AsynchronousTaskImpl(futureCompetitorMatchList, "Pobralo statystyki", "meczow zawodnika"));
-////                } else 
-//                if (futureCompetitorMatchList.isDone()) {
-//                    logger.log(Level.INFO, "Pobralo, pokazuje strone2222");
-//                    competitorMatchList = futureCompetitorMatchList.get();
-////                    futureCompetitorMatchList = null;
-////                selectedCompetitor = competitor;
-//
-//                    return true;
-//                }
-//            }
-        } catch (Exception e) {
-            logger.log(Level.SEVERE, null, e);
-            throw new IllegalStateException("Cannot init a bean");
-        }
-
-        selectedCompetitor = competitor;
-        return false;
+    @Override
+    protected String getResultPageAddress() {
+        return PageConstants.ROOT_MATCHES_REPORT;
     }
 
-    private boolean checkCompleteStatus() throws InterruptedException, ExecutionException {
-        if (futureCompetitorMatchList != null && !futureCompetitorMatchList.isDone()) {
-            logger.log(Level.INFO, "W trakcie pobierania");
-            JsfUtils.addSuccessMessage("Trwa pobieranie", "prosze czekac", "competitorListForm");
-            return false;
-        }
-        if (futureCompetitorMatchList != null && futureCompetitorMatchList.isDone()) {
-            logger.log(Level.INFO, "Pobralo, pokazuje strone1111");
-            competitorMatchList = futureCompetitorMatchList.get();
-//            futureCompetitorMatchList = null;
+    @Override
+    protected String getNewResourceSelectedMessage() {
+       return ResourceBundleUtil.getResourceBundleProperty("competitorMatches.newCompetitorSelected");
+    }
 
-            return true;
-        }
+    @Override
+    protected String getTaskTitle() {
+       return ResourceBundleUtil.getResourceBundleProperty("competitorMatches.taskTitle");
+    }
 
-        return false;
+    @Override
+    protected String getTaskDescription() {
+        return selectedResource.getIdPersonalInfo().getFirstName() + " " + selectedResource.getIdPersonalInfo().getLastName();
+    }
+
+    @Override
+    protected Future<List<CompetitorMatchesEntryStatistics>> getFutureResultControllerDelegate(Competitor resource) throws ApplicationException {
+        return controller.generateCompetitorMatchesStatistics(resource);
     }
 }

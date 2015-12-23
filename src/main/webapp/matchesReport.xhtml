@@ -14,16 +14,38 @@ and open the template in the editor.
     <ui:define name="content">
         <h:form id="matchesListForm" style="width: auto;">
             <p:dataTable paginator="true" rows="10" rowsPerPageTemplate="10,25,50" sortMode="multiple" styleClass="shadows"
-                         var="competitorMatch" value="#{matchesReportBackingBean.competitorMatchList}" >
+                         var="cms" value="#{matchesReportBackingBean.competitorMatchList}" >
 
-                <p:column headerText="#{msg.score}" sortBy="#{competitorMatch.competitorMatchScore}" 
-                          filterMatchMode="contains" filterBy="#{competitorMatch.competitorMatchScore}">
-                    <h:outputText value="#{competitorMatch.competitorMatchScore}" />
+                <p:column headerText="#{msg.competitor}">
+                    <h:outputText value="#{cms.matchData().get(0).competitiorFirstName()} #{cms.matchData().get(0).competitiorLastName()}" />
+                </p:column>
+
+                <p:column headerText="#{msg.oponent}" sortBy="#{cms.matchData().get(1)}" 
+                          filterMatchMode="contains" filterBy="#{cms.matchData().get(1)}">
+                    <ui:fragment rendered="#{cms.matchData().get(1).competitiorFirstName() == '-'}">
+                        <h:outputText value="#{msg['matchType.auto_advanced']}" />
+                    </ui:fragment>
+                    <ui:fragment rendered="#{cms.matchData().get(1).competitiorFirstName() != '-'}">
+                        <h:outputText value="#{cms.matchData().get(1).competitiorFirstName()} #{cms.matchData().get(1).competitiorLastName()}" />
+                    </ui:fragment>
+                </p:column>
+
+                <p:column headerText="#{msg.result}">
+                    <ui:fragment rendered="#{cms.matchData().get(1).competitiorFirstName() == '-'}">
+                        -
+                    </ui:fragment>
+                    <ui:fragment rendered="#{cms.matchData().get(1).competitiorFirstName() != '-'}">
+                        <h:outputText value="#{cms.matchData().get(0).score()} - #{cms.matchData().get(1).score()}" />
+                    </ui:fragment>
+                </p:column>
+
+                <p:column headerText="#{msg.competitionName}">
+                    <h:outputText value="#{cms.competitionName()}"/>
                 </p:column>
 
             </p:dataTable>
             <p:button style="float: right;" value="#{msg.back}" onclick="window.history.back();
-                        return false;"/>
+                    return false;"/>
         </h:form>
     </ui:define>
 </ui:composition>

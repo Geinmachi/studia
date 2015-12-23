@@ -134,8 +134,8 @@ and open the template in the editor.
                                                 <f:convertDateTime pattern="dd.MM.yyyy HH:mm" />
                                             </p:outputLabel>
                                         </p:menuitem>
-                                        <p:menuitem value="#{msg.matchType}: #{dashboardPanel.matchType.matchTypeName}"/>
-                                    </p:menu>
+                                        <p:menuitem value="#{msg.matchType}: #{msg['matchType.' += dashboardPanel.matchType.matchTypeName]}"/>
+                                    </p:menu>0
                                 </f:facet>
                             </p:panel>
                         </c:when>

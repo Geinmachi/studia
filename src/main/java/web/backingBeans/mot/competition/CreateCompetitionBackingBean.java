@@ -17,19 +17,15 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
-import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
-import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.ValueChangeEvent;
 import javax.inject.Named;
-//import javax.enterprise.context.RequestScoped;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.FlowEvent;
 import org.primefaces.model.DualListModel;
 import web.converters.interfaces.CompetitorConverterData;
-import web.qualifiers.DuplicatedCompetitorsData;
 import web.utils.JsfUtils;
 import web.utils.PageConstants;
 import web.validators.CompetitorsDualListSetter;
@@ -59,10 +55,6 @@ public class CreateCompetitionBackingBean extends CompetitionBackingBean impleme
     private boolean competitionNameConstrains;
 
     private CompetitionType selectedCompetitionType;
-//
-//    private Competitor selectedToRemove;
-//
-//    private Competitor selectedToAdd;
 
     private boolean isCompetitorsAmountValid;
 
@@ -99,6 +91,7 @@ public class CreateCompetitionBackingBean extends CompetitionBackingBean impleme
         return duplicatedCompetitorFlag;
     }
 
+    @Override
     public void setDuplicatedCompetitorFlag(boolean duplicatedCompetitorFlag) {
         this.duplicatedCompetitorFlag = duplicatedCompetitorFlag;
     }
@@ -114,22 +107,6 @@ public class CreateCompetitionBackingBean extends CompetitionBackingBean impleme
     public void setSelectedCompetitionType(CompetitionType selectedCompetitionType) {
         this.selectedCompetitionType = selectedCompetitionType;
     }
-
-//    public Competitor getSelectedToRemove() {
-//        return selectedToRemove;
-//    }
-//
-//    public void setSelectedToRemove(Competitor selectedToRemove) {
-//        this.selectedToRemove = selectedToRemove;
-//    }
-//
-//    public Competitor getSelectedToAdd() {
-//        return selectedToAdd;
-//    }
-//
-//    public void setSelectedToAdd(Competitor selectedToAdd) {
-//        this.selectedToAdd = selectedToAdd;
-//    }
 
     public boolean getIsCompetitorsAmountValid() {
         return isCompetitorsAmountValid;
@@ -197,7 +174,6 @@ public class CreateCompetitionBackingBean extends CompetitionBackingBean impleme
 
     public void checkDuplicate() {
         isCompetitorsAmountValid = controller.validateCompetitorsAmount(competitors.getTarget().size()); // do jsf mesage
-//        JsfUtils.addErrorMessage(null, null, null);
 
         Competitor duplicatedCompetitor = controller.validateCompetitorDuplicate((List<Competitor>) competitors.getTarget());
 
@@ -209,8 +185,6 @@ public class CreateCompetitionBackingBean extends CompetitionBackingBean impleme
             duplicatedCompetitorFlag = true;
 
             System.out.println("CHECK DUP msgs " + FacesContext.getCurrentInstance().getMessageList().size());
-//            UIInput pickList = (UIInput) FacesContext.getCurrentInstance().getViewRoot().findComponent("createCompetitionForm:competitorPickList");
-//            pickList.setValid(false);
 
             return;
         }
@@ -225,12 +199,4 @@ public class CreateCompetitionBackingBean extends CompetitionBackingBean impleme
     public void checkCompetitionConstraints() throws ApplicationException {
         controller.checkCompetitionConstraints(competition);
     }
-
-//    public Competitor checkCompetitorDuplicate(List<Competitor> competitorList) {
-//        return controller.validateCompetitorDuplicate(competitorList);
-//    }
-//    
-//    public boolean checkCompetitorAmount(int competitorCount) {
-//        return controller.validateCompetitorsAmount(competitorCount);
-//    }
 }

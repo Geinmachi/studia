@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ejbCommon;
+package ejb.common;
 
 import exceptions.ApplicationException;
 import java.lang.reflect.InvocationTargetException;

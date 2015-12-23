@@ -5,7 +5,7 @@
  */
 package mok.managers;
 
-import ejbCommon.TrackerInterceptor;
+import ejb.common.TrackerInterceptor;
 import entities.AccessLevel;
 import entities.Account;
 import entities.Organizer;

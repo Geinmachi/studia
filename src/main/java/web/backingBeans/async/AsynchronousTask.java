@@ -5,17 +5,22 @@
  */
 package web.backingBeans.async;
 
+import java.util.Date;
+import java.util.concurrent.Future;
+
 /**
  *
  * @author java
  */
-public interface AsynchronousTask {
+public interface AsynchronousTask<V> {
     
-    boolean isDone();
+    Future<V> asyncTask();
     
     String message();
     
     String details();
     
     String resultPage();
+    
+    Date date();
 }

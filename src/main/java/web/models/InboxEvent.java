@@ -22,4 +22,6 @@ public interface InboxEvent {
     boolean isReadStatus();
     
     String getRedirectPage();
+    
+    void setAsRead();
 }

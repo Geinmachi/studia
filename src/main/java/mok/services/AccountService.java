@@ -5,8 +5,8 @@
  */
 package mok.services;
 
-import ejbCommon.AbstractService;
-import ejbCommon.TrackerInterceptor;
+import ejb.common.AbstractService;
+import ejb.common.TrackerInterceptor;
 import entities.AccessLevel;
 import entities.Account;
 import exceptions.ApplicationException;

@@ -165,9 +165,35 @@ public class CompetitorMatchFacade extends AbstractFacade<CompetitorMatch> imple
         q.setParameter("idCompetitor", idCompetitor);
 
 //        Future<List<CompetitorMatch>> asyncResult = new AsyncResult<>((List<CompetitorMatch>) q.getResultList());
-        for (int i = 0; i < 30; i++) {
-            q.getResultList();
-        }
         return (List<CompetitorMatch>) q.getResultList();
+    }
+
+    /**
+     *
+     * @param idCompetitor
+     * @param limit
+     * @param offset
+     * @return List of objects: object[0] - score, object[1] - Competitor, obejct[2] - competitionName, object[3] - idMatch
+     */
+    @Override
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+    public List<Object[]> findPartialCompetitorMatchStatistics(int idCompetitor, int limit, int offset) {
+        Query q = em.createNamedQuery("CompetitorMatch.findCompetitorMatchesStatistics");
+        q.setParameter("idCompetitor", idCompetitor);
+        q.setMaxResults(limit);
+        q.setFirstResult(offset);
+        
+//        Future<List<CompetitorMatch>> asyncResult = new AsyncResult<>((List<CompetitorMatch>) q.getResultList());
+        return (List<Object[]>) q.getResultList();
+    }
+
+    
+    @Override
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+    public int findCompetitorMatchStatisticsCount(int idCompetitor) {
+        Query q = em.createNamedQuery("CompetitorMatch.findCompetitorMatchesStatisticsCount");
+        q.setParameter("idCompetitor", idCompetitor);
+        
+        return ((Long)q.getSingleResult()).intValue();
     }
 }

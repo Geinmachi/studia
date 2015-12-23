@@ -99,6 +99,9 @@ and open the template in the editor.
                                     </f:facet>
                                     <ui:repeat value="#{groupDetails.groupCompetitorList}" 
                                                var="competitorMatchGroup">
+                                        <ui:fragment rendered="#{not empty competitorMatchGroup.idCompetitor.idCreator}">
+                                            *
+                                        </ui:fragment>
                                         #{competitorMatchGroup.idCompetitor.idPersonalInfo.firstName} 
                                         #{competitorMatchGroup.idCompetitor.idPersonalInfo.lastName} 
                                         <br/>
@@ -122,6 +125,9 @@ and open the template in the editor.
                                           var="cmgFromMatch">-->
                                     <!--<c:choose>-->
                                     <ui:fragment rendered="#{not empty cmgFromMatch.idCompetitor}">
+                                        <ui:fragment rendered="#{not empty cmgFromMatch.idCompetitor.idCreator}">
+                                            *
+                                        </ui:fragment>
                                        <!--<c:if test="#{cmgFromMatch.idCompetitor eq competitorr}">-->
                                         <p:outputLabel>
                                             #{cmgFromMatch.idCompetitor.idPersonalInfo.firstName}
@@ -176,7 +182,7 @@ and open the template in the editor.
                                         <p:selectOneMenu id="matchType" value="#{dashboardPanel.matchType}" styleClass="matchTypeSelect"
                                                          converter="matchTypeConverter" disabled="#{!dashboardPanel.editable}">
                                             <f:selectItems value="#{manageCompetitionBackingBean.bracketCreator.matchTypeList}"
-                                                           var="matchType" itemLabel="#{matchType.matchTypeName}"
+                                                           var="matchType" itemLabel="#{msg['matchType.' += matchType.matchTypeName]}"
                                                            />
                                             <p:ajax process="@this" partialSubmit="true" update="@(.matchPanel)" listener="#{manageCompetitionBackingBean.updateMatchType(dashboardPanel)}"/>
                                         </p:selectOneMenu>

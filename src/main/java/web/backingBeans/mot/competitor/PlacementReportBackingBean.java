@@ -16,7 +16,8 @@ import javax.inject.Named;
 import mot.interfaces.ReportPlacementData;
 import web.backingBeans.async.AsynchronousTask;
 import web.backingBeans.async.AsynchronousTaskImpl;
-import web.backingBeans.mot.competition.CompetitionAsyncBackingBean;
+import web.backingBeans.async.BaseAsyncBackingBean;
+import web.backingBeans.mot.competition.CompetitionBackingBean;
 import web.utils.PageConstants;
 
 /**
@@ -25,7 +26,7 @@ import web.utils.PageConstants;
  */
 @Named(value = "placementReportBackingBean")
 @SessionScoped
-public class PlacementReportBackingBean extends CompetitionAsyncBackingBean implements Serializable {
+public class PlacementReportBackingBean extends CompetitionBackingBean implements Serializable {
 
     private Competitor selectedCompetitor;
 
@@ -45,27 +46,8 @@ public class PlacementReportBackingBean extends CompetitionAsyncBackingBean impl
     public PlacementReportBackingBean() {
     }
 
-//    @PostConstruct
-//    private void init() {
-//        try {
-//            selectedCompetitor = ((Competitor) FacesContext.getCurrentInstance().getExternalContext().getFlash().get("competitor"));
-//            if (selectedCompetitor != null) {
-//                System.out.println("selectddddd " + selectedCompetitor.getIdPersonalInfo().getFirstName());
-//                reportPlacements = controller.getReportPlacements(selectedCompetitor);
-//            }
-//
-//        } catch (Exception ex) {
-//            Logger.getLogger(PlacementReportBackingBean.class.getName()).log(Level.SEVERE, null, ex);
-//            throw new IllegalStateException("Cannot init a bean");
-//        }
-//    }
-
     public void initValues(Competitor competitor) {
         try {
-            Future<String> asyncResult = controller.asyncTest();
-            AsynchronousTask asyncTask = new AsynchronousTaskImpl<>(asyncResult, "Asyncs test", "lololo", PageConstants.ROOT_PLACEMENT_REPORT);
-            async.addTask(asyncTask);
-            
             selectedCompetitor = competitor;
             if (selectedCompetitor != null) {
                 reportPlacements = controller.getReportPlacements(selectedCompetitor);

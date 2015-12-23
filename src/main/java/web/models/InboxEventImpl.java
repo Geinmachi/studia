@@ -75,4 +75,9 @@ public class InboxEventImpl implements InboxEvent {
     public void setRedirectPage(String redirectPage) {
         this.redirectPage = redirectPage;
     }
+
+    @Override
+    public void setAsRead() {
+        this.readStatus = true;
+    }
 }

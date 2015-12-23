@@ -42,7 +42,7 @@ import mot.interfaces.CurrentMatchType;
 import mot.interfaces.InactivateMatch;
 import utils.BracketUtil;
 import utils.ConvertUtil;
-import ejbCommon.TrackerInterceptor;
+import ejb.common.TrackerInterceptor;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;

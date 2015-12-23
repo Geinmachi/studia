@@ -18,10 +18,15 @@
                         library="img" name="loading_icon.gif" style="display: none"/>
 
         <p:growl id="globalGrowl" autoUpdate="true" showDetail="true" for="globalContainer" life="2000"/>
+        
         <p:growl id="pollGrowl" showDetail="true" sticky="true"/>
+        
+        <p:growl id="pollTemporaryLifeGrowl" autoUpdate="true" showDetail="true" for="pollForm" life="5000"/>
+        <!--<p:outputPanel id="temporaryPollHelper" style="display: none;"/>-->
+        
         <h:form id="pollForm">
             <p:poll id="poll" interval="#{pollListener.INTERVAL}" listener="#{pollListener.checkData}"
-                    update="pollGrowl" autoStart="true" stop="#{pollListener.taskListEmpty}" 
+                    update="@this pollGrowl" autoStart="true" stop="#{pollListener.taskListEmpty}" 
                     global="false"/>
         </h:form>
 

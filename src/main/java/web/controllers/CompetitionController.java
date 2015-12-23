@@ -22,20 +22,20 @@ import java.util.Map;
 import java.util.concurrent.Future;
 import javax.ejb.EJB;
 import javax.enterprise.event.Observes;
+import javax.enterprise.event.Reception;
+import static javax.enterprise.event.Reception.ALWAYS;
+import static javax.enterprise.event.Reception.IF_EXISTS;
 import javax.enterprise.event.TransactionPhase;
-import javax.inject.Inject;
 import mot.interfaces.CMG;
 import mot.interfaces.CompetitionPodiumData;
+import mot.interfaces.CompetitorMatchesEntryStatistics;
 import mot.services.CompetitionServiceLocal;
 import mot.interfaces.CurrentMatchType;
 import mot.interfaces.InactivateMatch;
 import mot.interfaces.ReportPlacementData;
-import mot.models.CompetitorMatchesStatisticsMarkerEvent;
-import web.backingBeans.async.PollListener;
 import web.models.DashboardPanel;
 import web.qualifiers.Logging;
 import web.utils.DisplayPageEnum;
-import web.utils.JsfUtils;
 
 /**
  *
@@ -59,7 +59,7 @@ public class CompetitionController implements Serializable {
     private Competition displayedCompetition;
 
     private DisplayPageEnum pageType;
-    
+
     public CompetitionController() {
     }
 
@@ -267,14 +267,10 @@ public class CompetitionController implements Serializable {
         return service.generateCompetitionPodiumStatistics();
     }
 
-    public Future<List<CompetitorMatch>> generateCompetitorMatchesStatistics(Competitor competitor) {
+    public Future<List<CompetitorMatchesEntryStatistics>> generateCompetitorMatchesStatistics(Competitor competitor) {
 //        Future<List<CompetitorMatch>> competitorMatchesStatistics = ;
 //        pollListener.setIncomingData(true);
-        
-        return service.generateCompetitorMatchesStatistics(competitor);
-    }
 
-    public Future<String> asyncTest() {
-        return service.asyncTest();
+        return service.generateCompetitorMatchesStatistics(competitor);
     }
 }

@@ -1,35 +1,43 @@
 .badge {
     background-color: red !important;
+    padding: 1px 4px !important;
 }
 
 .inbox-badge {
     position: absolute;
-    top: 0px;
-    left: 30px;
+    top: -10px;
+    left: 10px;
 }
 
 .inbox-group {
     position: relative;
+    padding: 0 !important;
 }
 
-.inbox-block {
+#logoutForm {
+    margin-left: 10px;
+}
+
+.inbox-block, .download-block {
     color: white !important;
     background-color: #333;
     position: fixed;
     display: none;
-    left: 248px;
     width: 250px;
     height: 300px;
     z-index: 9999;
     box-shadow: 0 0 15px 5px #333;
     overflow: auto;
+    margin-top: 2px;
+    cursor: default;
 }
 
 button.inbox-close {
-    display: block;
-    float: right;
+    display: inline-block;
     background: transparent;
     width: 1.5em;
+    position: absolute;
+    right: 0;
 }
 
 .inbox-header {
@@ -49,6 +57,7 @@ label.inbox-event-date {
 .inbox-event-content, .inbox-event-content-unread {
     border-bottom: 2px dashed #262626;
     clear: both;
+    font-size: 0.85em !important;
 }
 
 .inbox-event-content-unread {
@@ -65,5 +74,5 @@ label.inbox-event-date {
 
 .inbox-event-data, .inbox-event-data > label {
     cursor: pointer;
+    text-align: left;
 }
-

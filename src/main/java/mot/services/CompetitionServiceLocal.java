@@ -24,6 +24,7 @@ import javax.enterprise.event.Observes;
 import javax.enterprise.event.TransactionPhase;
 import mot.interfaces.CMG;
 import mot.interfaces.CompetitionPodiumData;
+import mot.interfaces.CompetitorMatchesEntryStatistics;
 import mot.interfaces.CurrentMatchType;
 import mot.interfaces.InactivateMatch;
 import mot.interfaces.ReportPlacementData;
@@ -118,10 +119,6 @@ public interface CompetitionServiceLocal {
 
     public List<? extends CompetitionPodiumData> generateCompetitionPodiumStatistics() throws ApplicationException;
 
-    public Future<List<CompetitorMatch>> generateCompetitorMatchesStatistics(Competitor competitor);
-
-    public boolean isCompetitorMatchesStatisticsFetched();
-
-    public Future<String> asyncTest();
+    public Future<List<CompetitorMatchesEntryStatistics>> generateCompetitorMatchesStatistics(Competitor competitor);
 
 }

@@ -32,7 +32,7 @@ import web.qualifiers.CompetitorsDualList;
  */
 @Named
 @RequestScoped
-public class CompetitorsAmountValidator implements Validator {
+public class CompetitorsCountValidator implements Validator {
 
     @Inject
     @ViewScoped

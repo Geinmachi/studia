@@ -5,6 +5,7 @@
  */
 package web.backingBeans.async;
 
+import java.util.Date;
 import java.util.concurrent.Future;
 
 /**
@@ -21,16 +22,14 @@ public class AsynchronousTaskImpl<V> implements AsynchronousTask {
     
     private final String resultPage;
     
+    private final Date date;
+    
     public AsynchronousTaskImpl(Future<V> futureTask, String message, String details, String resultPage) {
         this.futureTask = futureTask;
         this.message = message;
         this.details = details;
         this.resultPage = resultPage;
-    }
-
-    @Override
-    public boolean isDone() {
-        return futureTask == null ? true : futureTask.isDone();
+        this.date = new Date();
     }
 
     @Override
@@ -48,4 +47,13 @@ public class AsynchronousTaskImpl<V> implements AsynchronousTask {
         return resultPage;
     }
 
+    @Override
+    public Date date() {
+        return date;
+    }
+
+    @Override
+    public Future asyncTask() {
+        return futureTask;
+    }
 }

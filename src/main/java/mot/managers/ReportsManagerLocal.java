@@ -14,6 +14,7 @@ import javax.ejb.Local;
 import javax.ejb.Remote;
 import javax.enterprise.event.Observes;
 import mot.interfaces.CompetitionPodiumData;
+import mot.interfaces.CompetitorMatchesEntryStatistics;
 import mot.interfaces.ReportPlacementData;
 import mot.models.CompetitorMatchesStatisticsMarkerEvent;
 
@@ -30,7 +31,9 @@ public interface ReportsManagerLocal {
 
     public List<? extends CompetitionPodiumData> generateCompetitionPodiumStatistics() throws ApplicationException;
 
-    public Future<List<CompetitorMatch>> generateCompetitorMatchesStatistics(Competitor competitor);
+    public Future<List<CompetitorMatchesEntryStatistics>> generateCompetitorMatchesStatistics(Competitor competitor);
 
     public Future<String> asyncTest();
+    
+    String getNoCompetitorInMatchMark();
 }

@@ -10,6 +10,7 @@ import entities.Matchh;
 import exceptions.ApplicationException;
 import java.util.List;
 import java.util.concurrent.Future;
+import javax.ejb.Local;
 import javax.ejb.Remote;
 
 /**
@@ -32,7 +33,7 @@ public interface CompetitorMatchFacadeLocal {
     List<CompetitorMatch> findRange(int[] range);
 
     int count();
-    
+
     CompetitorMatch createWithReturn(CompetitorMatch entity);
 
     public List<CompetitorMatch> getCompetitionCMGMappingsByCompetitionId(Integer idCompetition);
@@ -44,10 +45,18 @@ public interface CompetitorMatchFacadeLocal {
     public List<CompetitorMatch> findByCompetitionId(Integer idCompetition);
 
     public List<CompetitorMatch> findByIdMatch(Integer idMatch);
-    
+
     public CompetitorMatch editWithReturn(CompetitorMatch entity) throws ApplicationException;
-    
+
     public Matchh editWithReturnAdvancing(Matchh storedMtch) throws ApplicationException;
 
     public List<CompetitorMatch> findCompetitorMatchStatistics(int idCompetitor);
+
+    /**
+     *
+     * {@inheritDoc}
+     */
+    public List<Object[]> findPartialCompetitorMatchStatistics(int idCompetitor, int limit, int offset);
+
+    public int findCompetitorMatchStatisticsCount(int idCompetitor);
 }

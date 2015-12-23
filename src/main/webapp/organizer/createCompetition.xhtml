@@ -109,7 +109,7 @@ and open the template in the editor.
                                     </p:column>
 
                                     <f:validator binding="#{duplicatedCompetitorsValidator}"/>
-                                    <!--<f:validator binding="#{competitorsAmountValidator}"/>-->
+                                    <!--<f:validator binding="#{competitorsCountValidator}"/>-->
                                 </p:pickList>
                             </p:column>
                         </p:row>
@@ -241,7 +241,7 @@ and open the template in the editor.
                                                 <p:selectOneMenu id="matchType" value="#{dashboardPanel.matchType}" disabled="#{!dashboardPanel.editable}"
                                                                  converter="matchTypeConverter">
                                                     <f:selectItems value="#{createCompetitionBackingBean.bracketCreator.matchTypeList}"
-                                                                   var="matchType" itemLabel="#{matchType.matchTypeName}"
+                                                                   var="matchType" itemLabel="#{msg['matchType.' += matchType.matchTypeName]}"
                                                                    />
                                                 </p:selectOneMenu>
                                             </b:column>

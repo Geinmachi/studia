@@ -15,7 +15,6 @@ import javax.faces.validator.ValidatorException;
 import javax.inject.Inject;
 import javax.inject.Named;
 import web.backingBeans.mot.competition.CreateCompetitionBackingBean;
-import web.controllers.CompetitionController;
 
 /**
  *

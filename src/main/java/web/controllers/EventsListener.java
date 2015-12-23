@@ -8,7 +8,9 @@ package web.controllers;
 import java.io.Serializable;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.SessionScoped;
 import javax.enterprise.event.Observes;
+import javax.enterprise.event.Reception;
 import javax.enterprise.event.TransactionPhase;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
@@ -22,8 +24,8 @@ import web.utils.JsfUtils;
 @RequestScoped
 public class EventsListener implements Serializable {
     
-//    @Inject
-//    private CompetitionController controller;
+    @Inject
+    private CompetitionController controller;
 
     /**
      * Creates a new instance of EventListener
@@ -41,5 +43,9 @@ public class EventsListener implements Serializable {
         System.out.println("Test");
 //        controller.test();
 //        System.out.println("MEssages " + FacesContext.getCurrentInstance().getMessageList().size());
+    }
+
+    public void processQualifiedPayload(@Observes(notifyObserver = Reception.ALWAYS) String event) {
+        System.out.println("JEst evnt ");
     }
 }

@@ -5,7 +5,7 @@
  */
 package mot.facades;
 
-import ejbCommon.TrackerInterceptor;
+import ejb.common.TrackerInterceptor;
 import exceptions.ApplicationException;
 import java.util.List;
 import javax.interceptor.Interceptors;

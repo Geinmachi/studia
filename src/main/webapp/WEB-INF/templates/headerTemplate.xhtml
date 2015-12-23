@@ -11,15 +11,24 @@
 
     <b:navBar id="navbar" brand="#{msg.mainPage}" brandHref="/index.xhtml"
               inverse="true" fixed="top">
-
-        <p:outputPanel id="inboxIconGroup" styleClass="navbar-left btn inbox-group" a:onclick="toggleInbox();">
-            <b:icon size="2x" name="inbox" />
-            <ui:fragment rendered="#{inboxBackingBean.unreadMessages() != 0}">
-                <span class="inbox-badge">
-                    <b:badge value="#{inboxBackingBean.unreadMessages()}" />
-                </span>
-            </ui:fragment>
-        </p:outputPanel>
+        <!--
+                <p:outputPanel id="inboxIconGroup" styleClass="navbar-left btn inbox-group" a:onclick="toggleInbox();">
+                    <b:icon size="1x" name="inbox" />
+                    <ui:fragment rendered="#{inboxBackingBean.unreadMessages() != 0}">
+                        <span class="inbox-badge">
+                            <b:badge value="#{inboxBackingBean.unreadMessages()}" />
+                        </span>
+                    </ui:fragment>
+                </p:outputPanel>
+        
+                <p:outputPanel id="downloadingIconGroup" styleClass="navbar-left btn inbox-group" a:onclick="toggleDownload();">
+                    <b:icon size="1x" name="download-alt" />
+                    <ui:fragment rendered="#{pollListener.taskList.size() != 0}">
+                        <span class="inbox-badge">
+                            <b:badge value="#{pollListener.taskList.size()}"  />
+                        </span>
+                    </ui:fragment>
+                </p:outputPanel>-->
 
         <b:navbarLinks>
             <b:navLink value="#{msg.competitionList}" href="/competitionList.xhtml"></b:navLink>
@@ -34,7 +43,7 @@
 
         <c:choose>
             <c:when test="#{empty request.remoteUser}">
-                <h:form styleClass="navbar-form navbar-right">
+                <h:form id="signUpForm" styleClass="navbar-form navbar-right">
 
                     <b:button   value="#{msg.signUp}" size="xs" outcome="/register.xhtml"
                                 look="primary" icon="pencil" iconAlign="right"/>
@@ -77,7 +86,7 @@
 
                 </b:navbarLinks>
 
-                <h:form styleClass="navbar-right ">
+                <h:form id="logoutForm" styleClass="navbar-right ">
                     <span class="navbar-text">
                         <a href="#" class="navbar-link"><b:icon name="user" /> #{request.remoteUser}</a>
                     </span>
@@ -88,44 +97,91 @@
 
             </c:otherwise>
         </c:choose>
+        <p:outputPanel id="downloadingIconGroup" styleClass="navbar-right navbar-text btn inbox-group">
+            <p:outputPanel a:onclick="toggleDownload();">
+                <b:icon size="1x" name="download-alt" />
+            </p:outputPanel>
+            <ui:fragment rendered="#{pollListener.taskList.size() != 0}">
+                <p:outputPanel a:onclick="toggleDownload();" class="inbox-badge">
+                    <b:badge value="#{pollListener.taskList.size()}"  />
+                </p:outputPanel>
+            </ui:fragment>
+            <h:form id="downloadBlock" styleClass="download-block">
+                <p:outputPanel styleClass="inbox-event" >
+                    <p:outputPanel styleClass="inbox-header">
+                        <p:outputLabel value="#{msg.downloading}"/>
+                        <p:button icon="ui-icon-closethick" styleClass="inbox-close" onclick="closeDownload();
+                                return false;"/>
+                    </p:outputPanel>
+                    <ui:repeat var="download" value="#{pollListener.taskList}">
+                        <p:outputPanel styleClass="inbox-event-content">
+                            <p:outputPanel styleClass="inbox-date-bar">
+                                <span style="display: inline-block">
+                                    <b:icon name="repeat" size="s" spin="true"/>
+                                </span>
+                                <p:outputLabel value="#{download.date()}" styleClass="inbox-event-date">
+                                    <f:convertDateTime pattern="HH:mm dd.MM.yyyy" />  
+                                </p:outputLabel>
+                            </p:outputPanel>
+                            <p:outputPanel styleClass="inbox-event-data">
+                                <p:outputLabel value="#{download.message()}" styleClass="inbox-title"/>
+                                <p:commandButton icon="ui-icon-close " styleClass="inbox-close" update="downloadBlock downloadingIconGroup pollGrowl" onclick="event.stopPropagation();"
+                                                 oncomplete="showDownload(); return false;" action="#{pollListener.cancelTask(download)}"/>
+                                <br/>
+                                <p:outputLabel value="#{download.details()}"/>
+                            </p:outputPanel>
+                        </p:outputPanel>
+                    </ui:repeat>
+                </p:outputPanel>
+            </h:form>
+        </p:outputPanel>
+        <p:outputPanel id="inboxIconGroup" styleClass="navbar-right navbar-text btn inbox-group">
+            <p:outputPanel a:onclick="toggleInbox();">
+                <b:icon size="1x" name="inbox" />
+            </p:outputPanel>
+            <ui:fragment rendered="#{inboxBackingBean.unreadMessages() != 0}">
+                <p:outputPanel class="inbox-badge" a:onclick="toggleInbox();">
+                    <b:badge value="#{inboxBackingBean.unreadMessages()}" />
+                </p:outputPanel>
+            </ui:fragment>
+            <h:form id="inboxForm" styleClass="inbox-block">
+                <p:outputPanel styleClass="inbox-event" >
+                    <p:outputPanel styleClass="inbox-header">
+                        <p:outputLabel value="#{msg.notifications}"/>
+                        <p:button icon="ui-icon-closethick" styleClass="inbox-close" onclick="closeInbox();
+                                return false;"/>
+                    </p:outputPanel>
+                    <ui:repeat var="inboxEvent" value="#{inboxBackingBean.inboxEventList}">
+                        <p:outputPanel styleClass="inbox-event-content#{inboxEvent.readStatus ? '' : '-unread'}">
+                            <p:outputPanel styleClass="inbox-date-bar">
+                                <ui:fragment rendered="#{!inboxEvent.readStatus}">
+                                    <span style="display: inline-block">
+                                        <b:icon name="envelope" size="s"/>
+                                    </span>
+                                </ui:fragment>
+                                <p:outputLabel value="#{inboxEvent.date}" styleClass="inbox-event-date">
+                                    <f:convertDateTime pattern="HH:mm dd.MM.yyyy" />  
+                                </p:outputLabel>
+                            </p:outputPanel>
+                            <p:outputPanel a:onclick="return followEvent(event, this); return false;" styleClass="inbox-event-data">
+                                <p:commandButton id="followEventAction" action="#{inboxBackingBean.markAsRead(inboxEvent)}" 
+                                                 onclick="event.stopPropagation();" style="display: none;"/>
+                                <p:outputLabel value="#{inboxEvent.title}" styleClass="inbox-title"/>
+                                <p:commandButton icon="ui-icon-close " styleClass="inbox-close" update="inboxForm inboxIconGroup" onclick="event.stopPropagation();"
+                                                 oncomplete="showInbox(); return false;" action="#{inboxBackingBean.removeInboxEvent(inboxEvent)}"/>
+                                <br/>
+                                <p:outputLabel value="#{inboxEvent.description}"/>
+                            </p:outputPanel>
+                        </p:outputPanel>
+                    </ui:repeat>
+                </p:outputPanel>
+            </h:form>
+        </p:outputPanel>
         <c:if test="#{request.isUserInRole(bsn['role.admin'])}">
             <b:navbarLinks>
                 <b:navLink value="#{msg.users}" href="/admin/usersList.xhtml"></b:navLink>
             </b:navbarLinks>
         </c:if>
     </b:navBar>
-
-    <h:form id="inboxForm" styleClass="inbox-block">
-        <p:outputPanel styleClass="inbox-event" >
-            <p:outputPanel styleClass="inbox-header">
-                <p:outputLabel value="#{msg.events}"/>
-                <p:button icon="ui-icon-closethick" styleClass="inbox-close" onclick="closeInbox();
-                        return false;"/>
-            </p:outputPanel>
-            <ui:repeat var="inboxEvent" value="#{inboxBackingBean.inboxEventList}">
-                <p:outputPanel styleClass="inbox-event-content#{inboxEvent.readStatus ? '' : '-unread'}">
-                    <p:outputPanel styleClass="inbox-date-bar">
-                        <ui:fragment rendered="#{!inboxEvent.readStatus}">
-                            <span style="display: inline-block">
-                                <b:icon name="envelope" size="s"/>
-                            </span>
-                        </ui:fragment>
-                        <p:outputLabel value="#{inboxEvent.date}" styleClass="inbox-event-date">
-                            <f:convertDateTime pattern="HH:mm dd.MM.yyyy" />  
-                        </p:outputLabel>
-                    </p:outputPanel>
-                    <p:outputPanel a:onclick="return followEvent(event, this); return false;" styleClass="inbox-event-data">
-                        <p:commandButton id="followEventAction" action="#{inboxBackingBean.markAsRead(inboxEvent)}" 
-                                         onclick="event.stopPropagation();" style="display: none;"/>
-                        <p:outputLabel value="#{inboxEvent.title}" styleClass="inbox-title"/>
-                        <p:commandButton icon="ui-icon-close " styleClass="inbox-close" update="inboxForm inboxIconGroup"
-                                         oncomplete="showInbox();" action="#{inboxBackingBean.removeInboxEvent(inboxEvent)}"/>
-                        <br/>
-                        <p:outputLabel value="#{inboxEvent.description}"/>
-                    </p:outputPanel>
-                </p:outputPanel>
-            </ui:repeat>
-        </p:outputPanel>
-    </h:form>
 </ui:composition>
 

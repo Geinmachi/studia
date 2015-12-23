@@ -66,6 +66,7 @@ public class CreateTeamBackingBean extends TeamBackingBean implements Serializab
         return duplicatedCompetitorFlag;
     }
 
+    @Override
     public void setDuplicatedCompetitorFlag(boolean duplicatedCompetitorFlag) {
         this.duplicatedCompetitorFlag = duplicatedCompetitorFlag;
     }

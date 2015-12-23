@@ -42,7 +42,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "CompetitorMatch.findAll", query = "SELECT c FROM CompetitorMatch c"),
     @NamedQuery(name = "CompetitorMatch.findByIdCompetitorMatch", query = "SELECT c FROM CompetitorMatch c WHERE c.idCompetitorMatch = :idCompetitorMatch"),
     @NamedQuery(name = "CompetitorMatch.findByCompetitorMatchScore", query = "SELECT c FROM CompetitorMatch c WHERE c.competitorMatchScore = :competitorMatchScore"),
-    @NamedQuery(name = "CompetitorMatch.findCompetitorMatchesStatistics", query = "SELECT c FROM CompetitorMatch c WHERE c.idMatch IN (SELECT cc.idMatch FROM CompetitorMatch cc WHERE cc.idCompetitor.idCompetitor = :idCompetitor)"),
+    @NamedQuery(name = "CompetitorMatch.findCompetitorMatchesStatistics", query = "SELECT c.competitorMatchScore, c.idCompetitor, c.idMatch.competition.competitionName, c.idMatch.idMatch FROM CompetitorMatch c WHERE c.idMatch IN (SELECT cc.idMatch FROM CompetitorMatch cc WHERE cc.idCompetitor.idCompetitor = :idCompetitor) AND c.idMatch.competition.global = TRUE ORDER BY c.idCompetitorMatch"),
+    @NamedQuery(name = "CompetitorMatch.findCompetitorMatchesStatisticsCount", query = "SELECT COUNT(c) FROM CompetitorMatch c WHERE c.idMatch IN (SELECT cc.idMatch FROM CompetitorMatch cc WHERE cc.idCompetitor.idCompetitor = :idCompetitor) AND c.idMatch.competition.global = TRUE"),
     @NamedQuery(name = "CompetitorMatch.findByVersion", query = "SELECT c FROM CompetitorMatch c WHERE c.version = :version")})
 public class CompetitorMatch implements Serializable, Comparable<CompetitorMatch> {
 

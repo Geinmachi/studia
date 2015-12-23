@@ -39,7 +39,7 @@ import org.primefaces.component.panel.Panel;
 import org.primefaces.component.selectonemenu.SelectOneMenu;
 import org.primefaces.context.RequestContext;
 import utils.BracketUtil;
-import ejbCommon.TrackerInterceptor;
+import ejb.common.TrackerInterceptor;
 import exceptions.CompetitionGeneralnfoException;
 import exceptions.MatchOptimisticLockException;
 import utils.ResourceBundleUtil;
