@@ -5,7 +5,6 @@
  */
 package web.validators;
 
-import entities.Competitor;
 import javax.enterprise.context.RequestScoped;
 import javax.enterprise.inject.Any;
 import javax.enterprise.inject.Produces;
@@ -22,8 +21,6 @@ import utils.ResourceBundleUtil;
 import web.backingBeans.mot.competition.CreateCompetitionBackingBean;
 import web.backingBeans.mot.team.CreateTeamBackingBean;
 import web.controllers.CompetitionController;
-import web.converters.interfaces.CompetitorConverterData;
-import web.qualifiers.CompetitorsDataSource;
 import web.qualifiers.CompetitorsDualList;
 
 /**

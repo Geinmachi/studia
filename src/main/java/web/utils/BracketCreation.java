@@ -8,9 +8,7 @@ package web.utils;
 import entities.Competition;
 import entities.Competitor;
 import entities.CompetitorMatch;
-import entities.GroupCompetitor;
 import entities.GroupDetails;
-import entities.GroupName;
 import entities.MatchMatchType;
 import entities.MatchType;
 import entities.Matchh;
@@ -18,30 +16,16 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.Dependent;
-import javax.inject.Named;
-import javax.enterprise.context.RequestScoped;
-import javax.enterprise.context.SessionScoped;
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIOutput;
-import javax.faces.component.UIPanel;
-import javax.faces.component.html.HtmlOutputText;
 import javax.faces.context.FacesContext;
-import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import mot.interfaces.CMG;
 import mot.interfaces.CurrentMatchType;
 import mot.interfaces.InactivateMatch;
-import org.primefaces.component.dashboard.Dashboard;
-import org.primefaces.component.datatable.DataTable;
-import org.primefaces.component.outputlabel.OutputLabel;
 import org.primefaces.component.panel.Panel;
 import org.primefaces.model.DashboardColumn;
 import org.primefaces.model.DashboardModel;
@@ -50,7 +34,6 @@ import org.primefaces.model.DefaultDashboardModel;
 import utils.BracketUtil;
 import web.controllers.CompetitionController;
 import web.models.DashboardPanel;
-import web.qualifiers.Logging;
 
 /**
  *
@@ -131,6 +114,10 @@ public class BracketCreation implements Serializable {
         Package p = FacesContext.class.getPackage();
         System.out.println("MOJARA " + p.getImplementationTitle() + " " + p.getImplementationVersion());
         matchTypeList = controller.getEndUserMatchTypes();
+        System.out.println("MatchTypelist pobrana   ");
+        for (MatchType m : matchTypeList) {
+            System.out.println("name: " + m.getMatchTypeName());
+        }
     }
 
     public void createEmptyBracket(List<Competitor> competitors) {
@@ -174,11 +161,10 @@ public class BracketCreation implements Serializable {
         assignCurrentMatchTypes();
     }
 
-    public void updateBracket() {
-        assignMatchTypes();
-        verifyEverything();
-    }
-
+//    public void updateBracket() {
+//        assignMatchTypes();
+//        verifyEverything();
+//    }
     public void verifyEverything() {
         System.out.println("DO persistowania:");
 
@@ -378,7 +364,7 @@ public class BracketCreation implements Serializable {
 //            dashboardPanel.setMargin(50);
             dashboardPanel.setPanel(panel);
             dashboardPanel.setMatch(firstRoundMatches.get(i));
-            
+
             for (MatchMatchType mmt : firstRoundMatches.get(i).getMatchMatchTypeList()) { // sets auto_advanced type
                 System.out.println("Ustawia auto_Advanced, mecz nr " + mmt.getIdMatch().getMatchNumber() + " na typ " + mmt.getIdMatchType().getMatchTypeName());
                 dashboardPanel.setMatchType(mmt.getIdMatchType());

@@ -7,43 +7,30 @@ package web.backingBeans.mot.competition;
 
 import web.utils.BracketCreation;
 import entities.Competition;
-import entities.Competitor;
 import entities.CompetitorMatch;
 import entities.GroupDetails;
 import entities.MatchMatchType;
+import entities.MatchType;
 import entities.Matchh;
 import exceptions.ApplicationException;
 import exceptions.InvalidScoreException;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 import javax.annotation.PostConstruct;
-import javax.enterprise.context.SessionScoped;
-import javax.faces.application.ViewHandler;
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIViewRoot;
-import javax.faces.context.FacesContext;
 import javax.faces.event.ValueChangeEvent;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
-import javax.interceptor.Interceptors;
-import mot.interfaces.CMG;
 import mot.interfaces.InactivateMatch;
-import org.primefaces.component.panel.Panel;
-import org.primefaces.component.selectonemenu.SelectOneMenu;
 import org.primefaces.context.RequestContext;
 import utils.BracketUtil;
-import ejb.common.TrackerInterceptor;
-import exceptions.CompetitionGeneralnfoException;
 import exceptions.MatchOptimisticLockException;
+import java.util.logging.Level;
 import utils.ResourceBundleUtil;
-import web.controllers.CompetitionController;
+import web.converters.interfaces.MatchTypeConverterAccessor;
 import web.models.DashboardPanel;
 import web.utils.CheckUtils;
 import web.utils.JsfUtils;
@@ -54,7 +41,8 @@ import web.utils.JsfUtils;
  */
 @Named(value = "manageCompetitionBackingBean")
 @ViewScoped
-public class ManageCompetitionBackingBean extends CompetitionBackingBean implements Serializable {
+public class ManageCompetitionBackingBean extends CompetitionBackingBean
+        implements Serializable, MatchTypeConverterAccessor {
 
     private static final long serialVersionUID = 7526472295622776147L;
 
@@ -92,7 +80,7 @@ public class ManageCompetitionBackingBean extends CompetitionBackingBean impleme
 //    }
     @PostConstruct
     private void init() {
-        System.out.println("INITTTTTTTTTTTTTTTTTTTTT");
+        logger.log(Level.INFO, "MMMMMMMMMM --, init manageCompetitinoBacking");
         competition = controller.getEditingCompetition();
 
         if (CheckUtils.isCompetitionNull(competition)) {
@@ -251,5 +239,10 @@ public class ManageCompetitionBackingBean extends CompetitionBackingBean impleme
             e.printStackTrace();
             JsfUtils.addErrorMessage("ERROR", null, "manageCompetitionForm");
         }
+    }
+
+    @Override
+    public List<MatchType> getMatchTypeList() {
+        return bracketCreator.getMatchTypeList();
     }
 }

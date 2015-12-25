@@ -3,13 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package mot.models;
+package web.converters.interfaces;
 
+import java.util.List;
 
 /**
  *
  * @author java
  */
-public class CompetitorMatchesStatisticsMarkerEvent {
-    // observer has to have parameter of some class, value returned in EJB asynchronous method
+public interface ConverterDataAccessor<T> {
+    
+    List<T> getFetchedData();
 }

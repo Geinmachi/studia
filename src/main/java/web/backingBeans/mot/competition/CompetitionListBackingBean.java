@@ -15,7 +15,6 @@ import javax.annotation.PostConstruct;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
-import web.controllers.CompetitionController;
 import web.utils.DisplayPageEnum;
 
 /**
@@ -26,6 +25,9 @@ import web.utils.DisplayPageEnum;
 @ViewScoped
 public class CompetitionListBackingBean extends CompetitionBackingBean implements Serializable{
 
+//    @Inject
+//    private TeamConverter1 converterTest;
+    
     private List<Competition> competitionList;
 
     public CompetitionListBackingBean() {
@@ -41,7 +43,8 @@ public class CompetitionListBackingBean extends CompetitionBackingBean implement
 
     @PostConstruct
     private void init() {
-
+//        converterTest.cehckTest();
+//        converterTest.checkFetchedData();
         try {
             competitionList = controller.findCompetitionsToDisplay();
         } catch (ApplicationException ex) {

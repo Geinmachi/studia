@@ -134,8 +134,8 @@ public class CompetitionController implements Serializable {
         return service.generateEmptyBracket(competitors);
     }
 
-    public List<MatchType> getEndUserMatchTypes() {
-        return service.getEndUserMatchTypes();
+    public List<MatchType> getUserSettableMatchTypes() {
+        return service.getUserSettableMatchTypes();
     }
 
     public List<Competition> getLoggedUserCompetitions() throws ApplicationException {
@@ -202,6 +202,9 @@ public class CompetitionController implements Serializable {
     }
 
     public Competitor validateCompetitorDuplicate(List<Competitor> competitorList) {
+        for (Object c : competitorList) {
+            System.out.println("web validate " + c + " " + c.getClass());
+        }
         return service.validateCompetitorDuplicate(competitorList);
     }
 
@@ -272,5 +275,9 @@ public class CompetitionController implements Serializable {
 //        pollListener.setIncomingData(true);
 
         return service.generateCompetitorMatchesStatistics(competitor);
+    }
+
+    public List<MatchType> getEndUserMatchTypes() {
+        return service.getEndUserMatchTypes();
     }
 }

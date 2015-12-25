@@ -9,7 +9,10 @@ import web.utils.BracketCreation;
 import entities.Competition;
 import entities.CompetitionType;
 import entities.Competitor;
+import entities.MatchMatchType;
+import entities.MatchType;
 import exceptions.ApplicationException;
+import exceptions.NotAllowedMatchTypeException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
@@ -22,10 +25,12 @@ import javax.faces.event.ValueChangeEvent;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
+import mot.interfaces.CMG;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.FlowEvent;
 import org.primefaces.model.DualListModel;
-import web.converters.interfaces.CompetitorConverterData;
+import web.converters.interfaces.ConverterDataAccessor;
+import web.converters.interfaces.MatchTypeConverterAccessor;
 import web.utils.JsfUtils;
 import web.utils.PageConstants;
 import web.validators.CompetitorsDualListSetter;
@@ -37,7 +42,9 @@ import web.validators.DuplicatedCompetitors;
  */
 @Named(value = "createCompetitionBackingBean")
 @ViewScoped
-public class CreateCompetitionBackingBean extends CompetitionBackingBean implements Serializable, CompetitorConverterData, CompetitorsDualListSetter, DuplicatedCompetitors {
+public class CreateCompetitionBackingBean extends CompetitionBackingBean
+        implements ConverterDataAccessor<Competitor>, Serializable, CompetitorsDualListSetter,
+        DuplicatedCompetitors, MatchTypeConverterAccessor {
 
     @Inject
     private BracketCreation bracketCreator;
@@ -65,7 +72,7 @@ public class CreateCompetitionBackingBean extends CompetitionBackingBean impleme
         return competition;
     }
 
-    @Override
+//    @Override
     public List<Competitor> getCompetitorList() {
         return competitorList;
     }
@@ -118,6 +125,7 @@ public class CreateCompetitionBackingBean extends CompetitionBackingBean impleme
 
     @PostConstruct
     private void init() {
+        logger.log(Level.INFO, "Test logera, init createCompetitionBackingBeana");
         System.out.println("CReateCompetitionBB#init() " + this);
         competitorList = controller.getAllCompetitors();
 
@@ -131,7 +139,7 @@ public class CreateCompetitionBackingBean extends CompetitionBackingBean impleme
         for (int i = 0; i < 9; i++) {
             comeptitorsTarget.add(competitorList.get(i));
         }
-        competition.setCompetitionName("yyjbn");
+        competition.setCompetitionName("aa123yy5545jbn");
         competition.setEndDate(new Date());
         competition.setStartDate(new Date());
     }
@@ -157,7 +165,7 @@ public class CreateCompetitionBackingBean extends CompetitionBackingBean impleme
 //            competition.setIdCompetitionType(selectedCompetitionType);
             competition.setIdCompetitionType(competitionTypes.get(0));
 
-            bracketCreator.updateBracket();
+            bracketCreator.assignMatchTypes();
             controller.createCompetition(competition, bracketCreator.getCompetitorMatchGroupList());
 
             return JsfUtils.successPageRedirect(PageConstants.ORGANIZER_CREATE_COMPETITION);
@@ -198,5 +206,15 @@ public class CreateCompetitionBackingBean extends CompetitionBackingBean impleme
 
     public void checkCompetitionConstraints() throws ApplicationException {
         controller.checkCompetitionConstraints(competition);
+    }
+
+    @Override
+    public List<Competitor> getFetchedData() {
+        return competitorList;
+    }
+
+    @Override
+    public List<MatchType> getMatchTypeList() {
+        return bracketCreator.getMatchTypeList();
     }
 }

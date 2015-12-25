@@ -38,9 +38,8 @@ public class MatchTypeFacade extends AbstractFacade<MatchType> implements MatchT
     }
 
     @Override
-    public List<MatchType> findEndUserMatchTypes() {
-        Query q = em.createNamedQuery("MatchType.findByEndUser");
-        q.setParameter("endUser", true);
+    public List<MatchType> findUserSettableMatchTypes() {
+        Query q = em.createNamedQuery("MatchType.findBySettable");
         return (List<MatchType>) q.getResultList();
     }
 
@@ -55,8 +54,16 @@ public class MatchTypeFacade extends AbstractFacade<MatchType> implements MatchT
     @Override
     public MatchType findAutoAdvanceType() {
         Query q = em.createNamedQuery("MatchType.findByMatchTypeName");
-        
         q.setParameter("matchTypeName", AUTO_ADVANCE_TYPE);
+        
         return (MatchType)q.getSingleResult();
+    }
+
+    @Override
+    public List<MatchType> findEndUserMatchTypes() {
+        Query q = em.createNamedQuery("MatchType.findByEndUser");
+        q.setParameter("endUser", true);
+        
+        return (List<MatchType>)q.getResultList();
     }
 }

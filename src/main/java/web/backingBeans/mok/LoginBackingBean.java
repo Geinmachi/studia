@@ -65,6 +65,7 @@ public class LoginBackingBean {
         HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
         try {
             request.logout();
+            request.getSession().invalidate();
             System.out.println("Wylogowano");
 
             return PageConstants.getPage(PageConstants.ROOT_INDEX, true);

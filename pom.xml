@@ -4,7 +4,7 @@
 
     <groupId>studia</groupId>
     <artifactId>sem7</artifactId>
-    <version>0.12.0</version>
+    <version>0.13.0</version>
     <packaging>war</packaging>
 
     <name>sem7</name>
@@ -99,11 +99,6 @@
         </plugins>
     </build>
     <repositories>
-        <repository>
-            <id>unknown-jars-temp-repo</id>
-            <name>A temporary repository created by NetBeans for libraries and jars it could not identify. Please replace the dependencies in this repository with correct ones and delete this repository.</name>
-            <url>file:${project.basedir}/lib</url>
-        </repository>
         <repository>
             <url>http://repository.primefaces.org/</url>
             <id>PrimeFaces-maven-lib</id>

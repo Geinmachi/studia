@@ -44,11 +44,12 @@ public class EditTeamBackingBean extends TeamBackingBean implements Serializable
         return competitors;
     }
 
+    @Override
     public void setCompetitors(DualListModel competitors) {
         this.competitors = competitors;
     }
 
-    @Override
+//    @Override
     public List<Competitor> getCompetitorList() {
         return competitorList;
     }
@@ -109,5 +110,10 @@ public class EditTeamBackingBean extends TeamBackingBean implements Serializable
     @Override
     public void setDuplicatedCompetitorFlag(boolean duplicatedCompetitorFlag) {
         this.duplicatedCompetitorFlag = duplicatedCompetitorFlag;
+    }
+
+    @Override
+    public List<Competitor> getFetchedData() {
+        return this.competitorList;
     }
 }

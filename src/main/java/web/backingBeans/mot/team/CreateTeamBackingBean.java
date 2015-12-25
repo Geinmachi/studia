@@ -15,15 +15,9 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
-import javax.inject.Inject;
-import org.primefaces.event.TransferEvent;
 import org.primefaces.model.DualListModel;
-import web.controllers.CompetitionController;
-import web.converters.interfaces.CompetitorConverterData;
 import web.utils.JsfUtils;
 import web.utils.PageConstants;
 import web.validators.CompetitorsDualListSetter;
@@ -38,9 +32,9 @@ import web.validators.DuplicatedCompetitors;
 public class CreateTeamBackingBean extends TeamBackingBean implements Serializable, CompetitorsDualListSetter, DuplicatedCompetitors {
 
     private final Team team = new Team();
-    
+
     private boolean isGlobal;
-    
+
     public Team getTeam() {
         return team;
     }
@@ -93,7 +87,6 @@ public class CreateTeamBackingBean extends TeamBackingBean implements Serializab
 
     }
 
-    @Override
     public List<Competitor> getCompetitorList() {
         return this.competitorList;
     }
@@ -104,7 +97,7 @@ public class CreateTeamBackingBean extends TeamBackingBean implements Serializab
         try {
             System.out.println("Competitors size BB " + team.getCompetitorList().size());
             controller.createTeam(team, isGlobal);
-            
+
             return JsfUtils.successPageRedirect(PageConstants.ORGANIZER_CREATE_TEAM);
         } catch (TeamCreationException e) {
             System.out.println("TEAMCREATIONEXCEPTION " + e.getLocalizedMessage());
@@ -120,5 +113,10 @@ public class CreateTeamBackingBean extends TeamBackingBean implements Serializab
     @Override
     public void checkDuplicate() {
         super.checkDuplicate();
-    };
+    }
+
+    @Override
+    public List<Competitor> getFetchedData() {
+        return this.competitorList;
+    }
 }

@@ -8,6 +8,7 @@ package mot.managers;
 import entities.Competition;
 import entities.Competitor;
 import entities.CompetitorMatch;
+import entities.MatchType;
 import exceptions.ApplicationException;
 import java.util.List;
 import javax.ejb.Local; import javax.ejb.Remote;
@@ -28,4 +29,8 @@ public interface CreateCompetitionManagerLocal {
     public List<CMG> generateEmptyBracket(List<Competitor> competitors);
 
     public void checkCompetitionConstraints(Competition competition) throws ApplicationException;
+
+    public List<MatchType> getUserSettableMatchTypes();
+
+    public List<MatchType> getEndUserMatchTypes();
 }

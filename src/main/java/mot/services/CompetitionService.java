@@ -50,7 +50,7 @@ import mot.managers.ReportsManagerLocal;
  *
  * @author java
  */
-@Stateful(name = "serwis")
+@Stateful
 @Interceptors({TrackerInterceptor.class})
 @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 public class CompetitionService extends AbstractService implements CompetitionServiceLocal, SessionSynchronization {
@@ -146,8 +146,13 @@ public class CompetitionService extends AbstractService implements CompetitionSe
     }
 
     @Override
+    public List<MatchType> getUserSettableMatchTypes() {
+        return createCompetitionManager.getUserSettableMatchTypes();
+    }
+
+    @Override
     public List<MatchType> getEndUserMatchTypes() {
-        return matchTypeFacade.findEndUserMatchTypes();
+        return createCompetitionManager.getEndUserMatchTypes();
     }
 
     @Override

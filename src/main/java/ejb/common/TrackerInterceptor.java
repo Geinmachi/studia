@@ -50,8 +50,7 @@ public class TrackerInterceptor {
             message.append(e.toString());
             message.append(getExceptionFields(e));
             message.append(" || EXECUTION TIME: ");
-            message.append(end - start);
-            message.append("ms");
+            message.append(getExecutionTime(end, start));
             logger.log(logLevel, message.toString());
             throw e;
         }
@@ -59,8 +58,7 @@ public class TrackerInterceptor {
         message.append(" || RESULT: ");
         message.append(getResultValue(result));
         message.append(" || EXECUTION TIME: ");
-        message.append(end - start);
-        message.append("ms");
+        message.append(getExecutionTime(end, start));
 
         logger.log(logLevel, message.toString());
 
@@ -123,6 +121,19 @@ public class TrackerInterceptor {
                 }
             }
         }
+
+        return msg.toString();
+    }
+
+    private String getExecutionTime(long end, long start) {
+        StringBuilder msg = new StringBuilder();
+
+        long execTime = end - start;
+        if (execTime > 1000) {
+            msg.append(" (long)");
+        }
+        msg.append(execTime);
+        msg.append("ms");
 
         return msg.toString();
     }

@@ -51,13 +51,14 @@ import utils.ConvertUtil;
 import mot.interfaces.CMG;
 import mot.models.CompetitorMatchGroup;
 import exceptions.ApplicationException;
+import exceptions.NotAllowedMatchTypeException;
 
 /**
  *
  * @author java
  */
 @Stateless
-//@TransactionAttribute(TransactionAttributeType.MANDATORY)
+@TransactionAttribute(TransactionAttributeType.MANDATORY)
 public class CreateCompetitionManager implements CreateCompetitionManagerLocal {
 
     @Resource
@@ -159,29 +160,17 @@ public class CreateCompetitionManager implements CreateCompetitionManagerLocal {
                     }
 
                     score.setScore(scoreScore);
-
                     scoreFacade.create(score);
                 }
             }
-
         }
-        //        for (GroupName g : groupList) {
-        //            GroupName managedGroup = groupNameFacade.createWithReturn(g);
-        //            groupDetailsWithIdentityList.add(managedGroup);
-        //
-        ////            GroupCompetition groupCompetition = new GroupCompetition();
-        ////            groupCompetition.setIdCompetition(competition);
-        ////            groupCompetition.setIdGroup(managedGroup);
-        ////
-        ////            competition.getGroupCompetitionList().add(groupCompetition);
-        //        }
 
-        List<Matchh> matchWithIdentityList = new ArrayList<>();
-
-        //      assignSameGroupsToCompetitors(competitorMatchList, groupDetailsWithIdentityList);
         long start = System.currentTimeMillis();
         System.out.println("---------------matchWithIdentity--------111111111");
         for (Matchh m : matchList) {
+            if (!validateMatchTypes(m)) {
+                throw NotAllowedMatchTypeException.notAllowedSettable(m);
+            }
 //            m.setCompetition(competition);
             for (CompetitorMatch cmg : m.getCompetitorMatchList()) {
                 if (cmg.getIdMatch().getRoundd() == 1 && cmg.getIdCompetitor() != null) {
@@ -199,41 +188,29 @@ public class CreateCompetitionManager implements CreateCompetitionManagerLocal {
             matchFacade.create(m);
 //            System.out.println("MMAMAMAMAMAMAM " + m + "  number " + m.getMatchNumber());
         }
-        System.out.println("---------------matchWithIdentity-------2222222 czas: " + (System.currentTimeMillis() - start));
-
-        System.out.println();
-
-//        for (Matchh m : matchWithIdentityList) {
-//            System.out.println("Runda " + m.getRoundd() + " MAtch nr " + m.getMatchNumber());
-//            m.getCompetitorMatchList().forEach(p -> System.out.println("CompetitorMatch: " + p.getIdCompetitor()));
-//
-//            if (m.getRoundd() == 1) {
-//                CompetitorMatch competitorMatch = checkMatchNullCompetitor(m);
-//                if (competitorMatch != null) {
-//                    System.out.println("Advancing " + competitorMatch.getIdCompetitor().getIdPersonalInfo());
-//                    manageCompetitionManager.advanceCompetitor(competitorMatch, true);
-//                }
-//            }
-//        }
         System.out.println("competitorMatchGroupList sizeeee " + competitorMatchGroupList.size());
-//        assignSameMatchesToCompetitors(competitorMatchList, matchWithIdentityList);
-//
-//        for (CompetitorMatch cmg : competitorMatchList) {
-//            if (cmg.getIdMatch() != null) {
-////                System.out.println("MAAAAAAAAAAAAAAAATCHHHHHHH " + cmg.getIdMatch());
-////                System.out.println("MAtch UUID " + cmg.getIdMatch().getUuid() + " number " + cmg.getIdMatch().getMatchNumber());
-//                if (cmg.getIdMatch().getRoundd() == 1) {
-//                    cmg.setCompetitorMatchScore((short) 0);
-//                }
-//                cmgFacade.create(cmg);
-//            } else {
-////                System.out.println("MATTTTTTTTTTTTTTTTTTTTTCH NULLLLLLLLLLLLL");
-//            }
-//        }
-//
-//        competitionFacade.create(competition);
         System.out.println("PRZESZLO SZYSTKO");
 //        throw new NullPointerException();
+    }
+
+    private boolean validateMatchTypes(Matchh match) {
+        for (MatchMatchType mmt : match.getMatchMatchTypeList()) {
+            MatchType fetchedMatchType = matchTypeFacade.find(mmt.getIdMatchType().getIdMatchType());
+            if (!fetchedMatchType.isSettable() && !fetchedMatchType.isEndUser()) { // if isn't settable and isn't exposed for end user then allow (for exmple final)
+                continue;
+            }
+
+            if (!fetchedMatchType.isSettable()) { // if user can't set this type 
+                if (match.getRoundd() == (short) 1 && checkMatchNullCompetitor(match) != null) { // if this is a match in first round and auto-advance case
+                    MatchType autoAdvanceType = matchTypeFacade.findAutoAdvanceType();
+                    if (autoAdvanceType.equals(fetchedMatchType)) { // if type is auto_advance then allow setting
+                        continue;
+                    }
+                }
+                return false;
+            }
+        }
+        return true;
     }
 
     private List<GroupDetails> getUniqueGroupDetails(List<CMG> competitorMatchGroupList) {
@@ -322,7 +299,7 @@ public class CreateCompetitionManager implements CreateCompetitionManagerLocal {
 //    private GroupCompetition createBracket(List<Competitor> competitors) {
 //        
 //    }
-    
+
     private List<GroupName> createGroups(int competitorsAmount) {
         long start = System.currentTimeMillis();
         System.out.println("-----------createGroups------------11111");
@@ -443,7 +420,7 @@ public class CreateCompetitionManager implements CreateCompetitionManagerLocal {
         System.out.println("HashSetowe matches " + firstRoundMatches.size());
 
         for (Matchh match : firstRoundMatches) {
-            CompetitorMatch cmToAdvance = null;
+            CompetitorMatch cmToAdvance;
             if ((cmToAdvance = checkMatchNullCompetitor(match)) != null) {
                 System.out.println("UP matchNo " + match.getMatchNumber() + " runda " + match.getRoundd());
 //                System.out.println("Wynik z up " + cm.getCompetitorMatchScore());
@@ -464,6 +441,12 @@ public class CreateCompetitionManager implements CreateCompetitionManagerLocal {
         return cmgMappings;
     }
 
+    /**
+     * @param match Match to check
+     *
+     * @return CompetitorMatch if match consists of only 1 competitor, null
+     * otherwise
+     */
     private CompetitorMatch checkMatchNullCompetitor(Matchh match) {
         CompetitorMatch competitorMatch = null;
         boolean hasNull = false;
@@ -494,13 +477,13 @@ public class CreateCompetitionManager implements CreateCompetitionManagerLocal {
                 advancedCm.setIdCompetitor(cm.getIdCompetitor());
                 advancedCm.setCompetitorMatchScore((short) 0);
                 advancedCm.setPlacer(calculatePlacer(advancedMatchCounter));
-                
+
                 MatchType autoAdvanceType = matchTypeFacade.findAutoAdvanceType();
-                
+
                 MatchMatchType mmt = new MatchMatchType();
                 mmt.setIdMatch(cm.getIdMatch());
                 mmt.setIdMatchType(autoAdvanceType);
-                
+
                 cm.getIdMatch().getMatchMatchTypeList().add(mmt);
 //                System.out.println("Po ddoaniu ");
 //                for (MatchMatchType ma : cm.getIdMatch().getMatchMatchTypeList()) {
@@ -663,7 +646,7 @@ public class CreateCompetitionManager implements CreateCompetitionManagerLocal {
 
     private void generateOtherRounds(List<CompetitorMatch> competitorMatchGroupList, int competitorsAmount) {
         int numberOfRounds = BracketUtil.numberOfRounds(competitorsAmount);
-        int matchesInRound = 0;
+        int matchesInRound;
         short matchCounter = (short) (competitorMatchGroupList.size() / 2);
         System.out.println("numberOfRounds " + numberOfRounds + " matchCounter " + matchCounter);
         for (int i = 0; i < numberOfRounds - 1; i++) {
@@ -704,7 +687,7 @@ public class CreateCompetitionManager implements CreateCompetitionManagerLocal {
     @Override
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public void checkCompetitionConstraints(Competition competition) throws ApplicationException {
-        
+
         if (competition.getIdOrganizer() == null) {
             Account loggedUser = accountFacade.findByLogin(sessionContext.getCallerPrincipal().getName());
             AccessLevel organizer = ConvertUtil.getSpecAccessLevelFromAccount(loggedUser, Organizer.class);
@@ -712,5 +695,15 @@ public class CreateCompetitionManager implements CreateCompetitionManagerLocal {
             competition.setIdOrganizer(organizer);
         }
         competitionFacade.competitionContraintsNotCommited(competition);
+    }
+
+    @Override
+    public List<MatchType> getUserSettableMatchTypes() {
+        return matchTypeFacade.findUserSettableMatchTypes();
+    }
+
+    @Override
+    public List<MatchType> getEndUserMatchTypes() {
+        return matchTypeFacade.findEndUserMatchTypes();
     }
 }

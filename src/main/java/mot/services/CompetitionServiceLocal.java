@@ -18,17 +18,13 @@ import exceptions.ApplicationException;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Future;
-import javax.ejb.Local;
 import javax.ejb.Remote;
-import javax.enterprise.event.Observes;
-import javax.enterprise.event.TransactionPhase;
 import mot.interfaces.CMG;
 import mot.interfaces.CompetitionPodiumData;
 import mot.interfaces.CompetitorMatchesEntryStatistics;
 import mot.interfaces.CurrentMatchType;
 import mot.interfaces.InactivateMatch;
 import mot.interfaces.ReportPlacementData;
-import mot.models.CompetitorMatchesStatisticsMarkerEvent;
 
 /**
  *
@@ -55,7 +51,7 @@ public interface CompetitionServiceLocal {
 
     public List<CMG> generateEmptyBracket(List<Competitor> competitors);
 
-    public List<MatchType> getEndUserMatchTypes();
+    public List<MatchType> getUserSettableMatchTypes();
 
     public List<Competition> getLoggedUserCompetitions() throws ApplicationException;
 
@@ -120,5 +116,7 @@ public interface CompetitionServiceLocal {
     public List<? extends CompetitionPodiumData> generateCompetitionPodiumStatistics() throws ApplicationException;
 
     public Future<List<CompetitorMatchesEntryStatistics>> generateCompetitorMatchesStatistics(Competitor competitor);
+
+    public List<MatchType> getEndUserMatchTypes();
 
 }

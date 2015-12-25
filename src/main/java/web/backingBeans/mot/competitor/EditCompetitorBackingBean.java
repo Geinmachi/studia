@@ -14,11 +14,8 @@ import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
-import javax.faces.context.FacesContext;
-import javax.inject.Inject;
 import web.backingBeans.mot.competition.CompetitionBackingBean;
-import web.controllers.CompetitionController;
-import web.converters.interfaces.TeamConverterData;
+import web.converters.interfaces.ConverterDataAccessor;
 import web.utils.JsfUtils;
 import web.utils.PageConstants;
 
@@ -28,7 +25,7 @@ import web.utils.PageConstants;
  */
 @Named(value = "editCompetitorBackingBean")
 @RequestScoped
-public class EditCompetitorBackingBean extends CompetitionBackingBean implements TeamConverterData {
+public class EditCompetitorBackingBean extends CompetitionBackingBean implements ConverterDataAccessor<Team> {
 
     private Competitor competitor;
 
@@ -38,7 +35,6 @@ public class EditCompetitorBackingBean extends CompetitionBackingBean implements
         return competitor;
     }
 
-    @Override
     public List<Team> getTeamList() {
         return teamList;
     }
@@ -81,5 +77,10 @@ public class EditCompetitorBackingBean extends CompetitionBackingBean implements
         }
 
         return null;
+    }
+
+    @Override
+    public List<Team> getFetchedData() {
+        return teamList;
     }
 }

@@ -32,9 +32,11 @@ public interface MatchTypeFacadeLocal {
 
     int count();
     
-    List<MatchType> findEndUserMatchTypes();
+    List<MatchType> findUserSettableMatchTypes();
     
     MatchType findByMatchTypeName(String name);
 
     public MatchType findAutoAdvanceType();
+
+    public List<MatchType> findEndUserMatchTypes();
 }

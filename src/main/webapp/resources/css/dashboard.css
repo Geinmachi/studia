@@ -18,6 +18,14 @@
 .ui-dashboard-column > * {
     position: relative;
 }
+/*
+.ui-selectonemenu-panel.hideDisabled .ui-selectonemenu-item.ui-state-disabled {
+    display: none;
+}*/
+
+.ui-selectonemenu-list-item.ui-state-disabled {
+    display: none;
+}
 
 /*matches*/
 [id*="CompetitionForm:first0"].ui-panel {

@@ -5,14 +5,14 @@
  */
 package web.converters.interfaces;
 
-import entities.Competitor;
+import entities.MatchType;
 import java.util.List;
 
 /**
  *
  * @author java
  */
-public interface CompetitorConverterData {
+public interface MatchTypeConverterAccessor {
     
-    List<Competitor> getCompetitorList();
+    List<MatchType> getMatchTypeList();
 }

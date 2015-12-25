@@ -36,7 +36,7 @@
                     <p:column colspan="3">
                         <p:pickList id="competitorPickList" value="#{cc.attrs.competitorDualList}" var="competitor" styleClass="pickList"
                                     itemLabel="#{not empty competitor.idCreator ? '*' : ''}#{competitor.idPersonalInfo.firstName} #{competitor.idPersonalInfo.lastName} " 
-                                    itemValue="#{competitor}" showCheckbox="true" converter="#{competitorConverter}"
+                                    itemValue="#{competitor}" showCheckbox="true" converter="#{genericConverter}"
                                     showSourceFilter="true" showTargetFilter="true" filterMatchMode="contains">
 
                             <f:facet name="sourceCaption">#{msg.competitors}</f:facet>

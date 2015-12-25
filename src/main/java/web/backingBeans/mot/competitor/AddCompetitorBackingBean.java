@@ -9,16 +9,15 @@ import entities.Competitor;
 import entities.PersonalInfo;
 import entities.Team;
 import exceptions.ApplicationException;
+import java.io.Serializable;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
-import javax.inject.Inject;
 import web.backingBeans.mot.competition.CompetitionBackingBean;
-import web.controllers.CompetitionController;
-import web.converters.interfaces.TeamConverterData;
+import web.converters.interfaces.ConverterDataAccessor;
 import web.utils.JsfUtils;
 import web.utils.PageConstants;
 
@@ -28,7 +27,7 @@ import web.utils.PageConstants;
  */
 @Named(value = "addCompetitorBackingBean")
 @RequestScoped
-public class AddCompetitorBackingBean extends CompetitionBackingBean implements TeamConverterData {
+public class AddCompetitorBackingBean extends CompetitionBackingBean implements ConverterDataAccessor<Team>, Serializable {
 
     private final Competitor competitor = new Competitor();
 
@@ -59,7 +58,6 @@ public class AddCompetitorBackingBean extends CompetitionBackingBean implements 
         this.isGlobal = isGlobal;
     }
 
-    @Override
     public List<Team> getTeamList() {
         return teamList;
     }
@@ -74,6 +72,7 @@ public class AddCompetitorBackingBean extends CompetitionBackingBean implements 
 
     @PostConstruct
     private void init() {
+        System.out.println("INIT AddCompetitorBB " + this.hashCode());
         competitor.setIdPersonalInfo(personalInfo);
         try {
             //        personalInfo.setCompetitor(competitor);
@@ -82,13 +81,16 @@ public class AddCompetitorBackingBean extends CompetitionBackingBean implements 
             ex.printStackTrace();
             Logger.getLogger(AddCompetitorBackingBean.class.getName()).log(Level.SEVERE, null, ex);
         }
+        if (teamList != null) {
+            System.out.println("ADddbacking bean team list size " + teamList.size() + " i hashcode " + teamList.hashCode());
+        }
     }
 
     public String addCompetitor() {
         try {
             competitor.setIdTeam(selectedTeam);
             controller.addCompetitor(competitor, isGlobal);
-            
+
             return JsfUtils.successPageRedirect(PageConstants.ORGANIZER_ADD_COMPETITOR);
         } catch (ApplicationException e) {
             JsfUtils.addErrorMessage(e, null);
@@ -100,4 +102,10 @@ public class AddCompetitorBackingBean extends CompetitionBackingBean implements 
 
         return null;
     }
+
+    @Override
+    public List<Team> getFetchedData() {
+        return teamList;
+    }
+
 }

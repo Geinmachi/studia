@@ -41,7 +41,6 @@ import mot.interfaces.ReportPlacementData;
 import mot.models.CompetitionPodium;
 import mot.models.CompetitorMatchesEntryStatisticsImpl;
 import mot.models.CompetitorMatchesStatisticsImpl;
-import mot.models.CompetitorMatchesStatisticsMarkerEvent;
 import mot.models.ReportPlacements;
 
 /**
@@ -55,10 +54,7 @@ public class ReportsManager implements ReportsManagerLocal {
     private static final Logger logger = Logger.getLogger(ReportsManager.class.getName());
 
     @Resource
-    SessionContext sessionContext;
-
-    @Inject
-    private Event<CompetitorMatchesStatisticsMarkerEvent> competitorMatchesEvent;
+    private SessionContext sessionContext;
 
     @EJB
     private CompetitorFacadeLocal competitorFacade;
@@ -318,38 +314,5 @@ public class ReportsManager implements ReportsManagerLocal {
             }
 
         };
-    }
-//    public void creditPayment(@Observes CompetitorMatchesStatisticsMarkerEvent event) {
-//        System.out.println("Przyszedl event w EJB" + event.toString());
-//    }
-//    @Timeout
-//    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
-//    public void timeout(Timer timer) {
-//        System.out.println("Timer wykonany");
-//        if (competitorMatchStatistics != null) {
-//            System.out.println("jeszce nie skonczylo pobierac");
-//        } else {
-//            System.out.println("pobieranie zakonczone, wylacza timer");
-//            timer.cancel();
-//
-//        }
-//    }
-
-    @Override
-    @Asynchronous
-    public Future<String> asyncTest() {
-
-        String result = "test";
-        for (int i = 0; i < 20; i++) {
-            result += i;
-            System.out.println("asyncTest ---- " + i);
-            try {
-                Thread.sleep(500);
-            } catch (InterruptedException ex) {
-                Logger.getLogger(ReportsManager.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-
-        return new AsyncResult<>(result);
     }
 }

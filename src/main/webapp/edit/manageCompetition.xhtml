@@ -180,8 +180,8 @@ and open the template in the editor.
                                     </b:column>
                                     <b:column span="10">
                                         <p:selectOneMenu id="matchType" value="#{dashboardPanel.matchType}" styleClass="matchTypeSelect"
-                                                         converter="matchTypeConverter" disabled="#{!dashboardPanel.editable}">
-                                            <f:selectItems value="#{manageCompetitionBackingBean.bracketCreator.matchTypeList}"
+                                                         converter="#{matchTypeConverter}" disabled="#{!dashboardPanel.editable}">
+                                            <f:selectItems value="#{manageCompetitionBackingBean.bracketCreator.matchTypeList}" itemDisabled="#{!matchType.settable}"
                                                            var="matchType" itemLabel="#{msg['matchType.' += matchType.matchTypeName]}"
                                                            />
                                             <p:ajax process="@this" partialSubmit="true" update="@(.matchPanel)" listener="#{manageCompetitionBackingBean.updateMatchType(dashboardPanel)}"/>

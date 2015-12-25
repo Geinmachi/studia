@@ -37,24 +37,6 @@ and open the template in the editor.
                                 <p:message showSummary="true" showDetail="false" id="competitionNameMsg" for="competitionName"/>
                             </p:column>
                         </p:row>
-                        <!--                        <p:row>
-                                                    <p:column>
-                                                        <p:outputLabel for="competitionType" value="#{msg.competitionType}"/>
-                                                    </p:column>
-                                                    <p:column>
-                                                        <p:selectOneMenu id="competitionType"
-                                                                         value="#{createCompetitionBackingBean.selectedCompetitionType}"
-                                                                         converter="competitionTypeConverter">
-                                                            <f:selectItems value="#{createCompetitionBackingBean.competitionTypes}" 
-                                                                           var="competitionType" 
-                                                                           itemLabel="#{competitionType.competitionTypeName}"
-                                                                           noSelectionValue="#{null}"/>
-                                                        </p:selectOneMenu>
-                                                    </p:column>
-                                                    <p:column>
-                                                        <p:message for="competitionType"/>
-                                                    </p:column>
-                                                </p:row>-->
                         <p:row>
                             <p:column>
                                 <p:outputLabel for="startDate" value="#{msg.startDate}"/>
@@ -91,7 +73,7 @@ and open the template in the editor.
                             <p:column colspan="3">
                                 <p:pickList id="competitorPickList" value="#{createCompetitionBackingBean.competitors}" var="competitor" styleClass="pickList"
                                             itemLabel="#{not empty competitor.idCreator ? '*' : ''}#{competitor.idPersonalInfo.firstName} #{competitor.idPersonalInfo.lastName} " 
-                                            itemValue="#{competitor}" showCheckbox="true" converter="#{competitorConverter}"
+                                            itemValue="#{competitor}" showCheckbox="true" converter="#{genericConverter}"
                                             showSourceFilter="true" showTargetFilter="true" filterMatchMode="contains">
 
                                     <f:facet name="sourceCaption">#{msg.competitors}</f:facet>
@@ -239,8 +221,8 @@ and open the template in the editor.
                                             </b:column>
                                             <b:column span="10">
                                                 <p:selectOneMenu id="matchType" value="#{dashboardPanel.matchType}" disabled="#{!dashboardPanel.editable}"
-                                                                 converter="matchTypeConverter">
-                                                    <f:selectItems value="#{createCompetitionBackingBean.bracketCreator.matchTypeList}"
+                                                                 converter="#{matchTypeConverter}">
+                                                    <f:selectItems value="#{createCompetitionBackingBean.bracketCreator.matchTypeList}" itemDisabled="#{!matchType.settable}"
                                                                    var="matchType" itemLabel="#{msg['matchType.' += matchType.matchTypeName]}"
                                                                    />
                                                 </p:selectOneMenu>

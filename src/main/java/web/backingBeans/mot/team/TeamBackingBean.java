@@ -6,19 +6,17 @@
 package web.backingBeans.mot.team;
 
 import entities.Competitor;
-import entities.Team;
 import java.util.List;
 import org.primefaces.model.DualListModel;
 import web.backingBeans.mot.competition.CompetitionBackingBean;
-import web.converters.interfaces.CompetitorConverterData;
-import web.converters.interfaces.TeamConverterData;
+import web.converters.interfaces.ConverterDataAccessor;
 import web.utils.JsfUtils;
 
 /**
  *
  * @author java
  */
-public abstract class TeamBackingBean extends CompetitionBackingBean implements CompetitorConverterData {
+public abstract class TeamBackingBean extends CompetitionBackingBean implements ConverterDataAccessor<Competitor> {
     
     protected boolean duplicatedCompetitorFlag;
 
@@ -42,6 +40,6 @@ public abstract class TeamBackingBean extends CompetitionBackingBean implements 
     }
 
     @Override
-    public abstract List<Competitor> getCompetitorList();
+    public abstract List<Competitor> getFetchedData();
 
 }

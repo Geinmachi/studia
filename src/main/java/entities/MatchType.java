@@ -35,6 +35,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "MatchType.findAll", query = "SELECT m FROM MatchType m"),
     @NamedQuery(name = "MatchType.findByIdMatchType", query = "SELECT m FROM MatchType m WHERE m.idMatchType = :idMatchType"),
     @NamedQuery(name = "MatchType.findByEndUser", query = "SELECT m FROM MatchType m WHERE m.endUser = :endUser"),
+    @NamedQuery(name = "MatchType.findBySettable", query = "SELECT m FROM MatchType m WHERE m.settable = TRUE"),
     @NamedQuery(name = "MatchType.findByMatchTypeName", query = "SELECT m FROM MatchType m WHERE m.matchTypeName = :matchTypeName")})
 public class MatchType implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -50,6 +51,8 @@ public class MatchType implements Serializable {
     private String matchTypeName;
     @Column(name = "end_user")
     private boolean endUser;
+    @Column(name = "settable")
+    private boolean settable;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idMatchType")
     private List<MatchMatchType> matchMatchTypeList;
 
@@ -87,6 +90,14 @@ public class MatchType implements Serializable {
 
     public void setEndUser(boolean endUser) {
         this.endUser = endUser;
+    }
+
+    public boolean isSettable() {
+        return settable;
+    }
+
+    public void setSettable(boolean settable) {
+        this.settable = settable;
     }
     
     @XmlTransient

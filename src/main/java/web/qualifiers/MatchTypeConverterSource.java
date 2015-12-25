@@ -20,6 +20,6 @@ import javax.inject.Qualifier;
  */
 @Qualifier
 @Retention(RUNTIME)
-@Target({METHOD, FIELD, PARAMETER, TYPE})
-public @interface TeamDataSource {
+@Target({FIELD, METHOD})
+public @interface MatchTypeConverterSource {
 }

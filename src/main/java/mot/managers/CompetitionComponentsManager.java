@@ -97,7 +97,9 @@ public class CompetitionComponentsManager implements CompetitionComponentsManage
      */
     @Override
     public Competitor validateCompetitorDuplicate(List<Competitor> competitorList) {
-
+        for (Object c : competitorList) {
+            System.out.println("validateCompetitorDuplicate " + c + " class" + c.getClass());
+        }
         competitorList.sort(new Comparator<Competitor>() {
 
             @Override
