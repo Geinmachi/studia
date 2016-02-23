@@ -6,7 +6,7 @@
 package mot.facades;
 
 import entities.Account;
-import exceptions.AccountDoesNotExistsException;
+import exceptions.AccountDoesNotExistException;
 import exceptions.ApplicationException;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
@@ -49,7 +49,7 @@ public class AccountFacade extends AbstractFacade<Account> implements AccountFac
             entity = (Account) q.getSingleResult();
             entity.getAccessLevelList().size();
         } catch (NoResultException e) {
-            throw new AccountDoesNotExistsException("User with given name does not exist", e.getCause());
+            throw new AccountDoesNotExistException("User with given name does not exist", e.getCause(), login);
         } catch (PersistenceException e) {
             throw e;
         }

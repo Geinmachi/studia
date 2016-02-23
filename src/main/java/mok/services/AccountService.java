@@ -23,6 +23,7 @@ import mok.managers.AuthorizedUserManagerLocal;
 import mok.managers.UnathorizedUserManagerLocal;
 import org.primefaces.component.message.Message;
 import java.util.concurrent.Future;
+import javax.annotation.security.RolesAllowed;
 
 /**
  *
@@ -39,7 +40,7 @@ public class AccountService extends AbstractService implements AccountServiceLoc
     @EJB
     private AuthorizedUserManagerLocal authorizedUserManager;
 
-    private Account editingAccount;
+    private Account storedAccount;
 
     @Override
     public void register(Account account) throws ApplicationException {
@@ -47,20 +48,31 @@ public class AccountService extends AbstractService implements AccountServiceLoc
     }
 
     @Override
-    public List<Account> getUserList() {
-        return authorizedUserManager.getUserList();
+    public List<Account> getUsersList() {
+        return authorizedUserManager.getUsersList();
     }
 
     @Override
     public Account getAccountToEdit(int idAccount) {
-        editingAccount = authorizedUserManager.getAccountToEdit(idAccount);
-        return editingAccount;
+        storedAccount = authorizedUserManager.getAccountToEdit(idAccount);
+        return storedAccount;
     }
 
     @Override
     public void editAccessLevels(List<AccessLevel> accessLevelList) throws ApplicationException {
-        authorizedUserManager.editAccessLevels(accessLevelList, editingAccount);
-        editingAccount = null;
+        authorizedUserManager.editAccessLevels(accessLevelList, storedAccount);
+        storedAccount = null;
+    }
+
+    @Override
+    public void changeActiveStatus(Account account) throws ApplicationException {
+        authorizedUserManager.changeActiveStatus(account);
+    }
+
+    @Override
+    public void editAccount(Account editingAccount) throws ApplicationException {
+        authorizedUserManager.editAccount(editingAccount, storedAccount);
+        storedAccount = null;
     }
 
 }

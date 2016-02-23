@@ -7,6 +7,7 @@ package web.validators;
 
 import exceptions.ApplicationException;
 import javax.enterprise.context.RequestScoped;
+import javax.enterprise.inject.Any;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -14,7 +15,9 @@ import javax.faces.validator.Validator;
 import javax.faces.validator.ValidatorException;
 import javax.inject.Inject;
 import javax.inject.Named;
+import utils.ResourceBundleUtil;
 import web.backingBeans.mot.competition.CreateCompetitionBackingBean;
+
 
 /**
  *
@@ -22,9 +25,10 @@ import web.backingBeans.mot.competition.CreateCompetitionBackingBean;
  */
 @Named
 @RequestScoped
-public class CompetitionNameValidator implements Validator {
+public class CompetitionsNameValidator implements Validator {
 
     @Inject
+    @Any
     private CreateCompetitionBackingBean createBean;
 
     @Override
@@ -35,7 +39,7 @@ public class CompetitionNameValidator implements Validator {
         } catch (ApplicationException e) {
             System.out.println("VALIDATOR EXCEPTION ");
 
-            FacesMessage msg = new FacesMessage(e.getLocalizedMessage(), " ");
+            FacesMessage msg = new FacesMessage(ResourceBundleUtil.getResourceBundleProperty(e.getLocalizedMessage()), " ");
             msg.setSeverity(FacesMessage.SEVERITY_ERROR);
             throw new ValidatorException(msg);
         }

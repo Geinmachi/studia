@@ -5,6 +5,10 @@
         <param-value>Development</param-value>
     </context-param>
     <context-param>
+        <param-name>javax.faces.STATE_SAVING_METHOD</param-name>
+        <param-value>server</param-value>
+    </context-param>
+    <context-param>
         <param-name>javax.faces.PARTIAL_STATE_SAVING</param-name>
         <param-value>true</param-value>
     </context-param>
@@ -53,11 +57,9 @@
             <url-pattern>/admin/*</url-pattern>
         </web-resource-collection>
         <auth-constraint>
-            <description/>
             <role-name>Administrator</role-name>
         </auth-constraint>
         <user-data-constraint>
-            <description/>
             <transport-guarantee>CONFIDENTIAL</transport-guarantee>
         </user-data-constraint>
     </security-constraint>
@@ -122,7 +124,7 @@
         <filter-name>Counter</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
-<!--    <filter>
+    <!--    <filter>
         <filter-name>CopyWriter</filter-name>
         <filter-class>test.CopyResponseFilter</filter-class>
     </filter>
@@ -130,7 +132,7 @@
         <filter-name>CopyWriter</filter-name>
         <url-pattern>/competitionDetails.xhtml</url-pattern>
     </filter-mapping>-->
-<!--    <filter>
+    <!--    <filter>
         <filter-name>RendererFilter</filter-name>
         <filter-class>test.RendererFilter</filter-class>
     </filter>

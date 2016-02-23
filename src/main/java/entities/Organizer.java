@@ -26,11 +26,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Entity
 @Table(name = "organizer")
 @DiscriminatorValue("organizer")
-@XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "Organizer.findAll", query = "SELECT o FROM Organizer o"),
-    @NamedQuery(name = "Organizer.findByIdAccessLevel", query = "SELECT o FROM Organizer o WHERE o.idAccessLevel = :idAccessLevel"),
-    @NamedQuery(name = "Organizer.findByVersion", query = "SELECT o FROM Organizer o WHERE o.version = :version")})
 public class Organizer extends AccessLevel implements Serializable {
     private static final long serialVersionUID = 1L;
 

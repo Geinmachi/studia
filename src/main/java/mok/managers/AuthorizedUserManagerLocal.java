@@ -18,10 +18,14 @@ import javax.ejb.Remote;
 @Remote
 public interface AuthorizedUserManagerLocal {
 
-    public List<Account> getUserList();
+    public List<Account> getUsersList();
 
     public Account getAccountToEdit(int idAccount);
 
     public void editAccessLevels(List<AccessLevel> receivedAccessLevelList, Account storedAccount) throws ApplicationException;
+
+    public void changeActiveStatus(Account account) throws ApplicationException;
+
+    public void editAccount(Account editingAccount, Account storedAccount) throws ApplicationException;
     
 }

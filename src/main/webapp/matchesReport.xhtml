@@ -23,7 +23,7 @@ and open the template in the editor.
                 <p:column headerText="#{msg.oponent}" sortBy="#{cms.matchData().get(1)}" 
                           filterMatchMode="contains" filterBy="#{cms.matchData().get(1)}">
                     <ui:fragment rendered="#{cms.matchData().get(1).competitiorFirstName() == '-'}">
-                        <h:outputText value="#{msg['matchType.auto_advanced']}" />
+                        <h:outputText value="#{msg['matchType.auto_advance']}" />
                     </ui:fragment>
                     <ui:fragment rendered="#{cms.matchData().get(1).competitiorFirstName() != '-'}">
                         <h:outputText value="#{cms.matchData().get(1).competitiorFirstName()} #{cms.matchData().get(1).competitiorLastName()}" />

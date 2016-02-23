@@ -25,7 +25,7 @@ import org.primefaces.component.panel.Panel;
  *
  * @author java
  */
-public class DashboardPanel implements InactivateMatch, CurrentMatchType {
+public class DashboardPanel implements InactivateMatch, CurrentMatchType, Serializable {
 
     private Panel panel;
 

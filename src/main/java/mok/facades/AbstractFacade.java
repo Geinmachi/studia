@@ -5,14 +5,17 @@
  */
 package mok.facades;
 
+import ejb.common.TrackerInterceptor;
 import exceptions.ApplicationException;
 import java.util.List;
+import javax.interceptor.Interceptors;
 import javax.persistence.EntityManager;
 
 /**
  *
  * @author java
  */
+@Interceptors({TrackerInterceptor.class})
 public abstract class AbstractFacade<T> {
     private Class<T> entityClass;
 

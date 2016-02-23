@@ -10,23 +10,26 @@ and open the template in the editor.
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui"
                 template="/WEB-INF/templates/main.xhtml"
+                xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+                xmlns:b="http://bootsfaces.net/ui"
                 xmlns:f="http://xmlns.jcp.org/jsf/core">
     <ui:define name="title">#{msg.usersListTitle}</ui:define>
     <ui:define name="content">
+        <p:growl id="userListGrowl" for="usersListForm" showDetail="true" life="3000"/>
         <h:form id="usersListForm" style="width: auto;">
             <p:dataTable paginator="true" rows="10" rowsPerPageTemplate="10,25,50" sortMode="multiple" styleClass="shadows"
-                         var="user" value="#{usersListBackingBean.accountList}">
+                         var="user" value="#{usersListBackingBean.accountList}"  >
 
                 <p:column headerText="#{msg.login}" sortBy="#{user.login}" 
                           filterMatchMode="contains" filterBy="#{user.login}">
                     <h:outputText value="#{user.login}" />
                 </p:column>
-                
+
                 <p:column headerText="#{msg.firstName}" sortBy="#{user.idPersonalInfo.firstName}" 
                           filterMatchMode="contains" filterBy="#{user.idPersonalInfo.firstName}">
                     <h:outputText value="#{user.idPersonalInfo.firstName}" />
                 </p:column>
-                
+
                 <p:column headerText="#{msg.lastName}" sortBy="#{user.idPersonalInfo.lastName}" 
                           filterMatchMode="contains" filterBy="#{user.idPersonalInfo.lastName}">
                     <h:outputText value="#{user.idPersonalInfo.lastName}" />
@@ -38,7 +41,10 @@ and open the template in the editor.
                 </p:column>
 
                 <p:column headerText="#{msg.active}">
-                    <p:selectBooleanCheckbox value="#{user.isActive}" disabled="true" />
+                    <p:inputSwitch id="switch" value="#{user.isActive}" onLabel="#{msg.on}"
+                                   offLabel="#{msg.off}">
+                        <p:ajax update="@this userListGrowl" listener="#{usersListBackingBean.changeActiveStatus(user)}"/>
+                    </p:inputSwitch>
                 </p:column>
 
                 <p:column headerText="#{msg.confirmed}">
@@ -51,8 +57,8 @@ and open the template in the editor.
 
                 <p:column headerText="#{msg.actions}">
                     <p:commandLink action="#{usersListBackingBean.changeAccessLevel(user)}" 
-                                     value="#{msg.changeAccessLevel}" styleClass="actionLink"/>
-                    <p:commandLink action="#{competitionListBackingBean.edit(user)}" 
+                                   value="#{msg.changeAccessLevel}" styleClass="actionLink"/>
+                    <p:commandLink action="#{usersListBackingBean.edit(user)}" 
                                    value="#{msg.edit}" styleClass="actionLink"/>
                 </p:column>
 <!--                <p:column headerText="#{msg.details}">

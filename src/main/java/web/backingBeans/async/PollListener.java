@@ -18,6 +18,7 @@ import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import org.primefaces.context.RequestContext;
+import utils.ResourceBundleUtil;
 import web.controllers.CompetitionController;
 import web.models.InboxEvent;
 import web.models.InboxEventImpl;
@@ -75,7 +76,8 @@ public class PollListener implements Serializable {
                 try {
                     if (asyncTask.asyncTask().get() == null) { // canceled
                         System.out.println("POlllistener IF canceled");
-                        JsfUtils.addSuccessMessage("Zadanie anulowane", "", POLL_GROWL_ID);
+                        JsfUtils.addSuccessMessage(ResourceBundleUtil
+                                .getResourceBundleProperty("taskCanceled"), "", POLL_GROWL_ID);
 //                        updateSections();
 //                        it.remove();
 

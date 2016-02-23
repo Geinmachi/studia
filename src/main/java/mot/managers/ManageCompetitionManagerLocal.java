@@ -12,7 +12,7 @@ import entities.Matchh;
 import exceptions.ApplicationException;
 import java.util.List;
 import java.util.Map;
-import javax.ejb.Local;
+import javax.ejb.Remote;
 import javax.ejb.Remote;
 import mot.interfaces.CMG;
 import mot.interfaces.CurrentMatchType;

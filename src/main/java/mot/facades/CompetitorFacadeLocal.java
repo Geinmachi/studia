@@ -9,7 +9,7 @@ import entities.AccessLevel;
 import entities.Competitor;
 import exceptions.ApplicationException;
 import java.util.List;
-import javax.ejb.Local;
+import javax.ejb.Remote;
 import javax.ejb.Remote;
 
 /**
@@ -32,8 +32,6 @@ public interface CompetitorFacadeLocal {
     List<Competitor> findRange(int[] range);
 
     int count();
-
-    public Competitor findAndInitializeEmptyGroups(Integer idCompetitor);
 
     public Competitor editWithReturn(Competitor competitor);
 

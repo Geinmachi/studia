@@ -42,7 +42,6 @@ import utils.ResourceBundleUtil;
  */
 @Stateless
 @TransactionAttribute(TransactionAttributeType.MANDATORY)
-@DeclareRoles({"Administrator", "Organizer"})
 public class PresentCompetitionManager implements PresentCompetitionManagerLocal {
 
     @Resource

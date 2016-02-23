@@ -43,7 +43,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Account.findByIsActive", query = "SELECT a FROM Account a WHERE a.isActive = :isActive"),
     @NamedQuery(name = "Account.findByIsConfirmed", query = "SELECT a FROM Account a WHERE a.isConfirmed = :isConfirmed"),
     @NamedQuery(name = "Account.findByVersion", query = "SELECT a FROM Account a WHERE a.version = :version")})
-public class Account implements Serializable {
+public class Account implements Serializable, Comparable<Account> {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -183,6 +183,11 @@ public class Account implements Serializable {
     @Override
     public String toString() {
         return "entities.Account[ idAccount=" + idAccount + " ]";
+    }
+
+    @Override
+    public int compareTo(Account o) {
+        return this.login.compareTo(o.getLogin());
     }
     
 }

@@ -94,7 +94,7 @@ and open the template in the editor.
                                                            competitiorInMatch#{cmgFromMatch.idCompetitor.idCompetitor}">
                                                 <p:outputLabel>
                                                     <ui:fragment rendered="#{not empty cmgFromMatch.idCompetitor.idCreator}">
-                                                        *
+                                                        
                                                     </ui:fragment>
                                                     #{cmgFromMatch.idCompetitor.idPersonalInfo.firstName}
                                                     #{cmgFromMatch.idCompetitor.idPersonalInfo.lastName} 
@@ -134,7 +134,9 @@ and open the template in the editor.
                                                 <f:convertDateTime pattern="dd.MM.yyyy HH:mm" />
                                             </p:outputLabel>
                                         </p:menuitem>
-                                        <p:menuitem value="#{msg.matchType}: #{msg['matchType.' += dashboardPanel.matchType.matchTypeName]}"/>
+                                        <p:menuitem>
+                                            <p:outputLabel value="#{msg.matchType}: #{msg['matchType.' += dashboardPanel.matchType.matchTypeName]}"/>
+                                        </p:menuitem>
                                     </p:menu>0
                                 </f:facet>
                             </p:panel>

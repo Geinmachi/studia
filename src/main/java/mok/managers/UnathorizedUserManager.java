@@ -5,16 +5,15 @@
  */
 package mok.managers;
 
-import ejb.common.TrackerInterceptor;
-import entities.AccessLevel;
 import entities.Account;
 import entities.Organizer;
 import exceptions.ApplicationException;
+import javax.annotation.Resource;
 import javax.ejb.EJB;
+import javax.ejb.SessionContext;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
-import javax.interceptor.Interceptors;
 import mok.facades.AccountFacadeLocal;
 import mok.facades.OrganizerFacadeLocal;
 import utils.ConvertUtil;
@@ -32,6 +31,9 @@ public class UnathorizedUserManager implements UnathorizedUserManagerLocal {
     
     @EJB
     private OrganizerFacadeLocal organizerFacade;
+    
+    @Resource
+    private SessionContext sc;
     
     @Override
     public void register(Account account) throws ApplicationException {

@@ -18,6 +18,7 @@ import javax.annotation.PostConstruct;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import org.primefaces.model.DualListModel;
+import web.converters.ConverterHelper;
 import web.utils.JsfUtils;
 import web.utils.PageConstants;
 import web.validators.CompetitorsDualListSetter;
@@ -28,6 +29,7 @@ import web.validators.DuplicatedCompetitors;
  * @author java
  */
 @Named(value = "createTeamBackingBean")
+@ConverterHelper(viewId = PageConstants.ORGANIZER_CREATE_TEAM)
 @ViewScoped
 public class CreateTeamBackingBean extends TeamBackingBean implements Serializable, CompetitorsDualListSetter, DuplicatedCompetitors {
 
@@ -117,6 +119,7 @@ public class CreateTeamBackingBean extends TeamBackingBean implements Serializab
 
     @Override
     public List<Competitor> getFetchedData() {
+        System.out.println("Fechuje z CreateTeam ---------------------");
         return this.competitorList;
     }
 }

@@ -10,7 +10,7 @@ import entities.Matchh;
 import exceptions.ApplicationException;
 import java.util.List;
 import java.util.concurrent.Future;
-import javax.ejb.Local;
+import javax.ejb.Remote;
 import javax.ejb.Remote;
 
 /**
@@ -54,7 +54,10 @@ public interface CompetitorMatchFacadeLocal {
 
     /**
      *
-     * {@inheritDoc}
+     * @param idCompetitor competitor ID
+     * @param limit how many records to return
+     * @param offset from which record start returning values
+     * @return List of objects: object[0] - score, object[1] - Competitor, obejct[2] - competitionName, object[3] - idMatch
      */
     public List<Object[]> findPartialCompetitorMatchStatistics(int idCompetitor, int limit, int offset);
 

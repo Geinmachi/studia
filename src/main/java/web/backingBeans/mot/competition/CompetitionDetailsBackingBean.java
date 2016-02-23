@@ -54,7 +54,6 @@ public class CompetitionDetailsBackingBean extends CompetitionBackingBean {
 
     @PostConstruct
     private void init() {
-
         System.out.println("COMpetitinonDetailsBB#init ");
 
         String encodedCompetitionId = JsfUtils.getCompetitionUrlParameter();

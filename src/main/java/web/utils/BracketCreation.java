@@ -345,6 +345,7 @@ public class BracketCreation implements Serializable {
             }
 
             panelList.add(dashboardPanel);
+            System.out.println("Dodano DP: " + dashboardPanel + " id match " + dashboardPanel.getMatch());
         }
 
         return columns;
@@ -437,6 +438,7 @@ public class BracketCreation implements Serializable {
     public void updateScores(CompetitorMatch updatedCompetitorMatch) {
         for (DashboardPanel dp : panelList) {
             if (dp.getMatch().equals(updatedCompetitorMatch.getIdMatch())) {
+                System.out.println("Panel11111.22222: " + dp.getPanel());
                 System.out.println("DPPPPPPPPPPP : " + dp.getMatch());
                 System.out.println("NEIW DPPPPPPPPPPPP : " + updatedCompetitorMatch.getIdMatch());
 
@@ -485,8 +487,9 @@ public class BracketCreation implements Serializable {
                     }
 
                     dp.updateCMGwithAdvanced(cmg);
-
                     System.out.println("PRZED DISABLE");
+                    System.out.println("Panel2222: " + dp.getPanel());
+                    System.out.println("mecz id: " + dp.getMatch());
 //                    BracketUtil.makeSerializablePanel(dp);
                     this.disableMatch(dp);
                     System.out.println("PO DISABLE");

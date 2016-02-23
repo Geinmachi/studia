@@ -33,13 +33,13 @@ and open the template in the editor.
                           filterMatchMode="contains" filterBy="#{competition.idOrganizer.idAccount.login}">
                     <p:outputLabel value="#{competition.idOrganizer.idAccount.login}"/>
                 </p:column>
-                
+
                 <p:column headerText="#{msg.creationDate}" rendered="#{request.isUserInRole(bsn['role.admin'])}" sortBy="#{competition.creationDate}">
                     <h:outputText value="#{competition.creationDate}">
                         <f:convertDateTime pattern="dd.MM.yyyy HH:mm" />
                     </h:outputText>
                 </p:column>
-                
+
                 <p:column headerText="#{msg.startDate}" sortBy="#{competition.startDate}">
                     <h:outputText value="#{competition.startDate}" >
                         <f:convertDateTime pattern="dd.MM.yyyy HH:mm" />
@@ -69,9 +69,9 @@ and open the template in the editor.
 
                 <p:column headerText="#{msg.actions}">
                     <p:commandLink action="#{competitionListBackingBean.displayCompetition(competition, competitionListBackingBean.getDisplayPageEnum('DETAILS'))}" 
-                                     value="#{msg.details}" styleClass="actionLink"/>
+                                   value="#{msg.details}" styleClass="actionLink"/>
                     <p:commandLink action="#{competitionListBackingBean.displayCompetition(competition, competitionListBackingBean.getDisplayPageEnum('RESULTS'))}" 
-                                     value="#{not empty competition.idWinner ? msg.results : '-'}" styleClass="actionLink"  disabled="#{empty competition.idWinner}"/>
+                                   value="#{not empty competition.idWinner ? msg.results : '-'}" styleClass="actionLink"  disabled="#{empty competition.idWinner}"/>
                 </p:column>
 <!--                <p:column headerText="#{msg.details}">
                     <p:commandButton action="#{competitionListBackingBean.displayCompetition(competition, competitionListBackingBean.getDisplayPageEnum('DETAILS'))}" 
@@ -85,5 +85,10 @@ and open the template in the editor.
 
             </p:dataTable>
         </h:form>
+<!--        <h:form>
+            <p:panel binding="#{competitionListBackingBean.notSerializableObj.pfPanel}"/>
+            <h:inputText value="#{competitionListBackingBean.notSerializableObj.someString}" />
+            <p:commandButton value="GO" action="#{competitionListBackingBean.sendToEjb}"/>
+        </h:form>-->
     </ui:define>
 </ui:composition>

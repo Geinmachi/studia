@@ -96,9 +96,9 @@ public class Competition implements Serializable {
     @JoinColumn(name = "id_organizer", referencedColumnName = "id_access_level")
     @ManyToOne(optional = false)
     private AccessLevel idOrganizer;
-    @JoinColumn(name = "id_competition_type", referencedColumnName = "id_competition_type")
-    @ManyToOne(optional = false)
-    private CompetitionType idCompetitionType;
+//    @JoinColumn(name = "id_competition_type", referencedColumnName = "id_competition_type")
+//    @ManyToOne(optional = false)
+//    private CompetitionType idCompetitionType;
     @JoinColumn(name = "id_winner", referencedColumnName = "id_competitor")
     @ManyToOne(optional = true)
     private Competitor idWinner;
@@ -191,14 +191,6 @@ public class Competition implements Serializable {
 
     public void setIdOrganizer(AccessLevel idOrganizer) {
         this.idOrganizer = idOrganizer;
-    }
-
-    public CompetitionType getIdCompetitionType() {
-        return idCompetitionType;
-    }
-
-    public void setIdCompetitionType(CompetitionType idCompetitionType) {
-        this.idCompetitionType = idCompetitionType;
     }
 
     @XmlTransient

@@ -16,7 +16,13 @@ import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
+import javax.enterprise.inject.Any;
+import javax.enterprise.inject.Produces;
+import javax.faces.context.FacesContext;
+import javax.faces.view.ViewScoped;
+import javax.inject.Inject;
 import web.backingBeans.mot.competition.CompetitionBackingBean;
+import web.converters.ConverterHelper;
 import web.converters.interfaces.ConverterDataAccessor;
 import web.utils.JsfUtils;
 import web.utils.PageConstants;
@@ -26,7 +32,8 @@ import web.utils.PageConstants;
  * @author java
  */
 @Named(value = "addCompetitorBackingBean")
-@RequestScoped
+@ConverterHelper(viewId = PageConstants.ORGANIZER_ADD_COMPETITOR)
+@ViewScoped
 public class AddCompetitorBackingBean extends CompetitionBackingBean implements ConverterDataAccessor<Team>, Serializable {
 
     private final Competitor competitor = new Competitor();
@@ -43,6 +50,7 @@ public class AddCompetitorBackingBean extends CompetitionBackingBean implements 
     }
 
     public Competitor getCompetitor() {
+        System.out.println("Get competitor;");
         return competitor;
     }
 
@@ -51,6 +59,7 @@ public class AddCompetitorBackingBean extends CompetitionBackingBean implements 
     }
 
     public boolean isIsGlobal() {
+        System.out.println("isGlobal getter");
         return isGlobal;
     }
 
@@ -72,7 +81,8 @@ public class AddCompetitorBackingBean extends CompetitionBackingBean implements 
 
     @PostConstruct
     private void init() {
-        System.out.println("INIT AddCompetitorBB " + this.hashCode());
+        System.out.println("Addd logger+++ " + logger);
+        logger.log(Level.INFO, "INIT AddCompetitorBB " + System.currentTimeMillis());
         competitor.setIdPersonalInfo(personalInfo);
         try {
             //        personalInfo.setCompetitor(competitor);
@@ -90,7 +100,7 @@ public class AddCompetitorBackingBean extends CompetitionBackingBean implements 
         try {
             competitor.setIdTeam(selectedTeam);
             controller.addCompetitor(competitor, isGlobal);
-
+            FacesContext.getCurrentInstance().getViewRoot().getViewId();
             return JsfUtils.successPageRedirect(PageConstants.ORGANIZER_ADD_COMPETITOR);
         } catch (ApplicationException e) {
             JsfUtils.addErrorMessage(e, null);
@@ -105,7 +115,13 @@ public class AddCompetitorBackingBean extends CompetitionBackingBean implements 
 
     @Override
     public List<Team> getFetchedData() {
+        System.out.println("Fechuje z Addcompetitor ---------------------");
         return teamList;
     }
 
+    @Inject
+    private void testIN() {
+        System.out.println("Inject z addompetitorbeana");
+    }
+    
 }

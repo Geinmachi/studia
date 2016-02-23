@@ -170,10 +170,7 @@ public class CompetitorMatchFacade extends AbstractFacade<CompetitorMatch> imple
 
     /**
      *
-     * @param idCompetitor
-     * @param limit
-     * @param offset
-     * @return List of objects: object[0] - score, object[1] - Competitor, obejct[2] - competitionName, object[3] - idMatch
+     * @{@inheritDoc}
      */
     @Override
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)

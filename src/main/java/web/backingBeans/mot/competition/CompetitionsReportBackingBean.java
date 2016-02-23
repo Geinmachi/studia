@@ -15,6 +15,7 @@ import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import mot.interfaces.CompetitionPodiumData;
 import mot.models.CompetitionPodium;
+import org.primefaces.context.RequestContext;
 import web.utils.JsfUtils;
 
 /**
@@ -44,8 +45,9 @@ public class CompetitionsReportBackingBean extends CompetitionBackingBean implem
         try {
             competitionPodiumList = (List<CompetitionPodiumData>) controller.generateCompetitionPodiumStatistics();
         } catch (ApplicationException e) {
-            logger.log(Level.SEVERE, "Applicaiton exception {0}", e);
-            JsfUtils.addErrorMessage(e, null);
+            logger.log(Level.SEVERE, "Applicaiton exception", e);
+            JsfUtils.addErrorMessage(e, "globalContainer");
+//            RequestContext.getCurrentInstance().update("globalGrowl");
         }
     }
     

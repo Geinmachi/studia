@@ -34,13 +34,6 @@ public class MatchhFacade extends AbstractFacade<Matchh> implements MatchhFacade
     }
     
     @Override
-    public void create(Matchh entity)  throws ApplicationException {
-        em.persist(entity);
-        em.flush();
-         
-    }
-    
-    @Override
     public Matchh createWithReturn(Matchh entity) {
         em.persist(entity);
         em.flush();

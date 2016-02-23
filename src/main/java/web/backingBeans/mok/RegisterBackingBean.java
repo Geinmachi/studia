@@ -8,11 +8,11 @@ package web.backingBeans.mok;
 import entities.Account;
 import entities.PersonalInfo;
 import exceptions.ApplicationException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import exceptions.LoginAlreadyExistsException;
 import javax.annotation.PostConstruct;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
+import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
 import web.utils.JsfUtils;
 import web.utils.PageConstants;
@@ -25,6 +25,10 @@ import web.utils.PageConstants;
 @RequestScoped
 public class RegisterBackingBean extends AccountBackingBean {
     
+    private static final String FORM_ID = "registerForm";
+    
+    private static final String LOGIN_FIELD_ID = FORM_ID + ":login";
+
     private Account account;
 
     public Account getAccount() {
@@ -40,7 +44,7 @@ public class RegisterBackingBean extends AccountBackingBean {
      */
     public RegisterBackingBean() {
     }
-    
+
     @PostConstruct
     private void init() {
         account = new Account();
@@ -50,18 +54,23 @@ public class RegisterBackingBean extends AccountBackingBean {
 //        CopyWriter c = (CopyWriter)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("copyWriter");
 //        System.out.println("zawartosc: " + c.getCopy());
     }
-    
+
     public String register() {
         try {
             controller.register(account);
-            
+
             return JsfUtils.successPageRedirect(PageConstants.ROOT_INDEX);
+        } catch (LoginAlreadyExistsException e) {
+            JsfUtils.addErrorMessage(e, LOGIN_FIELD_ID);
+            logger.severe(e.getMessage());
+            
+            ((UIInput)FacesContext.getCurrentInstance().getViewRoot().findComponent(LOGIN_FIELD_ID)).setValid(false);
         } catch (ApplicationException e) {
             JsfUtils.addErrorMessage(e, null);
-            Logger.getLogger(RegisterBackingBean.class.getName()).log(Level.SEVERE, null, e);
+            logger.severe(e.getMessage());
         } catch (Exception e) {
             System.out.println("Wyjatek przy rejestracji");
-            Logger.getLogger(RegisterBackingBean.class.getName()).log(Level.SEVERE, null, e);
+            logger.severe(e.getMessage());
         }
         return "";
     }

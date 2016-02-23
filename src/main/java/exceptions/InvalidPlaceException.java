@@ -27,7 +27,7 @@ public class InvalidPlaceException extends ApplicationException {
 
     public static final String INVALID_PLACE = "EXCEPTION.INVALID_PLACE.INVALID_PLACE";
 
-    public static final String PLACE_ALREADY_OCCUPED = "EXCEPTION.INVALID_PLACE.PLACE_ALREADY_OCCUPED";
+    public static final String PLACE_ALREADY_OCCUPED = "EXCEPTION.INVALID_PLACE.PLACE_ALREADY_OCCUPED"; // ERROR 2001
 
     public InvalidPlaceException() {
     }

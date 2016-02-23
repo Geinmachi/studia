@@ -67,6 +67,8 @@ public class PageConstants {
     
     public static final String ADMIN_EDIT_ACCESS_LEVEL = ADMIN_FOLDER + "/editAccessLevel.xhtml";
     
+    public static final String ADMIN_EDIT_USER = ADMIN_FOLDER + "/editUser.xhtml";
+    
     public static final String ADMIN_USERS_LIST = ADMIN_FOLDER + "/usersList.xhtml";
     
     

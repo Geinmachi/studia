@@ -5,6 +5,7 @@
  */
 package web.backingBeans.mok;
 
+import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.inject.Named;
@@ -14,6 +15,7 @@ import javax.faces.context.FacesContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import utils.Hashids;
+import utils.ResourceBundleUtil;
 import web.utils.JsfUtils;
 import web.utils.PageConstants;
 
@@ -24,6 +26,8 @@ import web.utils.PageConstants;
 @Named(value = "loginBackingBean")
 @RequestScoped
 public class LoginBackingBean {
+
+    private static final String GLOBAL_CONTAINER_ID = "globalContainer";
 
     private String username;
 
@@ -48,16 +52,23 @@ public class LoginBackingBean {
         this.password = password;
     }
 
-    public void login() throws Exception {
+    public String login() {
         FacesContext context = FacesContext.getCurrentInstance();
         HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
-//        System.out.println("URI " + FacesContext.getCurrentInstance().getViewRoot().getViewId());
+
         try {
             request.login(username, password);
+            String view = context.getViewRoot().getViewId();
+
+            return view + "?faces-redirect=true";
         } catch (ServletException ex) {
             Logger.getLogger(LoginBackingBean.class.getName()).log(Level.SEVERE, null, ex);
-            JsfUtils.addErrorMessage("Login failed", "Incorrect login or password", "globalContainer");
+            JsfUtils.addErrorMessage(ResourceBundleUtil.getResourceBundleProperty("loginFailed"),
+                    ResourceBundleUtil.getResourceBundleProperty("loginFailedDetails"),
+                    GLOBAL_CONTAINER_ID);
         }
+
+        return null;
     }
 
     public String logout() {

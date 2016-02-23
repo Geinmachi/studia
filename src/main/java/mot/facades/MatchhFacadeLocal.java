@@ -8,7 +8,7 @@ package mot.facades;
 import entities.Matchh;
 import exceptions.ApplicationException;
 import java.util.List;
-import javax.ejb.Local;
+import javax.ejb.Remote;
 import javax.ejb.Remote;
 
 /**

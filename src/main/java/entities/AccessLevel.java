@@ -40,13 +40,6 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "access_level")
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn(name = "access_level")
-@XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "AccessLevel.findAll", query = "SELECT a FROM AccessLevel a"),
-    @NamedQuery(name = "AccessLevel.findByIdAccessLevel", query = "SELECT a FROM AccessLevel a WHERE a.idAccessLevel = :idAccessLevel"),
-    @NamedQuery(name = "AccessLevel.findByAccessLevel", query = "SELECT a FROM AccessLevel a WHERE a.accessLevel = :accessLevel"),
-    @NamedQuery(name = "AccessLevel.findByIsActive", query = "SELECT a FROM AccessLevel a WHERE a.isActive = :isActive"),
-    @NamedQuery(name = "AccessLevel.findByVersion", query = "SELECT a FROM AccessLevel a WHERE a.version = :version")})
 public class AccessLevel implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -67,8 +60,6 @@ public class AccessLevel implements Serializable {
     @Column(name = "version")
     @Version
     private long version;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idOrganizer")
-    private List<Competition> competitionList = new ArrayList<>();
     @JoinColumn(name = "id_account", referencedColumnName = "id_account")
     @ManyToOne(optional = false)
     private Account idAccount;
@@ -117,15 +108,6 @@ public class AccessLevel implements Serializable {
 
     public void setVersion(long version) {
         this.version = version;
-    }
-
-    @XmlTransient
-    public List<Competition> getCompetitionList() {
-        return competitionList;
-    }
-
-    public void setCompetitionList(List<Competition> competitionList) {
-        this.competitionList = competitionList;
     }
 
     public Account getIdAccount() {

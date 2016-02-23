@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/WEB-INF/templates/main.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:define name="title">#{msg.addCompetitorTitle}</ui:define>
+    <ui:define name="content">
+        <h:form id="addCompetitorForm">
+<!--            <cc:competitorFormInsides
+                firstName="#{addCompetitorBackingBean.personalInfo.firstName}"
+                lastName="#{addCompetitorBackingBean.personalInfo.lastName}"
+                selectedTeam="#{addCompetitorBackingBean.selectedTeam}"
+                teamList="#{addCompetitorBackingBean.teamList}"
+                isGlobal="#{addCompetitorBackingBean.isGlobal}"
+                buttonLabel="#{msg.add}"
+                saveAction="#{addCompetitorBackingBean.addCompetitor}"/>-->
+            <p:panelGrid  styleClass="middleTableWrapper shadows" >
+                <p:row>
+                    <p:column>
+                        <p:outputLabel for="firstName" value="#{msg.firstName}"/>
+                    </p:column>
+                    <p:column>
+                        <p:inputText id="firstName" value="#{addCompetitorBackingBean.personalInfo.firstName}"/>
+                    </p:column>
+                    <p:column>
+                        <p:message for="firstName"/>
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column>
+                        <p:outputLabel for="lastName" value="#{msg.lastName}"/>
+                    </p:column>
+                    <p:column>
+                        <p:inputText id="lastName" value="#{addCompetitorBackingBean.personalInfo.lastName}"/>
+                    </p:column>
+                    <p:column>
+                        <p:message for="lastName"/>
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column>
+                        <p:outputLabel for="teamListbox" value="#{msg.team}"/>
+                    </p:column>
+                    <p:column colspan="2">
+                        <p:selectOneMenu id="teamListbox" value="#{addCompetitorBackingBean.selectedTeam}" converter="#{genericConverter}" >
+                            <f:selectItem itemValue="#{null}" itemLabel="#{msg.none}" />
+                            <f:selectItems value="#{addCompetitorBackingBean.teamList}" var="team" itemValue="#{team}"
+                                           itemLabel="#{not empty team.idCreator ? '*' : ''}#{team.teamName}"/>
+                        </p:selectOneMenu>
+                        <p:messages/>
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column>
+                        <p:outputLabel for="isGlobal" value="#{msg.globalCompetitor}"/>
+                    </p:column>
+                    <p:column colspan="2">
+                        <p:selectBooleanCheckbox id="isGlobal" value="#{addCompetitorBackingBean.isGlobal}" disabled="#{false}"/>
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column colspan="3">
+                        <p:outputLabel>
+                            * - #{msg.teamAsterisk}
+                        </p:outputLabel>
+                        <br/>
+                        <br/>
+                        <p:commandButton value="#{msg.add}" action="#{addCompetitorBackingBean.addCompetitor}" 
+                                         update="#{cc.id}"/>
+                        <p:button styleClass="backButton" value="#{msg.back}" 
+                                  onclick="window.history.back();
+                                          return false;"/>
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column colspan="3">
+                        <p:messages autoUpdate="false" id="ccMsg" globalOnly="true"/>
+                    </p:column>
+                </p:row>
+            </p:panelGrid>
+        </h:form>
+
+    </ui:define>
+</ui:composition>

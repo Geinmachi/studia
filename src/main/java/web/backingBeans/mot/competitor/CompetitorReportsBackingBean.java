@@ -12,14 +12,12 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
-import javax.faces.context.FacesContext;
+import javax.enterprise.inject.Any;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
-import mot.interfaces.CompetitionPodiumData;
 import web.backingBeans.mot.competition.CompetitionBackingBean;
-import web.controllers.CompetitionController;
-import web.utils.JsfUtils;
+import web.qualifiers.BackingBean;
 import web.utils.PageConstants;
 
 /**
@@ -30,10 +28,21 @@ import web.utils.PageConstants;
 @ViewScoped
 public class CompetitorReportsBackingBean extends CompetitionBackingBean implements Serializable {
 
+//    @Inject
+//    private StatelessTest test;
+//    
+//    @Inject
+//    private TestJMS jms;
+//    
+//    @Inject
+//    private AccessControl1Local ac;
+    
     @Inject
+    @Any
     private PlacementReportBackingBean placementReport;
 
     @Inject
+    @Any
     private MatchesReportBackingBean matchesReport;
 
     private List<Competitor> competitorList;
@@ -50,12 +59,15 @@ public class CompetitorReportsBackingBean extends CompetitionBackingBean impleme
 
     @PostConstruct
     private void init() {
+//        test.write();
         try {
             competitorList = controller.getGlobalCompetitors();
         } catch (ApplicationException ex) {
-            Logger.getLogger(CompetitorReportsBackingBean.class.getName()).log(Level.SEVERE, null, ex);
+            logger.log(Level.SEVERE, null, ex);
             throw new IllegalStateException("Cannot init a bean");
         }
+//        jms.sendMessageTest1("moja wiadomosc " + System.currentTimeMillis());
+//        ac.runAsExample();
     }
 
     public String displayPlacementReport(Competitor competitor) {

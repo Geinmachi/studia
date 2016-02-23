@@ -10,12 +10,14 @@ import entities.AccessLevel;
 import entities.Account;
 import entities.Administrator;
 import exceptions.AccessLevelEditException;
+import exceptions.AccountEditException;
 import exceptions.ApplicationException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
@@ -41,7 +43,8 @@ public class AuthorizedUserManager implements AuthorizedUserManagerLocal {
 //    @EJB
 //    private AdministratorFacadeLocal administratorFacade;
     @Override
-    public List<Account> getUserList() {
+//    @RolesAllowed("getUsersList")
+    public List<Account> getUsersList() {
         return accountFacade.findAll();
     }
 
@@ -119,5 +122,32 @@ public class AuthorizedUserManager implements AuthorizedUserManagerLocal {
                 throw AccessLevelEditException.missingAccessLevel(sal);
             }
         }
+    }
+
+    @Override
+    public void changeActiveStatus(Account account) throws ApplicationException {
+        Account fetchedAccount = accountFacade.find(account.getIdAccount());
+        
+        fetchedAccount.setIsActive(account.getIsActive());
+        accountFacade.edit(fetchedAccount);
+    }
+
+    @Override
+    public void editAccount(Account receivedAccount, Account storedAccount) throws ApplicationException {
+        if (receivedAccount == null) {
+            throw AccountEditException.passedNull(receivedAccount, storedAccount);
+        }
+        if (storedAccount == null) {
+            throw AccountEditException.storedNull(receivedAccount, storedAccount);
+        }
+        if (!receivedAccount.getIdAccount().equals(storedAccount.getIdAccount())) {
+            throw AccountEditException.objectsMismatch(receivedAccount, storedAccount);
+        }
+        System.out.println(" imie przed zapisem " + receivedAccount.getIdPersonalInfo().getFirstName());
+        storedAccount.getIdPersonalInfo().setFirstName(receivedAccount.getIdPersonalInfo().getFirstName());
+        storedAccount.getIdPersonalInfo().setLastName(receivedAccount.getIdPersonalInfo().getLastName());
+        storedAccount.getIdPersonalInfo().setEmail(receivedAccount.getIdPersonalInfo().getEmail());
+        System.out.println(" imie po zapisie " + storedAccount.getIdPersonalInfo().getFirstName());
+        accountFacade.edit(storedAccount);
     }
 }

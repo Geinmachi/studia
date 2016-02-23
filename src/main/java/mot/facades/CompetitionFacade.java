@@ -65,7 +65,7 @@ public class CompetitionFacade extends AbstractFacade<Competition> implements Co
 //        return managedEntity;
 //    }
     @Override
-    public void competitionContraints(Competition competition) throws CompetitionGeneralnfoException {
+    public void competitionConstraints(Competition competition) throws CompetitionGeneralnfoException {
         Query q = null;
 
         AccessLevel creator = competition.getIdOrganizer();
@@ -97,7 +97,7 @@ public class CompetitionFacade extends AbstractFacade<Competition> implements Co
 
     @Override
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
-    public void competitionContraintsNotCommited(Competition competition) throws CompetitionGeneralnfoException {
+    public void competitionConstraintsNotCommited(Competition competition) throws CompetitionGeneralnfoException {
         Query q = null;
 
         AccessLevel creator = competition.getIdOrganizer();
@@ -134,9 +134,8 @@ public class CompetitionFacade extends AbstractFacade<Competition> implements Co
             em.persist(entity);
             em.flush();
 
-            competitionContraints(entity);
+            competitionConstraints(entity);
         } catch (PersistenceException e) {
-
             throw e;
         }
 
@@ -185,7 +184,7 @@ public class CompetitionFacade extends AbstractFacade<Competition> implements Co
         em.merge(entity);
         em.flush();
 
-        competitionContraints(entity);
+        competitionConstraints(entity);
     }
 
     @Override
@@ -207,7 +206,7 @@ public class CompetitionFacade extends AbstractFacade<Competition> implements Co
     @Override
     public Competition editWithReturn(Competition storedCompetition) throws ApplicationException {
         try {
-            competitionContraintsNotCommited(storedCompetition);
+            competitionConstraintsNotCommited(storedCompetition);
             Competition entity = em.merge(storedCompetition);
             em.flush();
             

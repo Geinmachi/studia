@@ -10,7 +10,9 @@ import javax.enterprise.context.RequestScoped;
 import javax.enterprise.inject.Any;
 import javax.enterprise.inject.Produces;
 import javax.faces.application.FacesMessage;
+import javax.faces.component.StateHolder;
 import javax.faces.component.UIComponent;
+import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
 import javax.faces.validator.Validator;
 import javax.faces.validator.ValidatorException;
@@ -18,6 +20,7 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import org.primefaces.model.DualListModel;
+import utils.ResourceBundleUtil;
 import web.backingBeans.mot.competition.CreateCompetitionBackingBean;
 import web.backingBeans.mot.team.CreateTeamBackingBean;
 import web.backingBeans.mot.team.EditTeamBackingBean;
@@ -70,11 +73,12 @@ public class DuplicatedCompetitorsValidator implements Validator {
         if (duplicatedCompetitor != null) {
             System.out.println("VALIDATOR EXCEPTION ");
 
-            FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Competition contains duplicated competitor",
+            FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, ResourceBundleUtil.getResourceBundleProperty("duplicatedCompetitor"),
                     duplicatedCompetitor.getIdPersonalInfo().getFirstName() + " "
                     + duplicatedCompetitor.getIdPersonalInfo().getLastName());
 
             createBean.setDuplicatedCompetitorFlag(true);
+            ((UIInput)component).resetValue();
             throw new ValidatorException(msg);
         }
         

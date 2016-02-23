@@ -28,7 +28,12 @@ import mot.interfaces.InactivateMatch;
 import org.primefaces.context.RequestContext;
 import utils.BracketUtil;
 import exceptions.MatchOptimisticLockException;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.primefaces.component.panel.Panel;
 import utils.ResourceBundleUtil;
 import web.converters.interfaces.MatchTypeConverterAccessor;
 import web.models.DashboardPanel;
@@ -96,12 +101,39 @@ public class ManageCompetitionBackingBean extends CompetitionBackingBean
 
     public void saveScore(CompetitorMatch cmg, DashboardPanel dp) {
         System.out.println("Wykonal sie save z inpalce " + cmg.getCompetitorMatchScore());
+//        
+//        Panel testPanel = new Panel();
+//        testPanel.setId("someId");
+//        
+////        try {
+////            new ObjectOutputStream(new ByteArrayOutputStream()).writeObject(testPanel);
+////        } catch (IOException ex) {
+////            System.out.println("POELCIAAL exxxx");
+////            Logger.getLogger(ManageCompetitionBackingBean.class.getName()).log(Level.SEVERE, null, ex);
+////        }
+//        System.out.println("Serializable test passed");
+//        for (DashboardPanel dp1 : bracketCreator.getPanelList()) {
+//            if (dp1.getMatch() != null && dp1.getMatch().getIdMatch() != null) {
+//                if (dp1.getMatch().getIdMatch().equals(cmg.getIdMatch().getIdMatch())) {
+//                    System.out.println("Sa rowne, zamien " + dp1.getPanel() + " id " + dp1.getPanel().getId());
+//                    System.out.println("param " + dp.getPanel() + " id " + dp.getPanel().getId());
+////                    Panel p = new Panel();
+////                    p.setId(dp1.getPanel().getId());
+////                    dp1.setPanel(p);
+//                    dp = dp1;
+//                    break;
+//                }
+//            }
+//        }
+//        bracketCreator.disableMatch(dp);
+
         System.out.println("Zawodnika " + cmg.getIdCompetitor());
 
         try {
             Map<String, CompetitorMatch> savedMap = controller.saveCompetitorScore(cmg);
             CompetitorMatch savedCompetitorMatch = savedMap.get("saved");
 
+            System.out.println("CKP111111111");
             bracketCreator.updateScores(savedCompetitorMatch);
 
 //            CompetitorMatch advancedCompetitorMatchVersioned = savedMap.get("advancedVersioned");
@@ -111,10 +143,13 @@ public class ManageCompetitionBackingBean extends CompetitionBackingBean
 //            }
             CompetitorMatch advancedCompetitorMatch = savedMap.get("advanced");
 
+//            System.out.println("id match " + advancedCompetitorMatch.getIdMatch().getIdMatch());
             if (advancedCompetitorMatch != null) {
+                System.out.println("CKP222222222");
                 //        cmgList.add(advancedCompetitorMatch);
                 bracketCreator.addAdvancedCompetitor(advancedCompetitorMatch);
 
+                System.out.println("CKP3333333");
 //                BracketUtil.makeSerializablePanel(dp);
                 bracketCreator.disableMatch(dp);
 
@@ -173,7 +208,7 @@ public class ManageCompetitionBackingBean extends CompetitionBackingBean
             }
 
             System.out.println("BEFORE matchType updated BB ");
-//            match.getMatchMatchTypeList().stream().forEach(p -> System.out.println(" id " + p.getIdMatchMatchType() + " type " + p.getIdMatchType()));
+            match.getMatchMatchTypeList().stream().forEach(p -> System.out.println(" id " + p.getIdMatchMatchType() + " type " + p.getIdMatchType()));
             MatchMatchType updatedMMT = controller.updateMatchType(match);
             System.out.println("AFTER matchType updated BB id " + updatedMMT.getIdMatchMatchType() + " typ " + updatedMMT.getIdMatchType());
 

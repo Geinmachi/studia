@@ -69,7 +69,7 @@ public class ReportsManager implements ReportsManagerLocal {
     private CompetitorMatchFacadeLocal competitorMatchFacade;
 
     private static final String NO_COMPETITOR_IN_MATCH_MARK = "-";
-    
+
     private static final int COMPETITOR_MATCH_STATISTICS_PARTS = 10;
 
     @Override
@@ -141,114 +141,74 @@ public class ReportsManager implements ReportsManagerLocal {
         return statistics;
     }
 
-    @Resource
-    BeanManager event;
-
     @Override
     @Asynchronous
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
-    @Interceptors({TrackerInterceptor.class})
     public Future<List<CompetitorMatchesEntryStatistics>> generateCompetitorMatchesStatistics(Competitor competitor) {
-//        competitorMatchesTimer.startTimer();
-//        Future<List<CompetitorMatch>> asyncResult = competitorMatchFacade.findCompetitorMatchStatistics(competitor.getIdCompetitor());
-//        System.out.println("Event -----");
-//        competitorMatchesEvent.fire(new CompetitorMatchesStatisticsMarkerEvent());
-//        System.out.println("Event ++++++");
-//        for (int i = 0; i < 0; i++) {
-//            competitorMatchFacade.findCompetitorMatchStatistics(competitor.getIdCompetitor());
-//            if (sessionContext.wasCancelCalled()) {
-//                System.out.println("Polecail cancel");
-//                break;
-//            }
-//        }
-//        System.out.println("SIZE SELECTAAAA " + competitorMatchFacade.findCompetitorMatchStatistics(competitor.getIdCompetitor()).size());
-        List<Object[]> partialList = new ArrayList<>();
-        long start = System.currentTimeMillis();
+        List<Object[]> resultList = new ArrayList<>();
 
         int recordsCount = competitorMatchFacade.findCompetitorMatchStatisticsCount(competitor.getIdCompetitor());
-        System.out.println("COUNTTTTTTT statisctist " + recordsCount);
+
         int limit = (int) Math.floor(recordsCount / COMPETITOR_MATCH_STATISTICS_PARTS);
-        if (limit < recordsCount ) {
+        if (limit < recordsCount) {
             limit = recordsCount;
         }
 
-        int tmpCounter = 0;
-//        for (int j =0; j <5; j++)
         for (int i = 0; i < recordsCount; i += limit) {
-            System.out.println("Pobiera po raz " + ((tmpCounter++) + " a limit " + limit));
             if (sessionContext.wasCancelCalled()) {
-                System.out.println("Anulowalo pobieranie raportu zawodnika o id " + competitor.getIdCompetitor());
+                logger.log(Level.INFO, "Anulowalo pobieranie raportu zawodnika o id {0}",
+                        competitor.getIdCompetitor());
                 return new AsyncResult<>(null);
             }
-            partialList.addAll(competitorMatchFacade.findPartialCompetitorMatchStatistics(competitor.getIdCompetitor(), limit, i));
+            resultList.addAll(competitorMatchFacade
+                    .findPartialCompetitorMatchStatistics(competitor.getIdCompetitor(), limit, i));
         }
-        Collections.sort(partialList, new Comparator<Object[]>() {
+
+        sortCmeResult(resultList);
+
+        List<CompetitorMatchesEntryStatistics> cmeStatisticsList = transformCmeStatistics(resultList, competitor);
+
+        return new AsyncResult<>(cmeStatisticsList);
+    }
+
+    private void sortCmeResult(List<Object[]> resultList) {
+        Collections.sort(resultList, new Comparator<Object[]>() { // sorts by idMatch
             @Override
             public int compare(Object[] o1, Object[] o2) {
                 return Long.compare((int) (o1[3]), (int) (o2[3]));
             }
 
         });
+    }
 
-        System.out.println("Wypisanie posortowanych");
-
+    private List<CompetitorMatchesEntryStatistics> transformCmeStatistics(List<Object[]> fetchedStatistics, Competitor competitor) {
         List<CompetitorMatchesEntryStatistics> cmeStatisticsList = new ArrayList<>();
 
-        for (int i = 0; i < partialList.size() - 1; i += 2) {
-            Object[] firstCompetitorData = partialList.get(i);
+        for (int i = 0; i < fetchedStatistics.size() - 1; i += 2) {
+            Object[] firstCompetitorData = fetchedStatistics.get(i);
             System.out.println("II: " + i + "pierwszy " + firstCompetitorData[1]);
-            Object[] secondCompetitorData = partialList.get(i + 1);
+            Object[] secondCompetitorData = fetchedStatistics.get(i + 1);
             System.out.println("II: " + i + "drugi " + secondCompetitorData[1]);
 
-//        for (Object[] objects : partialList) {
+//        for (Object[] objects : resultList) {
             CompetitorMatchesStatistics firstCMS = new CompetitorMatchesStatisticsImpl(createCompetitorMatchesStatistics(firstCompetitorData[0], firstCompetitorData[1]));
             CompetitorMatchesStatistics secondCMS = new CompetitorMatchesStatisticsImpl(createCompetitorMatchesStatistics(secondCompetitorData[0], secondCompetitorData[1]));
 
             List<CompetitorMatchesStatistics> matchData = new ArrayList<>();
 
             boolean isFirstCompetitorSearchedOne = false;
-            if (!(firstCMS.competitiorFirstName().equals(NO_COMPETITOR_IN_MATCH_MARK)) && ((Competitor) firstCompetitorData[1]).getIdCompetitor().equals(competitor.getIdCompetitor())) { // if first competitor is searched one put him first in list
+            if (!(firstCMS.competitiorFirstName().equals(NO_COMPETITOR_IN_MATCH_MARK)) && ((Competitor) firstCompetitorData[1]).getIdCompetitor().equals(competitor.getIdCompetitor())) { // if first competitor is searched one, put him first in the list
                 isFirstCompetitorSearchedOne = true;
             }
-            
+
             matchData.add(secondCMS);
             matchData.add(isFirstCompetitorSearchedOne ? 0 : 1, firstCMS);
 
-            CompetitorMatchesEntryStatistics cmeStatistics = createCompetitorMatchesEntryStatistics((String) partialList.get(i)[2], matchData);
+            CompetitorMatchesEntryStatistics cmeStatistics = createCompetitorMatchesEntryStatistics((String) fetchedStatistics.get(i)[2], matchData);
             cmeStatisticsList.add(new CompetitorMatchesEntryStatisticsImpl(cmeStatistics));
         }
 
-        for (CompetitorMatchesEntryStatistics r : cmeStatisticsList) {
-            System.out.println("comeptiton name : " + r.competitionName());
-            for (CompetitorMatchesStatistics rr : r.matchData()) {
-                System.out.println("zawodnik " + rr.competitiorFirstName() + " " + rr.competitiorLastName() + " score " + rr.score());
-            }
-        }
-        long partialTime = System.currentTimeMillis() - start;
-
-        long startAll = System.currentTimeMillis();
-//        List<CompetitorMatch> allList = competitorMatchFacade.findCompetitorMatchStatistics(competitor.getIdCompetitor());
-        long allTime = System.currentTimeMillis() - startAll;
-
-//        System.out.println("AllList size " + allList.size() + " paritalList size " + partialList.size() + " czy sa rowne ");
-        System.out.println("Czas calosci: " + allTime + " czas partial " + partialTime);
-        if (recordsCount == partialList.size()) {
-            System.out.println("Znalazlo wszystkie rekordy");
-        } else {
-            System.out.println("nie znalazlo wszykich, powinno byc " + recordsCount + " a jest " + partialList.size());
-        }
-
-        boolean equal = true;
-
-//        for (CompetitorMatch cm : allList) {
-//            if (!partialList.contains(cm)) {
-//                equal = false;
-//                break;
-//            }
-//        }
-        System.out.println(equal);
-
-        return new AsyncResult<>(cmeStatisticsList);
+        return cmeStatisticsList;
     }
 
     private CompetitorMatchesStatistics createCompetitorMatchesStatistics(Object score, Object competitor) {

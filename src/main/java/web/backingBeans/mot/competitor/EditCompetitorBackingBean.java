@@ -8,13 +8,17 @@ package web.backingBeans.mot.competitor;
 import entities.Competitor;
 import entities.Team;
 import exceptions.ApplicationException;
+import java.io.Serializable;
+import java.lang.annotation.Annotation;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
+import javax.faces.view.ViewScoped;
 import web.backingBeans.mot.competition.CompetitionBackingBean;
+import web.converters.ConverterHelper;
 import web.converters.interfaces.ConverterDataAccessor;
 import web.utils.JsfUtils;
 import web.utils.PageConstants;
@@ -24,8 +28,9 @@ import web.utils.PageConstants;
  * @author java
  */
 @Named(value = "editCompetitorBackingBean")
-@RequestScoped
-public class EditCompetitorBackingBean extends CompetitionBackingBean implements ConverterDataAccessor<Team> {
+@ConverterHelper(viewId = PageConstants.EDIT_EDIT_COMPETITOR)
+@ViewScoped
+public class EditCompetitorBackingBean extends CompetitionBackingBean implements ConverterDataAccessor<Team>, Serializable {
 
     private Competitor competitor;
 
@@ -47,6 +52,8 @@ public class EditCompetitorBackingBean extends CompetitionBackingBean implements
 
     @PostConstruct
     private void init() {
+        logger.log(Level.INFO, "EditCOmpetitorBackingBean INITTTTTTTTTTTT");
+        System.out.println("Init 8 razy?");
         competitor = controller.getEditingCompetitor();
 
         if (competitor == null) {

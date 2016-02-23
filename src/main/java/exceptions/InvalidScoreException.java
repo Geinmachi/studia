@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 package exceptions;
-
+import java.util.List;
 /**
  *
  * @author java

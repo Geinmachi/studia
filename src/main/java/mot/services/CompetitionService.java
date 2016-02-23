@@ -7,7 +7,6 @@ package mot.services;
 
 import ejb.common.AbstractService;
 import entities.Competition;
-import entities.CompetitionType;
 import entities.Competitor;
 import entities.CompetitorMatch;
 import entities.MatchMatchType;
@@ -24,7 +23,6 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.interceptor.Interceptors;
 import mot.interfaces.CMG;
-import mot.facades.CompetitionTypeFacadeLocal;
 import mot.facades.CompetitorFacadeLocal;
 import mot.facades.MatchTypeFacadeLocal;
 import mot.facades.TeamFacadeLocal;
@@ -36,6 +34,8 @@ import mot.interfaces.InactivateMatch;
 import ejb.common.TrackerInterceptor;
 import java.util.concurrent.Future;
 import javax.annotation.Resource;
+import javax.annotation.security.DenyAll;
+import javax.annotation.security.PermitAll;
 import javax.ejb.SessionContext;
 import javax.ejb.SessionSynchronization;
 import javax.enterprise.event.Event;
@@ -45,7 +45,6 @@ import mot.interfaces.CompetitorMatchesEntryStatistics;
 import mot.interfaces.ReportPlacementData;
 import mot.managers.CompetitionComponentsManagerLocal;
 import mot.managers.ReportsManagerLocal;
-
 /**
  *
  * @author java
@@ -78,9 +77,6 @@ public class CompetitionService extends AbstractService implements CompetitionSe
 
     @EJB
     private CompetitorFacadeLocal competitorFacade;
-
-    @EJB
-    private CompetitionTypeFacadeLocal competitionTypeFacade;
 
     @EJB
     private MatchTypeFacadeLocal matchTypeFacade;
@@ -116,11 +112,6 @@ public class CompetitionService extends AbstractService implements CompetitionSe
     }
 
     @Override
-    public List<CompetitionType> getAllCompetitionTypes() {
-        return competitionTypeFacade.findAll();
-    }
-
-    @Override
     public Competitor findCopetitorById(Integer id) {
         return competitorFacade.find(id);
     }
@@ -133,11 +124,6 @@ public class CompetitionService extends AbstractService implements CompetitionSe
     @Override
     public void createCompetition(Competition competition, List<CMG> competitorMatchGroupList) throws ApplicationException {
         createCompetitionManager.createCompetition(competition, competitorMatchGroupList);
-    }
-
-    @Override
-    public CompetitionType findCompetitionTypeById(int id) {
-        return competitionTypeFacade.find(id);
     }
 
     @Override

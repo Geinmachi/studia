@@ -27,7 +27,9 @@ public abstract class BaseAsyncBackingBean<V, T> extends CompetitionBackingBean 
     @Inject
     private PollListener async;
 
-    protected abstract Logger getLogger();
+    private Future<V> futureResult;
+
+    private V actualResult;
 
     protected abstract Future<V> getFutureResultControllerDelegate(T resource) throws ApplicationException;
 
@@ -41,17 +43,16 @@ public abstract class BaseAsyncBackingBean<V, T> extends CompetitionBackingBean 
 
     protected abstract String getTaskDescription();
 
-    protected Future<V> futureResult;
-
-    protected V actualResult;
-
     protected T selectedResource;
 
     protected String getFormId() {
         return POLL_FORM_ID;
     }
-    ;
 
+    protected Logger getLogger() {
+        return logger;
+    }
+    
     private static final String POLL_FORM_ID = "pollForm";
 
     private static final String DOWNLOAD_IN_PROGRESS_PROPERTY = "downloadInProgress";
@@ -113,9 +114,9 @@ public abstract class BaseAsyncBackingBean<V, T> extends CompetitionBackingBean 
 
                 return false;
             }
-            async.addTask(new AsynchronousTaskImpl<>(futureResult,
-                    getTaskTitle(),
-                    getTaskDescription(), getResultPageAddress()));
+            async.addTask(new AsynchronousTaskImpl<>(
+                    futureResult, getTaskTitle(), getTaskDescription(), getResultPageAddress())
+            );
 
         } catch (ExecutionException | InterruptedException e) {
             getLogger().log(Level.SEVERE, null, e);

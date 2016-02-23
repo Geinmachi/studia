@@ -7,7 +7,6 @@ package web.backingBeans.mot.competition;
 
 import web.utils.BracketCreation;
 import entities.Competition;
-import entities.CompetitionType;
 import entities.Competitor;
 import entities.MatchMatchType;
 import entities.MatchType;
@@ -17,18 +16,30 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
+import javax.enterprise.context.spi.Context;
+import javax.enterprise.context.spi.CreationalContext;
+import javax.enterprise.inject.Any;
+import javax.enterprise.inject.spi.Bean;
+import javax.enterprise.inject.spi.BeanManager;
+import javax.enterprise.util.AnnotationLiteral;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ValueChangeEvent;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import mot.interfaces.CMG;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.FlowEvent;
 import org.primefaces.model.DualListModel;
+import web.converters.ConverterHelper;
 import web.converters.interfaces.ConverterDataAccessor;
 import web.converters.interfaces.MatchTypeConverterAccessor;
 import web.utils.JsfUtils;
@@ -41,6 +52,7 @@ import web.validators.DuplicatedCompetitors;
  * @author java
  */
 @Named(value = "createCompetitionBackingBean")
+@ConverterHelper(viewId = PageConstants.ORGANIZER_CREATE_COMPETITION)
 @ViewScoped
 public class CreateCompetitionBackingBean extends CompetitionBackingBean
         implements ConverterDataAccessor<Competitor>, Serializable, CompetitorsDualListSetter,
@@ -53,15 +65,13 @@ public class CreateCompetitionBackingBean extends CompetitionBackingBean
 
     private List<Competitor> competitorList = new ArrayList<>(); // for converter
 
-    private List<CompetitionType> competitionTypes = new ArrayList<>();
+//    private List<CompetitionType> competitionTypes = new ArrayList<>();
 
     private DualListModel competitors;
 
     private boolean duplicatedCompetitorFlag;
 
     private boolean competitionNameConstrains;
-
-    private CompetitionType selectedCompetitionType;
 
     private boolean isCompetitorsAmountValid;
 
@@ -75,14 +85,6 @@ public class CreateCompetitionBackingBean extends CompetitionBackingBean
 //    @Override
     public List<Competitor> getCompetitorList() {
         return competitorList;
-    }
-
-    public List<CompetitionType> getCompetitionTypes() {
-        return competitionTypes;
-    }
-
-    public CompetitionType getSelectedCompetitionType() {
-        return selectedCompetitionType;
     }
 
     public DualListModel getCompetitors() {
@@ -111,10 +113,6 @@ public class CreateCompetitionBackingBean extends CompetitionBackingBean
         return isCompetitorsAmountValid;
     }
 
-    public void setSelectedCompetitionType(CompetitionType selectedCompetitionType) {
-        this.selectedCompetitionType = selectedCompetitionType;
-    }
-
     public boolean getIsCompetitorsAmountValid() {
         return isCompetitorsAmountValid;
     }
@@ -133,23 +131,10 @@ public class CreateCompetitionBackingBean extends CompetitionBackingBean
         List<Competitor> comeptitorsTarget = new ArrayList<>();
 
         competitors = new DualListModel(competitorsSource, comeptitorsTarget);
-
-        competitionTypes = controller.getAllCompetitionTypes();
-
-        for (int i = 0; i < 9; i++) {
-            comeptitorsTarget.add(competitorList.get(i));
-        }
-        competition.setCompetitionName("aa123yy5545jbn");
-        competition.setEndDate(new Date());
-        competition.setStartDate(new Date());
     }
 
     public String onFlowProcess(FlowEvent event) {
         if (event.getOldStep().equals("firstStep")) {
-//            if (duplicatedCompetitorFlag || !isCompetitorsAmountValid) {
-//                System.out.println("ONFLOW duplicated " + FacesContext.getCurrentInstance().getMessageList().size());
-//                return event.getOldStep();
-//            }
             bracketCreator.createEmptyBracket(competitors.getTarget());
 
         } else if (event.getNewStep().equals("firstStep")) {
@@ -163,7 +148,7 @@ public class CreateCompetitionBackingBean extends CompetitionBackingBean
     public String createCompetition() {
         try {
 //            competition.setIdCompetitionType(selectedCompetitionType);
-            competition.setIdCompetitionType(competitionTypes.get(0));
+//            competition.setIdCompetitionType(competitionTypes.get(0));
 
             bracketCreator.assignMatchTypes();
             controller.createCompetition(competition, bracketCreator.getCompetitorMatchGroupList());

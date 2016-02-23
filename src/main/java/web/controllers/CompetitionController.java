@@ -6,7 +6,6 @@
 package web.controllers;
 
 import entities.Competition;
-import entities.CompetitionType;
 import entities.Competitor;
 import entities.CompetitorMatch;
 import entities.MatchMatchType;
@@ -110,10 +109,6 @@ public class CompetitionController implements Serializable {
         return service.getAllCompetitors();
     }
 
-    public List<CompetitionType> getAllCompetitionTypes() {
-        return service.getAllCompetitionTypes();
-    }
-
     public Competitor findCompetitorById(Integer id) {
         return service.findCopetitorById(id);
     }
@@ -124,10 +119,6 @@ public class CompetitionController implements Serializable {
 
     public void createCompetition(Competition competition, List<CMG> competitorMatchGroupList) throws ApplicationException {
         service.createCompetition(competition, competitorMatchGroupList);
-    }
-
-    public CompetitionType findCompetitionTypeById(int id) {
-        return service.findCompetitionTypeById(id);
     }
 
     public List<CMG> generateEmptyBracket(List<Competitor> competitors) {
@@ -171,6 +162,7 @@ public class CompetitionController implements Serializable {
     }
 
     public InactivateMatch disableMatch(InactivateMatch inactivateMatch) {
+        System.out.println("Disabling-------------------");
         InactivateMatch dto = new DashboardPanel();
         dto.setMatch(inactivateMatch.getMatch());
 

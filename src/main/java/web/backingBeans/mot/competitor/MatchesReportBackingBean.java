@@ -6,6 +6,7 @@
 package web.backingBeans.mot.competitor;
 
 import entities.Competitor;
+import javax.ejb.AccessLocalException;
 import exceptions.ApplicationException;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
@@ -25,27 +26,19 @@ import web.utils.PageConstants;
  */
 @Named(value = "matchesReportBackingBean")
 @SessionScoped
-public class MatchesReportBackingBean extends BaseAsyncBackingBean<List<CompetitorMatchesEntryStatistics>, Competitor> implements Serializable {
-
-    private static final Logger logger = Logger.getLogger(MatchesReportBackingBean.class.getName());
-
-    public Future<List<CompetitorMatchesEntryStatistics>> getFutureCompetitorMatchList() {
-        return super.getFutureResult();
-    }
-
-    public List<CompetitorMatchesEntryStatistics> getCompetitorMatchList() {
-        return super.getActualResult();
-    }
+public class MatchesReportBackingBean
+        extends BaseAsyncBackingBean<List<CompetitorMatchesEntryStatistics>, Competitor>
+        implements Serializable {
 
     @Override
-    protected Logger getLogger() {
-        return logger;
+    protected Future<List<CompetitorMatchesEntryStatistics>>
+            getFutureResultControllerDelegate(Competitor resource) throws ApplicationException {
+        return controller.generateCompetitorMatchesStatistics(resource);
     }
-
+            
     @Override
     protected void handleApplicationException(ApplicationException e) {
-        logger.log(Level.SEVERE, "Exception during initializing values");
-        e.printStackTrace();
+        logger.log(Level.SEVERE, "Exception during initializing values", e);
     }
 
     @Override
@@ -55,21 +48,22 @@ public class MatchesReportBackingBean extends BaseAsyncBackingBean<List<Competit
 
     @Override
     protected String getNewResourceSelectedMessage() {
-       return ResourceBundleUtil.getResourceBundleProperty("competitorMatches.newCompetitorSelected");
+        return ResourceBundleUtil.getResourceBundleProperty("competitorMatches.newCompetitorSelected");
     }
 
     @Override
     protected String getTaskTitle() {
-       return ResourceBundleUtil.getResourceBundleProperty("competitorMatches.taskTitle");
+        return ResourceBundleUtil.getResourceBundleProperty("competitorMatches.taskTitle");
     }
 
     @Override
     protected String getTaskDescription() {
-        return selectedResource.getIdPersonalInfo().getFirstName() + " " + selectedResource.getIdPersonalInfo().getLastName();
+        return selectedResource.getIdPersonalInfo().getFirstName()
+                + " "
+                + selectedResource.getIdPersonalInfo().getLastName();
     }
-
-    @Override
-    protected Future<List<CompetitorMatchesEntryStatistics>> getFutureResultControllerDelegate(Competitor resource) throws ApplicationException {
-        return controller.generateCompetitorMatchesStatistics(resource);
+    
+    public List<CompetitorMatchesEntryStatistics> getCompetitorMatchList() {
+        return getActualResult();
     }
 }

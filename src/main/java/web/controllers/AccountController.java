@@ -46,11 +46,20 @@ public class AccountController implements Serializable {
     }
 
     public List<Account> getUserList() {
-        return service.getUserList();
+        return service.getUsersList();
     }
 
     public void editAccessLevels(List<AccessLevel> accessLevelList) throws ApplicationException {
         service.editAccessLevels(accessLevelList);
+    }
+
+    public void changeActiveStatus(Account account) throws ApplicationException {
+        service.changeActiveStatus(account);
+    }
+
+    public void editAccount() throws ApplicationException {
+        service.editAccount(editingAccount);
+        editingAccount = null;
     }
     
 }

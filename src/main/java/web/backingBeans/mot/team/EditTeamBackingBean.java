@@ -18,6 +18,7 @@ import javax.annotation.PostConstruct;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import org.primefaces.model.DualListModel;
+import web.converters.ConverterHelper;
 import web.utils.JsfUtils;
 import web.utils.PageConstants;
 import web.validators.DuplicatedCompetitors;
@@ -27,6 +28,7 @@ import web.validators.DuplicatedCompetitors;
  * @author java
  */
 @Named(value = "editTeamBackingBean")
+@ConverterHelper(viewId = PageConstants.EDIT_EDIT_TEAM)
 @ViewScoped
 public class EditTeamBackingBean extends TeamBackingBean implements Serializable, DuplicatedCompetitors {
 

@@ -30,23 +30,17 @@ public class JsfUtils {
 //        FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
 
     }
+
+    public static void addErrorMessage(Exception ex, String componentId) {
+        String msg = ex.getLocalizedMessage();
+        msg = (msg != null && msg.length() > 0) ? msg : "unknownError";
+        
+        addErrorMessage(ResourceBundleUtil.getResourceBundleProperty(msg), componentId);
+    }
     
     public static void addErrorMessage(String msg, String componentId) {
         FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_ERROR, msg, "");
         FacesContext.getCurrentInstance().addMessage(componentId, facesMsg);
-//        FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
-
-    }
-
-    public static void addErrorMessage(Exception ex, String componentId) {
-        String msg = ex.getLocalizedMessage();
-        if (msg != null && msg.length() > 0) {
-            addErrorMessage(ResourceBundleUtil.getResourceBundleProperty(msg), componentId);
-//            addErrorMessage(ResourceBundleUtil.getResourceBundleProperty("exception"), ResourceBundleUtil.getResourceBundleProperty(msg), componentId);
-        } else {
-            addErrorMessage("Unknown error", componentId);
-//            addErrorMessage(ResourceBundleUtil.getResourceBundleProperty("error"), defaultMsg, componentId);
-        }
     }
 
     public static void addSuccessMessage(String msg, String details, String componentId) {

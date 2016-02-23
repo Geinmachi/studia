@@ -99,9 +99,6 @@ public class CreateCompetitionManager implements CreateCompetitionManagerLocal {
     @EJB
     private MatchTypeFacadeLocal matchTypeFacade;
 
-    @EJB
-    private ManageCompetitionManagerLocal manageCompetitionManager;
-
     final static int GROUP_SIZE = 4;
 
     @Override
@@ -694,7 +691,7 @@ public class CreateCompetitionManager implements CreateCompetitionManagerLocal {
 
             competition.setIdOrganizer(organizer);
         }
-        competitionFacade.competitionContraintsNotCommited(competition);
+        competitionFacade.competitionConstraintsNotCommited(competition);
     }
 
     @Override

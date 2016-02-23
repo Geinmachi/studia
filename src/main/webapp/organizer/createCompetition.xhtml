@@ -30,7 +30,7 @@ and open the template in the editor.
                             </p:column>
                             <p:column>
                                 <p:inputText required="true" id="competitionName" value="#{createCompetitionBackingBean.competition.competitionName}">
-                                    <f:validator  binding="#{competitionNameValidator}"/>
+                                    <f:validator  binding="#{competitionsNameValidator}"/>
                                 </p:inputText>
                             </p:column>
                             <p:column>
@@ -91,7 +91,7 @@ and open the template in the editor.
                                     </p:column>
 
                                     <f:validator binding="#{duplicatedCompetitorsValidator}"/>
-                                    <!--<f:validator binding="#{competitorsCountValidator}"/>-->
+                                    <!--<f:validator binding="#{competitorsCountValidator}" />-->
                                 </p:pickList>
                             </p:column>
                         </p:row>

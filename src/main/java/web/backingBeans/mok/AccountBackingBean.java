@@ -18,5 +18,6 @@ public abstract class AccountBackingBean {
     @Inject
     protected AccountController controller;
     
-    protected final Logger logger = Logger.getLogger(this.getClass().getName());
+    @Inject
+    protected transient Logger logger;
 }

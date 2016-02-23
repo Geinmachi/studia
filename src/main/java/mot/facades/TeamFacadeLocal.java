@@ -10,7 +10,7 @@ import entities.Team;
 import exceptions.ApplicationException;
 import exceptions.TeamCreationException;
 import java.util.List;
-import javax.ejb.Local; import javax.ejb.Remote;
+import javax.ejb.Remote; import javax.ejb.Remote;
 
 /**
  *
